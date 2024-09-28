@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.logo{
+    font-family: "Lobster", sans-serif;
+    font-weight: 400;
+    letter-spacing: 1px;
+    transition: 0.3s ease;
+}
+
+.logo:hover{
+    letter-spacing: 5px;
+transform: scale(1.05);
+}
+
+.nav{
+    background-color: #f0f0f0;
+    transition: 1s ease;
+}
+.nav li{
+    font-size: 1rem;
+    padding: 8px;
+    border-radius: 6px;
+    transition: 0.1s ease;
+}
+    .nav li:hover{
+
+        background-color:rgba(128, 128, 128, 0.097) ;
+    }
+.nav li:active{
+    background-color:rgba(128, 128, 128, 0.37) ;
+    /* transform: scale(0.9); */
+}
+
+
+body{
+    overflow: hidden;
+  }

@@ -1,0 +1,14 @@
+{
+  "/page": "app/page.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/[username]/page": "app/[username]/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/api/get-user/route": "app/api/get-user/route.js",
+  "/api/get-following/route": "app/api/get-following/route.js",
+  "/search/page": "app/search/page.js",
+  "/api/search-users/route": "app/api/search-users/route.js",
+  "/api/get_username_from_uid/route": "app/api/get_username_from_uid/route.js",
+  "/api/user-profile-public/route": "app/api/user-profile-public/route.js",
+  "/api/get-following-followers/route": "app/api/get-following-followers/route.js",
+  "/api/get-followers/route": "app/api/get-followers/route.js"
+}

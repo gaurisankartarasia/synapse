@@ -1,0 +1,91 @@
+/*!******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./src/components/styles/LoaderSpinner.module.css ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************/
+
+
+.LoaderSpinner_spinner__UHhY_ {
+  position: inherit;
+  display: inline-block;
+  animation: LoaderSpinner_spin__xflgH 1s linear infinite;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Ensure it's vertically centered */
+  transform-origin: center center;
+  width: 100%;
+  height: 100%; /* Ensure it takes up full space in its container */
+  overflow: hidden; /* Prevent any overflow that might cause scrollbars */
+}
+
+
+@keyframes LoaderSpinner_spin__xflgH {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*!***********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[3]!./src/app/search/Search.css ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************/
+.main{
+    width: 800px; 
+    margin: 0 auto;
+}
+
+.search_page_title{
+font-size: 2.2rem;
+font-weight: 500;
+}
+.search_input{
+width: 100% !important;
+max-width: 500px;
+height: 100%;
+max-height: 80px ;
+}
+
+
+.search_list{
+    padding: 20px;
+    width: 100%;
+    max-width: 550px;
+    color: #393f44;
+    transition: 0.55s ease !important;
+}
+
+.search_item{
+    background-color: aliceblue;
+    margin: 5px;
+    padding: 15px;
+    display: flex;
+    width: 100%;
+    border-radius: 12px;
+    transition: 0.6s ease !important;
+
+}
+.search_item:hover{
+    background-color: rgb(210, 232, 251);
+}
+.search_item:active{
+ /* transform: scale(0.95); */
+ transition: 0.5s ease !important;
+
+}
+
+.search_item img{
+    border-radius: 12px;
+    margin: 3px;
+    margin-right: 8px;
+
+
+}
+
+.search_username{
+    font-weight: 600;
+}
+
+.search_displayName{
+color: rgb(128, 128, 128);
+}

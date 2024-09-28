@@ -1,0 +1,95 @@
+.profilePage {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .profileHeader {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .profileImage {
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .profileInfo {
+    flex: 1;
+  }
+  
+  .profileName {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .username {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .verifiedIcon {
+    color: #1da1f2; /* Twitter blue */
+  }
+  
+  .bio {
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  
+  .stats {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .statItem {
+    cursor: pointer;
+  }
+  
+  .actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .editButton, .settingsButton, .logoutButton {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+  }
+  
+ 
+  
+  .logoutButton {
+    background-color: #ff4d4d;
+    color: white;
+  }
+  
+  .logoutButton.disabled {
+    cursor: not-allowed;
+  }
+  
+  .modalList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .modalListItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .modalImage {
+    border-radius: 50%;
+  }
+  

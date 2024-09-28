@@ -1,0 +1,95 @@
+.editProfile {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  /* h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  } */
+  
+  .profileImagePreview {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .profileImageLabel {
+    display: block;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+/*   
+  input[type="file"] {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+   */
+  .profileForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .formGroup {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  } */
+  
+  /* input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  textarea {
+    resize: none;
+    height: 100px;
+  } */
+  
+  /* .buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  } */
+  
+  .saveButton {
+    background-color: #0095f6;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .cancelButton {
+    background-color: #dbdbdb;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .saveButton:hover {
+    background-color: #007ace;
+  }
+  
+  .cancelButton:hover {
+    background-color: #c1c1c1;
+  }
+  
