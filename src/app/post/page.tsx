@@ -6,8 +6,7 @@
   import Link from "next/link";
   import Image from "next/image";
   import LikeButton from "../feed/LikeButton";
-  import { CommentSection } from "../feed/CommentSection";
-  import { Card } from '@nextui-org/react';
+  import { Card, Divider } from '@nextui-org/react';
   import SkeletonPost from "@/components/Skeletons/PostPage";
   import {PostHeader} from "./components/PostHeader";
   import {formatDateF} from '@/utils/formatDate'
@@ -21,6 +20,7 @@
     createdAt: string;
     likes: number;
     authorId:string;
+    commentCount:number
   };
 
   const POSTS_PER_PAGE = 5;
@@ -133,11 +133,20 @@
                   <p className="mt-2 text-gray-800">{post.content}</p>
                 </Link>
 
-                <div className="mt-4">
+                <div className="mt-4 flex items-center">
                   <LikeButton postId={post.id} />
+                  <Link href={`/post/${post.id}`} className="flex items-center">
+                  <span className="material-symbols-outlined ml-8 mr-1">
+comment
+</span> <p>{post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}</p> 
+<span className="material-symbols-outlined">
+keyboard_arrow_right
+</span>
+</Link>
                 </div>
-                <CommentSection postId={post.id} />
+              
               </Card>
+              <Divider/>
             </div>
           ))}
         </div>
