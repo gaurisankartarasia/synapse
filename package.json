@@ -35,7 +35,6 @@
     "user-agent": "^1.0.4"
   },
   "devDependencies": {
-    "@types/firebase": "^3.2.3",
     "@types/geoip-lite": "^1.4.4",
     "@types/node": "^20.17.10",
     "@types/nprogress": "^0.2.3",

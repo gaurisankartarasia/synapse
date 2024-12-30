@@ -70,31 +70,31 @@
 
 
 
-
-
-
 // app/api/post/[id]/route.ts
 import { db } from "@/lib/firebaseAdmin";
-import { NextResponse } from "next/server";
-import { cache } from 'react';
+import { NextResponse, NextRequest } from "next/server";
+import { cache } from "react";
 
 const getPostFromDb = cache(async (id: string) => {
   const postDoc = await db.collection("posts").doc(id).get();
   return postDoc;
 });
 
-export async function GET(
-  request: Request,
-  context: { params: { id: string } }
-) {
-  const { params } = context;
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export async function GET(request: NextRequest, { params }: Props) {
   try {
+    const resolvedParams = await params; // Resolve the params promise
+    const { id } = resolvedParams;
+
     const headers = {
-      'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
-      'Content-Type': 'application/json',
+      "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+      "Content-Type": "application/json",
     };
 
-    const postDoc = await getPostFromDb(params.id);
+    const postDoc = await getPostFromDb(id);
 
     if (!postDoc.exists) {
       return NextResponse.json(
@@ -111,13 +111,12 @@ export async function GET(
       );
     }
 
-    // Convert Firestore timestamp to seconds/nanoseconds format
     const { uid, title, content, author, createdAt, imageUrls } = postData;
 
     return NextResponse.json(
       {
         uid,
-        id: params.id,
+        id,
         title,
         content,
         author,
