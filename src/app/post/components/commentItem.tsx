@@ -45,7 +45,7 @@ export const CommentItem = ({
           <div className="flex gap-2 mt-2">
             <Button
               size="sm"
-              variant="solid"
+              variant="flat"
               startContent={<Heart className={isLiked ? "fill-current" : ""} />}
               onPress={() => onLike(comment.id)}
             >
@@ -54,7 +54,7 @@ export const CommentItem = ({
             {currentUserId && currentUserId !== comment.authorId && (
               <Button
                 size="sm"
-                variant="light"
+                variant="flat"
                 color="danger"
                 startContent={<Flag />}
                 onPress={() => setIsReportModalOpen(true)}
@@ -68,7 +68,7 @@ export const CommentItem = ({
           <Button
             size="sm"
             color="danger"
-            variant="light"
+            variant="flat"
             isLoading={isDeleting}
             onPress={() => onDelete(comment.id)}
           >

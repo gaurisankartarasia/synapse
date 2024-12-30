@@ -24,7 +24,7 @@ export const CommentForm = ({ onSubmit }: CommentFormProps) => {
       />
       <Button
         onPress={handleSubmit}
-        variant="solid"
+        variant="flat"
         radius="sm"
         color="primary"
         className="mt-2"

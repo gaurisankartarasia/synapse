@@ -16,7 +16,7 @@ export default function App() {
        
       </div>
       {user ? (
-         <Button color="primary" variant='light' radius='sm' onPress={goToUploadPage} endContent={<MdAddPhotoAlternate size={25} />}>
+         <Button color="primary" variant='flat' radius='sm' onPress={goToUploadPage} endContent={<MdAddPhotoAlternate size={25} />}>
          <span className='text-lg'>Upload photo</span>
        </Button>
       

@@ -11,7 +11,7 @@ const FollowButton: React.FC<{
       className="follow-button"
       onPress={onFollowClick}
       disabled={isUpdating}
-      variant="solid"
+      variant="flat"
       color="primary"
     >
       {isUpdating ? (

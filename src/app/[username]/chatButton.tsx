@@ -59,7 +59,7 @@ export default function ChatButton({ targetUserId }: ChatButtonProps) {
     <Button
       onPress={startChat}
       className="m-2"
-      variant='solid'
+      variant='flat'
       color='primary'
     >
      Message

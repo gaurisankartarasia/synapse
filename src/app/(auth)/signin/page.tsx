@@ -83,7 +83,7 @@ const LoginPage: React.FC = () => {
                   <Button
                     color="primary"
                     size="lg"
-                    variant="solid"
+                    variant="flat"
                     radius="full"
                     onPress={handleGoogleSignIn}
                   >

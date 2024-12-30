@@ -14,7 +14,6 @@ import {
   Avatar,
 
 } from "@nextui-org/react";
-import ThemeDropdown from './Theme';
 import UploadModal from '@/app/feed/create/post/Modal';
 
 export default function NavbarApp() {
@@ -22,12 +21,12 @@ export default function NavbarApp() {
   const router = useRouter();
 
   return (
-    <Navbar>
+    <Navbar className='bg-white dark:bg-black'>
       <NavbarBrand>
         <Link href={'/'} className="font-bold text-inherit">Synapse</Link>
       </NavbarBrand>
 
-      <NavbarContent className=" sm:flex gap-" justify="center">
+      <NavbarContent className=" sm:flex gap-4" justify="center">
 
         <NavbarItem >
 
@@ -53,7 +52,6 @@ export default function NavbarApp() {
           <Link href="/users">users</Link>
         </NavbarItem>
         <NavbarItem>
-          <ThemeDropdown />
         </NavbarItem>
         <UploadModal />
       </NavbarContent>
@@ -75,7 +73,7 @@ export default function NavbarApp() {
               />
             ) : "..."}
           </DropdownTrigger>
-          <DropdownMenu aria-label="Profile Actions" variant='faded'>
+          <DropdownMenu aria-label="Profile Actions" variant='flat'>
             <DropdownItem key="profile" className="h-14 gap-2" textValue='email'>
               <p >Signed in as</p>
               <span className="font-semibold">{user?.email || "Guest"}</span>

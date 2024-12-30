@@ -131,7 +131,7 @@ export default function UploadModal() {
     
     return (
         <>
-            <Button onPress={onOpen} radius='sm' variant='light' >
+            <Button onPress={onOpen} radius='sm' variant='flat' >
                 <span className="material-symbols-outlined">
                     add_photo_alternate
                 </span>
@@ -216,7 +216,7 @@ export default function UploadModal() {
     </div>
                             </ModalBody>
                             <ModalFooter>
-                                <Button className=''  variant="light" onPress={onClose}>
+                                <Button className=''  variant="flat" onPress={onClose}>
                                     Exit
                                 </Button>
                                 <Button color="primary" radius='sm' onPress={handleSubmit}>

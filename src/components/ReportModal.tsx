@@ -69,7 +69,7 @@ export const ReportModal = ({ isOpen, onClose, onSubmit }: ReportModalProps) => 
           )}
         </ModalBody>
         <ModalFooter>
-          <Button variant="light" onPress={onClose}>
+          <Button variant="flat" onPress={onClose}>
             Cancel
           </Button>
           <Button color="danger" onPress={handleSubmit} isLoading={loading}>

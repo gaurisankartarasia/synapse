@@ -65,9 +65,9 @@ const ProfilePage: React.FC = () => {
       <div className="float-end">
         <Dropdown>
           <DropdownTrigger>
-            <Button variant="faded">Menu</Button>
+            <Button variant="flat">Menu</Button>
           </DropdownTrigger>
-          <DropdownMenu aria-label="Static Actions" variant="faded">
+          <DropdownMenu aria-label="Static Actions" variant="flat">
             <DropdownItem key="edit" textValue="Edit Profile">
               <Link href="/profile/edit">Edit Profile</Link>
             </DropdownItem>

@@ -11,7 +11,7 @@ export default function Back() {
   return (
     <div>
       <Button
-      variant="light"
+      variant="flat"
         onPress={() => router.back()}
         startContent={<ArrowLeft />} 
       >
