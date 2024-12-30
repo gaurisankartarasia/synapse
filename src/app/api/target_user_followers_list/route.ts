@@ -1,0 +1,68 @@
+// src/app/api/get-followers/route.ts
+import { NextResponse } from "next/server";
+import { auth, db } from "../../../lib/firebaseAdmin";
+
+export async function GET(request: Request) {
+  const token = request.headers.get("Authorization")?.split("Bearer ")[1];
+  const targetUsername = new URL(request.url).searchParams.get("username"); // Get target username from query params
+
+  if (!token) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const decodedToken = await auth.verifyIdToken(token);
+    const requestingUid = decodedToken.uid;
+
+    // Fetch the target user's UID based on username
+    const targetUserSnapshot = await db
+      .collection("users")
+      .where("username", "==", targetUsername)
+      .get();
+
+    if (targetUserSnapshot.empty) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    const targetUserUid = targetUserSnapshot.docs[0].id;
+
+    // Check if the target user's profile is private and the requesting user is not following
+    const targetUserData = await db.collection("users").doc(targetUserUid).get();
+    const isPrivate = targetUserData.data()?.private;
+
+    const isFollowing = (
+      await db
+        .collection("users")
+        .doc(targetUserUid)
+        .collection("followers")
+        .doc(requestingUid)
+        .get()
+    ).exists;
+
+    if (isPrivate && !isFollowing && requestingUid !== targetUserUid) {
+      return NextResponse.json(
+        { error: "This user's followers list is private" },
+        { status: 403 }
+      );
+    }
+
+    // Fetch the followers list
+    const followersSnapshot = await db
+      .collection("users")
+      .doc(targetUserUid)
+      .collection("followers")
+      .get();
+
+    const followers = await Promise.all(
+      followersSnapshot.docs.map(async (doc) => {
+        const followerData = await db.collection("users").doc(doc.id).get();
+        return { uid: doc.id, ...followerData.data() };
+      })
+    );
+
+    return NextResponse.json({ followers });
+  } catch (error) {
+    console.error("Error fetching followers:", error);
+    return NextResponse.json({ error: "Failed to fetch followers" }, { status: 500 });
+  }
+}

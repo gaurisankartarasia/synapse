@@ -1,0 +1,38 @@
+@import 'nprogress/nprogress.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+#nprogress .bar {
+  background: #29d;
+  height: 4px;
+  transition: ease 1s;
+  animation: nprogress-marquee 1.5s linear infinite;
+}
+
+#nprogress {
+  border-top-color: #29d;
+  border-left-color: #29d;
+}
+
+#nprogress .spinner {
+  display: none; 
+}
+
+@keyframes nprogress-marquee {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+
+
+
+
+
+
+
+ 
+

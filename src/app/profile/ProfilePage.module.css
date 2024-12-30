@@ -1,0 +1,96 @@
+.profilePage {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .profileHeader {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .profileImage {
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .profileInfo {
+    flex: 1;
+  }
+  
+  .profileName {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .username {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .verifiedIcon {
+    color: #fff;
+  }
+  
+  .bio {
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  
+  .stats {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .statItem {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50px;
+    border: 0.5px dotted #333;
+  }
+
+  .actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .editButton, .settingsButton, .logoutButton {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
+  
+ 
+  
+ 
+  
+  .logoutButton.disabled {
+    cursor: not-allowed;
+  }
+  
+  .modalList {
+    list-style: none;
+    padding: 0;
+    margin: 25px;
+  }
+  
+  .modalListItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 0.5px solid #00000032;
+  }
+  
+  .modalImage {
+    border-radius: 50%;
+  }
+  
