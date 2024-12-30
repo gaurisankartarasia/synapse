@@ -6,7 +6,7 @@ import { auth, googleProvider } from "../../../lib/firebaseClient";
 import { signInWithPopup } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
-import { Button, Alert, Spinner, Card } from "@nextui-org/react";
+import { Button, Alert, Card } from "@mui/material";
 
 const LoginPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -59,45 +59,40 @@ const LoginPage: React.FC = () => {
           <div className="p-5">
             <h2 className="font-semibold text-xl text-center">Sign In</h2>
 
-            {error && (
+            {/* {error && (
   <Alert 
-    color="danger" 
     title="Error ocurred"
     description={`${error}`} 
   />
-)}
-            {loginMessage && 
+)} */}
+            {/* {loginMessage && 
               <Alert 
     color="success" 
     title={`${loginMessage}`}
     description="Redirecting..." 
   />
-  }
+  } */}
             
             <div className="mx-auto m-1 p-1 flex justify-center">
-            {isLoading && <Spinner/>}
+            {isLoading && 'loadiing...'}
             </div>
             {showButton && !isLoading && (
               <>
                 <div   className="flex items-center justify-center m-5">
                   <Button
-                    color="primary"
-                    size="lg"
-                    variant="flat"
-                    radius="full"
-                    onPress={handleGoogleSignIn}
+                    onClick={handleGoogleSignIn}
                   >
                     <FaGoogle className="mr-2" />
                     Sign in with Google
                   </Button>
                 </div>
                 <div className="mt-4 max-w-[500px]">
-                  <Alert
+                  {/* <Alert
                     color="success"
                     description={description}
                     title={title}
                     variant="flat"
-                  />
+                  /> */}
                 </div>
               </>
             )}

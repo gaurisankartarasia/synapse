@@ -2,7 +2,7 @@
 // "use client";
 
 // import React, { useState, useCallback } from "react";
-// import { Card, Avatar } from "@nextui-org/react";
+// import { Card, Avatar } from "@mui/material";
 // import P_card from "@/components/Skeletons/P_card";
 // import { auth } from "@/lib/firebaseClient";
 
@@ -200,7 +200,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Card, Avatar } from "@nextui-org/react";
+import { Card, Avatar } from "@mui/material";
 import P_card from "@/components/Skeletons/P_card";
 import { auth } from "@/lib/firebaseClient";
 

@@ -7,7 +7,7 @@
   import { onAuthStateChanged } from 'firebase/auth';
   import { useParams, useRouter } from "next/navigation"; 
   import { VscVerifiedFilled } from "react-icons/vsc";
-import {Card, Avatar} from '@nextui-org/react'
+import {Card, Avatar} from '@mui/material'
 
   interface User {
     uid: string;
@@ -107,7 +107,6 @@ import {Card, Avatar} from '@nextui-org/react'
               src={`/api/proxy?url=${encodeURIComponent(user.photoURL || '/default.webp')}`}
 
               alt={user.username}
-             size='md'
             />
             
             <div>

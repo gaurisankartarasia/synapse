@@ -1,7 +1,7 @@
 
 // Updated CommentItem.tsx
 import { useState } from "react";
-import { Button, Divider } from "@nextui-org/react";
+import { Button, Divider } from "@mui/material";
 import { Heart, Flag } from "lucide-react";
 import type { Comment } from "@/types/comments";
 import { ReportModal } from "@/components/ReportModal";
@@ -42,20 +42,15 @@ export const CommentItem = ({
           <small className="opacity-50 text-xs">{comment.createdAt}</small>
           <div className="flex gap-2 mt-2">
             <Button
-              size="sm"
-              variant="flat"
-              startContent={<Heart className={isLiked ? "fill-current" : ""} />}
-              onPress={() => onLike(comment.id)}
+              // startContent={<Heart className={isLiked ? "fill-current" : ""} />}
+              onClick={() => onLike(comment.id)}
             >
               {comment.likes || 0}
             </Button>
             {currentUserId && currentUserId !== comment.authorId && (
               <Button
-                size="sm"
-                variant="flat"
-                color="danger"
-                startContent={<Flag />}
-                onPress={() => setIsReportModalOpen(true)}
+
+                onClick={() => setIsReportModalOpen(true)}
               >
                 Report
               </Button>
@@ -64,11 +59,8 @@ export const CommentItem = ({
         </div>
         {currentUserId === comment.authorId && (
           <Button
-            size="sm"
-            color="danger"
-            variant="flat"
-            isLoading={isDeleting}
-            onPress={() => onDelete(comment.id)}
+            // isLoading={isDeleting}
+            onClick={() => onDelete(comment.id)}
           >
             Delete
           </Button>

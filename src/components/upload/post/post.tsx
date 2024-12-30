@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Image } from "@nextui-org/react"; // Import Image
+import { Button } from "@mui/material"; // Import Image
 import { useAuth } from '@/hooks/useAuth';
 import { MdAddPhotoAlternate } from "react-icons/md";
 import {useRouter} from 'next/navigation' 
@@ -11,18 +11,23 @@ export default function App() {
  const goToUploadPage = () =>{router.push('/post/create')}
 
   return (
+  
     <div className="m-2"> {/* Added padding for better spacing */}
       <div className="flex items-center">
        
       </div>
+    
       {user ? (
-         <Button color="primary" variant='flat' radius='sm' onPress={goToUploadPage} endContent={<MdAddPhotoAlternate size={25} />}>
+          <>
+         <Button  onClick={goToUploadPage} >
          <span className='text-lg'>Upload photo</span>
        </Button>
-      
+       </>
       ) : (
         null
       )}
+   
     </div>
+   
   );
 }

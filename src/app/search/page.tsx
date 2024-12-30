@@ -158,10 +158,9 @@
 
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import Image from "next/image";
-import {Input, Avatar} from "@nextui-org/react";
+import {Input, Avatar} from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { auth } from "../../lib/firebaseClient";
-import { Spinner } from "@nextui-org/react";
 import './Search.css';
 
 const SearchPageContent: React.FC = () => {
@@ -252,12 +251,11 @@ const SearchPageContent: React.FC = () => {
           type="text"
           placeholder="Search by username"
           value={searchTerm}
-          size="lg"
           onChange={(e) => handleSearchInputChange(e.target.value)}
         />
       </form>
 
-      {loading && <Spinner/>}
+      {loading && '...'}
 
       {searchResults.length > 0 && (
         <ul className="search_list">
@@ -273,7 +271,6 @@ const SearchPageContent: React.FC = () => {
                 // src={user.photoURL || "/default.webp"}
                 src={`/api/proxy?url=${encodeURIComponent(user.photoURL || '/default.webp')}`}
                 alt={user.username}
-                size="md"
                 // width={50}
                 // height={50}
                 // onError={(e) => {
@@ -301,7 +298,7 @@ const SearchPageContent: React.FC = () => {
 };
 
 const SearchPage: React.FC = () => (
-  <Suspense fallback=<Spinner/>>
+  <Suspense fallback='...' >
     <SearchPageContent />
   </Suspense>
 );

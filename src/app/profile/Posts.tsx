@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Post } from '@/types/post';
-import { Card, CardHeader, Alert, Spinner } from '@nextui-org/react';
+import { Card, CardHeader, Alert, } from '@mui/material';
 import  Link from 'next/link';
 
 interface UserPostsProps {
@@ -45,17 +45,17 @@ export default function UserPosts({ uid }: UserPostsProps) {
   }, [uid]);
 
   if (!uid) return null;
-  if (loading) return <Spinner className="flex justify-center p-8"/>;
+  if (loading) return 'loading...';
   if (error) return <div className="text-red-500 p-4">{error}</div>;
 
   return (
     <div className="space-y-4 mt-12" >
         <b>Uploads</b>
-      {notice && (
+      {/* {notice && (
         <Alert className="mb-4"description={notice}>
           
         </Alert>
-      )}
+      )} */}
       
       {posts.length === 0 ? (
         <div className="text-center p-8">No posts yet</div>

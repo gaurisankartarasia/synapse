@@ -8,7 +8,6 @@ import { VscVerifiedFilled } from "react-icons/vsc";
 import styles from "./UserModal.module.css";
 import { auth } from "@/lib/firebaseClient";
 import { useRouter } from "next/navigation";
-import { Spinner } from "@nextui-org/react";
 
 type UserModalProps = {
   isOpen: boolean;
@@ -66,7 +65,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, type }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={type === "followers" ? "Followers" : "Following"}>
       {modalLoading ? (
-        <Spinner/>
+        'loading...'
       ) : (
         <ul className={styles.modalList}>
           {modalData.map((user) => (

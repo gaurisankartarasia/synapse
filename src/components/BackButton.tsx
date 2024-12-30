@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Button } from '@nextui-org/react';
+import { Button } from '@mui/material';
 import { ArrowLeft } from 'lucide-react';
 
 export default function Back() {
@@ -11,9 +11,7 @@ export default function Back() {
   return (
     <div>
       <Button
-      variant="flat"
-        onPress={() => router.back()}
-        startContent={<ArrowLeft />} 
+        onClick={() => router.back()}
       >
         Go back
       </Button>

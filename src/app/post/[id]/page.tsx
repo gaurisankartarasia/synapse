@@ -7,7 +7,7 @@ import Link from "next/link";
 import { CommentSection } from '../../feed/CommentSection';
 import LikeButton from "@/app/feed/LikeButton";
 import SkeletonPost from "@/components/Skeletons/PostPage";
-import { Card } from '@nextui-org/react';
+import { Card } from '@mui/material';
 import ImageGallery from '../components/ImageGallery';
 import { formatDate } from '@/utils/formatDate';
 
@@ -92,7 +92,7 @@ const PostPage = () => {
         ← Back to Feed
       </Link>
 
-      <Card shadow="none" className="p-6">
+      <Card className="p-6">
       <PostHeader authorUsername={post.author} />
         <h1 className="text-3xl font-bold mb-4">{post.title}</h1>    
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { VscVerifiedFilled } from "react-icons/vsc";
-import {Image} from "@nextui-org/react";
+import {Image} from "@mui/material";
 import "./globals.css";
 
 const ProfileHeader: React.FC<{ 

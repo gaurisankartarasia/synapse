@@ -4,7 +4,7 @@
 import React from "react";
 import PostPage from '../post/page';
 import PostUploadComponent from '@/components/upload/post/post';
-import UploadModal from './create/post/Modal'
+// import UploadModal from './create/post/Modal'
   
 
 
@@ -16,7 +16,7 @@ export default function Feed() {
     <>
    
     <main className=" container mx-auto"> 
-      <UploadModal/>    
+      {/* <UploadModal/>     */}
      <PostUploadComponent/>
     <PostPage/>
     </main>

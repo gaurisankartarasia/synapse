@@ -1,4 +1,4 @@
-// // components/ReportModal.tsx
+
 // import { useState } from "react";
 // import {
 //   Modal,
@@ -9,8 +9,8 @@
 //   Button,
 //   Textarea,
 //   Select,
-//   SelectItem
-// } from "@nextui-org/react";
+//   SelectItem,
+// } from "@mui/material";
 
 // type ReportModalProps = {
 //   isOpen: boolean;
@@ -19,11 +19,14 @@
 // };
 
 // export const ReportModal = ({ isOpen, onClose, onSubmit }: ReportModalProps) => {
-//   const [reason, setReason] = useState("");
+//   const [selectedReason, setSelectedReason] = useState("");
+//   const [customReason, setCustomReason] = useState("");
 //   const [loading, setLoading] = useState(false);
 
 //   const handleSubmit = async () => {
-//     if (!reason.trim()) return;
+//     const reason = selectedReason === "Other" ? customReason.trim() : selectedReason;
+//     if (!reason) return;
+
 //     setLoading(true);
 //     try {
 //       await onSubmit(reason);
@@ -36,11 +39,12 @@
 //   };
 
 //   const reportReasons = [
+//     'Bhaiya gali de raha hai ye',
 //     "Inappropriate content",
 //     "Harassment",
 //     "Spam",
 //     "Misinformation",
-//     "Other"
+//     "Other",
 //   ];
 
 //   return (
@@ -50,8 +54,8 @@
 //         <ModalBody>
 //           <Select
 //             label="Reason for reporting"
-//             value={reason}
-//             onChange={(e) => setReason(e.target.value)}
+//             value={selectedReason}
+//             onChange={(e) => setSelectedReason(e.target.value)}
 //           >
 //             {reportReasons.map((reason) => (
 //               <SelectItem key={reason} value={reason}>
@@ -59,20 +63,20 @@
 //               </SelectItem>
 //             ))}
 //           </Select>
-//           {reason === "Other" && (
+//           {selectedReason === "Other" && (
 //             <Textarea
 //               label="Please specify"
 //               placeholder="Enter your reason..."
-//               value={reason}
-//               onChange={(e) => setReason(e.target.value)}
+//               value={customReason}
+//               onChange={(e) => setCustomReason(e.target.value)}
 //             />
 //           )}
 //         </ModalBody>
 //         <ModalFooter>
-//           <Button variant="flat" onPress={onClose}>
+//           <Button variant="flat" onClick={onClose}>
 //             Cancel
 //           </Button>
-//           <Button color="danger" onPress={handleSubmit} isLoading={loading}>
+//           <Button color="danger" onClick={handleSubmit} isLoading={loading}>
 //             Report
 //           </Button>
 //         </ModalFooter>
@@ -86,18 +90,20 @@
 
 
 
-import { useState } from "react";
+
+
+import React, { useState } from "react";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   Button,
-  Textarea,
+  TextField,
   Select,
-  SelectItem,
-} from "@nextui-org/react";
+  MenuItem,
+  CircularProgress,
+} from "@mui/material";
 
 type ReportModalProps = {
   isOpen: boolean;
@@ -106,9 +112,9 @@ type ReportModalProps = {
 };
 
 export const ReportModal = ({ isOpen, onClose, onSubmit }: ReportModalProps) => {
-  const [selectedReason, setSelectedReason] = useState("");
-  const [customReason, setCustomReason] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [selectedReason, setSelectedReason] = useState<string>("");
+  const [customReason, setCustomReason] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async () => {
     const reason = selectedReason === "Other" ? customReason.trim() : selectedReason;
@@ -126,7 +132,7 @@ export const ReportModal = ({ isOpen, onClose, onSubmit }: ReportModalProps) => 
   };
 
   const reportReasons = [
-    'Bhaiya gali de raha hai ye',
+    "Bhaiya gali de raha hai ye",
     "Inappropriate content",
     "Harassment",
     "Spam",
@@ -135,39 +141,50 @@ export const ReportModal = ({ isOpen, onClose, onSubmit }: ReportModalProps) => 
   ];
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalContent>
-        <ModalHeader>Report Comment</ModalHeader>
-        <ModalBody>
-          <Select
-            label="Reason for reporting"
-            value={selectedReason}
-            onChange={(e) => setSelectedReason(e.target.value)}
-          >
-            {reportReasons.map((reason) => (
-              <SelectItem key={reason} value={reason}>
-                {reason}
-              </SelectItem>
-            ))}
-          </Select>
-          {selectedReason === "Other" && (
-            <Textarea
-              label="Please specify"
-              placeholder="Enter your reason..."
-              value={customReason}
-              onChange={(e) => setCustomReason(e.target.value)}
-            />
-          )}
-        </ModalBody>
-        <ModalFooter>
-          <Button variant="flat" onPress={onClose}>
-            Cancel
-          </Button>
-          <Button color="danger" onPress={handleSubmit} isLoading={loading}>
-            Report
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+    <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="sm">
+      <DialogTitle>Report Comment</DialogTitle>
+      <DialogContent>
+        <Select
+          fullWidth
+          value={selectedReason}
+          onChange={(e) => setSelectedReason(e.target.value)}
+          displayEmpty
+        >
+          <MenuItem value="" disabled>
+            Reason for reporting
+          </MenuItem>
+          {reportReasons.map((reason) => (
+            <MenuItem key={reason} value={reason}>
+              {reason}
+            </MenuItem>
+          ))}
+        </Select>
+        {selectedReason === "Other" && (
+          <TextField
+            label="Please specify"
+            placeholder="Enter your reason..."
+            multiline
+            rows={4}
+            fullWidth
+            margin="normal"
+            value={customReason}
+            onChange={(e) => setCustomReason(e.target.value)}
+          />
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} disabled={loading}>
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? <CircularProgress size={24} color="inherit" /> : "Report"}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };

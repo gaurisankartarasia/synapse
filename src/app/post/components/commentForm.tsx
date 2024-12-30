@@ -1,6 +1,6 @@
 // CommentForm.tsx
 import { useState } from "react";
-import { Textarea, Button } from "@nextui-org/react";
+import {  Button } from "@mui/material";
 
 type CommentFormProps = {
   onSubmit: (content: string) => Promise<void>;
@@ -17,15 +17,13 @@ export const CommentForm = ({ onSubmit }: CommentFormProps) => {
 
   return (
     <div className="mt-4">
-      <Textarea
+      <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Write a comment..."
       />
       <Button
-        onPress={handleSubmit}
-        variant="flat"
-        radius="sm"
+        onClick={handleSubmit}
         color="primary"
         className="mt-2"
       >

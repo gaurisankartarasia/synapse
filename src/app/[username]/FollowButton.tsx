@@ -1,5 +1,5 @@
 import React from "react";
-import {Button} from "@nextui-org/button";
+import {Button} from "@mui/material";
 
 const FollowButton: React.FC<{
   isUpdating: boolean;
@@ -9,9 +9,8 @@ const FollowButton: React.FC<{
   return (
     <Button
       className="follow-button"
-      onPress={onFollowClick}
+      onClick={onFollowClick}
       disabled={isUpdating}
-      variant="flat"
       color="primary"
     >
       {isUpdating ? (

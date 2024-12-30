@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Modal from '@/components/Modal';
 import { useAuth } from '@/hooks/useAuth';
 import { LikesModalProps, LikeUserResponse } from '@/types/likedby';
-import { Avatar } from '@nextui-org/react';
+import { Avatar } from '@mui/material';
 import P_card from '@/components/Skeletons/P_card';
 
 const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {

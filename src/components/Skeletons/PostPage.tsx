@@ -1,4 +1,4 @@
-import {Skeleton } from "@nextui-org/react";
+import {Skeleton } from "@mui/material";
 
 const SkeletonPost: React.FC = () => {
   return (

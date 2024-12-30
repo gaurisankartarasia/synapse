@@ -57,7 +57,7 @@ export default function ChatButton({ targetUserId }: ChatButtonProps) {
 
   return (
     <Button
-      onPress={startChat}
+      onClick={startChat}
       className="m-2"
       variant='flat'
       color='primary'

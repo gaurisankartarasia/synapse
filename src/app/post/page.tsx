@@ -6,7 +6,7 @@
   import Link from "next/link";
   import Image from "next/image";
   import LikeButton from "../feed/LikeButton";
-  import { Card, Divider } from '@nextui-org/react';
+  import { Card, Divider } from '@mui/material';
   import SkeletonPost from "@/components/Skeletons/PostPage";
   import {PostHeader} from "./components/PostHeader";
   import {formatDateF} from '@/utils/formatDate'
@@ -111,7 +111,7 @@
               key={post.id}
               ref={index === posts.length - 1 ? lastPostElementRef : null}
             >
-              <Card shadow="none" className="p-4">
+              <Card  className="p-4">
               <PostHeader authorUsername={post.author} />
 
                 <Link href={`/post/${post.id}`} className="block">
