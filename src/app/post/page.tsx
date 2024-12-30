@@ -10,6 +10,7 @@
   import { Card } from '@nextui-org/react';
   import SkeletonPost from "@/components/Skeletons/PostPage";
   import {PostHeader} from "./components/PostHeader";
+  import {formatDateF} from '@/utils/formatDate'
 
   type Post = {
     id: string;
@@ -110,7 +111,7 @@
               key={post.id}
               ref={index === posts.length - 1 ? lastPostElementRef : null}
             >
-              <Card shadow="sm" className="p-4">
+              <Card shadow="none" className="p-4">
               <PostHeader authorUsername={post.author} />
 
                 <Link href={`/post/${post.id}`} className="block">
@@ -118,7 +119,7 @@
                   <div className="text-sm text-gray-600 mb-2">
                     <span>By {post.author}</span>
                     <span className="mx-2">•</span>
-                    <span>{post.createdAt}</span>
+                    <span>{formatDateF(post.createdAt)}</span>
                   </div>
                   
                   {post.imageUrls && post.imageUrls.length > 0 && (

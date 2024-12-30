@@ -1,8 +1,4 @@
 
-
-
-
-
 // Updated CommentItem.tsx
 import { useState } from "react";
 import { Button, Divider } from "@nextui-org/react";
@@ -35,6 +31,8 @@ export const CommentItem = ({
   const handleReport = async (reason: string) => {
     await onReport(comment.id, reason);
   };
+
+  
 
   return (
     <div className="p-3">

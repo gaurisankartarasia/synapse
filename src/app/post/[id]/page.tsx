@@ -20,6 +20,9 @@ interface Post {
   createdAt: { seconds: number; nanoseconds: number };
   imageUrls: string[];
   uid:string
+  comments: Comment[];
+  commentCount: number;
+  postId:string
 }
 
 const PostPage = () => {
@@ -89,7 +92,7 @@ const PostPage = () => {
         ← Back to Feed
       </Link>
 
-      <Card className="p-6">
+      <Card shadow="none" className="p-6">
       <PostHeader authorUsername={post.author} />
         <h1 className="text-3xl font-bold mb-4">{post.title}</h1>    
 

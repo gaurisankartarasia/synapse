@@ -1,7 +1,7 @@
 
 "use client";
 import React, {useEffect} from 'react'
-import useNavigationProgress from './hooks/useNavigationProgress'; 
+import useNavigationProgress from '../hooks/useNavigationProgress'; 
 import "./globals.css";
 import { Providers } from "./providers";
 import NavbarApp from '@/components/Navbar';
