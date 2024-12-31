@@ -1,18 +1,18 @@
 
-// // components/LikeButton.tsx
+// // components/Likebutton.tsx
 // import { useState, useEffect } from 'react';
 // import { onSnapshot, doc } from 'firebase/firestore';
 // import { db } from '@/lib/firebaseClient';
 // import { useAuth } from '@/hooks/useAuth';
 
 
-// interface LikeButtonProps {
+// interface LikebuttonProps {
 //   postId: string;
 //   initialLikes?: number;
 //   initialLikedState?: boolean;
 // }
 
-// const LikeButton = ({ postId, initialLikes = 0, initialLikedState = false }: LikeButtonProps) => {
+// const Likebutton = ({ postId, initialLikes = 0, initialLikedState = false }: LikebuttonProps) => {
 //   const [likes, setLikes] = useState(initialLikes);
 //   const [isLiked, setIsLiked] = useState(initialLikedState);
 //   const [isLoading, setIsLoading] = useState(false);
@@ -97,7 +97,7 @@
 //   );
 // };
 
-// export default LikeButton;
+// export default Likebutton;
 
 
 
@@ -107,20 +107,20 @@
 
 
 
-// components/LikeButton.tsx
+// components/Likebutton.tsx
 import { useState, useEffect } from 'react';
 import { onSnapshot, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebaseClient';
 import { useAuth } from '@/hooks/useAuth';
-import LikesModal from '../post/components/LikedByModal';
+import LikesModal from '../components/LikedByModal'
 
-interface LikeButtonProps {
+interface LikebuttonProps {
   postId: string;
   initialLikes?: number;
   initialLikedState?: boolean;
 }
 
-const LikeButton = ({ postId, initialLikes = 0, initialLikedState = false }: LikeButtonProps) => {
+const Likebutton = ({ postId, initialLikes = 0, initialLikedState = false }: LikebuttonProps) => {
   const [likes, setLikes] = useState(initialLikes);
   const [isLiked, setIsLiked] = useState(initialLikedState);
   const [isLoading, setIsLoading] = useState(false);
@@ -220,4 +220,4 @@ keyboard_arrow_right
   );
 };
 
-export default LikeButton;
+export default Likebutton;

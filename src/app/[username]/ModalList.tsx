@@ -1,7 +1,6 @@
 import React from "react";
 import Modal from "../../components/Modal";
 import Link from "next/link";
-import { Avatar } from "@mui/material";
 
 const ModalList: React.FC<{
   isOpen: boolean;
@@ -20,7 +19,7 @@ const ModalList: React.FC<{
           {items.map((item) => (
             
             <li key={item.uid} className="flex m-2">
-               <Avatar src={`/api/proxy?url=${encodeURIComponent(item.photoURL)}`}
+               <img src={`/api/proxy?url=${encodeURIComponent(item.photoURL)}`}
               alt="" />
             <div>
             <Link href={`/${item.username}`}> {item.username}</Link>

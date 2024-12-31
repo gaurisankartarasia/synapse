@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button } from "@mui/material"; // Import Image
+import { button } from "@mui/material"; // Import Image
 import { useAuth } from '@/hooks/useAuth';
 import { MdAddPhotoAlternate } from "react-icons/md";
 import {useRouter} from 'next/navigation' 
@@ -19,9 +19,9 @@ export default function App() {
     
       {user ? (
           <>
-         <Button  onClick={goToUploadPage} >
+         <button  onClick={goToUploadPage} >
          <span className='text-lg'>Upload photo</span>
-       </Button>
+       </button>
        </>
       ) : (
         null

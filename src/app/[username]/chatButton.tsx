@@ -1,14 +1,14 @@
-// // components/ChatButton.tsx
+// // components/Chatbutton.tsx
 // 'use client';
 
 // import { useRouter } from 'next/navigation';
 // import { useAuth } from '@/hooks/useAuth';
 
-// interface ChatButtonProps {
+// interface ChatbuttonProps {
 //   targetUserId: string;
 // }
 
-// export default function ChatButton({ targetUserId }: ChatButtonProps) {
+// export default function Chatbutton({ targetUserId }: ChatbuttonProps) {
 //   const router = useRouter();
 //   const { user } = useAuth();
 
@@ -32,18 +32,17 @@
 
 
 
-// components/ChatButton.tsx
+// components/Chatbutton.tsx
 'use client';
 
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
-import {Button} from "@nextui-org/button";
 
-interface ChatButtonProps {
+interface ChatbuttonProps {
   targetUserId: string;
 }
 
-export default function ChatButton({ targetUserId }: ChatButtonProps) {
+export default function Chatbutton({ targetUserId }: ChatbuttonProps) {
   const router = useRouter();
   const { user } = useAuth();
 
@@ -56,13 +55,12 @@ export default function ChatButton({ targetUserId }: ChatButtonProps) {
   };
 
   return (
-    <Button
+    <button
       onClick={startChat}
       className="m-2"
-      variant='flat'
       color='primary'
     >
      Message
-    </Button>
+    </button>
   );
 }

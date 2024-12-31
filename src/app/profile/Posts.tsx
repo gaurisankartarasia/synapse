@@ -4,7 +4,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Post } from '@/types/post';
-import { Card, CardHeader, Alert, } from '@mui/material';
 import  Link from 'next/link';
 
 interface UserPostsProps {
@@ -63,13 +62,13 @@ export default function UserPosts({ uid }: UserPostsProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {posts.map((post) => (
            <Link href={`/post/${post.id}`} key={post.id} className="overflow-hidden">
-            <Card>
-              <CardHeader>
+            <div>
+              <div>
                 <div className="text-lg">{post.title}</div>
                 <p className="text-sm text-gray-500">
                   {new Date(post.createdAt).toLocaleDateString()}
                 </p>
-              </CardHeader>
+              </div>
               <div>
                 <p className="text-sm mb-4">{post.content}</p>
                 {post.imageUrls && post.imageUrls.length > 0 && (
@@ -90,7 +89,7 @@ export default function UserPosts({ uid }: UserPostsProps) {
                   </div>
                 )}
               </div>
-            </Card>
+            </div>
            </Link>
           ))}
         </div>

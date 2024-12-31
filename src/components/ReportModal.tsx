@@ -6,7 +6,7 @@
 //   ModalHeader,
 //   ModalBody,
 //   ModalFooter,
-//   Button,
+//   button,
 //   Textarea,
 //   Select,
 //   SelectItem,
@@ -73,12 +73,12 @@
 //           )}
 //         </ModalBody>
 //         <ModalFooter>
-//           <Button variant="flat" onClick={onClose}>
+//           <button variant="flat" onClick={onClose}>
 //             Cancel
-//           </Button>
-//           <Button color="danger" onClick={handleSubmit} isLoading={loading}>
+//           </button>
+//           <button color="danger" onClick={handleSubmit} isLoading={loading}>
 //             Report
-//           </Button>
+//           </button>
 //         </ModalFooter>
 //       </ModalContent>
 //     </Modal>
@@ -173,9 +173,9 @@ export const ReportModal = ({ isOpen, onClose, onSubmit }: ReportModalProps) => 
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} disabled={loading}>
+        <button onClick={onClose} disabled={loading}>
           Cancel
-        </Button>
+        </button>
         <Button
           variant="contained"
           color="error"

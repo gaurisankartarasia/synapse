@@ -9,7 +9,7 @@
 //     ModalHeader,
 //     ModalBody,
 //     ModalFooter,
-//     Button,
+//     button,
 //     useDisclosure,
 //     useDraggable,
 //     Textarea,
@@ -54,7 +54,7 @@
 //         };
 //       }, [images]);
     
-//       const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+//       const handleImageChange = async (e: React.ChangeEvent<HTMLinputElement>) => {
 //         const selectedFiles = Array.from(e.target.files || []);
 //         if (selectedFiles.length > 0) {
 //           if (images.length + selectedFiles.length > 4) {
@@ -131,11 +131,11 @@
     
 //     return (
 //         <>
-//             <Button onClick={onOpen} radius='sm' variant='flat' >
+//             <button onClick={onOpen} radius='sm' variant='flat' >
 //                 <span className="material-symbols-outlined">
 //                     add_photo_alternate
 //                 </span>
-//                 <span className='hidden lg:block'> Upload</span></Button>
+//                 <span className='hidden lg:block'> Upload</span></button>
 //             <Modal
 //                 size='4xl'
 //                 ref={targetRef}
@@ -216,12 +216,12 @@
 //     </div>
 //                             </ModalBody>
 //                             <ModalFooter>
-//                                 <Button className=''  variant="flat" onClick={onClose}>
+//                                 <button className=''  variant="flat" onClick={onClose}>
 //                                     Exit
-//                                 </Button>
-//                                 <Button color="primary" radius='sm' onClick={handleSubmit}>
+//                                 </button>
+//                                 <button color="primary" radius='sm' onClick={handleSubmit}>
 //                                     Post
-//                                 </Button>
+//                                 </button>
 //                             </ModalFooter>
 //                         </>
 //                     )}

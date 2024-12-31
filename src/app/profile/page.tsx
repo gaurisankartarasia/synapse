@@ -9,13 +9,13 @@
 // // import { VscVerifiedFilled } from "react-icons/vsc";
 // import Image from "next/image";
 // import styles from "./ProfilePage.module.css";
-// import Back from "@/components/BackButton";
+// import Back from "@/components/Backbutton";
 // import {
 //   Box,
-//   Button,
+//   button,
 //   Typography,
-//   Avatar,
-//   IconButton,
+//   img,
+//   Iconbutton,
 //   Menu,
 //   MenuItem,
 //   Tooltip,
@@ -74,7 +74,7 @@
 //       <div className="float-end">
 //         <Dropdown>
 //           <DropdownTrigger>
-//             <Button variant="flat">Menu</Button>
+//             <button variant="flat">Menu</button>
 //           </DropdownTrigger>
 //           <DropdownMenu aria-label="Static Actions" variant="flat">
 //             <DropdownItem key="edit" textValue="Edit Profile">
@@ -113,12 +113,12 @@
 //           <h2 className={styles.profileName}>{user.displayName}</h2>
 //           <p className={styles.bio}>{user.bio}</p>
 //           <div className={styles.stats}>
-//             <Button variant="flat" onClick={() => setModalType("followers")} className={styles.statItem}>
+//             <button variant="flat" onClick={() => setModalType("followers")} className={styles.statItem}>
 //               <strong>{user.followersCount}</strong> Followers
-//             </Button>
-//             <Button variant="flat" onClick={() => setModalType("following")} className={styles.statItem}>
+//             </button>
+//             <button variant="flat" onClick={() => setModalType("following")} className={styles.statItem}>
 //               <strong>{user.followingCount}</strong> Following
-//             </Button>
+//             </button>
 //           </div>
 //         </div>
         
@@ -159,16 +159,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "./ProfilePage.module.css";
 import Back from "@/components/BackButton";
-import {
-  Box,
-  Button,
-  Typography,
-  Avatar,
-  IconButton,
-  Menu,
-  MenuItem,
-  Tooltip,
-} from '@mui/material';
+
 import UserModal from "./Modal";
 import UserPosts from './Posts';
 
@@ -228,58 +219,56 @@ const ProfilePage: React.FC = () => {
   }
 
     return (
-    <Box sx={{ padding: 2 }}>
-      {/* Back Button */}
-      <Button onClick={() => router.back()} sx={{ marginBottom: 2 }}>
+    <div>
+      {/* Back button */}
+      <button onClick={() => router.back()} >
         Back
-      </Button>
+      </button>
 
       {/* Menu Dropdown */}
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Tooltip title="Menu">
-          <IconButton onClick={handleMenuOpen}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <button onClick={handleMenuOpen}>
             {/* <MenuIcon /> */}menu
-          </IconButton>
-        </Tooltip>
-        <Menu
-          anchorEl={menuAnchorEl}
-          open={Boolean(menuAnchorEl)}
-          onClose={handleMenuClose}
+          </button>
+        <div
+          // anchorEl={menuAnchorEl}
+          // open={Boolean(menuAnchorEl)}
+          // onClose={handleMenuClose}
         >
-          <MenuItem onClick={() => router.push('/profile/edit')}>Edit Profile</MenuItem>
-          <MenuItem onClick={handleSignOut} sx={{ color: 'error.main' }}>
+          <button onClick={() => router.push('/profile/edit')}>Edit Profile</button>
+          <li onClick={handleSignOut} style={{ color: 'error.main' }}>
             Signout
-          </MenuItem>
-        </Menu>
-      </Box>
+          </li>
+        </div>
+      </div>
 
       {/* Profile Header */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, marginBottom: 4 }}>
-        <Avatar
+      <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginBottom: 4 }}>
+        <img
           src={`/api/proxy?url=${encodeURIComponent(user.photoURL || '/default.webp')}`}
           alt="Profile"
-          sx={{ width: 150, height: 150 }}
+          style={{ width: 150, height: 150 }}
         />
-        <Box>
-          <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <div>
+          <p  style={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             @{user.username}
             {user.verified && 'verified'}
             {user.quixxleBadge && <span>🎖️</span>}
-          </Typography>
-          <Typography variant="h4">{user.displayName}</Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ marginTop: 1 }}>
+          </p>
+          <p >{user.displayName}</p>
+          <p color="text.secondary" style={{ marginTop: 1 }}>
             {user.bio}
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 2, marginTop: 2 }}>
-            <Button onClick={() => setModalType("followers")}>
+          </p>
+          <div style={{ display: 'flex', gap: 2, marginTop: 2 }}>
+            <button onClick={() => setModalType("followers")}>
               <strong>{user.followersCount}</strong> Followers
-            </Button>
-            <Button onClick={() => setModalType("following")}>
+            </button>
+            <button onClick={() => setModalType("following")}>
               <strong>{user.followingCount}</strong> Following
-            </Button>
-          </Box>
-        </Box>
-      </Box>
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* User Posts */}
       <UserPosts uid={user.uid} />
@@ -292,7 +281,7 @@ const ProfilePage: React.FC = () => {
           type={modalType}
         />
       )}
-    </Box>
+    </div>
   );
 }
 

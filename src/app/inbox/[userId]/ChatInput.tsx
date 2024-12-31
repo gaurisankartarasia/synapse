@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 
-interface ChatInputProps {
+interface ChatinputProps {
   userId: string;
 }
 
-export default function ChatInput({ userId }: ChatInputProps) {
+export default function Chatinput({ userId }: ChatinputProps) {
   const { user } = useAuth();
   const [newMessage, setNewMessage] = useState('');
   const [error, setError] = useState<string | null>(null);

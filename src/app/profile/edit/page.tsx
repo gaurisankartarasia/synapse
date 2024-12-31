@@ -52,7 +52,7 @@ const ProfileEditPage: React.FC = () => {
     fetchUserData();
   }, [router]);
 
-  const handleProfileImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProfileImageChange = (event: React.ChangeEvent<HTMLinputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       setProfileImage(file);
@@ -248,8 +248,8 @@ const ProfileEditPage: React.FC = () => {
 
         {/* Save and Cancel buttons */}
         <div className={styles.buttons}>
-          <button type="submit" className={styles.saveButton}>Save Changes</button>
-          <button type="button" className={styles.cancelButton} onClick={() => router.push("/profile")}>Cancel</button>
+          <button type="submit" className={styles.savebutton}>Save Changes</button>
+          <button type="button" className={styles.cancelbutton} onClick={() => router.push("/profile")}>Cancel</button>
         </div>
       </form>
     </div>

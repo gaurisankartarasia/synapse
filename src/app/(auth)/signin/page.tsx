@@ -6,12 +6,11 @@ import { auth, googleProvider } from "../../../lib/firebaseClient";
 import { signInWithPopup } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
-import { Button, Alert, Card } from "@mui/material";
 
 const LoginPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [showButton, setShowButton] = useState(true);
+  const [showbutton, setShowbutton] = useState(true);
   const [loginMessage, setLoginMessage] = useState<string | null>(null);
   const router = useRouter();
   const title = "Remember";
@@ -42,7 +41,7 @@ const LoginPage: React.FC = () => {
         router.push("/");
       }
 
-      setShowButton(false);
+      setShowbutton(false);
       setLoginMessage("Login success!");
     } catch (err: any) {
       console.error("Failed to sign in with Google", err);
@@ -55,7 +54,7 @@ const LoginPage: React.FC = () => {
   return (
     <>
       <main className="container mx-auto min-h-screen flex justify-center items-center">
-        <Card>
+        <div>
           <div className="p-5">
             <h2 className="font-semibold text-xl text-center">Sign In</h2>
 
@@ -76,15 +75,15 @@ const LoginPage: React.FC = () => {
             <div className="mx-auto m-1 p-1 flex justify-center">
             {isLoading && 'loadiing...'}
             </div>
-            {showButton && !isLoading && (
+            {showbutton && !isLoading && (
               <>
                 <div   className="flex items-center justify-center m-5">
-                  <Button
+                  <button
                     onClick={handleGoogleSignIn}
                   >
                     <FaGoogle className="mr-2" />
                     Sign in with Google
-                  </Button>
+                  </button>
                 </div>
                 <div className="mt-4 max-w-[500px]">
                   {/* <Alert
@@ -97,7 +96,7 @@ const LoginPage: React.FC = () => {
               </>
             )}
           </div>
-        </Card>
+        </div>
       </main>
     </>
   );

@@ -61,7 +61,7 @@
     gap: 10px;
   }
   
-  .editButton, .settingsButton, .logoutButton {
+  .editbutton, .settingsbutton, .logoutbutton {
     padding: 10px 20px;
     border: none;
     cursor: pointer;
@@ -71,7 +71,7 @@
   
  
   
-  .logoutButton.disabled {
+  .logoutbutton.disabled {
     cursor: not-allowed;
   }
   

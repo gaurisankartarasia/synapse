@@ -1,13 +1,12 @@
 import React from "react";
-import {Button} from "@mui/material";
 
-const FollowButton: React.FC<{
+const Followbutton: React.FC<{
   isUpdating: boolean;
   followStatus: string;
   onFollowClick: () => void;
 }> = ({ isUpdating, followStatus, onFollowClick }) => {
   return (
-    <Button
+    <button
       className="follow-button"
       onClick={onFollowClick}
       disabled={isUpdating}
@@ -23,8 +22,8 @@ const FollowButton: React.FC<{
       ) : (
         "Follow"
       )}
-    </Button>
+    </button>
   );
 };
 
-export default FollowButton;
+export default Followbutton;

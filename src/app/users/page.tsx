@@ -7,7 +7,6 @@
   import { onAuthStateChanged } from 'firebase/auth';
   import { useParams, useRouter } from "next/navigation"; 
   import { VscVerifiedFilled } from "react-icons/vsc";
-import {Card, Avatar} from '@mui/material'
 
   interface User {
     uid: string;
@@ -101,8 +100,8 @@ import {Card, Avatar} from '@mui/material'
         <ul>
           {users.map((user) => (
             <li key={user.uid} className=" p-2 mx-2  bflex w-64"  >
-              <Card className=''>
-            <Avatar
+              <div className=''>
+            <img
               // src={user.photoURL || "/default.webp"}
               src={`/api/proxy?url=${encodeURIComponent(user.photoURL || '/default.webp')}`}
 
@@ -119,7 +118,7 @@ import {Card, Avatar} from '@mui/material'
               <p onClick={() => handleUserClick(user.uid)}>{user.displayName}</p>
             </div>
             {user.verified && <VscVerifiedFilled size={17} className="" />}
-            </Card>
+            </div>
           </li>
           
           ))}

@@ -185,7 +185,7 @@
 // "use client";
 // import { useAuth } from '@/hooks/useAuth';
 // import ChatMessages from './ChatMessages';
-// import ChatInput from './ChatInput';
+// import Chatinput from './Chatinput';
 // import { useRouter } from 'next/navigation';
 // import { useEffect } from 'react';
 
@@ -206,7 +206,7 @@
 //   return (
 //     <div className="flex justify-center w-full">
 //       <ChatMessages userId={params.userId} user={user} />
-//       <ChatInput userId={params.userId} />
+//       <Chatinput userId={params.userId} />
 //     </div>
 //   );
 // }
@@ -218,7 +218,7 @@
 "use client";
 import { useAuth } from '@/hooks/useAuth';
 import ChatMessages from './ChatMessages';
-import ChatInput from './ChatInput';
+import Chatinput from './Chatinput';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { use } from 'react';
@@ -243,7 +243,7 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
   return (
     <div className="flex justify-center w-full">
       <ChatMessages userId={userId} user={user} />
-      <ChatInput userId={userId} />
+      <Chatinput userId={userId} />
     </div>
   );
 }

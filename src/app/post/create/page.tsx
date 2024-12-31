@@ -39,7 +39,7 @@
 //     };
 //   }, [images]);
 
-//   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+//   const handleImageChange = async (e: React.ChangeEvent<HTMLinputElement>) => {
 //     const selectedFiles = Array.from(e.target.files || []);
 //     if (selectedFiles.length > 0) {
 //       if (images.length + selectedFiles.length > 4) {

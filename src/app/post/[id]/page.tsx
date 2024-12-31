@@ -4,10 +4,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import {PostHeader} from "../components/PostHeader";
 import Link from "next/link";
-import { CommentSection } from '../../feed/CommentSection';
-import LikeButton from "@/app/feed/LikeButton";
-import SkeletonPost from "@/components/Skeletons/PostPage";
-import { Card } from '@mui/material';
+import { CommentSection } from '../components/CommentSection';
+import Likebutton from '../components/LikeButton'
 import ImageGallery from '../components/ImageGallery';
 import { formatDate } from '@/utils/formatDate';
 
@@ -67,19 +65,19 @@ const PostPage = () => {
   }, [id]);
 
   if (loading) {
-    return <SkeletonPost />;
+    return 'loading...';
   }
 
   if (!post) {
     return (
-      <Card className="p-6 max-w-2xl mx-auto mt-8">
+      <div className="p-6 max-w-2xl mx-auto mt-8">
         <div className="text-center">
           <h2 className="text-xl font-semibold">Post not found</h2>
           <Link href="/" className="text-blue-500 hover:underline mt-4 block">
             Return to Home
           </Link>
         </div>
-      </Card>
+      </div>
     );
   }
 
@@ -92,7 +90,7 @@ const PostPage = () => {
         ← Back to Feed
       </Link>
 
-      <Card className="p-6">
+      <div className="p-6">
       <PostHeader authorUsername={post.author} />
         <h1 className="text-3xl font-bold mb-4">{post.title}</h1>    
 
@@ -116,13 +114,13 @@ const PostPage = () => {
         </div>
 
         <div className="mt-6 pt-6 border-t">
-          <LikeButton postId={post.id} />
+          <Likebutton postId={post.id} />
         </div>
 
         <div className="mt-6">
           <CommentSection postId={post.id} />
         </div>
-      </Card>
+      </div>
     </div>
   );
 };

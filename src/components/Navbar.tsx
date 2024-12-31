@@ -11,7 +11,7 @@
 //   DropdownTrigger,
 //   Dropdown,
 //   DropdownMenu,
-//   Avatar,
+//   img,
 
 // } from "@mui/material";
 // import UploadModal from '@/app/feed/create/post/Modal';
@@ -63,7 +63,7 @@
 //         <Dropdown placement="bottom-end">
 //           <DropdownTrigger>
 //             {user && user.photoURL ? (
-//               <Avatar
+//               <img
 //                 as="button"
 //                 className="transition-transform"
 //                 // color="primary"
@@ -119,135 +119,185 @@
 
 
 
+// import React, { useState } from 'react';
+// import { useAuth } from '@/hooks/useAuth';
+// import { signOut } from '../app/(auth)/signOut';
+// import Link from "next/link";
+// import { useRouter } from "next/navigation";
+
+// import { Search, Notifications, Person, Settings, Logout } from '@mui/icons-material';
+// // import UploadModal from '@/app/feed/create/post/Modal';
+
+// export default function NavbarApp() {
+//   const { user } = useAuth();
+//   const router = useRouter();
+
+//   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+
+//   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+//     setAnchorEl(event.currentTarget);
+//   };
+  
+
+//   const handleMenuClose = () => {
+//     setAnchorEl(null);
+//   };
+
+//   const handleProfile = () => {
+//     router.push('/profile');
+//     handleMenuClose();
+//   };
+
+//   const handleSettings = () => {
+//     router.push('/settings');
+//     handleMenuClose();
+//   };
+
+//   return (
+//     <AppBar position="static" color="default" sx={{ backgroundColor: 'white', boxShadow: 'none' }}>
+//       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+//         {/* Brand Logo */}
+//         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+//           <Link href="/" style={{ textDecoration: 'none', color: 'inherit', fontWeight: 'bold' }}>
+//             Synapse
+//           </Link>
+//         </Typography>
+
+//         {/* Center Items */}
+//         <Box sx={{ display: 'flex', gap: 2 }}>
+//           <button
+//             startIcon={<Search />}
+//             component={Link}
+//             href="/search"
+//             sx={{ textTransform: 'none', color: 'inherit' }}
+//           >
+//             Search
+//           </button>
+
+//           <button
+//             startIcon={<Notifications />}
+//             component={Link}
+//             href="/notifications"
+//             sx={{ textTransform: 'none', color: 'inherit' }}
+//           >
+//             Notifications
+//           </button>
+
+//           <Link
+//             // component={Link}
+//             href="/users"
+//             style={{ textTransform: 'none', color: 'inherit', display: { xs: 'none', lg: 'inline-flex' } }}
+//           >
+//             Users
+//           </Link>
+
+//           {/* <UploadModal /> */}
+//         </Box>
+
+//         {/* User Profile Dropdown */}
+//         <Box>
+//           <Tooltip title="Account settings">
+//             <Iconbutton onClick={handleMenuOpen}>
+//               {user?.photoURL ? (
+//                 <img
+//                   src={`/api/proxy?url=${encodeURIComponent(user.photoURL)}`}
+//                   alt={user.displayName || 'User'}
+//                 />
+//               ) : (
+//                 <img>{user?.displayName?.[0] || '?'}</img>
+//               )}
+//             </Iconbutton>
+//           </Tooltip>
+//           <Menu
+//             anchorEl={anchorEl}
+//             open={Boolean(anchorEl)}
+//             onClose={handleMenuClose}
+//             PaperProps={{
+//               style: { minWidth: 200 },
+//             }}
+//           >
+//             <MenuItem disabled>
+//               <Box>
+//                 <Typography variant="body2">Signed in as</Typography>
+//                 <Typography variant="subtitle2" fontWeight="bold">
+//                   {user?.email || 'Guest'}
+//                 </Typography>
+//               </Box>
+//             </MenuItem>
+//             <MenuItem onClick={handleProfile}>
+//               <Person sx={{ marginRight: 1 }} /> My Profile
+//             </MenuItem>
+//             <MenuItem onClick={handleSettings}>
+//               <Settings sx={{ marginRight: 1 }} /> My Settings
+//             </MenuItem>
+//             <MenuItem onClick={signOut}>
+//               <Logout sx={{ marginRight: 1 }} /> Sign Out
+//             </MenuItem>
+//           </Menu>
+//         </Box>
+//       </Toolbar>
+//     </AppBar>
+//   );
+// }
+
+
+
+
 import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { signOut } from '../app/(auth)/signOut';
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Menu,
-  MenuItem,
-  Avatar,
-  Tooltip,
-  Box,
-  Button,
-} from '@mui/material';
-import { Search, Notifications, Person, Settings, Logout } from '@mui/icons-material';
-// import UploadModal from '@/app/feed/create/post/Modal';
+import Dropdown from '@/components/DropDown/DropDown';
 
 export default function NavbarApp() {
   const { user } = useAuth();
   const router = useRouter();
 
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-
-
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
   const handleProfile = () => {
     router.push('/profile');
-    handleMenuClose();
   };
 
   const handleSettings = () => {
     router.push('/settings');
-    handleMenuClose();
   };
 
   return (
-    <AppBar position="static" color="default" sx={{ backgroundColor: 'white', boxShadow: 'none' }}>
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    <header className="bg-white shadow-md">
+      <nav className="container mx-auto flex items-center justify-between py-4">
         {/* Brand Logo */}
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <Link href="/" style={{ textDecoration: 'none', color: 'inherit', fontWeight: 'bold' }}>
+        <div className="text-xl font-bold">
+          <Link href="/">
             Synapse
           </Link>
-        </Typography>
+        </div>
 
         {/* Center Items */}
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button
-            startIcon={<Search />}
-            component={Link}
-            href="/search"
-            sx={{ textTransform: 'none', color: 'inherit' }}
-          >
+        <div className="flex items-center space-x-4">
+          <Link href="/search" className="text-gray-700 hover:text-gray-900">
             Search
-          </Button>
-
-          <Button
-            startIcon={<Notifications />}
-            component={Link}
-            href="/notifications"
-            sx={{ textTransform: 'none', color: 'inherit' }}
-          >
+          </Link>
+          <Link href="/notifications" className="text-gray-700 hover:text-gray-900">
             Notifications
-          </Button>
-
-          <Button
-            component={Link}
-            href="/users"
-            sx={{ textTransform: 'none', color: 'inherit', display: { xs: 'none', lg: 'inline-flex' } }}
-          >
+          </Link>
+          <Link href="/users" className="hidden lg:inline text-gray-700 hover:text-gray-900">
             Users
-          </Button>
-
-          {/* <UploadModal /> */}
-        </Box>
+          </Link>
+        </div>
 
         {/* User Profile Dropdown */}
-        <Box>
-          <Tooltip title="Account settings">
-            <IconButton onClick={handleMenuOpen}>
-              {user?.photoURL ? (
-                <Avatar
-                  src={`/api/proxy?url=${encodeURIComponent(user.photoURL)}`}
-                  alt={user.displayName || 'User'}
-                />
-              ) : (
-                <Avatar>{user?.displayName?.[0] || '?'}</Avatar>
-              )}
-            </IconButton>
-          </Tooltip>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-            PaperProps={{
-              style: { minWidth: 200 },
-            }}
-          >
-            <MenuItem disabled>
-              <Box>
-                <Typography variant="body2">Signed in as</Typography>
-                <Typography variant="subtitle2" fontWeight="bold">
-                  {user?.email || 'Guest'}
-                </Typography>
-              </Box>
-            </MenuItem>
-            <MenuItem onClick={handleProfile}>
-              <Person sx={{ marginRight: 1 }} /> My Profile
-            </MenuItem>
-            <MenuItem onClick={handleSettings}>
-              <Settings sx={{ marginRight: 1 }} /> My Settings
-            </MenuItem>
-            <MenuItem onClick={signOut}>
-              <Logout sx={{ marginRight: 1 }} /> Sign Out
-            </MenuItem>
-          </Menu>
-        </Box>
-      </Toolbar>
-    </AppBar>
+        <div>
+          <Dropdown
+            label={user?.displayName || 'Account'}
+            options={[
+              { label: 'My Profile', action: handleProfile },
+              { label: 'My Settings', action: handleSettings },
+              { label: 'Sign Out', action: signOut },
+            ]}
+          />
+        </div>
+      </nav>
+    </header>
   );
 }

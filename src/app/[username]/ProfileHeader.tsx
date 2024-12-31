@@ -1,6 +1,6 @@
 import React from "react";
 import { VscVerifiedFilled } from "react-icons/vsc";
-import {Image} from "@mui/material";
+import Image from "next/image";
 import "./globals.css";
 
 const ProfileHeader: React.FC<{ 
@@ -13,13 +13,11 @@ const ProfileHeader: React.FC<{
   return (
     <div className="">
       <Image
-      isBlurred
-      isZoomed
         // src={photoURL || "/default.webp"}
         src={`/api/proxy?url=${encodeURIComponent(photoURL || '/default.webp')}`}
         className="text-large"
         alt="photo"
-       
+       height={100}
         width={100}
         // onError={(e) => {
         //   e.currentTarget.src = "/default.webp";

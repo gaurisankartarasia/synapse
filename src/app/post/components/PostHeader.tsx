@@ -2,8 +2,8 @@
 // "use client";
 
 // import React, { useState, useCallback } from "react";
-// import { Card, Avatar } from "@mui/material";
-// import P_card from "@/components/Skeletons/P_card";
+// import { div, img } from "@mui/material";
+// import P_card from "@/components/Skeletons/P_div";
 // import { auth } from "@/lib/firebaseClient";
 
 // type ProfileData = {
@@ -103,10 +103,10 @@
   
 //   const handleMouseLeave = (event: React.MouseEvent) => {
 //     const relatedTarget = event.relatedTarget as HTMLElement | null;
-//     // Check if the mouse is moving to the card or staying within the component
+//     // Check if the mouse is moving to the div or staying within the component
 //     if (
 //       relatedTarget &&
-//       (relatedTarget.closest(".popover-card") || relatedTarget.closest(".username-span"))
+//       (relatedTarget.closest(".popover-div") || relatedTarget.closest(".username-span"))
 //     ) {
 //       return;
 //     }
@@ -124,7 +124,7 @@
 //       </span>
   
 //       {isPopoverVisible && (
-//         <Card
+//         <div
 //           className="absolute left-0 z-[1500] w-72 p-4"
 //           onMouseEnter={handleMouseEnter}
 //           onMouseLeave={handleMouseLeave}
@@ -134,7 +134,7 @@
 //           ) : profile ? (
 //             <div className="space-y-3">
 //               <div className="flex items-center space-x-3">
-//                 <Avatar
+//                 <img
 //                   // src={profile.photoURL}
 //                   src={`/api/proxy?url=${encodeURIComponent(profile.photoURL)}`}
 //                   alt={`${profile.displayName}`}
@@ -186,7 +186,7 @@
 //           ) : (
 //             <p>Error loading profile</p>
 //           )}
-//         </Card>
+//         </div>
 //       )}
 //     </div>
 //   );
@@ -200,8 +200,6 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Card, Avatar } from "@mui/material";
-import P_card from "@/components/Skeletons/P_card";
 import { auth } from "@/lib/firebaseClient";
 
 type ProfileData = {
@@ -301,10 +299,10 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
   
   const handleMouseLeave = (event: React.MouseEvent) => {
     const relatedTarget = event.relatedTarget as HTMLElement | null;
-    // Check if the mouse is moving to the card or staying within the component
+    // Check if the mouse is moving to the div or staying within the component
     if (
       relatedTarget &&
-      (relatedTarget.closest(".popover-card") || relatedTarget.closest(".username-span"))
+      (relatedTarget.closest(".popover-div") || relatedTarget.closest(".username-span"))
     ) {
       return;
     }
@@ -322,17 +320,17 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
       </span>
   
       {isPopoverVisible && (
-        <Card
-          className="absolute left-0 z-[1500] w-72 p-4"
+        <div
+          className="absolute left-0 z-[1500] w-72 p-4 bg-gray-100  "
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
           {loading ? (
-             <P_card/>
+            'loading...'
           ) : profile ? (
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
-                <Avatar
+                <img
                   // src={profile.photoURL}
                   src={`/api/proxy?url=${encodeURIComponent(profile.photoURL)}`}
                   alt={`${profile.displayName}`}
@@ -384,7 +382,7 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
           ) : (
             <p>Error loading profile</p>
           )}
-        </Card>
+        </div>
       )}
     </div>
   );

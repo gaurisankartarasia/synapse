@@ -2,8 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import Modal from '@/components/Modal';
 import { useAuth } from '@/hooks/useAuth';
 import { LikesModalProps, LikeUserResponse } from '@/types/likedby';
-import { Avatar } from '@mui/material';
-import P_card from '@/components/Skeletons/P_card';
 
 const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
   const [users, setUsers] = useState<LikeUserResponse[]>([]);
@@ -82,7 +80,7 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
     <Modal isOpen={isOpen} onClose={onClose} title="Liked by">
       <div className="max-h-[70vh] overflow-y-auto">
         {loading ? (
-          <P_card/>
+          'loading...'
         ) : users.length === 0 ? (
           <div className="text-center p-4 text-gray-500">No likes yet</div>
         ) : (
@@ -93,7 +91,7 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
                 className="flex items-center gap-3 p-4 hover:bg-gray-50 transition-colors"
               >
                 <div className="relative h-10 w-10 flex-shrink-0">
-                  <Avatar
+                  <img
                     src={`/api/proxy?url=${encodeURIComponent(user.profilePic)}`}
                     alt={user.username}
                     className="rounded-full object-cover"

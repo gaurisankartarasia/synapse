@@ -177,7 +177,7 @@ const NotificationsComponent = () => {
             <li key={notification.fromUid} className="notification-item">
               <div className="notification-content">
                 <Image src={notification.photoURL} 
-                height={50} width={50} alt={notification.username} className="notification-avatar" />
+                height={50} width={50} alt={notification.username} className="notification-img" />
                 <div className="notification-text">
                   <strong>{notification.username}</strong> ({notification.displayName}) wants to follow you
                   <br />

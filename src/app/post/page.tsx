@@ -5,9 +5,7 @@
   import dayjs from "dayjs";
   import Link from "next/link";
   import Image from "next/image";
-  import LikeButton from "../feed/LikeButton";
-  import { Card, Divider } from '@mui/material';
-  import SkeletonPost from "@/components/Skeletons/PostPage";
+  import Likebutton from "./components/LikeButton";
   import {PostHeader} from "./components/PostHeader";
   import {formatDateF} from '@/utils/formatDate'
 
@@ -104,14 +102,14 @@
 
     return (
       <div className=" mx-auto px-4">
-        {loading && <SkeletonPost />}
+        {loading && 'loading...'}
         <div className="space-y-4">
           {posts.map((post, index) => (
             <div
               key={post.id}
               ref={index === posts.length - 1 ? lastPostElementRef : null}
             >
-              <Card  className="p-4">
+              <div  className="p-4">
               <PostHeader authorUsername={post.author} />
 
                 <Link href={`/post/${post.id}`} className="block">
@@ -134,7 +132,7 @@
                 </Link>
 
                 <div className="mt-4 flex items-center">
-                  <LikeButton postId={post.id} />
+                  <Likebutton postId={post.id} />
                   <Link href={`/post/${post.id}`} className="flex items-center">
                   <span className="material-symbols-outlined ml-8 mr-1">
 comment
@@ -145,8 +143,7 @@ keyboard_arrow_right
 </Link>
                 </div>
               
-              </Card>
-              <Divider/>
+              </div>
             </div>
           ))}
         </div>

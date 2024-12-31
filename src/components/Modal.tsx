@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./styles/Modal.module.css";
 // import { IoCloseSharp } from "react-icons/io5";
 import { GrClose } from "react-icons/gr";
-import {Card} from "@mui/material";
-import {Button} from '@mui/material';
+
 
 interface ModalProps {
   isOpen: boolean;
@@ -33,23 +32,23 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
 
   return (
     <div className={`${styles.modalOverlay} ${isVisible ? styles.visible : ""}`} onClick={handleClose}>
-      <Card 
+      <div 
       
 
       className={styles.modalContent} 
-      // onClick={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.modalHeader}>
           <h2>{title}</h2>
-          <Button onClick={handleClose} 
+          <button onClick={handleClose} 
           >
             <GrClose size={15}/>
-          </Button>
+          </button>
         </div>
         <div className={styles.modalBody}>
           {children}
         </div>
-      </Card>
+      </div>
     </div>
   );
 };

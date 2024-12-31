@@ -16,8 +16,19 @@ export interface Comment {
   createdAt: string;
   likes: number;
   likedBy: string[];
-}
+  replies: Reply[];
 
+}
+ 
+   export interface Reply {
+  id: string;
+  authorId: string;
+  author: string;
+  content: string;
+  createdAt: string;
+  likes: number;
+  likedBy: string[];
+}
 
   export type Report = {
     commentId: string;
