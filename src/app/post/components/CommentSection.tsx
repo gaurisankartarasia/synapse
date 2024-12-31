@@ -297,6 +297,29 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
     }
   };
 
+  const handleReportReply = async (commentId: string, replyId: string, reason: string) => {
+    if (!user) return;
+  
+    try {
+      const token = await getIdToken();
+      const response = await fetch(`/api/post/comments/${commentId}/replies/${replyId}/report`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ postId, reason }),
+      });
+  
+      if (!response.ok) throw new Error("Failed to report reply");
+      alert("Reply reported successfully");
+    } catch (error) {
+      console.error("Error reporting reply:", error);
+      alert("Error reporting reply");
+    }
+  };
+  
+
   const handleAddReply = async (commentId: string, content: string) => {
     if (!user) return;
     
@@ -374,6 +397,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
                 onDelete={handleDeleteComment}
                 onLike={handleLike}
                 onReport={handleReport}
+                onReportReply={handleReportReply}
                 onAddReply={handleAddReply}
                 onDeleteReply={handleDeleteReply}
                 onLikeReply={handleLikeReply}
@@ -387,3 +411,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
     </div>
   );
 };
+
+
+
+

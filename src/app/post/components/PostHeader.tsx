@@ -1,9 +1,8 @@
 
+
 // "use client";
 
 // import React, { useState, useCallback } from "react";
-// import { div, img } from "@mui/material";
-// import P_card from "@/components/Skeletons/P_div";
 // import { auth } from "@/lib/firebaseClient";
 
 // type ProfileData = {
@@ -27,12 +26,15 @@
 //   const [profile, setProfile] = useState<ProfileData | null>(null);
 //   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
 //   const [loading, setLoading] = useState(false);
-//   const [followStatus, setFollowStatus] = useState("");
+//   const [followStatus, setFollowStatus] = useState<string>("");
+//   const [followersCount, setFollowersCount] = useState<number>(0);
 //   const [isUpdating, setIsUpdating] = useState(false);
 
 //   const fetchProfile = async () => {
 //     if (profileCache.has(authorUsername)) {
-//       setProfile(profileCache.get(authorUsername)!);
+//       const cachedProfile = profileCache.get(authorUsername)!;
+//       setProfile(cachedProfile);
+//       setFollowersCount(cachedProfile.followersCount);
 //       return;
 //     }
 
@@ -51,12 +53,16 @@
       
 //       const fetchedProfile = {
 //         ...profileData.profile,
-//         followStatus: followData.isFollowing ? "following" : followData.isRequested ? "requested" : ""
+//         followersCount: followData.followersCount || 0
 //       };
 
+//       setFollowStatus(
+//         followData.isFollowing ? "following" : followData.isRequested ? "requested" : ""
+//       );
+//       setFollowersCount(fetchedProfile.followersCount);
+      
 //       profileCache.set(authorUsername, fetchedProfile);
 //       setProfile(fetchedProfile);
-//       setFollowStatus(fetchedProfile.followStatus);
 //     } catch (error) {
 //       console.error("Error fetching profile:", error);
 //     } finally {
@@ -67,32 +73,52 @@
 //   const handleFollow = useCallback(async () => {
 //     if (!auth.currentUser || isUpdating || !profile) return;
 
+//     const isFollowing = followStatus === "following";
+//     const isRequesting = followStatus === "requested";
+
 //     setIsUpdating(true);
-//     const prevStatus = followStatus;
-//     setFollowStatus(prevStatus === "following" ? "" : "requested");
+
+//     const tempFollowersCount = isFollowing
+//       ? Math.max(0, followersCount - 1)
+//       : followersCount + 1;
+
+//     setFollowersCount(tempFollowersCount);
+//     setFollowStatus(isFollowing || isRequesting ? "" : "requested");
 
 //     try {
 //       const token = await auth.currentUser.getIdToken();
 //       const response = await fetch("/api/follow-user", {
 //         method: "POST",
-//         headers: { 
-//           "Content-Type": "application/json", 
-//           Authorization: `Bearer ${token}` 
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${token}`
 //         },
 //         body: JSON.stringify({ targetUsername: authorUsername }),
 //       });
 
-//       const data = await response.json();
-//       setFollowStatus(data.status === "Unfollowed" ? "" : 
-//                      data.status === "Follow request sent" ? "requested" : 
-//                      "following");
+//       if (response.ok) {
+//         const data = await response.json();
+//         if (data.status === "Unfollowed") {
+//           setFollowStatus("");
+//           setFollowersCount(data.followersCount || followersCount);
+//         } else if (data.status === "Follow request sent") {
+//           setFollowStatus("requested");
+//           setFollowersCount(data.followersCount || followersCount);
+//         } else if (data.following) {
+//           setFollowStatus("following");
+//           setFollowersCount(data.followersCount || followersCount);
+//         }
+//       } else {
+//         throw new Error("Failed to follow/unfollow user");
+//       }
 //     } catch (error) {
 //       console.error("Follow action failed:", error);
-//       setFollowStatus(prevStatus);
+//       setFollowersCount(followersCount);
+//       setFollowStatus(isFollowing || isRequesting ? "following" : "");
 //     } finally {
 //       setIsUpdating(false);
 //     }
-//   }, [followStatus, isUpdating, authorUsername, profile]);
+//   }, [followStatus, followersCount, isUpdating, authorUsername, profile]);
 
 //   const handleMouseEnter = () => {
 //     setIsPopoverVisible(true);
@@ -103,7 +129,6 @@
   
 //   const handleMouseLeave = (event: React.MouseEvent) => {
 //     const relatedTarget = event.relatedTarget as HTMLElement | null;
-//     // Check if the mouse is moving to the div or staying within the component
 //     if (
 //       relatedTarget &&
 //       (relatedTarget.closest(".popover-div") || relatedTarget.closest(".username-span"))
@@ -125,17 +150,16 @@
   
 //       {isPopoverVisible && (
 //         <div
-//           className="absolute left-0 z-[1500] w-72 p-4"
+//           className="absolute left-0 z-[1500] w-72 h-48 p-4 bg-gray-100 popover-div"
 //           onMouseEnter={handleMouseEnter}
 //           onMouseLeave={handleMouseLeave}
 //         >
 //           {loading ? (
-//              <P_card/>
+//             'loading...'
 //           ) : profile ? (
 //             <div className="space-y-3">
 //               <div className="flex items-center space-x-3">
 //                 <img
-//                   // src={profile.photoURL}
 //                   src={`/api/proxy?url=${encodeURIComponent(profile.photoURL)}`}
 //                   alt={`${profile.displayName}`}
 //                   className="w-12 h-12 rounded-full"
@@ -146,16 +170,18 @@
 //                 </div>
 //               </div>
 //               <div className="flex justify-between text-sm">
-//                 <span>Followers: {profile.followersCount}</span>
+//                 <span>Followers: {followersCount}</span>
 //                 <span>Following: {profile.followingCount}</span>
 //               </div>
 //               <div className="flex gap-2">
 //                 <button
 //                   onClick={handleFollow}
 //                   disabled={isUpdating}
-//                   className={`px-4 py-1 rounded-full text-sm text-black ${
+//                   className={`px-4 py-1 rounded-full text-sm ${
 //                     followStatus === "following"
-//                       ? "bg-gray-200 hover:bg-gray-300"
+//                       ? "bg-gray-200 hover:bg-gray-300 text-black"
+//                       : followStatus === "requested"
+//                       ? "bg-gray-200 hover:bg-gray-300 text-black"
 //                       : "bg-blue-500 text-white hover:bg-blue-600"
 //                   }`}
 //                 >
@@ -167,9 +193,7 @@
 //                 </button>
 //                 {followStatus === "following" && (
 //                   <button
-//                     onClick={() =>
-//                       (window.location.href = `/inbox/${profile.uid}`)
-//                     }
+//                     onClick={() => window.location.href = `/inbox/${profile.uid}`}
 //                     className="px-4 py-1 rounded-full text-black bg-gray-200 hover:bg-gray-300 text-sm"
 //                   >
 //                     Message
@@ -190,9 +214,7 @@
 //       )}
 //     </div>
 //   );
-// }  
-
-
+// }
 
 
 
@@ -201,6 +223,7 @@
 
 import React, { useState, useCallback } from "react";
 import { auth } from "@/lib/firebaseClient";
+import Link from 'next/link'
 
 type ProfileData = {
   displayName: string;
@@ -223,17 +246,22 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [followStatus, setFollowStatus] = useState("");
+  const [followStatus, setFollowStatus] = useState<string>("");
+  const [followersCount, setFollowersCount] = useState<number>(0);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [loadingFollowStatus, setLoadingFollowStatus] = useState(false);
 
   const fetchProfile = async () => {
     if (profileCache.has(authorUsername)) {
-      setProfile(profileCache.get(authorUsername)!);
+      const cachedProfile = profileCache.get(authorUsername)!;
+      setProfile(cachedProfile);
+      setFollowersCount(cachedProfile.followersCount);
       return;
     }
 
     try {
       setLoading(true);
+      setLoadingFollowStatus(true);
       const token = await auth.currentUser?.getIdToken();
       const [profileResponse, followResponse] = await Promise.all([
         fetch(`/api/user/profile/${authorUsername}`),
@@ -247,48 +275,73 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
       
       const fetchedProfile = {
         ...profileData.profile,
-        followStatus: followData.isFollowing ? "following" : followData.isRequested ? "requested" : ""
+        followersCount: followData.followersCount || 0
       };
 
+      setFollowStatus(
+        followData.isFollowing ? "following" : followData.isRequested ? "requested" : ""
+      );
+      setFollowersCount(fetchedProfile.followersCount);
+      
       profileCache.set(authorUsername, fetchedProfile);
       setProfile(fetchedProfile);
-      setFollowStatus(fetchedProfile.followStatus);
     } catch (error) {
       console.error("Error fetching profile:", error);
     } finally {
       setLoading(false);
+      setLoadingFollowStatus(false);
     }
   };
 
   const handleFollow = useCallback(async () => {
     if (!auth.currentUser || isUpdating || !profile) return;
 
+    const isFollowing = followStatus === "following";
+    const isRequesting = followStatus === "requested";
+
     setIsUpdating(true);
-    const prevStatus = followStatus;
-    setFollowStatus(prevStatus === "following" ? "" : "requested");
+
+    const tempFollowersCount = isFollowing
+      ? Math.max(0, followersCount - 1)
+      : followersCount + 1;
+
+    setFollowersCount(tempFollowersCount);
+    setFollowStatus(isFollowing || isRequesting ? "" : "requested");
 
     try {
       const token = await auth.currentUser.getIdToken();
       const response = await fetch("/api/follow-user", {
         method: "POST",
-        headers: { 
-          "Content-Type": "application/json", 
-          Authorization: `Bearer ${token}` 
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ targetUsername: authorUsername }),
       });
 
-      const data = await response.json();
-      setFollowStatus(data.status === "Unfollowed" ? "" : 
-                     data.status === "Follow request sent" ? "requested" : 
-                     "following");
+      if (response.ok) {
+        const data = await response.json();
+        if (data.status === "Unfollowed") {
+          setFollowStatus("");
+          setFollowersCount(data.followersCount || followersCount);
+        } else if (data.status === "Follow request sent") {
+          setFollowStatus("requested");
+          setFollowersCount(data.followersCount || followersCount);
+        } else if (data.following) {
+          setFollowStatus("following");
+          setFollowersCount(data.followersCount || followersCount);
+        }
+      } else {
+        throw new Error("Failed to follow/unfollow user");
+      }
     } catch (error) {
       console.error("Follow action failed:", error);
-      setFollowStatus(prevStatus);
+      setFollowersCount(followersCount);
+      setFollowStatus(isFollowing || isRequesting ? "following" : "");
     } finally {
       setIsUpdating(false);
     }
-  }, [followStatus, isUpdating, authorUsername, profile]);
+  }, [followStatus, followersCount, isUpdating, authorUsername, profile]);
 
   const handleMouseEnter = () => {
     setIsPopoverVisible(true);
@@ -299,7 +352,6 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
   
   const handleMouseLeave = (event: React.MouseEvent) => {
     const relatedTarget = event.relatedTarget as HTMLElement | null;
-    // Check if the mouse is moving to the div or staying within the component
     if (
       relatedTarget &&
       (relatedTarget.closest(".popover-div") || relatedTarget.closest(".username-span"))
@@ -307,6 +359,16 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
       return;
     }
     setIsPopoverVisible(false);
+  };
+
+  const getFollowButtonContent = () => {
+    if (loadingFollowStatus || isUpdating) {
+      return 'loading...';
+    }
+    
+    if (followStatus === "following") return "Following";
+    if (followStatus === "requested") return "Requested";
+    return "Follow";
   };
   
   return (
@@ -321,7 +383,7 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
   
       {isPopoverVisible && (
         <div
-          className="absolute left-0 z-[1500] w-72 p-4 bg-gray-100  "
+          className="absolute left-0 z-[1500] w-72 p-4 bg-gray-100 popover-div"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -331,7 +393,6 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <img
-                  // src={profile.photoURL}
                   src={`/api/proxy?url=${encodeURIComponent(profile.photoURL)}`}
                   alt={`${profile.displayName}`}
                   className="w-12 h-12 rounded-full"
@@ -342,30 +403,26 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
                 </div>
               </div>
               <div className="flex justify-between text-sm">
-                <span>Followers: {profile.followersCount}</span>
+                <span>Followers: {followersCount}</span>
                 <span>Following: {profile.followingCount}</span>
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={handleFollow}
-                  disabled={isUpdating}
-                  className={`px-4 py-1 rounded-full text-sm text-black ${
+                  disabled={loadingFollowStatus || isUpdating}
+                  className={`px-4 py-1 rounded-full text-sm flex items-center justify-center min-w-[80px] ${
                     followStatus === "following"
-                      ? "bg-gray-200 hover:bg-gray-300"
-                      : "bg-blue-500 text-white hover:bg-blue-600"
+                      ? "bg-gray-200 hover:bg-gray-300 text-black"
+                      : followStatus === "requested"
+                      ? "bg-gray-200 hover:bg-gray-300 text-black"
+                      : "bg-blue-500 text-white hover:bg-blue-600 w-full"
                   }`}
                 >
-                  {followStatus === "following"
-                    ? "Following"
-                    : followStatus === "requested"
-                    ? "Requested"
-                    : "Follow"}
+                  {getFollowButtonContent()}
                 </button>
                 {followStatus === "following" && (
                   <button
-                    onClick={() =>
-                      (window.location.href = `/inbox/${profile.uid}`)
-                    }
+                    onClick={() => window.location.href = `/inbox/${profile.uid}`}
                     className="px-4 py-1 rounded-full text-black bg-gray-200 hover:bg-gray-300 text-sm"
                   >
                     Message
@@ -378,6 +435,8 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
               {profile.private && (
                 <p className="text-red-500 text-sm">Private Account</p>
               )}
+              
+             <Link href={`/${profile.username}`}>Visit profile</Link>
             </div>
           ) : (
             <p>Error loading profile</p>
@@ -386,4 +445,4 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
       )}
     </div>
   );
-}  
+}

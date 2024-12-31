@@ -1,3 +1,4 @@
+//app/api/post/comments/[commentId]/replies/[replyId]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
 import { verifyAuth } from "@/utils/auth";

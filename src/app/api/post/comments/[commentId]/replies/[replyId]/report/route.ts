@@ -1,26 +1,27 @@
-
-
-// app/api/comments/[commentId]/report/route.ts
+// app/api/comments/[commentId]/replies/[replyId]/report/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
 import { verifyAuth } from "@/utils/auth";
 import { getFormattedDate } from "@/utils/formatDate";
 
 type Props = {
-  params: Promise<{ commentId: string }>;
+  params: {
+    commentId: string;
+    replyId: string;
+  };
 };
 
-// app/api/comments/[commentId]/report/route.ts
 export async function POST(request: NextRequest, { params }: Props) {
   try {
-    const resolvedParams = await params;
-    const commentId = resolvedParams.commentId;
+    const { commentId, replyId } = params;
     const user = await verifyAuth(request);
     
-    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const { reason, postId } = await request.json();
-    const reportRef = db.collection("reports").doc(`${commentId}_${user.uid}`);
+    const reportRef = db.collection("reports").doc(`${commentId}_${replyId}_${user.uid}`);
     
     if ((await reportRef.get()).exists) {
       return NextResponse.json({ error: "Already reported" }, { status: 400 });
@@ -28,26 +29,32 @@ export async function POST(request: NextRequest, { params }: Props) {
 
     const postDoc = await db.collection("posts").doc(postId).get();
     const comment = postDoc.data()?.comments.find((c: any) => c.id === commentId);
+    const reply = comment?.replies?.find((r: any) => r.id === replyId);
 
     await reportRef.set({
       commentId,
+      replyId,
       postId,
       reporterId: user.uid,
       reporterEmail: user.email,
-      targetUserId: comment?.authorId || "unknown",
+      targetUserId: reply?.authorId || "unknown",
       reason,
       createdAt: getFormattedDate(),
       status: "pending",
-      commentData: {
-        author: comment?.author || "Unknown",
-        content: comment?.content || "",
+      replyData: {
+        author: reply?.author || "Unknown",
+        content: reply?.content || "",
+        parentComment: {
+          id: commentId,
+          author: comment?.author || "Unknown",
+          content: comment?.content || ""
+        }
       }
     });
 
-
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {
-    console.error("Error reporting comment:", error);
-    return NextResponse.json({ error: "Failed to report comment" }, { status: 500 });
+    console.error("Error reporting reply:", error);
+    return NextResponse.json({ error: "Failed to report reply" }, { status: 500 });
   }
 }
