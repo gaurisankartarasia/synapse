@@ -1,25 +1,3 @@
-import { User } from 'firebase/auth';
-
-// export interface Message {
-//   id: string;
-//   roomId:string;
-//   content: string;
-//   senderId: string;
-//   timestamp: number;
-//   time?: string;
-//   date: string;
-//   read: boolean;
-//   toDate: number;
-// }
-
-
-// export interface ChatMessagesProps {
-//   userId: string;
-//   // user: { uid: string } | null;
-//   user: User | null;
-//   toDate: number;
-// }
-
 
 
 
@@ -32,6 +10,17 @@ export interface Message {
   date: string;
   read: boolean;
   roomId?: string;
+  //for replying a perticular message 
+  replyTo?: {
+    id: string;
+    content: string;
+    senderId: string;
+  };
+  //for editiing a perticular message shit why am i so noob to write this 
+  edited?: {
+    timestamp: number;
+    time: string;
+  };
 }
 
 export interface ChatMessagesProps {

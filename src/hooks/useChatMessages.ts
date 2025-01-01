@@ -121,10 +121,20 @@
 
 
 
-
 import { useState, useEffect } from 'react';
 import { db } from '@/lib/firebaseClient';
-import { collection, query, where, onSnapshot, orderBy, limit, startAfter, DocumentData, QuerySnapshot, getDocs } from 'firebase/firestore';
+import { 
+  collection, 
+  query, 
+  where, 
+  onSnapshot, 
+  orderBy, 
+  limit, 
+  startAfter, 
+  DocumentData, 
+  QuerySnapshot, 
+  getDocs 
+} from 'firebase/firestore';
 import { Message } from '../types/chat';
 
 const BATCH_SIZE = 5;
@@ -136,7 +146,6 @@ export const useChatMessages = (userId: string, user: { uid: string } | null) =>
   const [lastVisible, setLastVisible] = useState<DocumentData | null>(null);
   const [hasMore, setHasMore] = useState(true);
 
-  
   useEffect(() => {
     if (!user) {
       setError('User not authenticated');
@@ -173,17 +182,19 @@ export const useChatMessages = (userId: string, user: { uid: string } | null) =>
             unsubscribeMessages = onSnapshot(messagesQuery, (msgSnapshot: QuerySnapshot<DocumentData>) => {
               const lastVisibleDoc = msgSnapshot.docs[msgSnapshot.docs.length - 1];
               setLastVisible(lastVisibleDoc);
+              setHasMore(msgSnapshot.docs.length === BATCH_SIZE);
 
               const msgs = msgSnapshot.docs.map(doc => ({
                 id: doc.id,
                 roomId: roomId,
                 ...doc.data(),
               } as Message));
-              setMessages(msgs.reverse()); // Reverse to maintain the correct order
+              setMessages(msgs.reverse());
               setLoading(false);
             });
           } else {
             setMessages([]);
+            setHasMore(false);
             setLoading(false);
           }
         });
@@ -202,8 +213,9 @@ export const useChatMessages = (userId: string, user: { uid: string } | null) =>
   }, [user, userId]);
 
   const loadMoreMessages = async () => {
-    if (!lastVisible) return;
-    const participantIds = [user!.uid, userId].sort();
+    if (!lastVisible || !user) return;
+    
+    const participantIds = [user.uid, userId].sort();
     const participantKey = participantIds.join('_');
     const chatRoomQuery = query(
       collection(db, 'chatRooms'),
@@ -225,14 +237,15 @@ export const useChatMessages = (userId: string, user: { uid: string } | null) =>
     const nextSnapshot = await getDocs(nextMessagesQuery);
     const lastVisibleDoc = nextSnapshot.docs[nextSnapshot.docs.length - 1];
     setLastVisible(lastVisibleDoc);
+    setHasMore(nextSnapshot.docs.length === BATCH_SIZE);
 
     const moreMessages = nextSnapshot.docs.map(doc => ({
       id: doc.id,
       roomId: roomId,
       ...doc.data(),
     } as Message));
-    setMessages(prevMessages => [...moreMessages.reverse(), ...prevMessages]); // Reverse to maintain the correct order
+    setMessages(prevMessages => [...moreMessages.reverse(), ...prevMessages]);
   };
 
-  return { messages, loading, error, loadMoreMessages };
+  return { messages, loading, error, loadMoreMessages, hasMore };
 };
