@@ -284,6 +284,9 @@ export default function NavbarApp() {
           <Link href="/users" className="hidden lg:inline text-gray-700 hover:text-gray-900">
             Users
           </Link>
+          <Link href="/inbox" className="hidden lg:inline text-gray-700 hover:text-gray-900">
+            Inbox
+          </Link>
         </div>
 
         {/* User Profile Dropdown */}

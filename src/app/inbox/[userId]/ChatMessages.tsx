@@ -13,7 +13,6 @@ interface ChatMessagesProps {
   onEdit: (message: Message) => void;  
   replyingTo: Message | null;
   editingMessage: Message | null;
-  setTypingStatus: (status: boolean) => void; // Typing status setter
 }
 
 export default function ChatMessages({ 
@@ -22,22 +21,12 @@ export default function ChatMessages({
   onEdit,  
   replyingTo, 
   editingMessage,
-  setTypingStatus
+  
 }: ChatMessagesProps) {
   const { user, loading: authLoading } = useAuth();
   const { messages, loading, error, loadMoreMessages, hasMore } = useChatMessages(userId, user);
 
-  useEffect(() => {
-    const handleTyping = (e: KeyboardEvent) => {
-      setTypingStatus(true);
-      setTimeout(() => setTypingStatus(false), 3000); // Reset after 3 seconds of inactivity
-    };
-
-    window.addEventListener('keydown', handleTyping);
-    return () => {
-      window.removeEventListener('keydown', handleTyping);
-    };
-  }, [setTypingStatus]);
+ 
 
   if (authLoading) {
     return <div>Loading authentication...</div>;

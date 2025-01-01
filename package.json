@@ -13,7 +13,6 @@
     "@emotion/styled": "^11.14.0",
     "@fontsource/roboto": "^5.1.1",
     "@mui/material": "^6.3.0",
-    "@types/ws": "^8.5.13",
     "autoprefixer": "^10.4.20",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
@@ -23,18 +22,15 @@
     "nprogress": "^0.2.0",
     "postcss": "^8.4.49",
     "react": "^19.0.0",
-    "react-content-loader": "^7.0.2",
     "react-dom": "^19.0.0",
     "react-firebase-hooks": "^5.1.1",
     "react-icons": "^5.4.0",
     "react-router-dom": "^6.28.1",
-    "sass": "^1.83.0",
     "sharp": "^0.33.5",
     "styled-components": "^6.1.13",
     "swr": "^2.3.0",
     "tailwindcss": "^3.4.17",
-    "user-agent": "^1.0.4",
-    "ws": "^8.18.0"
+    "user-agent": "^1.0.4"
   },
   "devDependencies": {
     "@types/geoip-lite": "^1.4.4",

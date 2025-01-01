@@ -102,7 +102,7 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
           if (response.ok) {
             const data = await response.json();
             setUserInfo(data);
-            document.title = data.username; 
+            document.title = `Inbox - ${data.username}`; 
           }
         } catch (error) {
           console.error("Failed to fetch user info:", error);
