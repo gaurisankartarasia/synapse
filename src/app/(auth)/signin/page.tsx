@@ -6,6 +6,7 @@ import { auth, googleProvider } from "../../../lib/firebaseClient";
 import { signInWithPopup } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
+import {Button} from '@mui/material'
 
 const LoginPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -78,12 +79,12 @@ const LoginPage: React.FC = () => {
             {showbutton && !isLoading && (
               <>
                 <div   className="flex items-center justify-center m-5">
-                  <button
+                  <Button
                     onClick={handleGoogleSignIn}
                   >
                     <FaGoogle className="mr-2" />
                     Sign in with Google
-                  </button>
+                  </Button>
                 </div>
                 <div className="mt-4 max-w-[500px]">
                   {/* <Alert

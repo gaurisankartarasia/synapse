@@ -1,6 +1,7 @@
 // components/ImageZoom/ZoomModal.tsx
 import React, { useState } from 'react';
 import Image from 'next/image';
+import {Button} from '@mui/material'
 
 interface ZoomModalProps {
   imageUrl: string;
@@ -69,29 +70,29 @@ const ZoomModal: React.FC<ZoomModalProps> = ({ imageUrl, isOpen, onClose }) => {
         onMouseLeave={handleMouseUp}
       >
         {/* Close button */}
-        <button 
+        <Button 
           className="absolute top-4 right-4 text-white z-10 bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75"
           onClick={handleModalClose}
         >
           ✕
-        </button>
+        </Button>
 
         {/* Zoom controls */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-4 z-10">
-          <button 
+          <Button 
             className="bg-white text-black px-4 py-2 rounded hover:bg-gray-100"
             onClick={handleZoomOut}
             disabled={scale <= 1}
           >
             −
-          </button>
-          <button 
+          </Button>
+          <Button 
             className="bg-white text-black px-4 py-2 rounded hover:bg-gray-100"
             onClick={handleZoomIn}
             disabled={scale >= 3}
           >
             +
-          </button>
+          </Button>
         </div>
 
         {/* Zoomed Image */}

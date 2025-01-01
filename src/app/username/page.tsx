@@ -84,8 +84,8 @@
 //           value={username}
 //           onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ""))}
 //         />
-//         <button onClick={handleCheckUsername}>Save Username</button>
-//         <button onClick={handleSkip}>Auto suggest</button>
+//         <Button onClick={handleCheckUsername}>Save Username</Button>
+//         <Button onClick={handleSkip}>Auto suggest</Button>
 //       </div>
 //     </div>
 //   );
@@ -219,10 +219,10 @@ const UsernamePage: React.FC = () => {
           }
           disabled={loading} // Disable input while loading
         />
-        <button onClick={handleCheckUsername} disabled={loading}>
+        <Button onClick={handleCheckUsername} disabled={loading}>
           {loading ? "Processing..." : "Save Username"}
-        </button>
-        <button onClick={handleSkip}>Auto suggest</button>
+        </Button>
+        <Button onClick={handleSkip}>Auto suggest</Button>
       </div>
     </div>
   );

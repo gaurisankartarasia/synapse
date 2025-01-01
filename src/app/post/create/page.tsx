@@ -152,12 +152,12 @@
 //                 alt={`Preview ${index + 1}`}
 //                 className="object-cover rounded"
 //               />
-//               <button
+//               <Button
 //                 onClick={() => removeImage(index)}
 //                 className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
 //               >
 //                 ×
-//               </button>
+//               </Button>
 //             </div>
 //           ))}
 //         </div>
@@ -167,20 +167,20 @@
 //       </div>
 
 //       <div className="flex gap-4">
-//         <button
+//         <Button
 //           onClick={handleSubmit}
 //           className="px-4 py-2 bg-blue-500 text-white rounded"
 //           disabled={loading}
 //         >
 //           Post
-//         </button>
-//         <button
+//         </Button>
+//         <Button
 //           onClick={() => router.push("/")}
 //           className="px-4 py-2 border rounded"
 //           disabled={loading}
 //         >
 //           Cancel
-//         </button>
+//         </Button>
 //       </div>
 //     </div>
 //   );
@@ -204,6 +204,7 @@ import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebaseClient";
 import { onAuthStateChanged, getIdToken } from "firebase/auth";
+import { Button } from "@mui/material";
 
 const PostPage = () => {
   const router = useRouter();
@@ -350,12 +351,12 @@ const PostPage = () => {
                 alt={`Preview ${index + 1}`}
                 className="object-cover rounded"
               />
-              <button
+              <Button
                 onClick={() => removeImage(index)}
                 className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
               >
                 ×
-              </button>
+              </Button>
             </div>
           ))}
         </div>
@@ -365,20 +366,20 @@ const PostPage = () => {
       </div>
 
       <div className="flex gap-4">
-        <button
+        <Button
           onClick={handleSubmit}
           className="px-4 py-2 bg-blue-500 text-white rounded"
           disabled={loading}
         >
           Post
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => router.push("/")}
           className="px-4 py-2 border rounded"
           disabled={loading}
         >
           Cancel
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -37,13 +37,14 @@
 
 //     const createdAt = Timestamp.now();
 //     await db.collection("posts").add({
-//       uid,
-//       title,
-//       content,
-//       author: username,
-//       createdAt,
-//       imageUrls: imageUrls || [], 
-//     });
+//         uid,
+//         title,
+//         content,
+//         author: username,
+//         createdAt,
+//         imageUrls: imageUrls || [],
+//         likes: { total: 0, userLikes: {} }
+//       });
 
 //     return NextResponse.json({ message: "Post saved successfully!" });
 //   } catch (error) {
@@ -51,9 +52,6 @@
 //     return NextResponse.json({ error: "Failed to save post." }, { status: 500 });
 //   }
 // }
-
-
-
 
 
 
@@ -96,15 +94,26 @@ export async function POST(request: NextRequest) {
     }
 
     const createdAt = Timestamp.now();
-    await db.collection("posts").add({
-        uid,
-        title,
-        content,
-        author: username,
-        createdAt,
-        imageUrls: imageUrls || [],
-        likes: { total: 0, userLikes: {} }
-      });
+    
+    // Create a new batch
+    const batch = db.batch();
+
+    // Reference for the new post
+    const newPostRef = db.collection("posts").doc();
+
+    // Set the data in the batch for the new post
+    batch.set(newPostRef, {
+      uid,
+      title,
+      content,
+      author: username,
+      createdAt,
+      imageUrls: imageUrls || [],
+      likes: { total: 0, userLikes: {} }
+    });
+
+    // Commit the batch (this executes all writes in the batch)
+    await batch.commit();
 
     return NextResponse.json({ message: "Post saved successfully!" });
   } catch (error) {
@@ -112,10 +121,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Failed to save post." }, { status: 500 });
   }
 }
-
-
-
-
-
-
-

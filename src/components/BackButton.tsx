@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@mui/material";
 
 
 export default function Back() {
@@ -9,11 +10,11 @@ export default function Back() {
 
   return (
     <div>
-      <button
+      <Button
         onClick={() => router.back()}
       >
         Go back
-      </button>
+      </Button>
     </div>
   );
 }

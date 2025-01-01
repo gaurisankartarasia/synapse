@@ -1,4 +1,6 @@
 import React from "react";
+import { Button } from "@mui/material";
+
 
 const Followbutton: React.FC<{
   isUpdating: boolean;
@@ -6,7 +8,7 @@ const Followbutton: React.FC<{
   onFollowClick: () => void;
 }> = ({ isUpdating, followStatus, onFollowClick }) => {
   return (
-    <button
+    <Button
       className="follow-button"
       onClick={onFollowClick}
       disabled={isUpdating}
@@ -22,7 +24,7 @@ const Followbutton: React.FC<{
       ) : (
         "Follow"
       )}
-    </button>
+    </Button>
   );
 };
 

@@ -5,6 +5,8 @@ import { auth } from "../../../lib/firebaseClient";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "./EditProfile.module.css"; 
+import {Button} from '@mui/material'
+
 
 const ProfileEditPage: React.FC = () => {
   const [user, setUser] = useState<any>(null);
@@ -52,7 +54,7 @@ const ProfileEditPage: React.FC = () => {
     fetchUserData();
   }, [router]);
 
-  const handleProfileImageChange = (event: React.ChangeEvent<HTMLinputElement>) => {
+  const handleProfileImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       setProfileImage(file);
@@ -179,9 +181,9 @@ const ProfileEditPage: React.FC = () => {
          
         
   //       </div>
-  //       <button type="submit">Save Changes</button>
+  //       <Button type="submit">Save Changes</Button>
   //     </form>
-  //     <button onClick={() => router.push("/profile")}>Cancel</button>
+  //     <Button onClick={() => router.push("/profile")}>Cancel</Button>
   //   </div>
   // );
 
@@ -248,8 +250,8 @@ const ProfileEditPage: React.FC = () => {
 
         {/* Save and Cancel buttons */}
         <div className={styles.buttons}>
-          <button type="submit" className={styles.savebutton}>Save Changes</button>
-          <button type="button" className={styles.cancelbutton} onClick={() => router.push("/profile")}>Cancel</button>
+          <Button type="submit" className={styles.savebutton}>Save Changes</Button>
+          <Button type="button" className={styles.cancelbutton} onClick={() => router.push("/profile")}>Cancel</Button>
         </div>
       </form>
     </div>

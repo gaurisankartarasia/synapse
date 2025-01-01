@@ -1,98 +1,80 @@
-//app/inbox/[userId]/chatMessages.tsx
+
+
 'use client';
 
-import { useState, useEffect } from 'react';
-import { db } from '@/lib/firebaseClient';
-import { collection, query, where, onSnapshot, orderBy } from 'firebase/firestore';
-import { Message } from '../../../types/chat';
+import { useChatMessages } from '@/hooks/useChatMessages';
+import { useAuth } from '@/hooks/useAuth';
+import { Button } from "@mui/material";
 
 interface ChatMessagesProps {
   userId: string;
-  user: { uid: string } | null;
 }
 
-export default function ChatMessages({ userId, user }: ChatMessagesProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export default function ChatMessages({ userId }: ChatMessagesProps) {
+  const { user, loading: authLoading } = useAuth();
+  const { messages, loading, error, loadMoreMessages } = useChatMessages(userId, user);
 
-  useEffect(() => {
-    if (!user) {
-      setError('User not authenticated');
-      setLoading(false);
+  if (authLoading) {
+    return <div>Loading authentication...</div>;
+  }
+
+  if (!user) {
+    return <div>Please log in to view messages.</div>;
+  }
+
+  const deleteMessage = async (messageId: string, roomId?: string) => {
+    if (!roomId) {
+      console.error('roomId is undefined');
       return;
     }
 
-    let unsubscribeMessages: (() => void) | undefined;
-    let unsubscribeRoom: (() => void) | undefined;
+    try {
+      const response = await fetch('/api/chat/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${await user.getIdToken()}`,
+        },
+        body: JSON.stringify({
+          messageId,
+          roomId,
+        }),
+      });
 
-    const setupMessagesSubscription = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const participantIds = [user.uid, userId].sort();
-        const participantKey = participantIds.join('_');
-        
-        const chatRoomQuery = query(
-          collection(db, 'chatRooms'),
-          where('participantKey', '==', participantKey)
-        );
-
-        unsubscribeRoom = onSnapshot(chatRoomQuery, (snapshot) => {
-          if (!snapshot.empty) {
-            const roomId = snapshot.docs[0].id;
-
-            const messagesQuery = query(
-              collection(db, `chatRooms/${roomId}/messages`),
-              orderBy('timestamp', 'asc')
-            );
-
-            unsubscribeMessages = onSnapshot(messagesQuery, (msgSnapshot) => {
-              const msgs = msgSnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data(),
-              } as Message));
-              setMessages(msgs);
-              setLoading(false);
-            });
-          } else {
-            setMessages([]);
-            setLoading(false);
-          }
-        });
-      } catch (error) {
-        setError('Failed to load messages');
-        setLoading(false);
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to delete message');
       }
-    };
-
-    setupMessagesSubscription();
-
-    return () => {
-      unsubscribeMessages?.();
-      unsubscribeRoom?.();
-    };
-  }, [user, userId]);
+    } catch (error) {
+      console.error('Failed to delete message', error);
+    }
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
+       {messages.length > 0 && (
+        <Button onClick={loadMoreMessages}>Load More</Button>
+      )}
       {messages.length === 0 ? (
         <p>No messages</p>
+        
       ) : (
+        
         messages.map((msg) => (
+          
           <div key={msg.id}>
             <p>{msg.content}</p>
             <span>{msg.time}</span>
+            {user && msg.senderId === user.uid && (
+              <Button onClick={() => deleteMessage(msg.id, msg.roomId)}>Delete</Button>
+            )}
           </div>
         ))
       )}
+     
     </div>
   );
 }
-
-
-

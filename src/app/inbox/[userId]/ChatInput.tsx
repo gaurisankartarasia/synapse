@@ -1,13 +1,16 @@
+
+
 'use client';
 
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { Button } from "@mui/material";
 
 interface ChatinputProps {
   userId: string;
 }
 
-export default function Chatinput({ userId }: ChatinputProps) {
+export default function ChatInput({ userId }: ChatinputProps) {
   const { user } = useAuth();
   const [newMessage, setNewMessage] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -17,7 +20,7 @@ export default function Chatinput({ userId }: ChatinputProps) {
 
     try {
       setError(null);
-      const response = await fetch('/api/chat', {
+      const response = await fetch('/api/chat/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,14 +52,10 @@ export default function Chatinput({ userId }: ChatinputProps) {
         onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
         disabled={!user || !!error}
       />
-      <button onClick={sendMessage} disabled={!newMessage.trim() || !!error}>
+      <Button onClick={sendMessage} disabled={!newMessage.trim() || !!error}>
         Send
-      </button>
+      </Button>
       {error && <p>Error: {error}</p>}
     </div>
   );
 }
-
-
-
-

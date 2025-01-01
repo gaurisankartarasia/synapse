@@ -1,5 +1,6 @@
 // components/Dropdown.tsx
 import React, { useState } from 'react';
+import {Button} from '@mui/material'
 
 type DropdownProps = {
   label: string;
@@ -13,16 +14,16 @@ const Dropdown: React.FC<DropdownProps> = ({ label, options }) => {
 
   return (
     <div className="relative inline-block">
-      <button
+      <Button
         className="px-4 py-2 bg-gray-200 rounded-md shadow hover:bg-gray-300 focus:outline-none"
         onClick={toggleDropdown}
       >
         {label}
-      </button>
+      </Button>
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg">
           {options.map((option, index) => (
-            <button
+            <Button
               key={index}
               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               onClick={() => {
@@ -31,7 +32,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, options }) => {
               }}
             >
               {option.label}
-            </button>
+            </Button>
           ))}
         </div>
       )}

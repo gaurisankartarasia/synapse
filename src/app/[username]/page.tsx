@@ -12,6 +12,7 @@ import BlockUnblockComponent from '../../components/block/block';
 import ChatButton from "./chatButton";
 import Back from "@/components/BackButton";
 import UserPosts from '../profile/Posts'
+import { Button } from "@mui/material";
 
 const PublicProfilePage: React.FC = () => {
   const params = useParams();
@@ -209,9 +210,9 @@ const PublicProfilePage: React.FC = () => {
   return (
     <main className="profile-container">
            <Back/>
-      <button className="flex justify-end">
+      <Button className="flex justify-end">
         <BlockUnblockComponent username={username} />
-      </button>
+      </Button>
       <ProfileHeader
         photoURL={user.photoURL || "/default.webp"}
         username={user.username}

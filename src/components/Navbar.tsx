@@ -166,23 +166,23 @@
 
 //         {/* Center Items */}
 //         <Box sx={{ display: 'flex', gap: 2 }}>
-//           <button
+//           <Button
 //             startIcon={<Search />}
 //             component={Link}
 //             href="/search"
 //             sx={{ textTransform: 'none', color: 'inherit' }}
 //           >
 //             Search
-//           </button>
+//           </Button>
 
-//           <button
+//           <Button
 //             startIcon={<Notifications />}
 //             component={Link}
 //             href="/notifications"
 //             sx={{ textTransform: 'none', color: 'inherit' }}
 //           >
 //             Notifications
-//           </button>
+//           </Button>
 
 //           <Link
 //             // component={Link}

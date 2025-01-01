@@ -8,6 +8,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { auth } from "../../lib/firebaseClient";
 import './Search.css';
 
+
+
 const SearchPageContent: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResults, setSearchResults] = useState<any[]>([]);

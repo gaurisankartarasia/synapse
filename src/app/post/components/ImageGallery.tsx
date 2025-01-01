@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import ZoomModal from './ZoomModal';
+import {Button} from '@mui/material'
 
 interface ImageGalleryProps {
   images: string[];
@@ -40,7 +41,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
       {images.length > 1 && (
         <div className="flex gap-2 overflow-x-auto pb-2">
           {images.map((url, index) => (
-            <button
+            <Button
               key={index}
               onClick={() => setActiveImageIndex(index)}
               className={`relative w-20 h-20 flex-shrink-0 rounded-md overflow-hidden 
@@ -55,7 +56,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
                 loading="lazy"
                 quality={60}
               />
-            </button>
+            </Button>
           ))}
         </div>
       )}

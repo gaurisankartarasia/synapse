@@ -21,13 +21,13 @@
 //         onChange={(e) => setContent(e.target.value)}
 //         placeholder="Write a comment..."
 //       />
-//       <button
+//       <Button
 //         onClick={handleSubmit}
 //         color="primary"
 //         className="mt-2"
 //       >
 //         Add Comment
-//       </button>
+//       </Button>
 //     </div>
 //   );
 // };
@@ -41,6 +41,7 @@
 
 // CommentForm.tsx
 import { useState } from "react";
+import {Button} from '@mui/material'
 
 type CommentFormProps = {
   onSubmit: (content: string) => Promise<void>;
@@ -64,13 +65,13 @@ export const CommentForm = ({ onSubmit }: CommentFormProps) => {
         className="w-full p-2 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
         rows={3}
       />
-      <button
+      <Button
         onClick={handleSubmit}
         disabled={!content.trim()}
         className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
       >
         Add Comment
-      </button>
+      </Button>
     </div>
   );
 };

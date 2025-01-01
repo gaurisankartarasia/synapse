@@ -75,7 +75,7 @@
 
 //   return (
 //     <div className='flex items-center'>
-//       <button
+//       <Button
 //         onClick={handleLike}
 //         disabled={isLoading}
 //         className="flex items-center p-1 text-3xl font-medium text-gray-700 active:scale-150 disabled:opacity-50"
@@ -91,7 +91,7 @@
 // thumb_up
 // </span>
 //         )}
-//       </button>
+//       </Button>
 //       <span>{likes} {likes === 1 ? 'Like' : 'Likes'}</span>
 //     </div>
 //   );
@@ -113,6 +113,7 @@ import { onSnapshot, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebaseClient';
 import { useAuth } from '@/hooks/useAuth';
 import LikesModal from '../components/LikedByModal'
+import {Button} from '@mui/material'
 
 interface LikebuttonProps {
   postId: string;
@@ -184,7 +185,7 @@ const Likebutton = ({ postId, initialLikes = 0, initialLikedState = false }: Lik
 
   return (
     <div className='flex items-center'>
-      <button
+      <Button
         onClick={handleLike}
         disabled={isLoading}
         className="flex items-center p-1 text-3xl font-medium text-gray-700 active:scale-150 disabled:opacity-50"
@@ -200,16 +201,16 @@ thumb_up
 thumb_up
 </span>
         )}
-      </button>
+      </Button>
       {/* <span>{likes} {likes === 1 ? 'Like' : 'Likes'}</span> */}
-      <button
+      <Button
           onClick={() => setIsModalOpen(true)}
           className="hover:bg-gray-300 focus:outline-none"
         >
           <div className='flex items-center'>{likes} {likes === 1 ? 'Like' : 'Likes'}<span className="material-symbols-outlined">
 keyboard_arrow_right
 </span></div>
-        </button>
+        </Button>
       <LikesModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

@@ -185,12 +185,12 @@ const NotificationsComponent = () => {
                 </div>
               </div>
               <div className="notification-actions">
-                <button onClick={() => handleAction('accept', notification.fromUid)} className="accept-button">
+                <Button onClick={() => handleAction('accept', notification.fromUid)} className="accept-button">
                   Accept
-                </button>
-                <button onClick={() => handleAction('reject', notification.fromUid)} className="reject-button">
+                </Button>
+                <Button onClick={() => handleAction('reject', notification.fromUid)} className="reject-button">
                   Reject
-                </button>
+                </Button>
               </div>
             </li>
           ))}

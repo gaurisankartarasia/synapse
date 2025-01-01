@@ -73,12 +73,12 @@
 //           )}
 //         </ModalBody>
 //         <ModalFooter>
-//           <button variant="flat" onClick={onClose}>
+//           <Button variant="flat" onClick={onClose}>
 //             Cancel
-//           </button>
-//           <button color="danger" onClick={handleSubmit} isLoading={loading}>
+//           </Button>
+//           <Button color="danger" onClick={handleSubmit} isLoading={loading}>
 //             Report
-//           </button>
+//           </Button>
 //         </ModalFooter>
 //       </ModalContent>
 //     </Modal>
@@ -173,9 +173,9 @@ export const ReportModal = ({ isOpen, onClose, onSubmit }: ReportModalProps) => 
         )}
       </DialogContent>
       <DialogActions>
-        <button onClick={onClose} disabled={loading}>
+        <Button onClick={onClose} disabled={loading}>
           Cancel
-        </button>
+        </Button>
         <Button
           variant="contained"
           color="error"

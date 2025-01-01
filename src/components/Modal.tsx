@@ -2,7 +2,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./styles/Modal.module.css";
-// import { IoCloseSharp } from "react-icons/io5";
+import { Button } from "@mui/material";
 import { GrClose } from "react-icons/gr";
 
 
@@ -40,10 +40,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
       >
         <div className={styles.modalHeader}>
           <h2>{title}</h2>
-          <button onClick={handleClose} 
+          <Button onClick={handleClose} 
           >
             <GrClose size={15}/>
-          </button>
+          </Button>
         </div>
         <div className={styles.modalBody}>
           {children}

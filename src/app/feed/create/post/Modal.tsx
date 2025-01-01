@@ -131,11 +131,11 @@
     
 //     return (
 //         <>
-//             <button onClick={onOpen} radius='sm' variant='flat' >
+//             <Button onClick={onOpen} radius='sm' variant='flat' >
 //                 <span className="material-symbols-outlined">
 //                     add_photo_alternate
 //                 </span>
-//                 <span className='hidden lg:block'> Upload</span></button>
+//                 <span className='hidden lg:block'> Upload</span></Button>
 //             <Modal
 //                 size='4xl'
 //                 ref={targetRef}
@@ -198,12 +198,12 @@
 //                 alt={`Preview ${index + 1}`}
 //                 className="object-cover rounded"
 //               />
-//               <button
+//               <Button
 //                 onClick={() => removeImage(index)}
 //                 className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
 //               >
 //                 ×
-//               </button>
+//               </Button>
 //             </div>
 //           ))}
 //         </div>
@@ -216,12 +216,12 @@
 //     </div>
 //                             </ModalBody>
 //                             <ModalFooter>
-//                                 <button className=''  variant="flat" onClick={onClose}>
+//                                 <Button className=''  variant="flat" onClick={onClose}>
 //                                     Exit
-//                                 </button>
-//                                 <button color="primary" radius='sm' onClick={handleSubmit}>
+//                                 </Button>
+//                                 <Button color="primary" radius='sm' onClick={handleSubmit}>
 //                                     Post
-//                                 </button>
+//                                 </Button>
 //                             </ModalFooter>
 //                         </>
 //                     )}

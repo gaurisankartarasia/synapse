@@ -46,25 +46,25 @@
 //           <p className="font-medium">{comment.author}</p>
 //           <p className="mt-1">{comment.content}</p>
 //           <div className="flex items-center gap-4 mt-2">
-//             <button 
+//             <Button 
 //               onClick={() => onLike(comment.id)}
 //               className="text-sm text-gray-500 hover:text-blue-500"
 //             >
 //               {comment.likes || 0} Likes
-//             </button>
-//             <button
+//             </Button>
+//             <Button
 //               onClick={() => setShowReplies(!showReplies)}
 //               className="text-sm text-gray-500 hover:text-blue-500"
 //             >
 //               {showReplies ? "Hide" : "Show"} Replies ({comment.replies?.length || 0})
-//             </button>
+//             </Button>
 //             {currentUserId && currentUserId !== comment.authorId && (
-//               <button
+//               <Button
 //                 onClick={() => setIsReportModalOpen(true)}
 //                 className="text-sm text-gray-500 hover:text-red-500"
 //               >
 //                 Report
-//               </button>
+//               </Button>
 //             )}
 //           </div>
 
@@ -76,19 +76,19 @@
 //                   <p className="font-medium">{reply.author}</p>
 //                   <p className="mt-1">{reply.content}</p>
 //                   <div className="flex items-center gap-4 mt-2">
-//                     <button
+//                     <Button
 //                       onClick={() => onLikeReply(comment.id, reply.id)}
 //                       className="text-sm text-gray-500 hover:text-blue-500"
 //                     >
 //                       {reply.likes || 0} Likes
-//                     </button>
+//                     </Button>
 //                     {currentUserId === reply.authorId && (
-//                       <button
+//                       <Button
 //                         onClick={() => onDeleteReply(comment.id, reply.id)}
 //                         className="text-sm text-red-500 hover:text-red-600"
 //                       >
 //                         Delete
-//                       </button>
+//                       </Button>
 //                     )}
 //                   </div>
 //                 </div>
@@ -104,13 +104,13 @@
 //                     className="w-full p-2 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
 //                     rows={2}
 //                   />
-//                   <button
+//                   <Button
 //                     onClick={handleReplySubmit}
 //                     className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
 //                     disabled={!replyContent.trim()}
 //                   >
 //                     Reply
-//                   </button>
+//                   </Button>
 //                 </div>
 //               )}
 //             </div>
@@ -118,13 +118,13 @@
 //         </div>
 
 //         {currentUserId === comment.authorId && (
-//           <button
+//           <Button
 //             onClick={() => onDelete(comment.id)}
 //             disabled={isDeleting}
 //             className="text-sm text-red-500 hover:text-red-600"
 //           >
 //             Delete
-//           </button>
+//           </Button>
 //         )}
 //       </div>
 
@@ -146,6 +146,7 @@
 import { useState } from "react";
 import type { Comment } from "@/types/comments";
 import { ReportModal } from "@/components/ReportModal";
+import {Button} from '@mui/material'
 
 type CommentItemProps = {
   comment: Comment;
@@ -208,25 +209,25 @@ export const CommentItem = ({
           <p className="font-medium">{comment.author}</p>
           <p className="mt-1">{comment.content}</p>
           <div className="flex items-center gap-4 mt-2">
-            <button 
+            <Button 
               onClick={() => onLike(comment.id)}
               className="text-sm text-gray-500 hover:text-blue-500"
             >
               {comment.likes || 0} Likes
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setShowReplies(!showReplies)}
               className="text-sm text-gray-500 hover:text-blue-500"
             >
               {showReplies ? "Hide" : "Show"} Replies ({comment.replies?.length || 0})
-            </button>
+            </Button>
             {currentUserId && currentUserId !== comment.authorId && (
-              <button
+              <Button
                 onClick={() => openReportModal(comment.id)}
                 className="text-sm text-gray-500 hover:text-red-500"
               >
                 Report
-              </button>
+              </Button>
             )}
           </div>
 
@@ -238,27 +239,27 @@ export const CommentItem = ({
                   <p className="font-medium">{reply.author}</p>
                   <p className="mt-1">{reply.content}</p>
                   <div className="flex items-center gap-4 mt-2">
-                    <button
+                    <Button
                       onClick={() => onLikeReply(comment.id, reply.id)}
                       className="text-sm text-gray-500 hover:text-blue-500"
                     >
                       {reply.likes || 0} Likes
-                    </button>
+                    </Button>
                     {currentUserId === reply.authorId && (
-                      <button
+                      <Button
                         onClick={() => onDeleteReply(comment.id, reply.id)}
                         className="text-sm text-red-500 hover:text-red-600"
                       >
                         Delete
-                      </button>
+                      </Button>
                     )}
                     {currentUserId && currentUserId !== reply.authorId && (
-                      <button
+                      <Button
                         onClick={() => openReportModal(comment.id, reply.id)}
                         className="text-sm text-gray-500 hover:text-red-500"
                       >
                         Report
-                      </button>
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -274,13 +275,13 @@ export const CommentItem = ({
                     className="w-full p-2 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                     rows={2}
                   />
-                  <button
+                  <Button
                     onClick={handleReplySubmit}
                     className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                     disabled={!replyContent.trim()}
                   >
                     Reply
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
@@ -288,13 +289,13 @@ export const CommentItem = ({
         </div>
 
         {currentUserId === comment.authorId && (
-          <button
+          <Button
             onClick={() => onDelete(comment.id)}
             disabled={isDeleting}
             className="text-sm text-red-500 hover:text-red-600"
           >
             Delete
-          </button>
+          </Button>
         )}
       </div>
 
