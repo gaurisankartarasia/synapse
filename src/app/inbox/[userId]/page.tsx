@@ -80,7 +80,6 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
   const [replyingTo, setReplyingTo] = useState<Message | null>(null);
   const [editingMessage, setEditingMessage] = useState<Message | null>(null);
   const [userInfo, setUserInfo] = useState<{ username: string, photoURL: string, displayName: string, verified:string } | null>(null);
-  const [typingStatus, setTypingStatus] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -160,7 +159,6 @@ verified
             onEdit={handleEdit}
             replyingTo={replyingTo}
             editingMessage={editingMessage}
-            setTypingStatus={setTypingStatus} // Pass typing status setter
           />
           <ChatInput 
             userId={userId}
