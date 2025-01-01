@@ -1,115 +1,12 @@
 
 
-// 'use client';
-
-// import { useState } from 'react';
-// import { useAuth } from '@/hooks/useAuth';
-// import { Button } from "@mui/material";
-// import { Message } from '@/types/chat';
-
-// interface ChatInputProps {
-//   userId: string;
-//   replyingTo: Message | null;
-//   onCancelReply: () => void;
-// }
-
-// export default function ChatInput({ userId, replyingTo, onCancelReply }: ChatInputProps) {
-//   const { user } = useAuth();
-//   const [newMessage, setNewMessage] = useState('');
-//   const [error, setError] = useState<string | null>(null);
-
-//   const sendMessage = async () => {
-//     if (!newMessage.trim() || !user) return;
-
-//     try {
-//       setError(null);
-//       const response = await fetch('/api/chat/send', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Authorization: `Bearer ${await user.getIdToken()}`,
-//         },
-//         body: JSON.stringify({
-//           targetUserId: userId,
-//           message: newMessage.trim(),
-//           replyTo: replyingTo ? {
-//             id: replyingTo.id,
-//             content: replyingTo.content,
-//             senderId: replyingTo.senderId
-//           } : null
-//         }),
-//       });
-
-//       if (response.ok) {
-//         setNewMessage('');
-//         onCancelReply(); // Clear reply state after sending
-//       } else {
-//         const data = await response.json();
-//         setError(data.error || 'Failed to send message');
-//       }
-//     } catch (error) {
-//       setError('Failed to send message');
-//     }
-//   };
-
-//   return (
-//     <div className="fixed bottom-0 w-full bg-white p-4 border-t">
-//       {replyingTo && (
-//         <div className="flex items-center justify-between bg-gray-100 p-2 rounded mb-2">
-//           <p className="text-sm text-gray-600">
-//             Replying to: {replyingTo.content}
-//           </p>
-//           <Button 
-//             onClick={onCancelReply}
-//             size="small"
-//             color="inherit"
-//           >
-//             Cancel
-//           </Button>
-//         </div>
-//       )}
-//       <div className="flex gap-2">
-//         <input
-//           className="flex-1 p-2 border rounded"
-//           type="text"
-//           value={newMessage}
-//           onChange={(e) => setNewMessage(e.target.value)}
-//           onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-//           disabled={!user || !!error}
-//           placeholder={replyingTo ? "Type your reply..." : "Type a message..."}
-//         />
-//         <Button 
-//           onClick={sendMessage} 
-//           disabled={!newMessage.trim() || !!error}
-//           variant="contained"
-//         >
-//           {replyingTo ? 'Reply' : 'Send'}
-//         </Button>
-//       </div>
-//       {error && <p className="text-red-500 mt-2">Error: {error}</p>}
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from "@mui/material";
 import { Message } from '@/types/chat';
-import { db } from '@/lib/firebaseClient';
-import { writeBatch } from 'firebase/firestore';
+
 
 interface ChatInputProps {
   userId: string;
