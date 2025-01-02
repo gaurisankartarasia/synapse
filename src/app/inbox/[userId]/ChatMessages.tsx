@@ -1,11 +1,11 @@
 
-'use client';
 
+'use client';
+import { useEffect } from 'react';
 import { useChatMessages } from '@/hooks/useChatMessages';
 import { useAuth } from '@/hooks/useAuth';
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { Message } from '@/types/chat';
-import { useEffect } from 'react';
 
 interface ChatMessagesProps {
   userId: string;
@@ -18,25 +18,54 @@ interface ChatMessagesProps {
 export default function ChatMessages({ 
   userId, 
   onReply, 
-  onEdit,  
-  replyingTo, 
-  editingMessage,
-  
+  onEdit,
 }: ChatMessagesProps) {
   const { user, loading: authLoading } = useAuth();
   const { messages, loading, error, loadMoreMessages, hasMore } = useChatMessages(userId, user);
 
+
+
+
+  if (authLoading) return <div>Loading authentication...</div>;
+  if (!user) return <div>Please log in to view messages.</div>;
  
+ useEffect(() => {
+    const firstUnreadMsg = messages.find(msg => 
+      msg.senderId !== user?.uid && !msg.readBy?.includes(user?.uid)
+    );
+    if (firstUnreadMsg?.roomId && user) markAsRead(firstUnreadMsg.roomId);
+  }, [messages]);
 
-  if (authLoading) {
-    return <div>Loading authentication...</div>;
-  }
 
-  if (!user) {
-    return <div>Please log in to view messages.</div>;
-  }
+  
+  const markAsRead = async (roomId: string) => {
+    try {
+      await fetch('/api/chat/markAsRead', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${await user.getIdToken()}`,
+        },
+        body: JSON.stringify({ roomId })
+      });
+    } catch (error) {
+      console.error('Failed to mark messages as read', error);
+    }
+  };
 
-  const deleteMessage = async (messageId: string, roomId?: string) => {
+    if (authLoading) return <div>Loading authentication...</div>;
+  if (!user) return <div>Please log in to view messages.</div>;
+
+  const getReadStatus = (msg: Message) => {
+    if (!msg.sent) return null;
+    if (msg.readBy?.length > 0) {
+      return <span className="text-blue-500">✓✓</span>;
+    }
+    return <span className="text-gray-500">✓</span>;
+  };
+
+
+  const deleteMessage = async (messageId: string, roomId: string | undefined, deleteType: 'me' | 'everyone') => {
     if (!roomId) {
       console.error('roomId is undefined');
       return;
@@ -52,6 +81,7 @@ export default function ChatMessages({
         body: JSON.stringify({
           messageId,
           roomId,
+          deleteType
         }),
       });
 
@@ -64,7 +94,8 @@ export default function ChatMessages({
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+
+  if (loading) return <CircularProgress />;
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -75,56 +106,77 @@ export default function ChatMessages({
       {messages.length === 0 ? (
         <p>No messages</p>
       ) : (
-        messages.map((msg) => (
-          <div key={msg.id} className="p-4 border-b">
-            {msg.replyTo && (
-              <div className="ml-4 pl-2 border-l-2 border-gray-300 mb-2">
-                <p className="text-sm text-gray-600">
-                  Replying to: {msg.replyTo.content}
-                </p>
-              </div>
-            )}
-            <div className="flex justify-between items-start">
-              <div className="flex-1">
-                <p>{msg.content}</p>
-                <div className="flex items-center gap-1 text-sm text-gray-500">
-                  <span>{msg.time}</span>
-                  {msg.edited && (
-                    <span className="text-xs">(edited)</span>
+        messages.map((msg) => {
+          if (!msg.id || !msg.roomId || msg.deletedFor?.includes(user.uid)) {
+            return null;
+          }
+
+          return (
+            <div key={msg.id} className="p-4 border-b">
+                              <span>{msg.time}</span>
+
+              {msg.replyTo && !msg.deletedForEveryone && (
+                <div className="ml-4 pl-2 border-l-2 border-gray-300 mb-2">
+                  <p className="text-sm text-gray-600">
+                    Replying to: {msg.replyTo.content}
+                  </p>
+                </div>
+              )}
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <p className={msg.deletedForEveryone ? "italic text-gray-500" : ""}>
+                    {msg.deletedForEveryone ? "This message was deleted" : msg.content}
+                  </p>
+                  <div className="flex items-center gap-1 text-sm text-gray-500">
+                    <span>{msg.time}</span>
+                    {msg.edited && !msg.deletedForEveryone && (
+                      <span className="text-xs">(edited)</span>
+                    )}
+                                 {msg.senderId === user?.uid && getReadStatus(msg)}
+
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  {!msg.deletedForEveryone && (
+                    <>
+                      <Button 
+                        onClick={() => onReply(msg)}
+                        size="small"
+                      >
+                        Reply
+                      </Button>
+                      {user && msg.senderId === user.uid && (
+                        <>
+                          <Button 
+                            onClick={() => onEdit(msg)}
+                            size="small"
+                          >
+                            Edit
+                          </Button>
+                          <Button 
+                            onClick={() => deleteMessage(msg.id, msg.roomId, 'everyone')}
+                            size="small"
+                            color="error"
+                          >
+                            Delete for everyone
+                          </Button>
+                        </>
+                      )}
+                    </>
                   )}
+                  <Button 
+                    onClick={() => deleteMessage(msg.id, msg.roomId, 'me')}
+                    size="small"
+                    color="error"
+                  >
+                    {msg.deletedForEveryone ? "Delete" : "Delete for me"}
+                  </Button>
                 </div>
               </div>
-              <div className="flex gap-2">
-                <Button 
-                  onClick={() => onReply(msg)}
-                  size="small"
-                >
-                  Reply
-                </Button>
-                {user && msg.senderId === user.uid && (
-                  <>
-                    <Button 
-                      onClick={() => onEdit(msg)}
-                      size="small"
-                    >
-                      Edit
-                    </Button>
-                    <Button 
-                      onClick={() => deleteMessage(msg.id, msg.roomId)}
-                      size="small"
-                      color="error"
-                    >
-                      Delete
-                    </Button>
-                  </>
-                )}
-              </div>
             </div>
-          </div>
-        ))
+          );
+        })
       )}
     </div>
   );
 }
-
-

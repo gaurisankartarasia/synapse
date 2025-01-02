@@ -1,4 +1,4 @@
-//src/lib/admin.ts
+//src/lib/firebaseAdmin.ts
 import * as admin from "firebase-admin";
 import { getApps, getApp } from "firebase-admin/app";
 

@@ -1,6 +1,7 @@
 
 "use client";
 import React from 'react'
+import { AuthProvider } from '@/contexts/AuthContext';
 import useNavigationProgress from '../hooks/useNavigationProgress'; 
 import "./globals.css";
 import NavbarApp from '@/components/Navbar';
@@ -28,7 +29,10 @@ export default function RootLayout({
           <main>
             
 <NavbarApp/>
-            {children}
+<AuthProvider>
+  {children}
+
+  </AuthProvider>
             
           </main>
       </body>

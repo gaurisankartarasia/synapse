@@ -21,6 +21,10 @@ export interface Message {
     timestamp: number;
     time: string;
   };
+  deletedForEveryone?: boolean;
+  deletedFor?: string[];
+  readBy:string
+  sent:string
 }
 
 export interface ChatMessagesProps {

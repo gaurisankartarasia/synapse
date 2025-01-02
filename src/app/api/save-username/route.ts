@@ -3,6 +3,7 @@
 // src/app/api/save-username/route.ts
 import { NextResponse } from "next/server";
 import { auth, db } from "../../../lib/firebaseAdmin";
+import  {Timestamp} from "@firebase/firestore";
 
 export async function POST(request: Request) {
   try {
@@ -40,7 +41,8 @@ export async function POST(request: Request) {
       displayName: decodedToken.name || "",
       photoURL: decodedToken.picture || "",
       verified:false,
-      bio: "Hey, I am using Synapse!" 
+      bio: "Hey, I am using Synapse!" ,
+      joined: Timestamp.now()    
     };
 
     // Save the profile data in the user's document

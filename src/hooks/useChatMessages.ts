@@ -9,13 +9,12 @@ import {
   orderBy, 
   limit, 
   startAfter, 
-  DocumentData, 
-  QuerySnapshot, 
-  getDocs 
+  DocumentData,
+  getDocs
 } from 'firebase/firestore';
 import { Message } from '../types/chat';
 
-const BATCH_SIZE = 5;
+const BATCH_SIZE = 50;
 
 export const useChatMessages = (userId: string, user: { uid: string } | null) => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -47,7 +46,7 @@ export const useChatMessages = (userId: string, user: { uid: string } | null) =>
           where('participantKey', '==', participantKey)
         );
 
-        unsubscribeRoom = onSnapshot(chatRoomQuery, (snapshot) => {
+        unsubscribeRoom = onSnapshot(chatRoomQuery, async (snapshot) => {
           if (!snapshot.empty) {
             const roomId = snapshot.docs[0].id;
 
@@ -57,7 +56,7 @@ export const useChatMessages = (userId: string, user: { uid: string } | null) =>
               limit(BATCH_SIZE)
             );
 
-            unsubscribeMessages = onSnapshot(messagesQuery, (msgSnapshot: QuerySnapshot<DocumentData>) => {
+            unsubscribeMessages = onSnapshot(messagesQuery, (msgSnapshot) => {
               const lastVisibleDoc = msgSnapshot.docs[msgSnapshot.docs.length - 1];
               setLastVisible(lastVisibleDoc);
               setHasMore(msgSnapshot.docs.length === BATCH_SIZE);
@@ -66,7 +65,9 @@ export const useChatMessages = (userId: string, user: { uid: string } | null) =>
                 id: doc.id,
                 roomId: roomId,
                 ...doc.data(),
+                deletedFor: doc.data().deletedFor || []
               } as Message));
+
               setMessages(msgs.reverse());
               setLoading(false);
             });
@@ -104,7 +105,6 @@ export const useChatMessages = (userId: string, user: { uid: string } | null) =>
     if (roomSnapshot.empty) return;
 
     const roomId = roomSnapshot.docs[0].id;
-
     const nextMessagesQuery = query(
       collection(db, `chatRooms/${roomId}/messages`),
       orderBy('timestamp', 'desc'),
@@ -117,11 +117,20 @@ export const useChatMessages = (userId: string, user: { uid: string } | null) =>
     setLastVisible(lastVisibleDoc);
     setHasMore(nextSnapshot.docs.length === BATCH_SIZE);
 
-    const moreMessages = nextSnapshot.docs.map(doc => ({
-      id: doc.id,
-      roomId: roomId,
-      ...doc.data(),
-    } as Message));
+    const moreMessages = await Promise.all(nextSnapshot.docs.map(async (doc) => {
+      const messageData = doc.data();
+      const deletedForRef = collection(db, `chatRooms/${roomId}/messages/${doc.id}/deletedFor`);
+      const deletedForSnap = await getDocs(deletedForRef);
+      const deletedFor = deletedForSnap.docs.map(d => d.data().userId);
+
+      return {
+        id: doc.id,
+        roomId: roomId,
+        ...messageData,
+        deletedFor
+      } as Message;
+    }));
+
     setMessages(prevMessages => [...moreMessages.reverse(), ...prevMessages]);
   };
 
