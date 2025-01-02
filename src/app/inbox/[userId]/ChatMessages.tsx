@@ -23,22 +23,21 @@ export default function ChatMessages({
   const { user, loading: authLoading } = useAuth();
   const { messages, loading, error, loadMoreMessages, hasMore } = useChatMessages(userId, user);
 
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) return;
 
-
-
-  if (authLoading) return <div>Loading authentication...</div>;
-  if (!user) return <div>Please log in to view messages.</div>;
- 
- useEffect(() => {
     const firstUnreadMsg = messages.find(msg => 
       msg.senderId !== user?.uid && !msg.readBy?.includes(user?.uid)
     );
-    if (firstUnreadMsg?.roomId && user) markAsRead(firstUnreadMsg.roomId);
-  }, [messages]);
+    
+    if (firstUnreadMsg?.roomId) {
+      markAsRead(firstUnreadMsg.roomId);
+    }
+  }, [authLoading, user, messages]);
 
-
-  
   const markAsRead = async (roomId: string) => {
+    if (!user) return; // Add null check
     try {
       await fetch('/api/chat/markAsRead', {
         method: 'POST',
@@ -53,9 +52,6 @@ export default function ChatMessages({
     }
   };
 
-    if (authLoading) return <div>Loading authentication...</div>;
-  if (!user) return <div>Please log in to view messages.</div>;
-
   const getReadStatus = (msg: Message) => {
     if (!msg.sent) return null;
     if (msg.readBy?.length > 0) {
@@ -64,8 +60,8 @@ export default function ChatMessages({
     return <span className="text-gray-500">✓</span>;
   };
 
-
   const deleteMessage = async (messageId: string, roomId: string | undefined, deleteType: 'me' | 'everyone') => {
+    if (!user) return; // Add null check
     if (!roomId) {
       console.error('roomId is undefined');
       return;
@@ -94,6 +90,8 @@ export default function ChatMessages({
     }
   };
 
+  if (authLoading) return <div>Loading authentication...</div>;
+  if (!user) return <div>Please log in to view messages.</div>;
 
   if (loading) return <CircularProgress />;
   if (error) return <div>Error: {error}</div>;
@@ -113,8 +111,7 @@ export default function ChatMessages({
 
           return (
             <div key={msg.id} className="p-4 border-b">
-                              <span>{msg.time}</span>
-
+              <span>{msg.time}</span>
               {msg.replyTo && !msg.deletedForEveryone && (
                 <div className="ml-4 pl-2 border-l-2 border-gray-300 mb-2">
                   <p className="text-sm text-gray-600">
@@ -128,12 +125,10 @@ export default function ChatMessages({
                     {msg.deletedForEveryone ? "This message was deleted" : msg.content}
                   </p>
                   <div className="flex items-center gap-1 text-sm text-gray-500">
-                    <span>{msg.time}</span>
                     {msg.edited && !msg.deletedForEveryone && (
                       <span className="text-xs">(edited)</span>
                     )}
-                                 {msg.senderId === user?.uid && getReadStatus(msg)}
-
+                    {msg.senderId === user?.uid && getReadStatus(msg)}
                   </div>
                 </div>
                 <div className="flex gap-2">
