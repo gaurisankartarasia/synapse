@@ -4,14 +4,7 @@ import { db } from '@/lib/firebaseAdmin';
 import { verifyAuth } from '@/utils/auth';
 import { NextRequest, NextResponse } from 'next/server';
 
-function formatTime(timestamp: number): string {
-  const date = new Date(timestamp);
-  return date.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  }).toLowerCase();
-}
+
 // app/api/chat/send/route.ts
 export async function POST(request: NextRequest) {
   const decodedToken = await verifyAuth(request);

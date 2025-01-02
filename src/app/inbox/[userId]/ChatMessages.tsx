@@ -111,7 +111,7 @@ export default function ChatMessages({
 
           return (
             <div key={msg.id} className="p-4 border-b">
-              <span>{msg.time}</span>
+           
               {msg.replyTo && !msg.deletedForEveryone && (
                 <div className="ml-4 pl-2 border-l-2 border-gray-300 mb-2">
                   <p className="text-sm text-gray-600">
@@ -155,6 +155,7 @@ export default function ChatMessages({
                           >
                             Delete for everyone
                           </Button>
+                          
                         </>
                       )}
                     </>
@@ -167,7 +168,9 @@ export default function ChatMessages({
                     {msg.deletedForEveryone ? "Delete" : "Delete for me"}
                   </Button>
                 </div>
+                <small>{msg.time}</small>
               </div>
+              
             </div>
           );
         })

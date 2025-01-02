@@ -2,8 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
 import { verifyAuth } from "@/utils/auth";
-import { getFormattedDate } from "@/utils/formatDate";
-import { FieldValue } from "firebase-admin/firestore";
+
 
 export async function POST(
     request: NextRequest,
@@ -50,7 +49,7 @@ export async function POST(
   
       await postRef.update({ comments });
   
-      return NextResponse.json({ success: true }, { status: 200 });
+      return NextResponse.json({ status: 'ok' }, { status: 200 });
     } catch (error) {
       console.error("Error liking reply:", error);
       return NextResponse.json(
@@ -59,3 +58,10 @@ export async function POST(
       );
     }
   }
+
+
+
+
+
+
+
