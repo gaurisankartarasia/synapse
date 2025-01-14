@@ -43,4 +43,8 @@ export interface ChatRoom {
   lastMessage?: Message;
   createdAt: number;
   toDate: number;
+  otherUser: {
+    displayName: string;
+    uid?: string;
+  };
 }
