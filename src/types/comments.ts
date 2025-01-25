@@ -1,34 +1,56 @@
-// export type Comment = {
-//     id: string;
-//     content: string;
-//     author: string;
-//     createdAt: string;
-//     authorId: string;
-//     likes: number;
-//     likedBy: string[];
+
+// export interface Comment {
+//   id: string;
+//   authorId: string;
+//   author: string;
+//   content: string;
+//   createdAt: {
+//     _seconds: number;
+//     _nanoseconds: number;
 //   };
+//   likes: number;
+//   likedBy: string[];
+//   replies: Reply[];
+
+// }
+ 
+//    export interface Reply {
+//   id: string;
+//   authorId: string;
+//   author: string;
+//   content: string;
+//   createdAt: string;
+//   likes: number;
+//   likedBy: string[];
+// }
+
 // types/comments.ts
 export interface Comment {
   id: string;
   authorId: string;
   author: string;
   content: string;
-  createdAt: string;
-  likes: number;
-  likedBy: string[];
+  createdAt: Date;
+  likeCount: number;
+  replyCount: number;
+  isEdited: boolean;
+  lastEditedAt: Date | null;
+  hasLiked: boolean;
   replies: Reply[];
-
 }
- 
-   export interface Reply {
+
+export interface Reply {
   id: string;
   authorId: string;
   author: string;
   content: string;
-  createdAt: string;
-  likes: number;
-  likedBy: string[];
+  createdAt: Date;
+  likeCount: number;
+  isEdited: boolean;
+  lastEditedAt: Date | null;
+  hasLiked: boolean;
 }
+
 
   export type Report = {
     commentId: string;

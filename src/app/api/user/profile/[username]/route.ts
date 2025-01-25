@@ -1,34 +1,38 @@
+// //app/api/user/profile/[username]/route.ts
 // import { db } from "@/lib/firebaseAdmin"; // Firebase Admin SDK setup
 // import { NextRequest, NextResponse } from "next/server";
 
-// export async function GET(req: NextRequest, { params }: { params: { username: string } }) {
-//   const { username } = params;
+// type Props = {
+//   params: Promise<{ username: string }>;
+// };
 
-//   if (!username) {
-//     return NextResponse.json({ error: "Missing username" }, { status: 400 });
-//   }
-
+// export async function GET(req: NextRequest, { params }: Props) {
 //   try {
-//     // Step 1: Resolve UID from username
-//     const usernameDoc = await db.collection("usernames").doc(username).get();
+//     // Resolve the params promise to get the username
+//     const resolvedParams = await params;
+//     const { username } = resolvedParams;
 
-//     if (!usernameDoc.exists) {
+//     if (!username) {
+//       return NextResponse.json({ error: "Missing username" }, { status: 400 });
+//     }
+
+//     // Step 1: Query users collection directly by username
+//     const usersQuerySnapshot = await db
+//       .collection("users")
+//       .where("username", "==", username)
+//       .get();
+
+//     if (usersQuerySnapshot.empty) {
 //       return NextResponse.json({ error: "Username not found" }, { status: 404 });
 //     }
 
-//     const { uid } = usernameDoc.data() as { uid: string };
-
-//     // Step 2: Fetch user profile using UID
-//     const userDoc = await db.collection("users").doc(uid).get();
-
-//     if (!userDoc.exists) {
-//       return NextResponse.json({ error: "User not found" }, { status: 404 });
-//     }
-
+//     // Get the first matching user document (usernames should be unique)
+//     const userDoc = usersQuerySnapshot.docs[0];
 //     const userData = userDoc.data();
 
-//     // Select only necessary fields
+//     // Select only necessary fields for the profile
 //     const profile = {
+//       uid:userData.uid,
 //       displayName: userData?.displayName || "",
 //       followersCount: userData?.followersCount || 0,
 //       followingCount: userData?.followingCount || 0,
@@ -54,60 +58,76 @@
 
 
 
-
-import { db } from "@/lib/firebaseAdmin"; // Firebase Admin SDK setup
+// app/api/user/profile-info/[username]/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/firebaseAdmin";
+import { verifyJWT } from "@/lib/jwt";
 
-type Props = {
-  params: Promise<{ username: string }>;
-};
-
-export async function GET(req: NextRequest, { params }: Props) {
+export async function GET(req: NextRequest, { params }: { params: { username: string } }) {
   try {
-    // Resolve the params promise to get the username
-    const resolvedParams = await params;
-    const { username } = resolvedParams;
+    const { username } = params;
+    const token = req.cookies.get('token')?.value;
 
-    if (!username) {
-      return NextResponse.json({ error: "Missing username" }, { status: 400 });
-    }
+    // Fetch profile data
+    const userQuery = await db.collection("users")
+      .where("username", "==", username)
+      .limit(1)
+      .get();
 
-    // Step 1: Resolve UID from username
-    const usernameDoc = await db.collection("usernames").doc(username).get();
-
-    if (!usernameDoc.exists) {
-      return NextResponse.json({ error: "Username not found" }, { status: 404 });
-    }
-
-    const { uid } = usernameDoc.data() as { uid: string };
-
-    // Step 2: Fetch user profile using UID
-    const userDoc = await db.collection("users").doc(uid).get();
-
-    if (!userDoc.exists) {
+    if (userQuery.empty) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
+    const userDoc = userQuery.docs[0];
     const userData = userDoc.data();
-
-    // Select only necessary fields for the profile
     const profile = {
-      displayName: userData?.displayName || "",
-      followersCount: userData?.followersCount || 0,
-      followingCount: userData?.followingCount || 0,
-      photoURL: userData?.photoURL || "",
-      private: userData?.private || false,
-      username: userData?.username || "",
-      verified: userData?.verified || false,
+      uid: userDoc.id,
+      displayName: userData.displayName || "",
+      followersCount: userData.followersCount || 0,
+      followingCount: userData.followingCount || 0,
+      photoURL: userData.photoURL || "",
+      private: userData.private || false,
+      username: userData.username || "",
+      verified: userData.verified || false,
     };
 
-    return NextResponse.json({ profile }, {
+    let followStatus = {};
+    if (token) {
+      try {
+        const { uid } = await verifyJWT(token);
+        
+        // Check follow status
+        const [isFollowing, isRequested] = await Promise.all([
+          db.collection("users").doc(uid)
+            .collection("following").doc(userDoc.id).get()
+            .then(doc => doc.exists),
+          
+          db.collection("users").doc(userDoc.id)
+            .collection("followRequests").doc(uid).get()
+            .then(doc => doc.exists)
+        ]);
+
+        followStatus = { isFollowing, isRequested };
+      } catch (error) {
+        console.error("JWT verification failed:", error);
+      }
+    }
+
+    return NextResponse.json({ 
+      profile,
+      ...followStatus,
+      followersCount: profile.followersCount 
+    }, {
       headers: {
-        'Cache-Control': 'public, max-age=60, s-maxage=300',
-      },
+        'Cache-Control': 'public, max-age=120, stale-while-revalidate=300',
+        'CDN-Cache-Control': 'public, max-age=300'
+      }
     });
   } catch (error) {
-    console.error("Error fetching user profile:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    console.error("Error fetching profile:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }

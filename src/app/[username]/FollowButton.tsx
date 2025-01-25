@@ -1,21 +1,24 @@
+//src/app/[username]/FollowButton.tsx
 import React from "react";
-import { Button } from "@mui/material";
-
+import {CircularProgress} from '@mui/material'
 
 const Followbutton: React.FC<{
   isUpdating: boolean;
   followStatus: string;
   onFollowClick: () => void;
-}> = ({ isUpdating, followStatus, onFollowClick }) => {
+  className?: string;
+
+}> = ({ isUpdating, followStatus, onFollowClick, className }) => {
   return (
-    <Button
-      className="follow-button"
+    <button
+    className={`follow-button ${className || ''}`}
+
       onClick={onFollowClick}
       disabled={isUpdating}
       color="primary"
     >
       {isUpdating ? (
-        'Loading...'
+        <CircularProgress/>
         
       ) : followStatus === "following" ? (
         "Following"
@@ -24,8 +27,10 @@ const Followbutton: React.FC<{
       ) : (
         "Follow"
       )}
-    </Button>
+    </button>
   );
 };
 
 export default Followbutton;
+
+

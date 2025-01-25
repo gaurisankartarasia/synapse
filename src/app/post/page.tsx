@@ -1,213 +1,72 @@
 
-
-//   "use client";
-//   import { useEffect, useState, useRef, useCallback } from "react";
-//   import dayjs from "dayjs";
-//   import Link from "next/link";
-//   import Image from "next/image";
-//   import Likebutton from "./components/LikeButton";
-//   import {PostHeader} from "./components/PostHeader";
-//   import {formatDateF} from '@/utils/formatDate'
-
-//   type Post = {
-//     id: string;
-//     title: string;
-//     imageUrls: string[];
-//     content: string;
-//     author: string;
-//     createdAt: string;
-//     likes: number;
-//     authorId:string;
-//     commentCount:number
-//   };
-
-//   const POSTS_PER_PAGE = 5;
-
-//   const PostPage = () => {
-//     const [posts, setPosts] = useState<Post[]>([]);
-//     const [loading, setLoading] = useState(true);
-//     const [hasMore, setHasMore] = useState(true);
-//     const [lastPostId, setLastPostId] = useState<string | null>(null);
-//     const observer = useRef<IntersectionObserver | null>(null);
-//     const loadingRef = useRef<HTMLDivElement>(null);
-
-//     const fetchPosts = async (lastId: string | null = null) => {
-//       try {
-//         const url = `/api/post/display${lastId ? `?lastPostId=${lastId}` : ''}`;
-//         const response = await fetch(url);
-//         if (!response.ok) throw new Error("Failed to fetch posts");
-        
-//         const data = await response.json();
-//         const formattedPosts = data.posts.map((post: Post) => ({
-//           ...post,
-//           createdAt: dayjs(post.createdAt).format("MMMM D, YYYY h:mm A"),
-//         }));
-
-//         setPosts(prev => lastId ? [...prev, ...formattedPosts] : formattedPosts);
-//         setHasMore(formattedPosts.length === POSTS_PER_PAGE);
-//         setLastPostId(formattedPosts[formattedPosts.length - 1]?.id || null);
-//       } catch (error) {
-//         console.error(error);
-//         alert("Error fetching posts");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     // Infinite scroll setup
-//     const lastPostElementRef = useCallback((node: HTMLDivElement) => {
-//       if (loading) return;
-//       if (observer.current) observer.current.disconnect();
-      
-//       observer.current = new IntersectionObserver(entries => {
-//         if (entries[0].isIntersecting && hasMore) {
-//           fetchPosts(lastPostId);
-//         }
-//       });
-
-//       if (node) observer.current.observe(node);
-//     }, [loading, hasMore, lastPostId]);
-
-//     useEffect(() => {
-//       fetchPosts();
-//       return () => {
-//         if (observer.current) {
-//           observer.current.disconnect();
-//         }
-//       };
-//     }, []);
-
-//     const ImageGallery = ({ images }: { images: string[] }) => (
-//       <div className="grid grid-cols-2 gap-2 my-2">
-//         {images.map((url, index) => (
-//           <div key={index} className="relative aspect-square">
-//             <Image
-//               // src={url}
-//               src={`/api/proxy?url=${encodeURIComponent(url)}`}
-//               fill
-            
-//               // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-//                         sizes="(max-width: 468px) 50vw, (max-width: 600px) 50vw, 33vw"
-
-//               className="object-cover rounded-lg"
-//               alt={`Post image ${index + 1}`}
-//               priority={index === 0}  // Priority loading for first image
-//               loading={index === 0 ? "eager" : "lazy"}
-//               quality={index === 0 ? 85 : 75}  // Higher quality for first image
-//             />
-//           </div>
-//         ))}
-//       </div>
-//     );
-
-//     return (
-//       <div className=" mx-auto px-4">
-//         {loading && 'loading...'}
-//         <div className="space-y-4">
-//           {posts.map((post, index) => (
-//             <div
-//               key={post.id}
-//               ref={index === posts.length - 1 ? lastPostElementRef : null}
-//             >
-//               <div  className="p-4">
-//               <PostHeader authorUsername={post.author} />
-
-//                 <Link href={`/post/${post.id}`} className="block">
-//                   <h2 className="text-xl font-bold mb-2">{post.title}</h2>
-//                   <div className="text-sm text-gray-600 mb-2">
-//                     <span>By {post.author}</span>
-//                     <span className="mx-2">•</span>
-//                     <span>{formatDateF(post.createdAt)}</span>
-//                   </div>
-                  
-//                   {post.imageUrls && post.imageUrls.length > 0 && (
-//                     <ImageGallery 
-//                     images={post.imageUrls} 
-//                     // images={`/api/proxy?url=${encodeURIComponent(post.imageUrls)}`}
-
-//                     />
-//                   )}
-                  
-//                   <p className="mt-2 text-gray-800">{post.content}</p>
-//                 </Link>
-
-//                 <div className="mt-4 flex items-center">
-//                   <Likebutton postId={post.id} />
-//                   <Link href={`/post/${post.id}`} className="flex items-center">
-//                   <span className="material-symbols-outlined ml-8 mr-1">
-// comment
-// </span> <p>{post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}</p> 
-// <span className="material-symbols-outlined">
-// keyboard_arrow_right
-// </span>
-// </Link>
-//                 </div>
-              
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-
-//         {loading && <div ref={loadingRef} className="py-4">Loading more posts...</div>}
-//       </div>
-//     );
-//   };
-
-//   export default PostPage;
-
-
-
-
-
-
-
 "use client";
 import { useEffect, useState, useRef, useCallback } from "react";
-import dayjs from "dayjs";
 import Link from "next/link";
 import Image from "next/image";
 import Likebutton from "./components/LikeButton";
 import { PostHeader } from "./components/PostHeader";
-import { formatDateF } from "@/utils/formatDate";
+import { formatRelativeTime } from "@/utils/date";
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { useAuth } from '@/hooks/useAuth';
+import { CircularProgress, LinearProgress } from "@mui/material";
 
 type Post = {
   id: string;
-  title: string;
+  uid: string;
   imageUrls: string[];
+  photoURL:string;
+  displayName:string;
   content: string;
   author: string;
-  createdAt: string;
+  createdAt: {
+    _seconds: number;
+    _nanoseconds: number;
+  };
   likes: number;
   authorId: string;
   commentCount: number;
+  hashtags?: string[];
+  media?: {
+    type: 'image' | 'video';
+    url: string;
+    thumbnailUrl?: string;
+    duration?: number;
+  }[];
 };
 
 const POSTS_PER_PAGE = 5;
 
 const PostPage = () => {
+  const [isClient, setIsClient] = useState(false); // Track client-side mount
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const [lastPostId, setLastPostId] = useState<string | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
   const loadingRef = useRef<HTMLDivElement>(null);
-  const hasFetchedInitial = useRef(false); // Prevent duplicate initial fetch
+  const hasFetchedInitial = useRef(false);
+
+  const { user, loading: authLoading, error: authError } = useAuth();
+
+  useEffect(() => {
+    setIsClient(true); 
+  }, []);
+
+  // const getIdToken = async () => {
+  //   return user ? `bearer_token_for_${user.id}` : '';
+  // };
 
   const fetchPosts = async (lastId: string | null = null) => {
     try {
-      const url = `/api/post/display${lastId ? `?lastPostId=${lastId}` : ""}`;
+      const url = `/api/post/display/query${lastId ? `?lastPostId=${lastId}` : ""}`;
       const response = await fetch(url);
       if (!response.ok) throw new Error("Failed to fetch posts");
 
       const data = await response.json();
-      const formattedPosts = data.posts.map((post: Post) => ({
-        ...post,
-        createdAt: dayjs(post.createdAt).format("MMMM D, YYYY h:mm A"),
-      }));
-
-      setPosts((prev) => (lastId ? [...prev, ...formattedPosts] : formattedPosts));
-      setHasMore(formattedPosts.length === POSTS_PER_PAGE);
-      setLastPostId(formattedPosts[formattedPosts.length - 1]?.id || null);
+      setPosts((prev) => (lastId ? [...prev, ...data.posts] : data.posts));
+      setHasMore(data.posts.length === POSTS_PER_PAGE);
+      setLastPostId(data.posts[data.posts.length - 1]?.id || null);
     } catch (error) {
       console.error(error);
       alert("Error fetching posts");
@@ -216,7 +75,6 @@ const PostPage = () => {
     }
   };
 
-  // Infinite scroll setup
   const lastPostElementRef = useCallback(
     (node: HTMLDivElement) => {
       if (loading) return;
@@ -234,17 +92,11 @@ const PostPage = () => {
   );
 
   useEffect(() => {
-    if (!hasFetchedInitial.current) {
-      hasFetchedInitial.current = true; // Mark as fetched to avoid duplicate calls
+    if (isClient && !hasFetchedInitial.current && !authLoading) {
+      hasFetchedInitial.current = true;
       fetchPosts();
     }
-
-    return () => {
-      if (observer.current) {
-        observer.current.disconnect();
-      }
-    };
-  }, []);
+  }, [authLoading, isClient]); // Add isClient to dependencies
 
   const ImageGallery = ({ images }: { images: string[] }) => (
     <div className="grid grid-cols-2 gap-2 my-2">
@@ -256,55 +108,94 @@ const PostPage = () => {
             sizes="(max-width: 468px) 50vw, (max-width: 600px) 50vw, 33vw"
             className="object-cover rounded-lg"
             alt={`Post image ${index + 1}`}
-            priority={index === 0} // Priority loading for first image
+            priority={index === 0}
             loading={index === 0 ? "eager" : "lazy"}
-            quality={index === 0 ? 85 : 75} // Higher quality for first image
+            quality={index === 0 ? 85 : 75}
           />
         </div>
       ))}
     </div>
   );
 
+  const HashtagDisplay = ({ hashtags }: { hashtags?: string[] }) => {
+    if (!hashtags || hashtags.length === 0) return null;
+
+    return (
+      <div className="flex gap-2 mt-2">
+        {hashtags.map((tag, index) => (
+          <Link 
+            key={index} 
+            href={`/hashtag/${tag.toLowerCase()}`}
+            className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm hover:underline"
+          >
+            #{tag}
+          </Link>
+        ))}
+      </div>
+    );
+  };
+
+
+  // Prevent server-side auth-dependent rendering
+  if (!isClient) {
+    return <div className="mx-auto px-4"><CircularProgress /></div>;
+  }
+
+  // Client-side auth handling
+  if (authLoading) {
+    return <LinearProgress/>;
+  }
+
+  if (authError) {
+    return <div>Error: {authError}</div>;
+  }
+
   return (
     <div className="mx-auto px-4">
-      {loading && "loading..."}
+      {loading && <CircularProgress />}
       <div className="space-y-4">
         {posts.map((post, index) => (
           <div key={post.id} ref={index === posts.length - 1 ? lastPostElementRef : null}>
-            <div className="p-4">
-              <PostHeader authorUsername={post.author} />
+            <div className="p-4 border-b">
+             <div className="flex items-center gap-2">
+             <PostHeader authorUsername={post.author}
+              authorPhotoURL={post.photoURL}
+              authorDisplayName={post.displayName}
+              />
+                  <span className="text-gray-600 text-sm">{formatRelativeTime(post.createdAt)}</span>
+             </div>
 
               <Link href={`/post/${post.id}`} className="block">
-                <h2 className="text-xl font-bold mb-2">{post.title}</h2>
-                <div className="text-sm text-gray-600 mb-2">
-                  <span>By {post.author}</span>
-                  <span className="mx-2">•</span>
-                  <span>{formatDateF(post.createdAt)}</span>
-                </div>
-
-                {post.imageUrls && post.imageUrls.length > 0 && (
-                  <ImageGallery images={post.imageUrls} />
-                )}
-
+             
                 <p className="mt-2 text-gray-800">{post.content}</p>
-              </Link>
 
-              <div className="mt-4 flex items-center">
+
+                {post.imageUrls?.length > 0 && <ImageGallery images={post.imageUrls} />}
+                
+
+              </Link>
+              <HashtagDisplay hashtags={post.hashtags} />
+
+              <div className="mt-4 flex items-center gap-4">
                 <Likebutton postId={post.id} />
-                <Link href={`/post/${post.id}`} className="flex items-center">
-                  <span className="material-symbols-outlined ml-8 mr-1">comment</span>
+                <Link href={`/post/${post.id}`} className="flex items-center gap-1">
+                  <ChatBubbleOutlineIcon />
                   <p>{post.commentCount} {post.commentCount === 1 ? "Comment" : "Comments"}</p>
-                  <span className="material-symbols-outlined">keyboard_arrow_right</span>
+                  <NavigateNextIcon />
                 </Link>
               </div>
+
             </div>
           </div>
         ))}
       </div>
-
       {loading && <div ref={loadingRef} className="py-4">Loading more posts...</div>}
     </div>
   );
 };
 
 export default PostPage;
+
+
+
+

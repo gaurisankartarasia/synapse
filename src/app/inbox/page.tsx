@@ -1,202 +1,90 @@
-
-// 'use client'
-// import React, { useEffect, useState } from 'react';
-// import { useAuth } from '@/hooks/useAuth';
-// import { db } from '@/lib/firebaseClient';
-// import { onSnapshot, query, where, collection, orderBy, doc as firestoreDoc, getDoc } from 'firebase/firestore';
-
-// interface ChatRoom {
-//   id: string;
-//   participants: string[];
-//   participantKey: string;
-//   lastMessage: {
-//     content: string;
-//     timestamp: number;
-//     senderId: string;
-//   } | null;
-//   otherUser: {
-//     displayName: string;
-//   };
-// }
-
-// const InboxPage = () => {
-//   const { user, loading } = useAuth();
-//   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
-//   const [error, setError] = useState<string | null>(null);
-
-//   useEffect(() => {
-//     if (loading || !user) return;
-
-//     const chatRoomsQuery = query(
-//       collection(db, 'chatRooms'),
-//       where('participants', 'array-contains', user.uid)
-//     );
-
-//     const unsubscribe = onSnapshot(chatRoomsQuery, async (snapshot) => {
-//       try {
-//         const roomsPromises = snapshot.docs.map(async (snapshotDoc) => {
-//           const roomData = snapshotDoc.data();
-//           const otherUserId = roomData.participants.find((id: string) => id !== user.uid);
-
-//           // Get other user's data
-//           const otherUserDocRef = firestoreDoc(db, 'users', otherUserId);
-//           const otherUserDoc = await getDoc(otherUserDocRef);
-
-//           const room: ChatRoom = {
-//             id: snapshotDoc.id,
-//             participants: roomData.participants,
-//             participantKey: roomData.participantKey,
-//             lastMessage: null,
-//             otherUser: otherUserDoc.data() as { displayName: string } || { displayName: 'Unknown User' }
-//           };
-
-//           // Set up a listener for messages in this chat room
-//           const messagesQuery = query(
-//             collection(db, 'chatRooms', snapshotDoc.id, 'messages'),
-//             orderBy('timestamp', 'desc')
-//           );
-
-//           onSnapshot(messagesQuery, (messagesSnapshot) => {
-//             if (!messagesSnapshot.empty) {
-//               const lastMessage = messagesSnapshot.docs[0].data() as ChatRoom['lastMessage'];
-//               setChatRooms((prevRooms) => {
-//                 return prevRooms.map((r) => r.id === room.id ? { ...r, lastMessage } : r);
-//               });
-//             }
-//           });
-
-//           return room;
-//         });
-
-//         const rooms = await Promise.all(roomsPromises);
-//         setChatRooms(rooms);
-//       } catch (err) {
-//         setError(err instanceof Error ? err.message : 'An error occurred');
-//       }
-//     }, (err) => {
-//       setError(err.message);
-//     });
-    
-//     return () => unsubscribe();
-//   }, [user, loading]);
-
-//   if (loading) return <div>Loading...</div>;
-//   if (error) return <div>Error: {error}</div>;
-
-//   return (
-//     <div>
-//       <h1>Messages</h1>
-//       {chatRooms.map((room) => (
-//         <div key={room.id}>
-//           <h3>{room.otherUser.displayName}</h3>
-//           {room.lastMessage && (
-//             <>
-//               <p>{room.lastMessage.content}</p>
-//               <span>{new Date(room.lastMessage.timestamp).toLocaleDateString()}</span>
-//             </>
-//           )}
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default InboxPage;
-
-
-
-
-
-
-
-
-// 'use client'
-// import React from 'react';
-// import useChatRooms from '@/hooks/useInbox';
-
-// const InboxPage = () => {
-//   const { chatRooms, error, loading } = useChatRooms();
-
-//   if (loading) return <div>Loading...</div>;
-//   if (error) return <div>Error: {error}</div>;
-
-//   return (
-//     <div>
-//       <h1>Messages</h1>
-//       {chatRooms.map((room) => (
-//         <div key={room.id}>
-//           <h3>{room.otherUser.displayName}</h3>
-//           {room.lastMessage && (
-//             <>
-//               <p>{room.lastMessage.content}</p>
-//               <span>{new Date(room.lastMessage.timestamp).toLocaleDateString()}</span>
-//             </>
-//           )}
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default InboxPage;
-
-
-
-
-
-
-
 // src/app/inbox/page.tsx
-'use client'
-import React from 'react';
-import { useChatRooms } from '@/hooks/useInbox';
-import type { ChatRoom } from '@/types/chat';
+'use client';
 
-const InboxPage = () => {
-  const { chatRooms, error, loading } = useChatRooms();
+import axios from 'axios';
+import { format } from 'date-fns';
+import Link from 'next/link';
+import useSWR from 'swr';
+import { useEffect } from 'react';
 
-  if (loading) return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
-    </div>
+interface Chat {
+  id: string;
+  otherParticipant: {
+    id: string;
+    name: string;
+    avatar: string;
+  };
+  lastMessage: string;
+  lastMessageTimestamp: Date;
+  unreadCount: number;
+  isRead: boolean;
+}
+
+const fetcher = (url: string) => 
+  axios.get(url, { withCredentials: true }).then(res => res.data);
+
+export default function InboxPage() {
+  const { data: chats, error, mutate } = useSWR<Chat[]>(
+    '/api/inbox',
+    fetcher,
+    { refreshInterval: 3000 }
   );
 
-  if (error) return (
-    <div className="p-4 text-red-500">
-      Error: {error}
-    </div>
-  );
+  const markAsRead = async (userId: string) => {
+    try {
+      await axios.post(`/api/inbox/${userId}/read`, {}, {
+        withCredentials: true
+      });
+      mutate();
+    } catch (error) {
+      console.error('Error marking as read:', error);
+    }
+  };
+
+  if (error) return <div>Failed to load chats</div>;
+  if (!chats) return <div>Loading...</div>;
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Messages</h1>
-      <div className="space-y-4">
-        {chatRooms.map((room: ChatRoom) => (
-          <div 
-            key={room.id}
-            className="p-4 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+    <div className="p-4 max-w-2xl mx-auto">
+      <h1 className="text-2xl font-bold mb-6">Chats</h1>
+      <div className="space-y-3">
+        {chats.map(chat => (
+          <Link
+            key={chat.id}
+            href={`/chat/${chat.otherParticipant.id}`}
+            className="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+            onClick={() => markAsRead(chat.otherParticipant.id)}
           >
-            <div className="flex justify-between items-center">
-              <h2 className="font-semibold">{room.otherUser.displayName}</h2>
-              {room.lastMessage && (
-                <div className="text-sm text-gray-500">
-                  <p className="line-clamp-1">{room.lastMessage.content}</p>
-                  <time className="text-xs">
-                    {new Date(room.lastMessage.timestamp).toLocaleString()}
-                  </time>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <img
+                  src={chat.otherParticipant.avatar || '/default-avatar.png'}
+                  alt={chat.otherParticipant.name}
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+                <div>
+                  <h2 className="font-semibold text-gray-800">
+                    {chat.otherParticipant.name}
+                  </h2>
+                  <p className="text-sm text-gray-600 line-clamp-1">
+                    {chat.lastMessage || 'No messages yet'}
+                  </p>
                 </div>
-              )}
+              </div>
+              <div className="text-right">
+                <time className="text-xs text-gray-500 block mb-1">
+                  {format(new Date(chat.lastMessageTimestamp), 'HH:mm')}
+                </time>
+                {!chat.isRead && chat.unreadCount > 0 && (
+                  <span className="inline-block bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
+                    {chat.unreadCount}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
-        {chatRooms.length === 0 && (
-          <div className="text-center text-gray-500">
-            No messages yet
-          </div>
-        )}
       </div>
     </div>
   );
-};
-
-export default InboxPage;
+}

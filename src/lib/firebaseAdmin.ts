@@ -1,6 +1,8 @@
 //src/lib/firebaseAdmin.ts
 import * as admin from "firebase-admin";
 import { getApps, getApp } from "firebase-admin/app";
+import { FieldValue, Timestamp } from 'firebase-admin/firestore';
+import {serverTimestamp} from 'firebase/firestore'
 
 // Initialize Firebase Admin SDK using environment variables
 if (!getApps().length) {
@@ -19,4 +21,4 @@ const auth = admin.auth(app);
 const db = admin.firestore(app);
 const adminStorage = admin.storage(app);
 
-export { admin, auth, db, adminStorage };
+export { admin, auth, db, adminStorage, FieldValue, serverTimestamp, Timestamp };

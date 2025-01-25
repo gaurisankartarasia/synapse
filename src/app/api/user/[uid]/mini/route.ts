@@ -1,21 +1,145 @@
+
+
+// // app/api/user/[uid]/mini/route.ts
+// import { NextResponse } from 'next/server';
+// import { cookies } from 'next/headers';
+// import { verifyJWT } from '@/lib/jwt';
+// import { db } from '@/lib/firebaseAdmin';
+// import { CustomJWTPayload } from '@/types/auth';
+
+// export async function GET(
+//     request: Request,
+//     { params }: { params: { uid: string } }
+// ) {
+//     try {
+//         // Get token from cookies
+//         const cookieStore = await cookies();
+//         const token = cookieStore.get('token');
+
+//         if (!token?.value) {
+//             return NextResponse.json(
+//                 { error: 'Unauthorized' },
+//                 { status: 401 }
+//             );
+//         }
+
+//         // Verify token and type assert the payload
+//         const payload = await verifyJWT(token.value) as CustomJWTPayload;
+        
+//         if (!payload.uid) {
+//             return NextResponse.json(
+//                 { error: 'Invalid token payload' },
+//                 { status: 401 }
+//             );
+//         }
+
+//         // Optional: Check if the requesting user has permission to access this data
+//         // You might want to check if payload.uid matches params.uid or implement other checks
+        
+//         const userRef = db.collection('users').doc(params.uid);
+//         const userSnap = await userRef.get();
+      
+//         if (!userSnap.exists) {
+//             return NextResponse.json(
+//                 { error: 'User not found' },
+//                 { status: 404 }
+//             );
+//         }
+  
+//         const { username, photoURL, displayName, verified } = userSnap.data() || {};
+//         return NextResponse.json({ username, photoURL, displayName, verified });
+        
+//     } catch (error) {
+//         console.error('User mini fetch error:', error);
+//         return NextResponse.json(
+//             { error: 'Internal server error' },
+//             { status: 500 }
+//         );
+//     }
+// }
+
+
+
+
+
 // app/api/user/[uid]/mini/route.ts
+import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { verifyJWT } from '@/lib/jwt';
 import { db } from '@/lib/firebaseAdmin';
+import { CustomJWTPayload } from '@/types/auth';
+
+// Define the correct segment configuration
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET(
     request: Request,
     { params }: { params: { uid: string } }
 ) {
     try {
+        // Validate params
+        if (!params.uid) {
+            return NextResponse.json(
+                { error: 'User ID is required' },
+                { status: 400 }
+            );
+        }
+
+        // Get token from cookies
+        const cookieStore = await cookies();
+        const token = cookieStore.get('token');
+
+        if (!token?.value) {
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
+            );
+        }
+
+        // Verify token and type assert the payload
+        const payload = await verifyJWT(token.value) as CustomJWTPayload;
+        
+        if (!payload.uid) {
+            return NextResponse.json(
+                { error: 'Invalid token payload' },
+                { status: 401 }
+            );
+        }
+
+        // Fetch user data
         const userRef = db.collection('users').doc(params.uid);
         const userSnap = await userRef.get();
       
         if (!userSnap.exists) {
-            return new Response(null, { status: 404 });
+            return NextResponse.json(
+                { error: 'User not found' },
+                { status: 404 }
+            );
         }
   
-        const { username, photoURL, displayName, verified } = userSnap.data() || {};
-        return Response.json({ username, photoURL, displayName, verified });
+        const userData = userSnap.data();
+        
+        if (!userData) {
+            return NextResponse.json(
+                { error: 'User data is empty' },
+                { status: 404 }
+            );
+        }
+
+        // Return only the required fields
+        return NextResponse.json({
+            username: userData.username || null,
+            photoURL: userData.photoURL || null,
+            displayName: userData.displayName || null,
+            verified: userData.verified || false
+        });
+        
     } catch (error) {
-        return new Response(null, { status: 500 });
+        console.error('User mini fetch error:', error);
+        return NextResponse.json(
+            { error: 'Internal server error' },
+            { status: 500 }
+        );
     }
 }

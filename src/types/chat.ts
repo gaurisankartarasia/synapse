@@ -10,13 +10,11 @@ export interface Message {
   date: string;
   read: boolean;
   roomId?: string;
-  //for replying a perticular message 
   replyTo?: {
     id: string;
     content: string;
     senderId: string;
   };
-  //for editiing a perticular message shit why am i so noob to write this 
   edited?: {
     timestamp: number;
     time: string;
@@ -29,6 +27,7 @@ export interface Message {
 
 export interface ChatMessagesProps {
   userId: string;
+  currentUserId:string;
   user: {
     uid: string;
     getIdToken: () => Promise<string>;

@@ -2,8 +2,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./styles/Modal.module.css";
-import { Button } from "@mui/material";
-import { GrClose } from "react-icons/gr";
 
 
 interface ModalProps {
@@ -40,10 +38,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
       >
         <div className={styles.modalHeader}>
           <h2>{title}</h2>
-          <Button onClick={handleClose} 
+          <button onClick={handleClose} 
           >
-            <GrClose size={15}/>
-          </Button>
+x          </button>
         </div>
         <div className={styles.modalBody}>
           {children}

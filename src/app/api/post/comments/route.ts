@@ -1,13 +1,12 @@
 
-
 // // app/api/post/comments/route.ts
 // import { NextRequest, NextResponse } from "next/server";
 // import { db } from "@/lib/firebaseAdmin";
-// import { verifyAuth } from "@/utils/auth";
-// import { getFormattedDate } from "@/utils/formatDate";
+// import { cookies } from 'next/headers';
+// import { verifyJWT } from '@/lib/jwt';
+// import { CustomJWTPayload } from '@/types/auth';
 // import { FieldValue } from "firebase-admin/firestore";
 
-// // GET handler - optimized for read efficiency
 // export async function GET(request: NextRequest) {
 //   try {
 //     const postId = request.nextUrl.searchParams.get("postId");
@@ -15,13 +14,14 @@
 //       return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
 //     }
 
-//     // Fetch only the comments array and post existence check in one call
-//     const postDoc = await db.collection("posts").doc(postId).get();
-//     if (!postDoc.exists) {
+//     const postRef = db.collection("posts").doc(postId);
+//     const postDocs = await db.getAll(postRef);
+
+//     if (postDocs.length === 0 || !postDocs[0].exists) {
 //       return NextResponse.json({ error: "Post not found" }, { status: 404 });
 //     }
 
-//     const comments = postDoc.data()?.comments || [];
+//     const comments = postDocs[0].data()?.comments || [];
 //     return NextResponse.json({ comments }, { status: 200 });
 //   } catch (error) {
 //     console.error("Error fetching comments:", error);
@@ -29,41 +29,60 @@
 //   }
 // }
 
-// // POST handler - optimized to reduce unnecessary reads
 // export async function POST(request: NextRequest) {
 //   try {
+//     // Get token from cookies
+//     const cookieStore = await cookies();
+//     const token = cookieStore.get('token');
+
+//     if (!token?.value) {
+//       return NextResponse.json(
+//         { error: 'Unauthorized' },
+//         { status: 401 }
+//       );
+//     }
+
+//     // Verify token and type assert the payload
+//     const payload = await verifyJWT(token.value) as CustomJWTPayload;
+    
+//     if (!payload.uid) {
+//       return NextResponse.json(
+//         { error: 'Invalid token payload' },
+//         { status: 401 }
+//       );
+//     }
+
 //     const { postId, content } = await request.json();
 //     if (!postId || !content) {
 //       return NextResponse.json({ error: "Post ID and content are required" }, { status: 400 });
 //     }
 
-//     const user = await verifyAuth(request);
-//     if (!user) {
-//       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//     }
-
-//     // Fetch the username from the users collection once per user session
-//     const userDoc = await db.collection("users").doc(user.uid).get();
+//     // Fetch the username from the users collection
+//     const userDoc = await db.collection("users").doc(payload.uid).get();
 //     const username = userDoc.exists ? userDoc.data()?.username : null;
 
 //     const postRef = db.collection("posts").doc(postId);
 
 //     // Prepare the new comment
 //     const newComment = {
-//       id: Date.now().toString(), 
-//       authorId: user.uid,
+//       id: Date.now().toString(),
+//       authorId: payload.uid,
 //       content,
-//       author: username || user.uid, // Use username fetched from users collection
-//       createdAt: getFormattedDate(),
+//       author: username || payload.uid,
+//       createdAt: FieldValue.serverTimestamp(),
 //       likes: 0,
 //       likedBy: []
 //     };
 
-//     // Using a single update to add the comment and increment the comment count
-//     await postRef.update({
+//     // Start a write batch for more flexibility
+//     const batch = db.batch();
+//     batch.update(postRef, {
 //       comments: FieldValue.arrayUnion(newComment),
 //       commentCount: FieldValue.increment(1)
 //     });
+
+//     // Commit the batch write
+//     await batch.commit();
 
 //     return NextResponse.json(newComment, { status: 201 });
 //   } catch (error) {
@@ -77,20 +96,138 @@
 
 
 
-//-------------------------------------batch
+
+// // app/api/post/comments/route.ts
+// import { NextRequest, NextResponse } from "next/server";
+// import { db, FieldValue, Timestamp } from "@/lib/firebaseAdmin";
+// import { cookies } from 'next/headers';
+// import { verifyJWT } from '@/lib/jwt';
+// import { CustomJWTPayload } from '@/types/auth';
+
+// export async function GET(request: NextRequest) {
+//   try {
+//     const postId = request.nextUrl.searchParams.get("postId");
+//     if (!postId) {
+//       return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
+//     }
+
+//     const postRef = db.collection("posts").doc(postId);
+//     const postDocs = await db.getAll(postRef);
+
+//     if (postDocs.length === 0 || !postDocs[0].exists) {
+//       return NextResponse.json({ error: "Post not found" }, { status: 404 });
+//     }
+
+//     const comments = postDocs[0].data()?.comments || [];
+//     return NextResponse.json({ comments }, { status: 200 });
+//   } catch (error) {
+//     console.error("Error fetching comments:", error);
+//     return NextResponse.json({ error: "Failed to fetch comments" }, { status: 500 });
+//   }
+// }
+
+// export async function POST(request: NextRequest) {
+//   try {
+//     // Get token from cookies
+//     const cookieStore = await cookies();
+//     const token = cookieStore.get('token');
+
+//     if (!token?.value) {
+//       console.error('No token found in cookies');
+//       return NextResponse.json(
+//         { error: 'Unauthorized' },
+//         { status: 401 }
+//       );
+//     }
+
+//     // Verify token and type assert the payload
+//     let payload;
+//     try {
+//       payload = await verifyJWT(token.value) as CustomJWTPayload;
+//     } catch (verifyError) {
+//       console.error('Token verification failed:', verifyError);
+//       return NextResponse.json(
+//         { error: 'Invalid token' },
+//         { status: 401 }
+//       );
+//     }
+    
+//     if (!payload.uid) {
+//       console.error('No user ID in token payload');
+//       return NextResponse.json(
+//         { error: 'Invalid token payload' },
+//         { status: 401 }
+//       );
+//     }
+
+//     const { postId, content } = await request.json();
+//     if (!postId || !content) {
+//       return NextResponse.json({ error: "Post ID and content are required" }, { status: 400 });
+//     }
+
+//     // Validate content length if needed
+//     if (content.trim().length === 0) {
+//       return NextResponse.json({ error: "Comment cannot be empty" }, { status: 400 });
+//     }
+
+//     // Fetch the username from the users collection
+//     const userDoc = await db.collection("users").doc(payload.uid).get();
+//     if (!userDoc.exists) {
+//       console.error(`User document not found for ID: ${payload.uid}`);
+//       return NextResponse.json({ error: "User not found" }, { status: 404 });
+//     }
+
+//     const username = userDoc.data()?.username;
+
+//     const postRef = db.collection("posts").doc(postId);
+//     const postDoc = await postRef.get();
+
+//     if (!postDoc.exists) {
+//       return NextResponse.json({ error: "Post not found" }, { status: 404 });
+//     }
+
+//     // Prepare the new comment
+//     const newComment = {
+//       id: Date.now().toString(),
+//       authorId: payload.uid,
+//       content,
+//       author: username || payload.uid,
+//       createdAt:  Timestamp.now(),
+//       likes: 0,
+//       likedBy: []
+//     };
+
+//     // Start a write batch for more flexibility
+//     const batch = db.batch();
+//     batch.update(postRef, {
+//       comments: FieldValue.arrayUnion(newComment),
+//       commentCount: FieldValue.increment(1)
+//     });
+
+//     // Commit the batch write
+//     await batch.commit();
+
+//     return NextResponse.json(newComment, { status: 201 });
+//   } catch (error) {
+//     console.error("Unexpected error adding comment:", error);
+//     return NextResponse.json({ error: "Failed to add comment" }, { status: 500 });
+//   }
+// } 
 
 
 
 
 
 
+
+
+// app/api/post/comments/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/firebaseAdmin";
-import { verifyAuth } from "@/utils/auth";
-import { getFormattedDate } from "@/utils/formatDate";
-import { FieldValue } from "firebase-admin/firestore";
+import { db, Timestamp } from "@/lib/firebaseAdmin";
+import { cookies } from 'next/headers';
+import { verifyJWT } from '@/lib/jwt';
+import { CustomJWTPayload } from '@/types/auth';
 
-// GET handler - optimized for batch read efficiency
 export async function GET(request: NextRequest) {
   try {
     const postId = request.nextUrl.searchParams.get("postId");
@@ -98,15 +235,24 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
     }
 
-    // If you want to fetch multiple posts, pass an array of post IDs
+    // Check if post exists
     const postRef = db.collection("posts").doc(postId);
-    const postDocs = await db.getAll(postRef); // Batch read operation
+    const postDoc = await postRef.get();
 
-    if (postDocs.length === 0 || !postDocs[0].exists) {
+    if (!postDoc.exists) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    const comments = postDocs[0].data()?.comments || [];
+    // Get comments from the subcollection
+    const commentsSnapshot = await postRef.collection('comments')
+      .orderBy('createdAt', 'desc')
+      .get();
+
+    const comments = commentsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
     return NextResponse.json({ comments }, { status: 200 });
   } catch (error) {
     console.error("Error fetching comments:", error);
@@ -114,49 +260,97 @@ export async function GET(request: NextRequest) {
   }
 }
 
-
 export async function POST(request: NextRequest) {
   try {
+    // Get token from cookies
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token');
+
+    if (!token?.value) {
+      console.error('No token found in cookies');
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    // Verify token and type assert the payload
+    let payload;
+    try {
+      payload = await verifyJWT(token.value) as CustomJWTPayload;
+    } catch (verifyError) {
+      console.error('Token verification failed:', verifyError);
+      return NextResponse.json(
+        { error: 'Invalid token' },
+        { status: 401 }
+      );
+    }
+    
+    if (!payload.uid) {
+      console.error('No user ID in token payload');
+      return NextResponse.json(
+        { error: 'Invalid token payload' },
+        { status: 401 }
+      );
+    }
+
     const { postId, content } = await request.json();
     if (!postId || !content) {
       return NextResponse.json({ error: "Post ID and content are required" }, { status: 400 });
     }
 
-    const user = await verifyAuth(request);
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Validate content length if needed
+    if (content.trim().length === 0) {
+      return NextResponse.json({ error: "Comment cannot be empty" }, { status: 400 });
     }
 
-    // Fetch the username from the users collection once per user session
-    const userDoc = await db.collection("users").doc(user.uid).get();
-    const username = userDoc.exists ? userDoc.data()?.username : null;
+    // Fetch the username from the users collection
+    const userDoc = await db.collection("users").doc(payload.uid).get();
+    if (!userDoc.exists) {
+      console.error(`User document not found for ID: ${payload.uid}`);
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    const username = userDoc.data()?.username;
 
     const postRef = db.collection("posts").doc(postId);
+    const postDoc = await postRef.get();
 
-    // Prepare the new comment
+    if (!postDoc.exists) {
+      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    }
+
+    // Start a batch write
+    const batch = db.batch();
+
+    // Create a new comment document in the subcollection
+    const newCommentRef = postRef.collection('comments').doc();
     const newComment = {
-      id: Date.now().toString(),
-      authorId: user.uid,
+      authorId: payload.uid,
       content,
-      author: username || user.uid, // Use username fetched from users collection
-      createdAt: getFormattedDate(),
+      author: username || payload.uid,
+      createdAt: Timestamp.now(),
       likes: 0,
       likedBy: []
     };
 
-    // Start a write batch for more flexibility
-    const batch = db.batch();
+    // Add the comment to the subcollection
+    batch.set(newCommentRef, newComment);
+
+    // Update the comment count in the post document
     batch.update(postRef, {
-      comments: FieldValue.arrayUnion(newComment),
-      commentCount: FieldValue.increment(1)
+      commentCount: (postDoc.data()?.commentCount || 0) + 1
     });
 
     // Commit the batch write
     await batch.commit();
 
-    return NextResponse.json(newComment, { status: 201 });
+    return NextResponse.json({
+      id: newCommentRef.id,
+      ...newComment
+    }, { status: 201 });
   } catch (error) {
-    console.error("Error adding comment:", error);
+    console.error("Unexpected error adding comment:", error);
     return NextResponse.json({ error: "Failed to add comment" }, { status: 500 });
   }
 }
