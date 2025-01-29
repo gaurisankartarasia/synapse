@@ -1,13 +1,9 @@
-
 // export interface Comment {
 //   id: string;
 //   authorId: string;
 //   author: string;
 //   content: string;
-//   createdAt: {
-//     _seconds: number;
-//     _nanoseconds: number;
-//   };
+//   createdAt: string;
 //   likes: number;
 //   likedBy: string[];
 //   replies: Reply[];
@@ -24,20 +20,24 @@
 //   likedBy: string[];
 // }
 
-// types/comments.ts
+//   export type Report = {
+//     commentId: string;
+//     reporterId: string;
+//     reason: string;
+//     createdAt: string;
+//     postId: string;
+//   };
+
+
 export interface Comment {
   id: string;
   authorId: string;
   author: string;
   content: string;
-  createdAt: Date;
-  likeCount: number;
-  replyCount: number;
-  isEdited: boolean;
-  lastEditedAt: Date | null;
-  hasLiked: boolean;
+  createdAt: string;
+  likes: number;
+  likedBy: string[];
   replies: Reply[];
-  username:string
 }
 
 export interface Reply {
@@ -45,19 +45,15 @@ export interface Reply {
   authorId: string;
   author: string;
   content: string;
-  createdAt: Date;
-  likeCount: number;
-  isEdited: boolean;
-  lastEditedAt: Date | null;
-  hasLiked: boolean;
+  createdAt: string;
+  likes: number;
+  likedBy: string[];
 }
 
-
-  export type Report = {
-    commentId: string;
-    reporterId: string;
-    reason: string;
-    createdAt: string;
-    postId: string;
-  };
-  
+export type Report = {
+  commentId: string;
+  reporterId: string;
+  reason: string;
+  createdAt: string;
+  postId: string;
+};
