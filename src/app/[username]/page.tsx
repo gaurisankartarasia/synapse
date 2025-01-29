@@ -19,7 +19,8 @@ const PublicProfilePage: React.FC = () => {
 
   const [user, setUser] = useState<any>(null);
   const [followersCount, setFollowersCount] = useState<number>(0);
-  const [followStatus, setFollowStatus] = useState<string>(""); 
+  const [followingCount, setFollowingCount] = useState<number>(0);
+  const [followStatus, setFollowStatus] = useState<string>(""); // "" | "requested" | "following"
   const [followersList, setFollowersList] = useState<any[]>([]);
   const [followingList, setFollowingList] = useState<any[]>([]);
   const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
@@ -68,6 +69,8 @@ const PublicProfilePage: React.FC = () => {
   
       if (followResponse.status === 403) {
         console.log("You have blocked this user. Skipping followers/following fetch.");
+        setFollowersCount(0);
+        setFollowingCount(0);
         setFollowStatus("");
         return;
       }
@@ -75,7 +78,13 @@ const PublicProfilePage: React.FC = () => {
       if (!followResponse.ok) {
         throw new Error("Failed to fetch follow data");
       }
- 
+  
+      const followData = await followResponse.json();
+      setFollowersCount(followData.followersCount || 0);
+      setFollowingCount(followData.followingCount || 0);
+      setFollowStatus(
+        followData.isFollowing ? "following" : followData.isRequested ? "requested" : ""
+      );
     } catch (error) {
       console.error("Error fetching user data:", error);
       // router.push("/signin");
@@ -198,19 +207,17 @@ const PublicProfilePage: React.FC = () => {
 
   return (
     <main className="profile-container">
-      <Button className="flex justify-end">
-      </Button>
+          
       <ProfileHeader
         photoURL={user.photoURL || "/default.webp"}
         username={user.username}
         displayName={user.displayName || user.username}
         verified={user.verified}
         bio={user.bio}
-       
       />
       <FollowStats
-         followersCount={user.followersCount}
-         followingCount={user.followingCount}
+        followersCount={followersCount}
+        followingCount={followingCount}
         followStatus={followStatus}
         onFollowersClick={() => handleModalOpen("followers")}
         onFollowingClick={() => handleModalOpen("following")}
@@ -241,6 +248,12 @@ const PublicProfilePage: React.FC = () => {
 };
 
 export default PublicProfilePage;
+
+
+
+
+
+
 
 
 

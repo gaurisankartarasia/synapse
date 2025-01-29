@@ -94,8 +94,10 @@ interface FirestorePost {
 }
 
 interface FirestoreUser {
-  username?: string;
-  // Add other user fields if needed
+  username: string;
+  displayName:string;
+  photoURL: string
+  verified:boolean;
 }
 
 // Cache the batch read operation for the posts
@@ -143,13 +145,17 @@ export async function GET(request: NextRequest, { params }: Props) {
     const userData = userDoc.data() as FirestoreUser | undefined;
     
     // Get username or default to 'Unknown'
-    const authorName = userData?.username || 'Unknown';
+    const authorName = userData?.username;
+    const displayName = userData?.displayName;
+    const photoURL = userData?.photoURL;
+    const verified = userData?.verified;
 
     // Format response data
     const responseData = {
       uid: postData.uid,
       id,
-      title: postData.title,
+      photoURL,
+      displayName,
       content: postData.content,
       author: authorName,
       createdAt: postData.createdAt,

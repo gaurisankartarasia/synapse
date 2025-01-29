@@ -42,7 +42,7 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
         setCurrentUser(userData);
       } catch (error) {
         console.error('Auth verification failed:', error);
-        router.push('/login');
+        router.push('/signin');
       }
     }
 

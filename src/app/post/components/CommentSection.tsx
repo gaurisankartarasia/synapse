@@ -1,361 +1,234 @@
+// components/CommentSection.tsx
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { formatRelativeTime } from '@/utils/date';
+import { Avatar, Button , TextField} from '@mui/material';
+import { Trash2, Heart, Reply, ChevronDown, ChevronUp } from 'lucide-react';
+import { CommentReplies } from './CommentReplies';
 
+interface Comment {
+  id: string;
+  authorId: string;
+  authorUsername?: string;
+  authorPhotoURL?: string;
+  content: string;
+  createdAt: any;
+  likeCount: number;
+  replyCount: number;
+  isLiked?: boolean;
+}
 
-// // CommentSection.tsx
-// import { useAuth } from "@/hooks/useAuth";
-// import { useComments } from "@/hooks/useComments";
-// import { CommentItem } from "./commentItem"
-// import { CommentForm } from './commentForm'
-
-// type CommentSectionProps = {
-//   postId: string;
-// };
-
-// export const CommentSection = ({ postId }: CommentSectionProps) => {
-//   const { user } = useAuth();
-//   const { comments, loading, deleteLoading, setComments, setDeleteLoading } = useComments(postId);
-
-//   const handleAddComment = async (content: string) => {
-//     if (!user) return;
-    
-//     try {
-//       const response = await fetch("/api/post/comments", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ postId, content }),
-//       });
-
-//       if (!response.ok) throw new Error("Failed to post comment");
-//       await response.json();
-//     } catch (error) {
-//       console.error(error);
-//       alert("Error adding comment");
-//     }
-//   };
-
-//   const handleDeleteComment = async (commentId: string) => {
-//     if (!user || deleteLoading) return;
-    
-//     try {
-//       setDeleteLoading(commentId);
-      
-//       const response = await fetch(`/api/post/comments/${commentId}`, {
-//         method: "DELETE",
-//         headers: {
-//           "Content-Type": "application/json"
-//         },
-//         credentials: 'include', 
-//         body: JSON.stringify({ postId }),
-//       });
-
-//       if (!response.ok) {
-//         const errorData = await response.json();
-//         throw new Error(errorData.error || "Failed to delete comment");
-//       }
-
-//       setComments((prev) => prev.filter((comment) => comment.id !== commentId));
-//     } catch (error) {
-//       console.error("Error deleting comment:", error);
-//       alert(error instanceof Error ? error.message : "Error deleting comment");
-//     } finally {
-//       setDeleteLoading(null);
-//     }
-//   };
-
-//   const handleLike = async (commentId: string) => {
-//     if (!user) return;
-    
-//     try {
-//       // Optimistic update
-//       setComments((prev) =>
-//         prev.map((comment) => {
-//           if (comment.id === commentId) {
-//             const isLiked = comment.likedBy?.includes(user.uid);
-//             return {
-//               ...comment,
-//               likes: isLiked ? comment.likes - 1 : comment.likes + 1,
-//               likedBy: isLiked
-//                 ? comment.likedBy.filter((id) => id !== user.uid)
-//                 : [...(comment.likedBy || []), user.uid]
-//             };
-//           }
-//           return comment;
-//         })
-//       );
-
-//       // const token = await getIdToken();
-//       await fetch(`/api/post/comments/${commentId}/like`, {
-//         method: "POST",
-//         headers: {
-//           // Authorization: `Bearer ${token}`,
-//           "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify({ postId })
-//       });
-//     } catch (error) {
-//       // Revert optimistic update on error
-//       const response = await fetch(`/api/post/comments/${postId}`);
-//       const { comments: updatedComments } = await response.json();
-//       setComments(updatedComments);
-//     }
-//   };
-
-//   const handleReport = async (commentId: string, reason: string) => {
-//     if (!user) return;
-    
-//     try {
-//       // const token = await getIdToken();
-//       const response = await fetch(`/api/post/comments/${commentId}/report`, {
-//         method: "POST",
-//         headers: {
-//           // Authorization: `Bearer ${token}`,
-//           "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify({ reason, postId })
-//       });
-
-//       if (!response.ok) throw new Error("Failed to report comment");
-//       alert("Comment reported successfully");
-//     } catch (error) {
-//       console.error(error);
-//       alert("Error reporting comment");
-//     }
-//   };
-
-//   const handleReportReply = async (commentId: string, replyId: string, reason: string) => {
-//     if (!user) return;
-  
-//     try {
-//       // const token = await getIdToken();
-//       const response = await fetch(`/api/post/comments/${commentId}/replies/${replyId}/report`, {
-//         method: "POST",
-//         headers: {
-//           // Authorization: `Bearer ${token}`,
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ postId, reason }),
-//       });
-  
-//       if (!response.ok) throw new Error("Failed to report reply");
-//       alert("Reply reported successfully");
-//     } catch (error) {
-//       console.error("Error reporting reply:", error);
-//       alert("Error reporting reply");
-//     }
-//   };
-  
-
-//   const handleAddReply = async (commentId: string, content: string) => {
-//     if (!user) return;
-    
-//     try {
-//       // const token = await getIdToken();
-//       const response = await fetch(`/api/post/comments/${commentId}/reply`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           // Authorization: `Bearer ${token}`,
-//         },
-//         body: JSON.stringify({ postId, content }),
-//       });
-
-//       if (!response.ok) throw new Error("Failed to add reply");
-//     } catch (error) {
-//       console.error(error);
-//       alert("Error adding reply");
-//     }
-//   };
-
-//   const handleDeleteReply = async (commentId: string, replyId: string) => {
-//     if (!user) return;
-    
-//     try {
-//       // const token = await getIdToken();
-//       const response = await fetch(`/api/post/comments/${commentId}/replies/${replyId}`, {
-//         method: "DELETE",
-//         headers: {
-//           // Authorization: `Bearer ${token}`,
-//           "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify({ postId }),
-//       });
-
-//       if (!response.ok) throw new Error("Failed to delete reply");
-//     } catch (error) {
-//       console.error(error);
-//       alert("Error deleting reply");
-//     }
-//   };
-
-//   const handleLikeReply = async (commentId: string, replyId: string) => {
-//     if (!user) return;
-    
-//     try {
-//       // const token = await getIdToken();
-//       await fetch(`/api/post/comments/${commentId}/replies/${replyId}/like`, {
-//         method: "POST",
-//         headers: {
-//           // Authorization: `Bearer ${token}`,
-//           "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify({ postId })
-//       });
-//     } catch (error) {
-//       console.error(error);
-//       alert("Error liking reply");
-//     }
-//   };
-
-//   return (
-//     <div className="comments-section mt-6">
-//       <h3><span>{comments.length || 'No'}</span> Comments</h3>
-//       {loading ? (
-//         "Loading comments..."
-//       ) : (
-//         <ul>
-//           {comments.map((comment) => (
-//             <li key={comment.id}>
-//               <CommentItem
-//                 comment={comment}
-//                 currentUserId={user?.uid}
-//                 postId={postId}
-//                 onDelete={handleDeleteComment}
-//                 onLike={handleLike}
-//                 onReport={handleReport}
-//                 onReportReply={handleReportReply}
-//                 onAddReply={handleAddReply}
-//                 onDeleteReply={handleDeleteReply}
-//                 onLikeReply={handleLikeReply}
-//                 isDeleting={deleteLoading === comment.id}
-//               />
-//             </li>
-//           ))}
-//         </ul>
-//       )}
-//       {user && <CommentForm onSubmit={handleAddComment} />}
-//     </div>
-//   );
-// };
-
-
-
-
-
-
-
-
-// CommentSection.tsx
-import { useAuth } from "@/hooks/useAuth";
-import { useComments } from "@/hooks/useComments";
-import  {CommentItem} from "./commentItem";
-import  {CommentForm}  from './commentForm';
-import { Alert, CircularProgress } from '@mui/material';
-
-type CommentSectionProps = {
+interface CommentSectionProps {
   postId: string;
-};
+}
 
 export const CommentSection = ({ postId }: CommentSectionProps) => {
   const { user } = useAuth();
-  const {
-    comments,
-    loading,
-    error,
-    deleteLoading,
-    addComment,
-    deleteComment,
-    toggleCommentLike,
-    addReply,
-    deleteReply,
-    toggleReplyLike
-  } = useComments(postId, user?.uid);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [newComment, setNewComment] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
 
-  const handleReport = async (commentId: string, reason: string) => {
-    if (!user) return;
-    
+  useEffect(() => {
+    fetchComments();
+  }, [postId]);
+
+  const fetchComments = async () => {
     try {
-      const response = await fetch(`/api/post/comments/${commentId}/report`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ postId, reason })
-      });
-
-      if (!response.ok) throw new Error("Failed to report comment");
-      alert("Comment reported successfully");
-    } catch (error) {
-      console.error("Error reporting comment:", error);
-      alert("Error reporting comment");
+      const response = await fetch(`/api/comments/${postId}`);
+      if (!response.ok) throw new Error('Failed to fetch comments');
+      const data = await response.json();
+      setComments(data);
+    } catch (err) {
+      setError('Failed to load comments');
+      console.error('Error fetching comments:', err);
     }
   };
 
-  const handleReportReply = async (commentId: string, replyId: string, reason: string) => {
-    if (!user) return;
-  
+  const handleSubmitComment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user || !newComment.trim()) return;
+
+    setIsLoading(true);
     try {
-      const response = await fetch(`/api/post/comments/${commentId}/reply/${replyId}/report`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ postId, reason })
+      const response = await fetch(`/api/comments/${postId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content: newComment.trim(),
+          authorId: user.uid,
+        }),
       });
-  
-      if (!response.ok) throw new Error("Failed to report reply");
-      alert("Reply reported successfully");
-    } catch (error) {
-      console.error("Error reporting reply:", error);
-      alert("Error reporting reply");
+
+      if (!response.ok) throw new Error('Failed to post comment');
+
+      setNewComment('');
+      await fetchComments();
+    } catch (err) {
+      setError('Failed to post comment');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center py-8">
-        <CircularProgress size={40} />
-      </div>
-    );
-  }
+  const handleDeleteComment = async (commentId: string) => {
+    if (!user) return;
 
-  if (error) {
-    return (
-      <Alert severity="error" className="my-4">
-        {error}
-      </Alert>
-    );
-  }
+    try {
+      const response = await fetch(`/api/comments/${postId}/${commentId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) throw new Error('Failed to delete comment');
+      await fetchComments();
+    } catch (err) {
+      setError('Failed to delete comment');
+    }
+  };
+
+  const handleLikeComment = async (commentId: string) => {
+    if (!user) return;
+
+    try {
+      const response = await fetch(`/api/comments/${postId}/${commentId}/like`, {
+        method: 'POST',
+      });
+
+      if (!response.ok) throw new Error('Failed to like comment');
+      
+      // Optimistically update the UI
+      setComments(comments.map(comment => {
+        if (comment.id === commentId) {
+          return {
+            ...comment,
+            likeCount: comment.isLiked ? comment.likeCount - 1 : comment.likeCount + 1,
+            isLiked: !comment.isLiked,
+          };
+        }
+        return comment;
+      }));
+    } catch (err) {
+      setError('Failed to like comment');
+    }
+  };
+
+  const toggleReplies = (commentId: string) => {
+    setExpandedComments(prev => {
+      const next = new Set(prev);
+      if (next.has(commentId)) {
+        next.delete(commentId);
+      } else {
+        next.add(commentId);
+      }
+      return next;
+    });
+  };
 
   return (
-    <div className="comments-section mt-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <h3 className="text-xl font-semibold">
-          {comments.length > 0 ? `${comments.length} Comments` : 'No Comments Yet'}
-        </h3>
-      </div>
+    <div className="space-y-6">
+      <h3 className="text-xl font-semibold">Comments</h3>
+      
+      {user ? (
+        <form onSubmit={handleSubmitComment} className="space-y-4">
+          <TextField
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="Write a comment..."
+            className="w-full min-h-[100px]"
+          />
+          <Button 
+            type="submit" 
+            disabled={isLoading || !newComment.trim()}
+          >
+            {isLoading ? 'Posting...' : 'Post Comment'}
+          </Button>
+        </form>
+      ) : (
+        <p className="text-gray-600">Please sign in to comment.</p>
+      )}
 
-      {user && <CommentForm onSubmit={addComment} />}
+      {error && (
+        <div className="text-red-500 p-2">{error}</div>
+      )}
 
       <div className="space-y-4">
         {comments.map((comment) => (
-          <CommentItem
-            key={comment.id}
-            comment={comment}
-            currentUserId={user?.uid}
-            postId={postId}
-            onDelete={deleteComment}
-            onLike={toggleCommentLike}
-            onReport={handleReport}
-            onReportReply={handleReportReply}
-            onAddReply={addReply}
-            onDeleteReply={deleteReply}
-            onLikeReply={toggleReplyLike}
-            isDeleting={deleteLoading === comment.id}
-          />
+          <div key={comment.id} className="border rounded-lg p-4">
+            <div className="flex items-center gap-3 mb-2">
+              <Avatar>
+                <img
+                  src={comment.authorPhotoURL || '/default-avatar.png'}
+                  alt={comment.authorUsername || 'User'}
+                  className="h-8 w-8 rounded-full"
+                />
+              </Avatar>
+              <div className="flex-grow">
+                <p className="font-semibold">{comment.authorUsername || 'Anonymous'}</p>
+                <p className="text-sm text-gray-500">
+                  {formatRelativeTime(comment.createdAt)}
+                </p>
+              </div>
+              {user?.uid === comment.authorId && (
+                <Button
+                 
+                  onClick={() => handleDeleteComment(comment.id)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+            
+            <p className="text-gray-800 mt-2">{comment.content}</p>
+            
+            <div className="flex items-center gap-4 mt-4 text-sm">
+              <Button
+           
+                onClick={() => handleLikeComment(comment.id)}
+                className={comment.isLiked ? "text-red-500" : "text-gray-600"}
+              >
+                <Heart className="h-4 w-4 mr-1" />
+                {comment.likeCount}
+              </Button>
+
+
+              {user && (  // Only show reply button if user is logged in
+    <Button
+      onClick={() => toggleReplies(comment.id)}
+      className="text-gray-600"
+    >
+      <Reply className="h-4 w-4 mr-1" />
+      Reply
+    </Button>
+  )}
+
+              {comment.replyCount > 0 && (
+                <Button
+                
+                  onClick={() => toggleReplies(comment.id)}
+                  className="text-gray-600"
+                >
+                  {expandedComments.has(comment.id) ? (
+                    <ChevronUp className="h-4 w-4 mr-1" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 mr-1" />
+                  )}
+                  {comment.replyCount} {comment.replyCount === 1 ? 'reply' : 'replies'}
+                </Button>
+              )}
+            </div>
+
+            {expandedComments.has(comment.id) && (
+              <CommentReplies
+                postId={postId}
+                commentId={comment.id}
+                currentUser={user}
+              />
+            )}
+          </div>
         ))}
       </div>
     </div>
   );
 };
-

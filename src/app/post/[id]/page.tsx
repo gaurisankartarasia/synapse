@@ -9,22 +9,8 @@ import Likebutton from "../components/LikeButton";
 import ImageGallery from "../components/ImageGallery";
 import { formatRelativeTime } from "@/utils/date";
 import { CircularProgress } from "@mui/material";
+import { Post } from "@/types/post";
 
-interface Post {
-  id: string;
-  title: string;
-  content: string;
-  author: string;
-  createdAt: {
-    _seconds: number;
-    _nanoseconds: number;
-};    
-  imageUrls: string[];
-  uid: string;
-  comments: Comment[];
-  commentCount: number;
-  postId: string;
-}
 
 const PostPage = () => {
   const params = useParams();
@@ -62,7 +48,7 @@ const PostPage = () => {
 
   if (loading) {
     return <CircularProgress/>;
-  }
+  } 
 
   if (!post) {
     return (
@@ -86,35 +72,38 @@ const PostPage = () => {
         ← Back to Feed
       </Link>
 
-      <div className="p-6">
-        <PostHeader authorUsername={post.author}/>
+      <div className="flex items-center gap-3">
+        <PostHeader authorUsername={post.author}
+        authorDisplayName={post.displayName}
+        authorPhotoURL={post.photoURL}
+        />
 
-        <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-        <div className="flex items-center gap-2 text-gray-600 mb-6">
         
-          <small >
+          <small className="text-gray-600">
             {formatRelativeTime(post.createdAt)}
           </small>
         </div>
+
+        <div className="prose prose-lg max-w-none mt-6">{post.content}</div>
 
         {post.imageUrls && post.imageUrls.length > 0 && (
           <ImageGallery images={post.imageUrls} />
         )}
 
-        <div className="prose prose-lg max-w-none mt-6">{post.content}</div>
+      
 
-        <div className="mt-6 pt-6 border-t">
+        <div className="mt-6 pt-6 border-t flex gap-4 items-center">
         <Likebutton 
                   postId={post.id}
                 
-                />    
+                />   
+                <p>{post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}</p> 
                     </div>
 
         <div className="mt-6">
           <CommentSection postId={post.id} />
         </div>
       </div>
-    </div>
   );
 };
 

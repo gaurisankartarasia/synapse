@@ -12,6 +12,7 @@ import {CircularProgress} from '@mui/material'
 import {Card} from '@mui/material'
 import UserModal from './FollowModal';
 import {Button} from '@mui/material'
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -67,6 +68,10 @@ export default function ProfilePage() {
           )}
           <div>
           <p className="text-2xl ">@{profile.username}</p>
+
+          {profile.verified && (
+            <VerifiedIcon/>
+          )}
 
             <p >{profile.displayName}</p>
             <p className="text-gray-600">{profile.uid}</p>

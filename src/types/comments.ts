@@ -37,6 +37,7 @@ export interface Comment {
   lastEditedAt: Date | null;
   hasLiked: boolean;
   replies: Reply[];
+  username:string
 }
 
 export interface Reply {
