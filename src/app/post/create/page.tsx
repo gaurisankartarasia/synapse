@@ -1,11 +1,11 @@
-
+//src/app/post/create/page.tsx
 "use client";
 import { useState, useEffect } from "react";
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebaseClient";
 import { onAuthStateChanged, getIdToken } from "firebase/auth";
-import { CircularProgress } from "@mui/material";
+import { Skeleton, Switch } from "@mui/material";
 
 const PostPage = () => {
   const router = useRouter();
@@ -16,6 +16,7 @@ const PostPage = () => {
   const [images, setImages] = useState<File[]>([]);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [allowCommenting, setAllowCommenting] = useState<boolean>(true);
 
 
   useEffect(() => {
@@ -70,6 +71,10 @@ const PostPage = () => {
   };
 
 
+  const handleCommentingToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAllowCommenting(event.target.checked); // Toggle the boolean value
+  };
+
   const handleSubmit = async () => {
     setLoading(true);
     try {
@@ -107,7 +112,8 @@ const PostPage = () => {
           title: postTitle,
           content,
           imageUrls: uploadedImageUrls,
-          hashtags: hashtags, // Add hashtags to the request
+          hashtags: hashtags,
+          allowCommenting,
         }),
       });
 
@@ -129,7 +135,7 @@ const PostPage = () => {
   return (
     <div className="p-4 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Write a post</h1>
-      {loading && <CircularProgress/>}
+      {loading && <Skeleton/>}
       
       
    
@@ -194,6 +200,15 @@ const PostPage = () => {
           </div>
         )}
       </div>
+
+      <div className="flex items-center mb-4">
+        <span className="mr-2">Allow Commenting</span>
+        <Switch
+          checked={allowCommenting}
+          onChange={handleCommentingToggle}
+        />
+      </div>
+
       <div className="flex gap-4">
         <button
           onClick={handleSubmit}

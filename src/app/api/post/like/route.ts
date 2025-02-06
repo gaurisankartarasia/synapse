@@ -1,103 +1,5 @@
 
 
-// // app/api/post/like/route.ts
-// import { db } from "@/lib/firebaseAdmin";
-// import { NextRequest, NextResponse } from "next/server";
-// import { verifyAuth } from "@/utils/auth";
-// import { FieldValue } from "firebase-admin/firestore";
-
-// // Store likes as a map inside the post document
-// // Structure: { likes: { total: number, userLikes: { [uid]: timestamp } } }
-// export async function POST(request: NextRequest) {
-//   try {
-//     const decodedToken = await verifyAuth(request);
-//     const uid = decodedToken.uid;
-//     const { postId } = await request.json();
-
-//     if (!postId) {
-//       return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
-//     }
-
-//     const postRef = db.collection("posts").doc(postId);
-    
-//     // Use a transaction to ensure atomic updates
-//     const result = await db.runTransaction(async (transaction) => {
-//       const postDoc = await transaction.get(postRef);
-      
-//       if (!postDoc.exists) {
-//         throw new Error("Post not found");
-//       }
-
-//       const likesData = postDoc.data()?.likes || { total: 0, userLikes: {} };
-//       const hasLiked = likesData.userLikes?.[uid];
-
-//       if (hasLiked) {
-//         // Unlike: Remove user from userLikes and decrement total
-//         delete likesData.userLikes[uid];
-//         likesData.total = Math.max(0, (likesData.total || 1) - 1);
-        
-//         transaction.update(postRef, {
-//           likes: likesData
-//         });
-        
-//         return { liked: false, total: likesData.total };
-//       } else {
-//         // Like: Add user to userLikes and increment total
-//         likesData.userLikes = {
-//           ...likesData.userLikes,
-//           [uid]: FieldValue.serverTimestamp()
-//         };
-//         likesData.total = (likesData.total || 0) + 1;
-        
-//         transaction.update(postRef, {
-//           likes: likesData
-//         });
-        
-//         return { liked: true, total: likesData.total };
-//       }
-//     });
-
-//     return NextResponse.json({
-//       status: 'ok', 
-//     });
-//   } catch (error) {
-//     console.error("Error handling like:", error);
-//     return NextResponse.json({ error: "Failed to process like" }, { status: 500 });
-//   }
-// }
-
-// export async function GET(request: NextRequest) {
-//   try {
-//     const decodedToken = await verifyAuth(request);
-//     const uid = decodedToken.uid;
-    
-//     const url = new URL(request.url);
-//     const postId = url.searchParams.get("postId");
-
-//     if (!postId) {
-//       return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
-//     }
-
-//     const postDoc = await db.collection("posts").doc(postId).get();
-//     const likesData = postDoc.data()?.likes || { total: 0, userLikes: {} };
-    
-//     return NextResponse.json({ 
-//       liked: !!likesData.userLikes?.[uid],
-//       total: likesData.total || 0
-//     });
-//   } catch (error) {
-//     console.error("Error checking like status:", error);
-//     return NextResponse.json({ error: "Failed to check like status" }, { status: 500 });
-//   }
-// }
-
-
-
-
-
-
-
-
 // app/api/post/like/route.ts
 import { db } from "@/lib/firebaseAdmin";
 import { NextRequest, NextResponse } from "next/server";
@@ -108,7 +10,6 @@ import { FieldValue } from "firebase-admin/firestore";
 
 export async function POST(request: NextRequest) {
   try {
-    // Get token from cookies
     const cookieStore = await cookies();
     const token = cookieStore.get('token');
 
@@ -119,7 +20,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify token and type assert the payload
     const payload = await verifyJWT(token.value) as CustomJWTPayload;
     
     if (!payload.uid) {
@@ -137,7 +37,8 @@ export async function POST(request: NextRequest) {
     }
 
     const postRef = db.collection("posts").doc(postId);
-    
+    const likesRef = postRef.collection("likes").doc(uid);
+
     // Use a transaction to ensure atomic updates
     const result = await db.runTransaction(async (transaction) => {
       const postDoc = await transaction.get(postRef);
@@ -146,32 +47,24 @@ export async function POST(request: NextRequest) {
         throw new Error("Post not found");
       }
 
-      const likesData = postDoc.data()?.likes || { total: 0, userLikes: {} };
-      const hasLiked = likesData.userLikes?.[uid];
+      const likeCount = postDoc.data()?.likeCount || 0;
+      const hasLiked = (await transaction.get(likesRef)).exists;
 
       if (hasLiked) {
-        // Unlike: Remove user from userLikes and decrement total
-        delete likesData.userLikes[uid];
-        likesData.total = Math.max(0, (likesData.total || 1) - 1);
+        // Unlike: Remove like document and decrement like count
+        transaction.delete(likesRef);
+        transaction.update(postRef, { likeCount: FieldValue.increment(-1) });
         
-        transaction.update(postRef, {
-          likes: likesData
-        });
-        
-        return { liked: false, total: likesData.total };
+        return { liked: false, total: likeCount - 1 };
       } else {
-        // Like: Add user to userLikes and increment total
-        likesData.userLikes = {
-          ...likesData.userLikes,
-          [uid]: FieldValue.serverTimestamp()
-        };
-        likesData.total = (likesData.total || 0) + 1;
-        
-        transaction.update(postRef, {
-          likes: likesData
+        // Like: Add like document and increment like count
+        transaction.set(likesRef, {
+          uid: payload.uid,
+          timestamp: FieldValue.serverTimestamp(),
         });
-        
-        return { liked: true, total: likesData.total };
+        transaction.update(postRef, { likeCount: FieldValue.increment(1) });
+
+        return { liked: true, total: likeCount + 1 };
       }
     });
 
@@ -186,7 +79,6 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    // Get token from cookies
     const cookieStore = await cookies();
     const token = cookieStore.get('token');
 
@@ -197,7 +89,6 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Verify token and type assert the payload
     const payload = await verifyJWT(token.value) as CustomJWTPayload;
     
     if (!payload.uid) {
@@ -216,11 +107,13 @@ export async function GET(request: NextRequest) {
     }
 
     const postDoc = await db.collection("posts").doc(postId).get();
-    const likesData = postDoc.data()?.likes || { total: 0, userLikes: {} };
+    const likeCount = postDoc.data()?.likeCount || 0;
+    const likesRef = db.collection("posts").doc(postId).collection("likes").doc(uid);
+    const hasLiked = (await likesRef.get()).exists;
     
     return NextResponse.json({ 
-      liked: !!likesData.userLikes?.[uid],
-      total: likesData.total || 0
+      liked: hasLiked,
+      total: likeCount
     });
   } catch (error) {
     console.error("Error checking like status:", error);

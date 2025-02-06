@@ -7,7 +7,7 @@ import axios from "axios";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { auth } from "@/lib/firebaseClient";
-import { OutlinedInput, Card, CardActionArea, CircularProgress } from '@mui/material';
+import { OutlinedInput, Card, CardActionArea, Skeleton } from '@mui/material';
 
 interface SearchResult {
   uid: string;
@@ -49,7 +49,7 @@ const SearchPageContent: React.FC = () => {
       const response = await axios.get<{ users: SearchResult[] }>(
         `/api/search?q=${encodeURIComponent(query)}`,
         {
-          withCredentials: true // Important: This ensures cookies are sent
+          withCredentials: true 
         }
       );
       setSearchResults(response.data.users);
@@ -106,7 +106,7 @@ const SearchPageContent: React.FC = () => {
         />
       </form>
 
-      {loading && <CircularProgress/>}
+      {loading && <Skeleton/>}
 
       {error && <div className="text-red-500 text-center">{error}</div>}
 
@@ -119,10 +119,12 @@ const SearchPageContent: React.FC = () => {
               className="cursor-pointer search_item"
             >
               <CardActionArea>
-              <img
+              <Image
                 src={`/api/proxy?url=${encodeURIComponent(user.photoURL || '/default.webp')}`}
                 alt={user.username}
                 className="search_avatar"
+                height={50}
+                width={50}
               />
               <div className="search_item_data">
                 <h1 className="search_username">@{user.username}</h1>

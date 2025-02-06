@@ -1,110 +1,68 @@
-// import { Server as NetServer } from 'http';
-// import { Server as SocketIOServer } from 'socket.io';
-// import { NextApiResponse } from 'next';
+import { useState, useEffect, useCallback } from 'react';
 
-// export type NextApiResponseWithSocket = NextApiResponse & {
-//   socket: {
-//     server: NetServer & {
-//       io?: SocketIOServer;
-//     };
-//   };
-// };
+interface WebSocketHook {
+  socket: WebSocket | null;
+  messages: any[];
+  isConnected: boolean;
+  sendMessage: (message: any) => void;
+  error: Error | null;
+}
 
-// export const initSocket = (res: NextApiResponseWithSocket) => {
-//   if (!res.socket.server.io) {
-//     const io = new SocketIOServer(res.socket.server);
-//     res.socket.server.io = io;
+export function useWebSocket(url: string, onMessageCallback?: (message: any) => void): WebSocketHook {
+  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const [messages, setMessages] = useState<any[]>([]);
+  const [isConnected, setIsConnected] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
-//     io.on('connection', (socket) => {
-//       console.log('Client connected:', socket.id);
-
-//       // Join user to their specific room
-//       socket.on('join-user-room', (userId: string) => {
-//         socket.join(userId);
-//       });
-
-//       // Handle chat room updates
-//       socket.on('join-chat-room', (roomId: string) => {
-//         socket.join(roomId);
-//       });
-
-//       socket.on('disconnect', () => {
-//         console.log('Client disconnected:', socket.id);
-//       });
-//     });
-//   }
-//   return res.socket.server.io;
-// };
-
-
-
-
-
-
-
-
-import { Server as SocketIO } from 'socket.io';
-import { NextResponse } from 'next/server';
-import { auth } from '@/lib/firebaseAdmin';
-
-export async function GET(req: Request) {
-  try {
-    // @ts-ignore
-    if (!global.io) {
-      console.log('Initializing Socket.io server...');
-      // @ts-ignore
-      global.io = new SocketIO(3001, {
-        cors: {
-          origin: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
-          methods: ['GET', 'POST'],
-          credentials: true,
-        },
-      });
-
-      // @ts-ignore
-      global.io.use(async (socket, next) => {
-        try {
-          const token = socket.handshake.auth.token;
-          if (!token) {
-            throw new Error('Authentication error');
-          }
-          
-          const decodedToken = await auth.verifyIdToken(token);
-          socket.userId = decodedToken.uid;
-          next();
-        } catch (error) {
-          next(new Error('Authentication error'));
-        }
-      });
-
-      // @ts-ignore
-      global.io.on('connection', (socket) => {
-        console.log('Socket connected:', socket.id);
-
-        socket.on('join-user-room', (userId: string) => {
-          if (socket.userId === userId) {
-            socket.join(userId);
-            console.log(`User ${userId} joined their room`);
-          }
-        });
-
-        socket.on('join-chat-room', (roomId: string) => {
-          socket.join(roomId);
-          console.log(`Socket joined room: ${roomId}`);
-        });
-
-        socket.on('disconnect', () => {
-          console.log('Socket disconnected:', socket.id);
-        });
-      });
+  const sendMessage = useCallback((message: any) => {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify(message));
     }
+  }, [socket]);
 
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('Socket initialization error:', error);
-    return NextResponse.json(
-      { error: 'Failed to start socket server', details: error },
-      { status: 500 }
-    );
-  }
+  useEffect(() => {
+    try {
+      const ws = new WebSocket(url);
+
+      ws.onopen = () => {
+        setSocket(ws);
+        setIsConnected(true);
+      };
+
+      ws.onmessage = (event) => {
+        const parsedMessage = JSON.parse(event.data);
+        setMessages((prev) => [...prev, parsedMessage]);
+        
+        if (onMessageCallback) {
+          onMessageCallback(parsedMessage);
+        }
+      };
+
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+        setError(new Error('WebSocket connection error'));
+        setIsConnected(false);
+      };
+
+      ws.onclose = () => {
+        setIsConnected(false);
+        setSocket(null);
+      };
+
+      return () => {
+        ws.close();
+      };
+    } catch (err) {
+      console.error('WebSocket setup error:', err);
+      setError(err instanceof Error ? err : new Error('Unknown WebSocket error'));
+    }
+  }, [url, onMessageCallback]);
+
+  return {
+    socket,
+    messages,
+    isConnected,
+    sendMessage,
+    error
+  };
 }

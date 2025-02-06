@@ -80,7 +80,7 @@
 //     <Modal isOpen={isOpen} onClose={onClose} title="Liked by">
 //       <div className="max-h-[70vh] overflow-y-auto">
 //         {loading ? (
-//           <CircularProgress/>
+//           <Skeleton/>
 //         ) : users.length === 0 ? (
 //           <div className="text-center p-4 text-gray-500">No likes yet</div>
 //         ) : (
@@ -125,7 +125,7 @@ import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Modal from '@/components/Modal';
 import { LikesModalProps, LikeUserResponse } from '@/types/likedby';
-import { CircularProgress } from "@mui/material";
+import { Skeleton } from "@mui/material";
 
 
 const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
@@ -139,7 +139,7 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
       setLoading(true);
       const response = await axios.get(`/api/post/like/likedby`, {
         params: { postId },
-        withCredentials: true // This enables sending cookies with the request
+        withCredentials: true 
       });
       
       setUsers(response.data.users || []);
@@ -196,7 +196,7 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
     <Modal isOpen={isOpen} onClose={onClose} title="Liked by">
       <div className="max-h-[70vh] overflow-y-auto">
         {loading ? (
-          <CircularProgress/>
+          <Skeleton/>
         ) : users.length === 0 ? (
           <div className="text-center p-4 text-gray-500">No likes yet</div>
         ) : (

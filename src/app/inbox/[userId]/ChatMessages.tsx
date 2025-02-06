@@ -4,7 +4,7 @@
 import { useEffect } from 'react';
 import { useChatMessages } from '@/hooks/useChatMessages';
 import { Message } from '@/types/chat';
-import { CircularProgress } from "@mui/material";
+import { Skeleton } from "@mui/material";
 
 
 interface ChatMessagesProps {
@@ -84,7 +84,7 @@ export default function ChatMessages({
     }
   };
 
-  if (loading) return <CircularProgress/>;
+  if (loading) return <Skeleton/>;
   if (error) return <div>Error: {error}</div>;
 
   return (

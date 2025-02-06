@@ -8,20 +8,17 @@ export type Post = {
   displayName:string;
   content: string;
   author: string;
+  is_verified:boolean;
   createdAt: {
     _seconds: number;
     _nanoseconds: number;
   };
-  likes: number;
-  authorId: string;
+  likeCount: number;
+  allowCommenting: boolean,
   commentCount: number;
   hashtags?: string[];
-  media?: {
-    type: 'image' | 'video';
-    url: string;
-    thumbnailUrl?: string;
-    duration?: number;
-  }[];
+  is_saved: boolean;
+  is_liked:boolean;
 };
 
 

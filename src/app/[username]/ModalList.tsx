@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "../../components/Modal";
 import Link from "next/link";
-import { CircularProgress } from "@mui/material";
+import { Skeleton } from "@mui/material";
 
 const ModalList: React.FC<{
   isOpen: boolean;
@@ -14,7 +14,7 @@ const ModalList: React.FC<{
     <Modal  isOpen={isOpen} onClose={onClose} title={title}>
    <div className="p-5">
       {loading ? (
-       <CircularProgress/>
+       <Skeleton/>
       ) : (
         <ul >
           {items.map((item) => (

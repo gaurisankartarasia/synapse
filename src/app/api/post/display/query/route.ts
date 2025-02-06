@@ -66,19 +66,52 @@
 //     const userRefs = uids.map(uid => db.collection('users').doc(uid));
 //     const userSnapshots = await db.getAll(...userRefs);
 
-//     // Create UID -> username map
-//     const uidToUsername = new Map<string, string>();
+//     // Create UID -> user data map
+//     const uidToUserData = new Map<string, { 
+//       username: string; 
+//       displayName: string; 
+//       photoURL: string;
+//       is_verified:boolean
+//     }>();
+    
 //     userSnapshots.forEach((userDoc) => {
 //       const userData = userDoc.data();
-//       uidToUsername.set(userDoc.id, userData?.username || 'Unknown');
+//       uidToUserData.set(userDoc.id, {
+//         username: userData?.username || 'Unknown',
+//         displayName: userData?.displayName || '',
+//         photoURL: userData?.photoURL || '',
+//         is_verified: userData?.is_verified || '',
+//       });
 //     });
 
-//     // Transform posts with usernames
-//     const formattedPosts = posts.map(post => ({
-//       ...post,
-//       author: uidToUsername.get(post.uid) || 'Unknown',
-//       createdAt: post.createdAt,
-//     }));
+
+//     const savedPosts = await db.collection('users')
+//     .doc(payload.uid)
+//     .collection('saved_posts')
+//     .where('postId', 'in', posts.map(post => post.id))
+//     .get();
+
+//   const savedPostIds = new Set(savedPosts.docs.map(doc => doc.data().postId));
+
+//     // Transform posts with user data
+//     const formattedPosts = posts.map(post => {
+//       const userData = uidToUserData.get(post.uid) || { 
+//         username: 'Unknown', 
+//         displayName: '', 
+//         photoURL: '' ,
+//         is_verified:''
+//       };
+      
+//       return {
+//         ...post,
+//         author: userData.username,
+//         displayName: userData.displayName,
+//         photoURL: userData.photoURL,
+//         is_verified:userData.is_verified,
+//         createdAt: post.createdAt,
+//         is_saved: savedPostIds.has(post.id)
+//       };
+//     });
 
 //     return new NextResponse(JSON.stringify({ 
 //       posts: formattedPosts 
@@ -99,6 +132,12 @@
 
 
 
+
+
+
+
+
+
 // app/api/post/display/query/route.ts
 import { db } from "@/lib/firebaseAdmin";
 import { NextRequest, NextResponse } from "next/server";
@@ -112,7 +151,7 @@ interface FirestorePost {
   content: string;
   imageUrls: string[];
   createdAt: FirebaseFirestore.Timestamp;
-  likes: number;
+  likeCount: number;
   commentCount: number;
 }
 
@@ -153,7 +192,6 @@ export async function GET(request: NextRequest) {
     query = query.limit(POSTS_PER_PAGE);
     const snapshot = await query.get();
     
-    // Type-safe post extraction
     const posts = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...(doc.data() as FirestorePost),
@@ -170,7 +208,8 @@ export async function GET(request: NextRequest) {
     const uidToUserData = new Map<string, { 
       username: string; 
       displayName: string; 
-      photoURL: string 
+      photoURL: string;
+      is_verified: boolean;
     }>();
     
     userSnapshots.forEach((userDoc) => {
@@ -179,15 +218,40 @@ export async function GET(request: NextRequest) {
         username: userData?.username || 'Unknown',
         displayName: userData?.displayName || '',
         photoURL: userData?.photoURL || '',
+        is_verified: userData?.is_verified || false,
       });
     });
 
-    // Transform posts with user data
+    // Fetch saved posts and likes in parallel
+    const [savedPosts, likePromises] = await Promise.all([
+      db.collection('users')
+        .doc(payload.uid)
+        .collection('saved_posts')
+        .where('postId', 'in', posts.map(post => post.id))
+        .get(),
+      Promise.all(
+        posts.map(post =>
+          db.collection('posts')
+            .doc(post.id)
+            .collection('likes')
+            .doc(payload.uid)
+            .get()
+        )
+      )
+    ]);
+
+    const savedPostIds = new Set(savedPosts.docs.map(doc => doc.data().postId));
+    const likedPosts = new Map(
+      posts.map((post, index) => [post.id, likePromises[index].exists])
+    );
+
+    // Transform posts with user data and like status
     const formattedPosts = posts.map(post => {
       const userData = uidToUserData.get(post.uid) || { 
         username: 'Unknown', 
         displayName: '', 
-        photoURL: '' 
+        photoURL: '',
+        is_verified: false
       };
       
       return {
@@ -195,7 +259,10 @@ export async function GET(request: NextRequest) {
         author: userData.username,
         displayName: userData.displayName,
         photoURL: userData.photoURL,
+        is_verified: userData.is_verified,
         createdAt: post.createdAt,
+        is_saved: savedPostIds.has(post.id),
+        is_liked: likedPosts.get(post.id) || false
       };
     });
 

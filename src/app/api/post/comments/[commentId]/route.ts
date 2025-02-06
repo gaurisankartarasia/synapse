@@ -46,7 +46,7 @@ export async function DELETE(
 
     const commentData = commentDoc.data();
 
-    if (commentData?.authorId !== payload.uid) {
+    if (commentData?.uid !== payload.uid) {
       return NextResponse.json(
         { error: "Unauthorized: You can only delete your own comments" },
         { status: 403 }

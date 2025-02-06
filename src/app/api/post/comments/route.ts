@@ -1,5 +1,5 @@
 
-// app/api/post/comments/route.ts
+ // app/api/post/comments/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
 import { cookies } from "next/headers";
@@ -9,32 +9,124 @@ import { FieldValue } from "firebase-admin/firestore";
 
 export async function GET(request: NextRequest) {
   try {
-    const postId = request.nextUrl.searchParams.get("postId");
+    // Extract postId from query parameters
+    const { searchParams } = new URL(request.url);
+    const postId = searchParams.get('postId');
+
     if (!postId) {
-      return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Post ID is required" },
+        { status: 400 }
+      );
     }
 
-    const postRef = db.collection("posts").doc(postId);
-    const commentsRef = postRef.collection("comments");
+    // Fetch comments for the post
+    const commentsSnapshot = await db
+      .collection("posts")
+      .doc(postId)
+      .collection("comments")
+      .orderBy("createdAt", "desc")
+      .get();
 
-    // Fetch comments sorted by createdAt (newest first)
-    const commentsSnapshot = await commentsRef.orderBy("createdAt", "desc").get();
+    const comments = await Promise.all(
+      commentsSnapshot.docs.map(async (commentDoc) => {
+        const commentData = commentDoc.data();
+        const commentId = commentDoc.id;
 
-    if (commentsSnapshot.empty) {
-      return NextResponse.json({ comments: [] }, { status: 200 });
-    }
+        // Fetch the author's username from the users collection using authorId
+        const userDoc = await db.collection("users").doc(commentData.uid).get();
+        const username = userDoc.exists ? userDoc.data()?.username : null;
+        const photoURL = userDoc.exists ? userDoc.data()?.photoURL : null;
+        const displayName = userDoc.exists ? userDoc.data()?.displayName : null;
+        const is_verified = userDoc.exists ? userDoc.data()?.verified : null;
+        const is_private = userDoc.exists ? userDoc.data()?.private : null;
 
-    const comments = commentsSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+        // Fetch replies for the comment
+        const repliesSnapshot = await db
+          .collection("posts")
+          .doc(postId)
+          .collection("comments")
+          .doc(commentId)
+          .collection("replies")
+          .orderBy("createdAt", "asc")
+          .get();
+
+        const replies = await Promise.all(
+          repliesSnapshot.docs.map(async (replyDoc) => {
+            const replyData = replyDoc.data();
+            const replyId = replyDoc.id;
+
+            // Fetch the author's username for each reply
+            const replyUserDoc = await db.collection("users").doc(replyData.uid).get();
+            const username = replyUserDoc.exists ? replyUserDoc.data()?.username : null;
+            const photoURL = userDoc.exists ? replyUserDoc.data()?.photoURL : null;
+            const displayName = userDoc.exists ? replyUserDoc.data()?.displayName : null;
+            const is_verified = userDoc.exists ? replyUserDoc.data()?.is_verified : null;
+            const is_private = userDoc.exists ? replyUserDoc.data()?.is_private : null;
+
+            // Fetch likes for the reply
+            const likesSnapshot = await db
+              .collection("posts")
+              .doc(postId)
+              .collection("comments")
+              .doc(commentId)
+              .collection("replies")
+              .doc(replyId)
+              .collection("likes")
+              .get();
+
+            return {
+              id: replyId,
+              uid: replyData.uid,
+              user:{
+                uid: replyData.uid,
+                username: username, 
+              photoURL:photoURL,
+              displayName: displayName,
+              is_verified : is_verified,
+              is_private : is_private,
+            
+              },
+              content: replyData.content,
+              createdAt: replyData.createdAt,
+              likes: replyData.likes || 0,
+              likedBy: likesSnapshot.docs.map((doc) => doc.id),
+            };
+          })
+        );
+
+        return {
+          id: commentId,
+          uid: commentData.uid,
+          content: commentData.content,
+          user:{
+            uid: commentData.uid,
+            username: username, 
+          photoURL:photoURL,
+          displayName: displayName,
+          is_verified : is_verified,
+          is_private : is_private,
+        
+          },
+          createdAt: commentData.createdAt,
+          likes: commentData.likes || 0,
+          likedBy: commentData.likedBy || [],
+          replies,
+        };
+      })
+    );
 
     return NextResponse.json({ comments }, { status: 200 });
   } catch (error) {
-    console.error("Error fetching comments:", error);
-    return NextResponse.json({ error: "Failed to fetch comments" }, { status: 500 });
+    console.error("Error fetching comments and replies:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch comments" },
+      { status: 500 }
+    );
   }
 }
+
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -63,7 +155,6 @@ export async function POST(request: NextRequest) {
 
     // Fetch the username from the users collection
     const userDoc = await db.collection("users").doc(payload.uid).get();
-    const username = userDoc.exists ? userDoc.data()?.username : null;
 
     const postRef = db.collection("posts").doc(postId);
     const commentsRef = postRef.collection("comments");
@@ -74,10 +165,9 @@ export async function POST(request: NextRequest) {
 
     // Prepare the new comment
     const newComment = {
-      id: commentId, // Use Firestore-generated ID
-      authorId: payload.uid,
+      id: commentId,
+      uid: payload.uid,
       content,
-      author: username || payload.uid,
       createdAt: FieldValue.serverTimestamp(),
       likes: 0,
       likedBy: [],

@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, content, imageUrls, hashtags } = body;
+    const { title, content, imageUrls, hashtags, allowCommenting } = body;
 
     const createdAt = FieldValue.serverTimestamp();
     
@@ -57,7 +57,8 @@ export async function POST(request: NextRequest) {
       author: username,
       createdAt,
       imageUrls: imageUrls || [],
-      hashtags: hashtags || [], // Store hashtags with the post
+      hashtags: hashtags || [],
+      allowCommenting: allowCommenting ?? true,
       likes: { total: 0, userLikes: {} },
       commentCount: 0
     });

@@ -60,8 +60,8 @@ type NavLink = {
 
 const NAV_LINKS: NavLink[] = [
   { name: 'Create', href: '/post/create' },
-  { name: 'Search', href: '/search' },
-  { name: 'Profile', href: '/profile' },
+  { name: 'Search', href: '/search/' },
+  { name: 'Profile', href: '/profile/' },
 ];
 
 export default function Navbar() {

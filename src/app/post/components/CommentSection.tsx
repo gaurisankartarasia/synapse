@@ -1,9 +1,10 @@
-
 // CommentSection.tsx
+import {useEffect, useState} from 'react';
 import { useAuth } from "@/hooks/useAuth";
-import { useComments } from "@/hooks/useComments";
 import { CommentItem } from "./commentItem"
-import { CommentForm } from './commentForm'
+import { CommentForm } from './commentForm';
+import { Comment } from '@/types/comments';
+import { Skeleton } from '@mui/material';
 
 type CommentSectionProps = {
   postId: string;
@@ -11,10 +12,37 @@ type CommentSectionProps = {
 
 export const CommentSection = ({ postId }: CommentSectionProps) => {
   const { user } = useAuth();
-  const { comments, loading, deleteLoading, setComments, setDeleteLoading } = useComments(postId);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
+
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/post/comments?postId=${postId}`);
+        if (!response.ok) throw new Error("Failed to fetch comments");
+
+        const data = await response.json();
+        setComments(data.comments || []);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (postId) {
+      fetchComments();
+    }
+  }, [postId]);
+  
 
   const handleAddComment = async (content: string) => {
     if (!user) return;
+    
+
     
     try {
       // const token = await user();
@@ -103,49 +131,27 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
     }
   };
 
-  const handleReport = async (commentId: string, reason: string) => {
-    if (!user) return;
-    
-    try {
-      // const token = await getIdToken();
-      const response = await fetch(`/api/post/comments/${commentId}/report`, {
-        method: "POST",
-        headers: {
-          // Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ reason, postId })
-      });
-
-      if (!response.ok) throw new Error("Failed to report comment");
-      alert("Comment reported successfully");
-    } catch (error) {
-      console.error(error);
-      alert("Error reporting comment");
-    }
-  };
-
-  const handleReportReply = async (commentId: string, replyId: string, reason: string) => {
+  
+  const handleReport = async (commentId: string, reason: string, replyId?: string) => {
     if (!user) return;
   
     try {
-      // const token = await getIdToken();
-      const response = await fetch(`/api/post/comments/${commentId}/replies/${replyId}/report`, {
+      const response = await fetch(`/api/post/comments/report`, {
         method: "POST",
-        headers: {
-          // Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ postId, reason }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ postId, commentId, replyId: replyId || null, reason }), // Ensure replyId is nullable
       });
   
-      if (!response.ok) throw new Error("Failed to report reply");
-      alert("Reply reported successfully");
+      if (!response.ok) throw new Error("Failed to report");
+  
+      alert(replyId ? "Reply reported successfully" : "Comment reported successfully");
     } catch (error) {
-      console.error("Error reporting reply:", error);
-      alert("Error reporting reply");
+      console.error("Error reporting:", error);
+      alert("Error reporting");
     }
   };
+  
+  
   
 
   const handleAddReply = async (commentId: string, content: string) => {
@@ -211,9 +217,8 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
 
   return (
     <div className="comments-section mt-6">
-      <h3><span>{comments.length || 'No'}</span> Comments</h3>
       {loading ? (
-        "Loading comments..."
+        <Skeleton/>
       ) : (
         <ul>
           {comments.map((comment) => (
@@ -225,7 +230,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
                 onDelete={handleDeleteComment}
                 onLike={handleLike}
                 onReport={handleReport}
-                onReportReply={handleReportReply}
+                // onReportReply={handleReportReply}
                 onAddReply={handleAddReply}
                 onDeleteReply={handleDeleteReply}
                 onLikeReply={handleLikeReply}
@@ -239,6 +244,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
     </div>
   );
 };
+
 
 
 

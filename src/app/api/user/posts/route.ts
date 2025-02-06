@@ -135,8 +135,6 @@ export async function GET(request: Request) {
     const posts = snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
-      // Safely handle date conversion
-      createdAt: doc.data().createdAt?.toDate?.()?.toISOString() || new Date().toISOString()
     }));
 
     return NextResponse.json({ 

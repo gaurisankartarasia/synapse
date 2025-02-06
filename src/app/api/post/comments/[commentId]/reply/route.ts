@@ -1,5 +1,3 @@
-
-
 // app/api/post/comments/[commentId]/reply/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
@@ -38,36 +36,40 @@ export async function POST(
       );
     }
 
-    // Fetch user data for the author name
-    const userDoc = await db.collection("users").doc(payload.uid).get();
-    const username = userDoc.exists ? userDoc.data()?.username : null;
 
-    // Reference to the comment and replies collection
-    const commentRef = db.collection("posts").doc(postId).collection("comments").doc(commentId);
+    // Reference to the post, comment, and replies collection
+    const postRef = db.collection("posts").doc(postId);
+    const commentRef = postRef.collection("comments").doc(commentId);
     const repliesRef = commentRef.collection("replies");
     
     // Create a new reply document
     const newReplyRef = repliesRef.doc(); // Auto-generate ID
     const newReply = {
       id: newReplyRef.id, // Use Firestore-generated ID
-      authorId: payload.uid,
-      author: username || payload.uid,
+      uid: payload.uid,
       content,
       createdAt: FieldValue.serverTimestamp(),
       likes: 0,
-      replyCount: 0, // To support nested replies in future if needed
     };
 
-    // Run transaction to add reply and update reply count
+    // Run transaction to add reply and update both reply count in the comment and comment count in the post
     await db.runTransaction(async (transaction) => {
       const commentDoc = await transaction.get(commentRef);
       if (!commentDoc.exists) {
         throw new Error("Comment not found");
       }
 
+      // Add the reply
       transaction.set(newReplyRef, newReply);
+      
+      // Increment the reply count on the comment
       transaction.update(commentRef, {
         replyCount: FieldValue.increment(1),
+      });
+
+      // Also increment the comment count on the post
+      transaction.update(postRef, {
+        commentCount: FieldValue.increment(1),
       });
     });
 

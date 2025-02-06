@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { UserProfile } from '@/types/profile';
 import UserPosts from './Posts'
 import { formatFullDate } from '@/utils/date';
-import {CircularProgress} from '@mui/material'
+import {Skeleton} from '@mui/material'
 import {Card} from '@mui/material'
 import UserModal from './FollowModal';
 import {Button} from '@mui/material'
@@ -40,7 +40,7 @@ export default function ProfilePage() {
 
 
   if (loading) {
-    return <CircularProgress/>;
+    return <Skeleton/>;
   }
 
   if (error) {
