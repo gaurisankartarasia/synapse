@@ -1,97 +1,4 @@
 
-// import { useState } from "react";
-// import {
-//   Modal,
-//   ModalContent,
-//   ModalHeader,
-//   ModalBody,
-//   ModalFooter,
-//   button,
-//   Textarea,
-//   Select,
-//   SelectItem,
-// } from "@mui/material";
-
-// type ReportModalProps = {
-//   isOpen: boolean;
-//   onClose: () => void;
-//   onSubmit: (reason: string) => Promise<void>;
-// };
-
-// export const ReportModal = ({ isOpen, onClose, onSubmit }: ReportModalProps) => {
-//   const [selectedReason, setSelectedReason] = useState("");
-//   const [customReason, setCustomReason] = useState("");
-//   const [loading, setLoading] = useState(false);
-
-//   const handleSubmit = async () => {
-//     const reason = selectedReason === "Other" ? customReason.trim() : selectedReason;
-//     if (!reason) return;
-
-//     setLoading(true);
-//     try {
-//       await onSubmit(reason);
-//       onClose();
-//     } catch (error) {
-//       console.error(error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const reportReasons = [
-//     'Bhaiya gali de raha hai ye',
-//     "Inappropriate content",
-//     "Harassment",
-//     "Spam",
-//     "Misinformation",
-//     "Other",
-//   ];
-
-//   return (
-//     <Modal isOpen={isOpen} onClose={onClose}>
-//       <ModalContent>
-//         <ModalHeader>Report Comment</ModalHeader>
-//         <ModalBody>
-//           <Select
-//             label="Reason for reporting"
-//             value={selectedReason}
-//             onChange={(e) => setSelectedReason(e.target.value)}
-//           >
-//             {reportReasons.map((reason) => (
-//               <SelectItem key={reason} value={reason}>
-//                 {reason}
-//               </SelectItem>
-//             ))}
-//           </Select>
-//           {selectedReason === "Other" && (
-//             <Textarea
-//               label="Please specify"
-//               placeholder="Enter your reason..."
-//               value={customReason}
-//               onChange={(e) => setCustomReason(e.target.value)}
-//             />
-//           )}
-//         </ModalBody>
-//         <ModalFooter>
-//           <Button variant="flat" onClick={onClose}>
-//             Cancel
-//           </Button>
-//           <Button color="danger" onClick={handleSubmit} isLoading={loading}>
-//             Report
-//           </Button>
-//         </ModalFooter>
-//       </ModalContent>
-//     </Modal>
-//   );
-// };
-
-
-
-
-
-
-
-
 import React, { useState } from "react";
 import {
   Dialog,
@@ -102,7 +9,7 @@ import {
   TextField,
   Select,
   MenuItem,
-  CircularProgress,
+  Skeleton,
 } from "@mui/material";
 
 type ReportModalProps = {
@@ -182,7 +89,7 @@ export const ReportModal = ({ isOpen, onClose, onSubmit }: ReportModalProps) => 
           onClick={handleSubmit}
           disabled={loading}
         >
-          {loading ? <CircularProgress size={24} color="inherit" /> : "Report"}
+          {loading ? <Skeleton /> : "Report"}
         </Button>
       </DialogActions>
     </Dialog>

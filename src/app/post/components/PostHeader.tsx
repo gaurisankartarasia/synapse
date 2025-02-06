@@ -1,11 +1,20 @@
 
-
+// src/app/post/components/PostHeader.tsx
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { auth } from "@/lib/firebaseClient";
 import Link from 'next/link'
-import {Button} from '@mui/material'
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Skeleton } from "@mui/material";
+import VerifiedIcon from '@mui/icons-material/Verified';
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import FollowButton from "@/app/[username]/FollowButton";
 
 type ProfileData = {
   displayName: string;
@@ -16,67 +25,87 @@ type ProfileData = {
   username: string;
   verified: boolean;
   uid: string;
+  isFollowing?: boolean;
+  isRequested?: boolean;
 };
 
-const profileCache = new Map<string, ProfileData>();
+const CACHE_TTL = 300000;
+const profileCache = new Map<string, { data: ProfileData, timestamp: number }>();
 
 interface PostHeaderProps {
   authorUsername: string;
+  authorDisplayName: string;  
+  authorPhotoURL: string;  
+  authorVerified: boolean
 }
 
-export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
+export const PostHeader: React.FC<PostHeaderProps> = ({ 
+  authorUsername, 
+  authorDisplayName, 
+  authorPhotoURL,
+  authorVerified
+}) => {
   const [profile, setProfile] = useState<ProfileData | null>(null);
-  const [isPopoverVisible, setIsPopoverVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [followStatus, setFollowStatus] = useState<string>("");
-  const [followersCount, setFollowersCount] = useState<number>(0);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [loadingFollowStatus, setLoadingFollowStatus] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+  const [followStatus, setFollowStatus] = useState<"" | "requested" | "following">("");
+ const [followersCount, setFollowersCount] = useState<number>(0);
 
-  const fetchProfile = async () => {
-    if (profileCache.has(authorUsername)) {
-      const cachedProfile = profileCache.get(authorUsername)!;
-      setProfile(cachedProfile);
-      setFollowersCount(cachedProfile.followersCount);
+const router = useRouter()
+
+  useEffect(() => {
+    const getToken = async () => {
+      const t = await auth.currentUser?.getIdToken() || null;
+      setToken(t);
+    };
+    getToken();
+  }, []);
+
+  useEffect(() => {
+    if (profile) {
+      const status = profile.isRequested ? "requested" : 
+                    profile.isFollowing ? "following" : "";
+      setFollowStatus(status);
+    }
+  }, [profile]);
+
+  const fetchProfile = useCallback(async () => {
+    const cached = profileCache.get(authorUsername);
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+      setProfile(cached.data);
       return;
     }
 
     try {
       setLoading(true);
-      setLoadingFollowStatus(true);
-      const token = await auth.currentUser?.getIdToken();
-      const [profileResponse, followResponse] = await Promise.all([
-        fetch(`/api/user/profile/${authorUsername}`),
-        fetch(`/api/get-following-followers?username=${authorUsername}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      ]);
-
-      const profileData = await profileResponse.json();
-      const followData = await followResponse.json();
+      const res = await fetch(`/api/user/profile/${authorUsername}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        cache: 'force-cache'
+      });
       
-      const fetchedProfile = {
-        ...profileData.profile,
-        followersCount: followData.followersCount || 0
+      if (!res.ok) throw new Error('Failed to fetch');
+      
+      const data = await res.json();
+      const profileData = {
+        ...data.profile,
       };
 
-      setFollowStatus(
-        followData.isFollowing ? "following" : followData.isRequested ? "requested" : ""
-      );
-      setFollowersCount(fetchedProfile.followersCount);
-      
-      profileCache.set(authorUsername, fetchedProfile);
-      setProfile(fetchedProfile);
+      profileCache.set(authorUsername, { data: profileData, timestamp: Date.now() });
+      setProfile(profileData);
     } catch (error) {
       console.error("Error fetching profile:", error);
     } finally {
       setLoading(false);
-      setLoadingFollowStatus(false);
     }
-  };
+  }, [authorUsername, token]);
+
+  const handleProfileClick =()=>{
+    router.push(`/${authorUsername}`)
+  }
 
   const handleFollow = useCallback(async () => {
-    if (!auth.currentUser || isUpdating || !profile) return;
+    if (!auth.currentUser || isUpdating) return;
 
     const isFollowing = followStatus === "following";
     const isRequesting = followStatus === "requested";
@@ -94,10 +123,7 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
       const token = await auth.currentUser.getIdToken();
       const response = await fetch("/api/follow-user", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ targetUsername: authorUsername }),
       });
 
@@ -123,108 +149,109 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ authorUsername }) => {
     } finally {
       setIsUpdating(false);
     }
-  }, [followStatus, followersCount, isUpdating, authorUsername, profile]);
+  }, [followStatus, followersCount, isUpdating, authorUsername]);
 
-  const handleMouseEnter = () => {
-    setIsPopoverVisible(true);
-    if (!profile) {
-      fetchProfile();
-    }
-  };
-  
-  const handleMouseLeave = (event: React.MouseEvent) => {
-    const relatedTarget = event.relatedTarget as HTMLElement | null;
-    if (
-      relatedTarget &&
-      (relatedTarget.closest(".popover-div") || relatedTarget.closest(".username-span"))
-    ) {
-      return;
-    }
-    setIsPopoverVisible(false);
-  };
-
-  const getFollowButtonContent = () => {
-    if (loadingFollowStatus || isUpdating) {
-      return 'loading...';
-    }
-    
-    if (followStatus === "following") return "Following";
-    if (followStatus === "requested") return "Requested";
-    return "Follow";
-  };
-  
   return (
-    <div className="relative">
-      <span
-        className="font-medium cursor-pointer username-span"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+    <HoverCard>
+      <HoverCardTrigger 
+        onMouseEnter={() => !profile && fetchProfile()} 
+        asChild 
+        className="cursor-pointer w-fit"
+        onClick={handleProfileClick}
       >
-        {authorUsername}
-      </span>
-  
-      {isPopoverVisible && (
-        <div
-          className="absolute left-0 z-[1500] w-72 p-4 bg-gray-100 popover-div"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          {loading ? (
-            'loading...'
-          ) : profile ? (
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <img
-                  src={`/api/proxy?url=${encodeURIComponent(profile.photoURL)}`}
-                  alt={`${profile.displayName}`}
-                  className="w-12 h-12 rounded-full"
-                />
-                <div>
-                  <h3 className="font-bold">{profile.displayName}</h3>
-                  <p className="text-gray-600">@{profile.username}</p>
-                </div>
+        <div className="flex items-center gap-2">
+          {authorPhotoURL && (
+            <Image
+              src={authorPhotoURL}
+              alt={authorDisplayName || authorUsername}
+              width={30}
+              height={30}
+              className="rounded-full"
+            />
+          )}
+          <p className="hover:opacity-60 text-lg font-semibold">
+            {authorUsername}
+          </p>
+          <span>{authorVerified && (<VerifiedIcon fontSize="small"/>)}</span>
+        </div>
+      </HoverCardTrigger>
+      <HoverCardContent className="w-80" align="start">
+        {loading ? (
+          <div className="flex justify-center p-4">
+            <Skeleton  />
+          </div>
+        ) : profile ? (
+          <div className="space-y-2">
+            <div className="flex items-center space-x-3">
+              <Image
+                src={`/api/proxy?url=${encodeURIComponent(profile.photoURL)}`}
+                alt={profile.displayName}
+                width={50}
+                height={50}
+                className="rounded-full"
+                loading="lazy"
+              />
+              <div>
+                <h3 className="font-bold">{profile.displayName}</h3>
+                <p className="text-sm text-muted-foreground">@{profile.username}</p>
               </div>
-              <div className="flex justify-between text-sm">
-                <span>Followers: {followersCount}</span>
-                <span>Following: {profile.followingCount}</span>
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  onClick={handleFollow}
-                  disabled={loadingFollowStatus || isUpdating}
-                  className={`px-4 py-1 rounded-full text-sm flex items-center justify-center min-w-[80px] ${
-                    followStatus === "following"
-                      ? "bg-gray-200 hover:bg-gray-300 text-black"
-                      : followStatus === "requested"
-                      ? "bg-gray-200 hover:bg-gray-300 text-black"
-                      : "bg-blue-500 text-white hover:bg-blue-600 w-full"
-                  }`}
+            </div>
+            <div className="flex gap-3 text-sm">
+              <span> followers {profile.followersCount} </span>
+              <span>following {profile.followingCount} </span>
+            </div>
+            <div className="flex gap-2">
+              {profile.uid === auth.currentUser?.uid ? (
+                <Link
+                  href="/settings/profile"
+                  className="text-center py-2 rounded text-sm bg-secondary hover:bg-secondary/80 w-full"
+                  prefetch={false}
                 >
-                  {getFollowButtonContent()}
-                </Button>
-                {followStatus === "following" && (
-                  <Button
-                    onClick={() => window.location.href = `/inbox/${profile.uid}`}
-                    className="px-4 py-1 rounded-full text-black bg-gray-200 hover:bg-gray-300 text-sm"
-                  >
-                    Message
-                  </Button>
-                )}
-              </div>
+                  Edit Profile
+                </Link>
+              ) : (
+                <>
+                  <FollowButton
+                    isUpdating={isUpdating}
+                    followStatus={followStatus}
+                    onFollowClick={handleFollow}
+                    className={`px-4 py-1 w-full  ${
+                      followStatus 
+                        ? "bg-secondary " 
+                        : "bg-primary text-primary-foreground"
+                    }`}
+                  />
+                  {followStatus === "following" && (
+                    <button
+                      onClick={() => window.location.href = `/inbox/${profile.uid}`}
+                      className="px-4 py-1 rounded-full text-sm bg-secondary hover:bg-secondary/80"
+                    >
+                      Message
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+            <div className="flex items-center gap-2 text-sm">
               {profile.verified && (
-                <span className="text-green-500 text-sm">Verified</span>
+                <span className="text-green-500">✓ Verified</span>
               )}
               {profile.private && (
-                <p className="text-red-500 text-sm">Private Account</p>
+                <span className="text-red-500">🔒 Private Account</span>
               )}
-              
-             <Link href={`/${profile.username}`}>Visit profile</Link>
             </div>
-          ) : (
-            <p>Error loading profile</p>
-          )}
-        </div>
-      )}
-    </div>
+            <Link 
+              href={`/${profile.username}`}
+              className="block py-2 rounded bg-secondary text-center text-sm text-primary w-full"
+              prefetch={false}
+            >
+              Visit profile 
+            </Link>
+          </div>
+        ) : (
+          <p className="text-sm">Error loading profile</p>
+        )}
+      </HoverCardContent>
+    </HoverCard>
   );
-}
+};

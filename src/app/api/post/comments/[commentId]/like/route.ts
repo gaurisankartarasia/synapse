@@ -1,121 +1,61 @@
 
-// // app/api/comments/[commentId]/like/route.ts
-// import { NextRequest, NextResponse } from "next/server";
-// import { db } from "@/lib/firebaseAdmin";
-// import { verifyAuth } from "@/utils/auth";
-
-// type Props = {
-//   params: Promise<{ commentId: string }>;
-// };
-
-// export async function POST(request: NextRequest, { params }: Props) {
-//   try {
-//     // Resolve the params promise to get the commentId
-//     const resolvedParams = await params;
-//     const commentId = resolvedParams.commentId;
-
-//     const user = await verifyAuth(request);
-//     if (!user) {
-//       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//     }
-
-//     const commentRef = db.collection("comments").doc(commentId);
-//     const commentDoc = await commentRef.get();
-
-//     if (!commentDoc.exists) {
-//       return NextResponse.json({ error: "Comment not found" }, { status: 404 });
-//     }
-
-//     const comment = commentDoc.data();
-//     const likedBy = comment?.likedBy || [];
-//     const userIndex = likedBy.indexOf(user.uid);
-
-//     if (userIndex === -1) {
-//       // Add like
-//       await commentRef.update({
-//         likes: (comment?.likes || 0) + 1,
-//         likedBy: [...likedBy, user.uid],
-//       });
-//     } else {
-//       // Remove like
-//       likedBy.splice(userIndex, 1);
-//       await commentRef.update({
-//         likes: (comment?.likes || 0) - 1,
-//         likedBy,
-//       });
-//     }
-
-//     return NextResponse.json({ success: true }, { status: 200 });
-//   } catch (error) {
-//     console.error("Error handling like:", error);
-//     return NextResponse.json({ error: "Failed to handle like" }, { status: 500 });
-//   }
-// }
-
-
-
-
-
-
-
-
 // app/api/comments/[commentId]/like/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
-import { verifyAuth } from "@/utils/auth";
+import { cookies } from "next/headers";
+import { verifyJWT } from "@/lib/jwt";
+import { CustomJWTPayload } from "@/types/auth";
+import { FieldValue } from "firebase-admin/firestore";
 
-type Props = {
-  params: Promise<{ commentId: string }>;
-};
-
-export async function POST(request: NextRequest, { params }: Props) {
+export async function POST(request: NextRequest, { params }: { params: { commentId: string } }) {
   try {
-    const resolvedParams = await params;
-    const commentId = resolvedParams.commentId;
-    const { postId } = await request.json();
+    // Get token from cookies
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token");
 
-    const user = await verifyAuth(request);
-    if (!user) {
+    if (!token?.value) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const postRef = db.collection("posts").doc(postId);
+    // Verify token and type assert the payload
+    const payload = (await verifyJWT(token.value)) as CustomJWTPayload;
     
-    await db.runTransaction(async (transaction) => {
-      const postDoc = await transaction.get(postRef);
-      if (!postDoc.exists) {
-        throw new Error("Post not found");
-      }
+    if (!payload.uid) {
+      return NextResponse.json({ error: "Invalid token payload" }, { status: 401 });
+    }
 
-      const comments = postDoc.data()?.comments || [];
-      const commentIndex = comments.findIndex((c: any) => c.id === commentId);
-      
-      if (commentIndex === -1) {
+    const { postId } = await request.json();
+    if (!postId) {
+      return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
+    }
+
+    const commentRef = db.collection("posts").doc(postId).collection("comments").doc(params.commentId);
+    const likeRef = commentRef.collection("likes").doc(payload.uid);
+
+    await db.runTransaction(async (transaction) => {
+      const likeDoc = await transaction.get(likeRef);
+      const commentDoc = await transaction.get(commentRef);
+
+      if (!commentDoc.exists) {
         throw new Error("Comment not found");
       }
 
-      const comment = comments[commentIndex];
-      const likedBy = comment.likedBy || [];
-      const userIndex = likedBy.indexOf(user.uid);
-
-      if (userIndex === -1) {
-        comments[commentIndex] = {
-          ...comment,
-          likes: (comment.likes || 0) + 1,
-          likedBy: [...likedBy, user.uid]
-        };
+      if (likeDoc.exists) {
+        // If already liked, unlike it
+        transaction.delete(likeRef);
+        transaction.update(commentRef, {
+          likes: FieldValue.increment(-1),
+        });
       } else {
-        comments[commentIndex] = {
-          ...comment,
-          likes: (comment.likes || 0) - 1,
-          likedBy: likedBy.filter((id: string) => id !== user.uid)
-        };
+        // If not liked, add like
+        transaction.set(likeRef, { uid: payload.uid, createdAt: FieldValue.serverTimestamp() });
+        transaction.update(commentRef, {
+          likes: FieldValue.increment(1),
+        });
       }
-
-      transaction.update(postRef, { comments });
     });
 
-    return NextResponse.json({ status: 'ok' });
+    return NextResponse.json({ status: "ok" });
   } catch (error) {
     console.error("Error handling like:", error);
     return NextResponse.json({ error: "Failed to handle like" }, { status: 500 });

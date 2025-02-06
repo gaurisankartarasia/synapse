@@ -8,9 +8,7 @@ import ProfileHeader from "./ProfileHeader";
 import FollowStats from "./FollowStats";
 import FollowButton from "./FollowButton";
 import ModalList from "./ModalList";
-import BlockUnblockComponent from '../../components/block/block';
-import ChatButton from "./chatButton";
-import Back from "@/components/BackButton";
+import ChatButton from "./ChatButton";
 import UserPosts from '../profile/Posts'
 import { Button } from "@mui/material";
 
@@ -209,10 +207,7 @@ const PublicProfilePage: React.FC = () => {
 
   return (
     <main className="profile-container">
-           <Back/>
-      <Button className="flex justify-end">
-        <BlockUnblockComponent username={username} />
-      </Button>
+          
       <ProfileHeader
         photoURL={user.photoURL || "/default.webp"}
         username={user.username}
@@ -253,7 +248,6 @@ const PublicProfilePage: React.FC = () => {
 };
 
 export default PublicProfilePage;
-
 
 
 

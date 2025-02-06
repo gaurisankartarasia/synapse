@@ -1,7 +1,6 @@
 'use client' // Error boundaries must be Client Components
  
 import { useEffect } from 'react'
-import { Button } from "@mui/material";
 
 export default function Error({
   error,
@@ -18,14 +17,14 @@ export default function Error({
   return (
     <div>
       <h2>Something went wrong!</h2>
-      <Button
+      <button
         onClick={
           // Attempt to recover by trying to re-render the segment
           () => reset()
         }
       >
         Try again
-      </Button>
+      </button>
     </div>
   )
 }

@@ -1,5 +1,152 @@
 
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
+// import { db } from '@/lib/firebaseClient';
+// import { 
+//   collection, 
+//   query, 
+//   where, 
+//   onSnapshot, 
+//   orderBy, 
+//   limit, 
+//   startAfter, 
+//   DocumentData,
+//   getDocs
+// } from 'firebase/firestore';
+// import { Message } from '../types/chat';
+
+// const BATCH_SIZE = 50;
+
+// export const useChatMessages = (userId: string, user: { uid: string } | null) => {
+//   const [messages, setMessages] = useState<Message[]>([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState<string | null>(null);
+//   const [lastVisible, setLastVisible] = useState<DocumentData | null>(null);
+//   const [hasMore, setHasMore] = useState(true);
+
+//   useEffect(() => {
+//     if (!user) {
+//       setError('User not authenticated');
+//       setLoading(false);
+//       return;
+//     }
+
+//     let unsubscribeMessages: (() => void) | undefined;
+//     let unsubscribeRoom: (() => void) | undefined;
+
+//     const setupMessagesSubscription = async () => {
+//       try {
+//         setLoading(true);
+//         setError(null);
+
+//         const participantIds = [user.uid, userId].sort();
+//         const participantKey = participantIds.join('_');
+
+//         const chatRoomQuery = query(
+//           collection(db, 'chatRooms'),
+//           where('participantKey', '==', participantKey)
+//         );
+
+//         unsubscribeRoom = onSnapshot(chatRoomQuery, async (snapshot) => {
+//           if (!snapshot.empty) {
+//             const roomId = snapshot.docs[0].id;
+
+//             const messagesQuery = query(
+//               collection(db, `chatRooms/${roomId}/messages`),
+//               orderBy('timestamp', 'desc'),
+//               limit(BATCH_SIZE)
+//             );
+
+//             unsubscribeMessages = onSnapshot(messagesQuery, (msgSnapshot) => {
+//               const lastVisibleDoc = msgSnapshot.docs[msgSnapshot.docs.length - 1];
+//               setLastVisible(lastVisibleDoc);
+//               setHasMore(msgSnapshot.docs.length === BATCH_SIZE);
+
+//               const msgs = msgSnapshot.docs.map(doc => ({
+//                 id: doc.id,
+//                 roomId: roomId,
+//                 ...doc.data(),
+//                 deletedFor: doc.data().deletedFor || []
+//               } as Message));
+
+//               setMessages(msgs.reverse());
+//               setLoading(false);
+//             });
+//           } else {
+//             setMessages([]);
+//             setHasMore(false);
+//             setLoading(false);
+//           }
+//         });
+//       } catch (error) {
+//         setError('Failed to load messages');
+//         setLoading(false);
+//       }
+//     };
+
+//     setupMessagesSubscription();
+
+//     return () => {
+//       unsubscribeMessages?.();
+//       unsubscribeRoom?.();
+//     };
+//   }, [user, userId]);
+
+//   const loadMoreMessages = async () => {
+//     if (!lastVisible || !user) return;
+    
+//     const participantIds = [user.uid, userId].sort();
+//     const participantKey = participantIds.join('_');
+//     const chatRoomQuery = query(
+//       collection(db, 'chatRooms'),
+//       where('participantKey', '==', participantKey)
+//     );
+
+//     const roomSnapshot = await getDocs(chatRoomQuery);
+//     if (roomSnapshot.empty) return;
+
+//     const roomId = roomSnapshot.docs[0].id;
+//     const nextMessagesQuery = query(
+//       collection(db, `chatRooms/${roomId}/messages`),
+//       orderBy('timestamp', 'desc'),
+//       startAfter(lastVisible),
+//       limit(BATCH_SIZE)
+//     );
+
+//     const nextSnapshot = await getDocs(nextMessagesQuery);
+//     const lastVisibleDoc = nextSnapshot.docs[nextSnapshot.docs.length - 1];
+//     setLastVisible(lastVisibleDoc);
+//     setHasMore(nextSnapshot.docs.length === BATCH_SIZE);
+
+//     const moreMessages = await Promise.all(nextSnapshot.docs.map(async (doc) => {
+//       const messageData = doc.data();
+//       const deletedForRef = collection(db, `chatRooms/${roomId}/messages/${doc.id}/deletedFor`);
+//       const deletedForSnap = await getDocs(deletedForRef);
+//       const deletedFor = deletedForSnap.docs.map(d => d.data().userId);
+
+//       return {
+//         id: doc.id,
+//         roomId: roomId,
+//         ...messageData,
+//         deletedFor
+//       } as Message;
+//     }));
+
+//     setMessages(prevMessages => [...moreMessages.reverse(), ...prevMessages]);
+//   };
+
+//   return { messages, loading, error, loadMoreMessages, hasMore };
+// };
+
+
+
+
+
+
+
+
+
+//useChatMessages.ts
+import { useState, useEffect, useCallback } from 'react';
 import { db } from '@/lib/firebaseClient';
 import { 
   collection, 
@@ -16,85 +163,85 @@ import { Message } from '../types/chat';
 
 const BATCH_SIZE = 50;
 
-export const useChatMessages = (userId: string, user: { uid: string } | null) => {
+export const useChatMessages = (userId: string, currentUserId: string) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastVisible, setLastVisible] = useState<DocumentData | null>(null);
   const [hasMore, setHasMore] = useState(true);
 
-  useEffect(() => {
-    if (!user) {
-      setError('User not authenticated');
-      setLoading(false);
-      return;
-    }
+  const setupMessagesSubscription = useCallback(async () => {
+    try {
+      const participantIds = [currentUserId, userId].sort();
+      const participantKey = participantIds.join('_');
 
-    let unsubscribeMessages: (() => void) | undefined;
-    let unsubscribeRoom: (() => void) | undefined;
+      const chatRoomQuery = query(
+        collection(db, 'chatRooms'),
+        where('participantKey', '==', participantKey)
+      );
 
-    const setupMessagesSubscription = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+      return onSnapshot(chatRoomQuery, async (snapshot) => {
+        if (!snapshot.empty) {
+          const roomId = snapshot.docs[0].id;
 
-        const participantIds = [user.uid, userId].sort();
-        const participantKey = participantIds.join('_');
+          const messagesQuery = query(
+            collection(db, `chatRooms/${roomId}/messages`),
+            orderBy('timestamp', 'desc'),
+            limit(BATCH_SIZE)
+          );
 
-        const chatRoomQuery = query(
-          collection(db, 'chatRooms'),
-          where('participantKey', '==', participantKey)
-        );
+          return onSnapshot(messagesQuery, (msgSnapshot) => {
+            const lastVisibleDoc = msgSnapshot.docs[msgSnapshot.docs.length - 1];
+            setLastVisible(lastVisibleDoc);
+            setHasMore(msgSnapshot.docs.length === BATCH_SIZE);
 
-        unsubscribeRoom = onSnapshot(chatRoomQuery, async (snapshot) => {
-          if (!snapshot.empty) {
-            const roomId = snapshot.docs[0].id;
+            const msgs = msgSnapshot.docs.map(doc => ({
+              id: doc.id,
+              roomId: roomId,
+              ...doc.data(),
+              deletedFor: doc.data().deletedFor || []
+            } as Message));
 
-            const messagesQuery = query(
-              collection(db, `chatRooms/${roomId}/messages`),
-              orderBy('timestamp', 'desc'),
-              limit(BATCH_SIZE)
-            );
-
-            unsubscribeMessages = onSnapshot(messagesQuery, (msgSnapshot) => {
-              const lastVisibleDoc = msgSnapshot.docs[msgSnapshot.docs.length - 1];
-              setLastVisible(lastVisibleDoc);
-              setHasMore(msgSnapshot.docs.length === BATCH_SIZE);
-
-              const msgs = msgSnapshot.docs.map(doc => ({
-                id: doc.id,
-                roomId: roomId,
-                ...doc.data(),
-                deletedFor: doc.data().deletedFor || []
-              } as Message));
-
-              setMessages(msgs.reverse());
-              setLoading(false);
-            });
-          } else {
-            setMessages([]);
-            setHasMore(false);
+            setMessages(msgs.reverse());
             setLoading(false);
-          }
-        });
-      } catch (error) {
-        setError('Failed to load messages');
-        setLoading(false);
-      }
+          });
+        } else {
+          setMessages([]);
+          setHasMore(false);
+          setLoading(false);
+          return () => {};
+        }
+      });
+    } catch (error) {
+      setError('Failed to load messages');
+      setLoading(false);
+      return () => {};
+    }
+  }, [userId, currentUserId]);
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+
+    let unsubscribeRoom: (() => void) | undefined;
+    let unsubscribeMessages: (() => void) | undefined;
+
+    const setup = async () => {
+      unsubscribeRoom = await setupMessagesSubscription();
     };
 
-    setupMessagesSubscription();
+    setup();
 
     return () => {
       unsubscribeMessages?.();
       unsubscribeRoom?.();
     };
-  }, [user, userId]);
+  }, [setupMessagesSubscription]);
 
   const loadMoreMessages = async () => {
-    if (!lastVisible || !user) return;
+    if (!lastVisible) return;
     
-    const participantIds = [user.uid, userId].sort();
+    const participantIds = [currentUserId, userId].sort();
     const participantKey = participantIds.join('_');
     const chatRoomQuery = query(
       collection(db, 'chatRooms'),
@@ -119,15 +266,11 @@ export const useChatMessages = (userId: string, user: { uid: string } | null) =>
 
     const moreMessages = await Promise.all(nextSnapshot.docs.map(async (doc) => {
       const messageData = doc.data();
-      const deletedForRef = collection(db, `chatRooms/${roomId}/messages/${doc.id}/deletedFor`);
-      const deletedForSnap = await getDocs(deletedForRef);
-      const deletedFor = deletedForSnap.docs.map(d => d.data().userId);
-
       return {
         id: doc.id,
         roomId: roomId,
         ...messageData,
-        deletedFor
+        deletedFor: messageData.deletedFor || []
       } as Message;
     }));
 

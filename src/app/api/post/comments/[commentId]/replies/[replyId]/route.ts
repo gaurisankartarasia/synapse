@@ -1,51 +1,163 @@
-//app/api/post/comments/[commentId]/replies/[replyId]/route.ts
+
+// // app/api/post/comments/[commentId]/reply/[replyId]/route.ts
+// import { NextRequest, NextResponse } from "next/server";
+// import { db } from "@/lib/firebaseAdmin";
+// import { cookies } from "next/headers";
+// import { verifyJWT } from "@/lib/jwt";
+// import { CustomJWTPayload } from "@/types/auth";
+// import { FieldValue } from "firebase-admin/firestore";
+
+// export async function DELETE(
+//   request: NextRequest,
+//   { params }: { params: { commentId: string; replyId: string } }
+// ) {
+//   try {
+//     // Get token from cookies
+//     const cookieStore = await cookies();
+//     const token = cookieStore.get("token");
+
+//     if (!token?.value) {
+//       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+//     }
+
+//     // Verify token and extract user ID
+//     const payload = (await verifyJWT(token.value)) as CustomJWTPayload;
+//     if (!payload.uid) {
+//       return NextResponse.json({ error: "Invalid token payload" }, { status: 401 });
+//     }
+
+//     const { postId } = await request.json();
+//     const { commentId, replyId } = params;
+
+//     if (!postId || !commentId || !replyId) {
+//       return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
+//     }
+
+//     // References to Firestore documents
+//     const commentRef = db.collection("posts").doc(postId).collection("comments").doc(commentId);
+//     const replyRef = commentRef.collection("replies").doc(replyId);
+
+//     // Run transaction to delete reply and update reply count
+//     await db.runTransaction(async (transaction) => {
+//       const replyDoc = await transaction.get(replyRef);
+
+//       if (!replyDoc.exists) {
+//         throw new Error("Reply not found");
+//       }
+
+//       const replyData = replyDoc.data();
+
+//       // Ensure only the reply's author can delete it
+//       if (replyData?.uid !== payload.uid) {
+//         throw new Error("Unauthorized to delete this reply");
+//       }
+
+//       transaction.delete(replyRef);
+//       transaction.update(commentRef, {
+//         replyCount: FieldValue.increment(-1),
+//       });
+//     });
+
+//     return NextResponse.json({ success: true }, { status: 200 });
+//   } catch (error) {
+//     console.error("Error deleting reply:", error);
+
+//     if (error instanceof Error) {
+//       if (error.message === "Unauthorized to delete this reply") {
+//         return NextResponse.json({ error: error.message }, { status: 403 });
+//       }
+//       if (error.message === "Reply not found") {
+//         return NextResponse.json({ error: error.message }, { status: 404 });
+//       }
+//     }
+
+//     return NextResponse.json({ error: "Failed to delete reply" }, { status: 500 });
+//   }
+// }
+
+
+
+
+
+
+
+
+// app/api/post/comments/[commentId]/reply/[replyId]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
-import { verifyAuth } from "@/utils/auth";
-import { getFormattedDate } from "@/utils/formatDate";
+import { cookies } from "next/headers";
+import { verifyJWT } from "@/lib/jwt";
+import { CustomJWTPayload } from "@/types/auth";
 import { FieldValue } from "firebase-admin/firestore";
 
-// app/api/post/comments/[commentId]/replies/[replyId]/route.ts
 export async function DELETE(
-    request: NextRequest,
-    { params }: { params: { commentId: string; replyId: string } }
-  ) {
-    try {
-      const { postId } = await request.json();
-      const { commentId, replyId } = params;
-  
-      const user = await verifyAuth(request);
-      if (!user) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-      }
-  
-      const postRef = db.collection("posts").doc(postId);
-      const postDoc = await postRef.get();
-      const post = postDoc.data();
-  
-      if (!post) {
-        return NextResponse.json({ error: "Post not found" }, { status: 404 });
-      }
-  
-      const comments = post.comments.map((comment: any) => {
-        if (comment.id === commentId) {
-          return {
-            ...comment,
-            replies: comment.replies.filter((reply: any) => reply.id !== replyId)
-          };
-        }
-        return comment;
-      });
-  
-      await postRef.update({ comments });
-  
-      return NextResponse.json({ success: true }, { status: 200 });
-    } catch (error) {
-      console.error("Error deleting reply:", error);
-      return NextResponse.json(
-        { error: "Failed to delete reply" },
-        { status: 500 }
-      );
+  request: NextRequest,
+  { params }: { params: { commentId: string; replyId: string } }
+) {
+  try {
+    // Get token from cookies
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token");
+
+    if (!token?.value) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+
+    // Verify token and extract user ID
+    const payload = (await verifyJWT(token.value)) as CustomJWTPayload;
+    if (!payload.uid) {
+      return NextResponse.json({ error: "Invalid token payload" }, { status: 401 });
+    }
+
+    const { postId } = await request.json();
+    const { commentId, replyId } = params;
+
+    if (!postId || !commentId || !replyId) {
+      return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
+    }
+
+    // References to Firestore documents
+    const postRef = db.collection("posts").doc(postId);
+    const commentRef = postRef.collection("comments").doc(commentId);
+    const replyRef = commentRef.collection("replies").doc(replyId);
+
+    // Run transaction to delete reply and update counts
+    await db.runTransaction(async (transaction) => {
+      const replyDoc = await transaction.get(replyRef);
+
+      if (!replyDoc.exists) {
+        throw new Error("Reply not found");
+      }
+
+      const replyData = replyDoc.data();
+
+      // Ensure only the reply's author can delete it
+      if (replyData?.uid !== payload.uid) {
+        throw new Error("Unauthorized to delete this reply");
+      }
+
+      transaction.delete(replyRef);
+      transaction.update(commentRef, {
+        replyCount: FieldValue.increment(-1),
+      });
+      transaction.update(postRef, {
+        commentCount: FieldValue.increment(-1),
+      });
+    });
+
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (error) {
+    console.error("Error deleting reply:", error);
+
+    if (error instanceof Error) {
+      if (error.message === "Unauthorized to delete this reply") {
+        return NextResponse.json({ error: error.message }, { status: 403 });
+      }
+      if (error.message === "Reply not found") {
+        return NextResponse.json({ error: error.message }, { status: 404 });
+      }
+    }
+
+    return NextResponse.json({ error: "Failed to delete reply" }, { status: 500 });
   }
-  
+}

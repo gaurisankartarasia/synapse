@@ -1,11 +1,11 @@
 
-
+//ChatMessages.tsx
 'use client';
 import { useEffect } from 'react';
 import { useChatMessages } from '@/hooks/useChatMessages';
-import { useAuth } from '@/hooks/useAuth';
-import { Button, CircularProgress } from "@mui/material";
 import { Message } from '@/types/chat';
+import { Skeleton } from "@mui/material";
+
 
 interface ChatMessagesProps {
   userId: string;
@@ -13,37 +13,33 @@ interface ChatMessagesProps {
   onEdit: (message: Message) => void;  
   replyingTo: Message | null;
   editingMessage: Message | null;
+  currentUserId: string;
 }
 
 export default function ChatMessages({ 
   userId, 
   onReply, 
   onEdit,
+  currentUserId,
 }: ChatMessagesProps) {
-  const { user, loading: authLoading } = useAuth();
-  const { messages, loading, error, loadMoreMessages, hasMore } = useChatMessages(userId, user);
+  const { messages, loading, error, loadMoreMessages, hasMore } = useChatMessages(userId,currentUserId);
 
   useEffect(() => {
-    if (authLoading) return;
-    if (!user) return;
-
     const firstUnreadMsg = messages.find(msg => 
-      msg.senderId !== user?.uid && !msg.readBy?.includes(user?.uid)
+      msg.senderId !== currentUserId && !msg.readBy?.includes(currentUserId)
     );
     
     if (firstUnreadMsg?.roomId) {
       markAsRead(firstUnreadMsg.roomId);
     }
-  }, [authLoading, user, messages]);
+  }, [messages, currentUserId]);
 
   const markAsRead = async (roomId: string) => {
-    if (!user) return; // Add null check
     try {
       await fetch('/api/chat/markAsRead', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${await user.getIdToken()}`,
         },
         body: JSON.stringify({ roomId })
       });
@@ -61,7 +57,6 @@ export default function ChatMessages({
   };
 
   const deleteMessage = async (messageId: string, roomId: string | undefined, deleteType: 'me' | 'everyone') => {
-    if (!user) return; // Add null check
     if (!roomId) {
       console.error('roomId is undefined');
       return;
@@ -72,7 +67,6 @@ export default function ChatMessages({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${await user.getIdToken()}`,
         },
         body: JSON.stringify({
           messageId,
@@ -90,28 +84,24 @@ export default function ChatMessages({
     }
   };
 
-  if (authLoading) return <div>Loading authentication...</div>;
-  if (!user) return <div>Please log in to view messages.</div>;
-
-  if (loading) return <CircularProgress />;
+  if (loading) return <Skeleton/>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="pb-32">
       {messages.length > 0 && hasMore && (
-        <Button onClick={loadMoreMessages}>Load older messages..</Button>
+        <button onClick={loadMoreMessages}>Load older messages..</button>
       )}
       {messages.length === 0 ? (
         <p>No messages</p>
       ) : (
         messages.map((msg) => {
-          if (!msg.id || !msg.roomId || msg.deletedFor?.includes(user.uid)) {
+          if (!msg.id || !msg.roomId || msg.deletedFor?.includes(currentUserId)) {
             return null;
           }
 
           return (
             <div key={msg.id} className="p-4 border-b">
-           
               {msg.replyTo && !msg.deletedForEveryone && (
                 <div className="ml-4 pl-2 border-l-2 border-gray-300 mb-2">
                   <p className="text-sm text-gray-600">
@@ -128,49 +118,43 @@ export default function ChatMessages({
                     {msg.edited && !msg.deletedForEveryone && (
                       <span className="text-xs">(edited)</span>
                     )}
-                    {msg.senderId === user?.uid && getReadStatus(msg)}
+                    {msg.senderId === currentUserId && getReadStatus(msg)}
                   </div>
                 </div>
                 <div className="flex gap-2">
                   {!msg.deletedForEveryone && (
                     <>
-                      <Button 
+                      <button 
                         onClick={() => onReply(msg)}
-                        size="small"
                       >
                         Reply
-                      </Button>
-                      {user && msg.senderId === user.uid && (
+                      </button>
+                      {msg.senderId === currentUserId && (
                         <>
-                          <Button 
+                          <button 
                             onClick={() => onEdit(msg)}
-                            size="small"
                           >
                             Edit
-                          </Button>
-                          <Button 
+                          </button>
+                          <button 
                             onClick={() => deleteMessage(msg.id, msg.roomId, 'everyone')}
-                            size="small"
                             color="error"
                           >
                             Delete for everyone
-                          </Button>
-                          
+                          </button>
                         </>
                       )}
                     </>
                   )}
-                  <Button 
+                  <button 
                     onClick={() => deleteMessage(msg.id, msg.roomId, 'me')}
-                    size="small"
                     color="error"
                   >
                     {msg.deletedForEveryone ? "Delete" : "Delete for me"}
-                  </Button>
+                  </button>
                 </div>
                 <small>{msg.time}</small>
               </div>
-              
             </div>
           );
         })
@@ -178,3 +162,10 @@ export default function ChatMessages({
     </div>
   );
 }
+
+
+
+
+
+
+

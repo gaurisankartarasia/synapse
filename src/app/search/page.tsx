@@ -1,30 +1,37 @@
 
-
+// src/app/search/page.tsx
 "use client";
 
 import React, { useState, useEffect, useRef, Suspense } from "react";
+import axios from "axios";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { auth } from "../../lib/firebaseClient";
-import './Search.css';
+import { auth } from "@/lib/firebaseClient";
+import { OutlinedInput, Card, CardActionArea, Skeleton } from '@mui/material';
 
-
+interface SearchResult {
+  uid: string;
+  username: string;
+  displayName: string;
+  photoURL: string;
+  private: boolean;
+}
 
 const SearchPageContent: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // Populate searchTerm if there's a query in the URL
     if (searchParams) {
       const query = searchParams.get("q");
       if (query) {
         setSearchTerm(query);
-        performSearch(query); // Perform search based on query from URL
+        performSearch(query);
       }
     }
   }, [searchParams]);
@@ -36,54 +43,51 @@ const SearchPageContent: React.FC = () => {
     }
 
     setLoading(true);
-    try {
-      const response = await fetch(`/api/search-users?q=${encodeURIComponent(query)}`);
-      const result = await response.json();
+    setError(null);
 
-      if (response.ok) {
-        setSearchResults(result.users || []);
-      } else {
-        console.error("Search failed:", result.error);
-      }
-    } catch (error) {
-      console.error("Error searching users:", error);
+    try {
+      const response = await axios.get<{ users: SearchResult[] }>(
+        `/api/search?q=${encodeURIComponent(query)}`,
+        {
+          withCredentials: true 
+        }
+      );
+      setSearchResults(response.data.users);
+    } catch (err) {
+      console.error("Search error:", err);
+      setError("Failed to perform search");
+      setSearchResults([]);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  const handleSearchinputChange = (value: string) => {
+  const handleSearchInputChange = (value: string) => {
     setSearchTerm(value);
 
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);
     }
 
-    // Trigger performSearch after a delay
     debounceTimeout.current = setTimeout(() => {
       performSearch(value);
-    }, 300); // 300ms debounce delay
+    }, 300);
   };
 
   const handleProfileClick = async (uid: string) => {
     const currentUser = auth.currentUser;
 
     if (currentUser) {
-      const currentUid = currentUser.uid;
-
-      if (currentUid === uid) {
+      if (currentUser.uid === uid) {
         router.push("/profile");
       } else {
         try {
-          const response = await fetch(`/api/get_username_from_uid?uid=${uid}`);
-          const result = await response.json();
-
-          if (response.ok && result.username) {
-            router.push(`/${result.username}`);
-          } else {
-            console.error("Failed to fetch username:", result.error);
+          const response = await axios.get(`/api/get_username_from_uid?uid=${uid}`);
+          if (response.data.username) {
+            router.push(`/${response.data.username}`);
           }
-        } catch (error) {
-          console.error("Error fetching username from uid:", error);
+        } catch (err) {
+          console.error("Error fetching username:", err);
         }
       }
     }
@@ -93,59 +97,58 @@ const SearchPageContent: React.FC = () => {
     <main className="main container mx-auto">
       <h2 className="search_page_title">Search</h2>
       <form className="search_form mx-auto" onSubmit={(e) => e.preventDefault()}>
-        <input
-          className="search_input  max-w-[400px]"
+        <OutlinedInput
+          className="search_input max-w-[400px]"
           type="text"
           placeholder="Search by username"
           value={searchTerm}
-          onChange={(e) => handleSearchinputChange(e.target.value)}
+          onChange={(e) => handleSearchInputChange(e.target.value)}
         />
       </form>
 
-      {loading && '...'}
+      {loading && <Skeleton/>}
+
+      {error && <div className="text-red-500 text-center">{error}</div>}
 
       {searchResults.length > 0 && (
         <ul className="search_list">
           {searchResults.map((user) => (
-            <div
-          
+            <Card
               key={user.uid}
               onClick={() => handleProfileClick(user.uid)}
-              className="cursor-pointer search_item "
+              className="cursor-pointer search_item"
             >
-                
-              <img
-                // src={user.photoURL || "/default.webp"}
+              <CardActionArea>
+              <Image
                 src={`/api/proxy?url=${encodeURIComponent(user.photoURL || '/default.webp')}`}
                 alt={user.username}
-                // width={50}
-                // height={50}
-                // onError={(e) => {
-                //   e.currentTarget.src = "/default.webp"; // Set fallback image on error
-                // }}
+                className="search_avatar"
+                height={50}
+                width={50}
               />
-
               <div className="search_item_data">
                 <h1 className="search_username">@{user.username}</h1>
                 <p className="search_displayName">
                   {user.displayName || user.username}
                 </p>
               </div>
-             
-            </div>
+              </CardActionArea>
+            </Card>
           ))}
         </ul>
       )}
 
-      <div className="flex justify-center">
-        {searchResults.length === 0 && !loading && <small>No results</small>}
-      </div>
+      {searchResults.length === 0 && !loading && !error && (
+        <div className="text-center">
+          <small>No results</small>
+        </div>
+      )}
     </main>
   );
 };
 
 const SearchPage: React.FC = () => (
-  <Suspense fallback='...' >
+  <Suspense fallback={<div>Loading...</div>}>
     <SearchPageContent />
   </Suspense>
 );

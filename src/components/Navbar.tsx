@@ -1,306 +1,145 @@
-// import { useAuth } from '@/hooks/useAuth';
-// import { signOut } from '../app/(auth)/signOut'
-// import Link from "next/link";
-// import { useRouter } from "next/navigation";
-// import {
-//   Navbar,
-//   NavbarBrand,
-//   NavbarContent,
-//   NavbarItem,
-//   DropdownItem,
-//   DropdownTrigger,
-//   Dropdown,
-//   DropdownMenu,
-//   img,
+// //components/Navbar.tsx
+// import Link from "next/link"
+// import LogoutButton from "@/app/(auth)/logoutButton";
 
-// } from "@mui/material";
-// import UploadModal from '@/app/feed/create/post/Modal';
-
-// export default function NavbarApp() {
-//   const { user } = useAuth();
-//   const router = useRouter();
-
-//   return (
-//     <Navbar className='bg-white dark:bg-black'>
-//       <NavbarBrand>
-//         <Link href={'/'} className="font-bold text-inherit">Synapse</Link>
-//       </NavbarBrand>
-
-//       <NavbarContent className=" sm:flex gap-4" justify="center">
-
-//         <NavbarItem >
-
-//           <Link href="/search" className='flex items-center'>
-
-//             <span className="material-symbols-outlined">
-//               search
-//             </span>
-//             <span className='hidden lg:block'>Search</span>
-//           </Link>
-//         </NavbarItem>
-
-//         <NavbarItem className=''>
-
-//           <Link href="/notifications" className='flex items-center'>
-//             <span className="material-symbols-outlined">
-//             notifications
-//             </span>
-//             <span className='hidden lg:block'>notifications</span></Link>
-//         </NavbarItem>
-
-//         <NavbarItem className='hidden lg:block'>
-//           <Link href="/users">users</Link>
-//         </NavbarItem>
-//         <NavbarItem>
-       
-//         </NavbarItem>
-//         <UploadModal />
-//       </NavbarContent>
+// export default function Navbar(){
+//     return(
 
 
+// <nav className="bg-white border-gray-200 dark:bg-gray-900">
+// <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+//   <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+//       <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt=" Logo" />
+//       <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Synapse</span>
+//   </Link>
+//   <button data-collapse-toggle="navbar-default" type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+//       <span className="sr-only">Open main menu</span>
+//       <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+//           <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15"/>
+//       </svg>
+//   </button>
+//   <div className="hidden w-full md:block md:w-auto" id="navbar-default">
+//     <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+//     <li>
+//         <Link href="/post/create" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Create</Link>
+//       </li>
+//       <li>
+//         <Link href="/search" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Search</Link>
+//       </li>
+//       <li>
+//         <Link href="/profile" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Profile</Link>
+//       </li>
+//       <li>
+//         <LogoutButton/>
+//       </li>
+//     </ul>
+//   </div>
+// </div>
+// </nav>
 
-//       <NavbarContent as="div" justify="end">
-//         <Dropdown placement="bottom-end">
-//           <DropdownTrigger>
-//             {user && user.photoURL ? (
-//               <img
-//                 as="button"
-//                 className="transition-transform"
-//                 // color="primary"
-//                 name={user.displayName || "User"}
-//                 size="sm"
-//                 // src={user.photoURL}
-//                 src={`/api/proxy?url=${encodeURIComponent(user.photoURL)}`}
-//               />
-//             ) : "..."}
-//           </DropdownTrigger>
-//           <DropdownMenu aria-label="Profile Actions" variant='flat'>
-//             <DropdownItem key="profile" className="h-14 gap-2" textValue='email'>
-//               <p >Signed in as</p>
-//               <span className="font-semibold">{user?.email || "Guest"}</span>
-//             </DropdownItem>
-//             <DropdownItem
-//               key="analytics"
-//               onClick={() => router.push('/profile')}
-//               textValue='profile'
-//             >
-//               <span className="material-symbols-outlined">
-//                 person
-//               </span>     My Profile
-
-
-//             </DropdownItem>
-
-//             <DropdownItem
-//               key="settings"
-//               onClick={() => router.push('/settings')}
-//               textValue='settings'
-//             >
-//               <span className="material-symbols-outlined">
-//                 settings
-//               </span>     My Settings
-//             </DropdownItem>
-//             <DropdownItem key="logout" color="danger" onClick={signOut}
-//               textValue='signout'
-//             >
-//               <span className="material-symbols-outlined">
-//                 logout
-//               </span>  Signout
-//             </DropdownItem>
-//           </DropdownMenu>
-//         </Dropdown>
-//       </NavbarContent>
-//     </Navbar>
-//   );
+//     )
 // }
 
 
 
 
 
+'use client';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import CloseIcon from '@mui/icons-material/Close';
+import LogoutButton from '@/app/(auth)/logoutButton'
 
-// import React, { useState } from 'react';
-// import { useAuth } from '@/hooks/useAuth';
-// import { signOut } from '../app/(auth)/signOut';
-// import Link from "next/link";
-// import { useRouter } from "next/navigation";
+type NavLink = {
+  name: string;
+  href: string;
+};
 
-// import { Search, Notifications, Person, Settings, Logout } from '@mui/icons-material';
-// // import UploadModal from '@/app/feed/create/post/Modal';
+const NAV_LINKS: NavLink[] = [
+  { name: 'Create', href: '/post/create' },
+  { name: 'Search', href: '/search/' },
+  { name: 'Profile', href: '/profile/' },
+];
 
-// export default function NavbarApp() {
-//   const { user } = useAuth();
-//   const router = useRouter();
-
-//   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-
-
-//   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-//     setAnchorEl(event.currentTarget);
-//   };
-  
-
-//   const handleMenuClose = () => {
-//     setAnchorEl(null);
-//   };
-
-//   const handleProfile = () => {
-//     router.push('/profile');
-//     handleMenuClose();
-//   };
-
-//   const handleSettings = () => {
-//     router.push('/settings');
-//     handleMenuClose();
-//   };
-
-//   return (
-//     <AppBar position="static" color="default" sx={{ backgroundColor: 'white', boxShadow: 'none' }}>
-//       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-//         {/* Brand Logo */}
-//         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-//           <Link href="/" style={{ textDecoration: 'none', color: 'inherit', fontWeight: 'bold' }}>
-//             Synapse
-//           </Link>
-//         </Typography>
-
-//         {/* Center Items */}
-//         <Box sx={{ display: 'flex', gap: 2 }}>
-//           <Button
-//             startIcon={<Search />}
-//             component={Link}
-//             href="/search"
-//             sx={{ textTransform: 'none', color: 'inherit' }}
-//           >
-//             Search
-//           </Button>
-
-//           <Button
-//             startIcon={<Notifications />}
-//             component={Link}
-//             href="/notifications"
-//             sx={{ textTransform: 'none', color: 'inherit' }}
-//           >
-//             Notifications
-//           </Button>
-
-//           <Link
-//             // component={Link}
-//             href="/users"
-//             style={{ textTransform: 'none', color: 'inherit', display: { xs: 'none', lg: 'inline-flex' } }}
-//           >
-//             Users
-//           </Link>
-
-//           {/* <UploadModal /> */}
-//         </Box>
-
-//         {/* User Profile Dropdown */}
-//         <Box>
-//           <Tooltip title="Account settings">
-//             <Iconbutton onClick={handleMenuOpen}>
-//               {user?.photoURL ? (
-//                 <img
-//                   src={`/api/proxy?url=${encodeURIComponent(user.photoURL)}`}
-//                   alt={user.displayName || 'User'}
-//                 />
-//               ) : (
-//                 <img>{user?.displayName?.[0] || '?'}</img>
-//               )}
-//             </Iconbutton>
-//           </Tooltip>
-//           <Menu
-//             anchorEl={anchorEl}
-//             open={Boolean(anchorEl)}
-//             onClose={handleMenuClose}
-//             PaperProps={{
-//               style: { minWidth: 200 },
-//             }}
-//           >
-//             <MenuItem disabled>
-//               <Box>
-//                 <Typography variant="body2">Signed in as</Typography>
-//                 <Typography variant="subtitle2" fontWeight="bold">
-//                   {user?.email || 'Guest'}
-//                 </Typography>
-//               </Box>
-//             </MenuItem>
-//             <MenuItem onClick={handleProfile}>
-//               <Person sx={{ marginRight: 1 }} /> My Profile
-//             </MenuItem>
-//             <MenuItem onClick={handleSettings}>
-//               <Settings sx={{ marginRight: 1 }} /> My Settings
-//             </MenuItem>
-//             <MenuItem onClick={signOut}>
-//               <Logout sx={{ marginRight: 1 }} /> Sign Out
-//             </MenuItem>
-//           </Menu>
-//         </Box>
-//       </Toolbar>
-//     </AppBar>
-//   );
-// }
-
-
-
-
-import React, { useState } from 'react';
-import { useAuth } from '@/hooks/useAuth';
-import { signOut } from '../app/(auth)/signOut';
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import Dropdown from '@/components/DropDown/DropDown';
-
-export default function NavbarApp() {
-  const { user } = useAuth();
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
   const router = useRouter();
 
-  const handleProfile = () => {
-    router.push('/profile');
-  };
-
-  const handleSettings = () => {
-    router.push('/settings');
-  };
+  // Close mobile menu on path change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   return (
-    <header className="bg-white shadow-md">
-      <nav className="container mx-auto flex items-center justify-between py-4">
-        {/* Brand Logo */}
-        <div className="text-xl font-bold">
-          <Link href="/">
+    <nav className="bg-white border-b sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+         <div className='flex items-center gap-2'>
+        
+          <Link href="/" className="text-xl font-bold text-gray-800">
             Synapse
           </Link>
+         </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex space-x-8">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`${
+                  pathname === link.href
+                    ? 'text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-600 hover:text-blue-600'
+                } px-1 transition-colors duration-200`}
+              >
+                {link.name}
+              </Link>
+            ))}
+            <LogoutButton/>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2 rounded-md text-gray-600 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            aria-label="Toggle menu"
+          >
+            {isOpen ? (
+              <CloseIcon className="h-6 w-6" />
+            ) : (
+              <MenuOpenIcon className="h-6 w-6" />
+            )}
+          </button>
         </div>
 
-        {/* Center Items */}
-        <div className="flex items-center space-x-4">
-          <Link href="/search" className="text-gray-700 hover:text-gray-900">
-            Search
-          </Link>
-          <Link href="/notifications" className="text-gray-700 hover:text-gray-900">
-            Notifications
-          </Link>
-          <Link href="/users" className="hidden lg:inline text-gray-700 hover:text-gray-900">
-            Users
-          </Link>
-          <Link href="/inbox" className="hidden lg:inline text-gray-700 hover:text-gray-900">
-            Inbox
-          </Link>
-        </div>
-
-        {/* User Profile Dropdown */}
-        <div>
-          <Dropdown
-            label={user?.displayName || 'Account'}
-            options={[
-              { label: 'My Profile', action: handleProfile },
-              { label: 'My Settings', action: handleSettings },
-              { label: 'Sign Out', action: signOut },
-            ]}
-          />
-        </div>
-      </nav>
-    </header>
+        {/* Mobile Navigation */}
+        {isOpen && (
+          <div className="md:hidden fixed inset-0 bg-white z-50 mt-16">
+            <div className="px-4 pt-2 pb-3 space-y-1">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`${
+                    pathname === link.href
+                      ? 'bg-blue-50 text-blue-600'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  } block px-4 py-2 rounded-md transition-colors duration-200`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <LogoutButton/>
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
   );
 }

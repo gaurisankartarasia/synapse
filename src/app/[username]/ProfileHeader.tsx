@@ -1,6 +1,6 @@
 import React from "react";
-import { VscVerifiedFilled } from "react-icons/vsc";
 import Image from "next/image";
+import { BadgeCheck } from "lucide-react"
 import "./globals.css";
 
 const ProfileHeader: React.FC<{ 
@@ -26,7 +26,7 @@ const ProfileHeader: React.FC<{
      
       <div className="flex items-center">
         <p className="user-name">@{username}</p>
-        {verified && <VscVerifiedFilled size={22} className="text-blue-500 mt-1.5" />}
+        {verified && <BadgeCheck size={22} className="text-blue-500 mt-1.5" />}
       </div>
       <h1 className="username mr-1 " >{displayName}</h1>
 

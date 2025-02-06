@@ -1,42 +1,108 @@
+// import type { Metadata } from "next";
+// import {ReduxProvider} from './ReduxProvider'
+// import AuthProvider from './(auth)/AuthProvider'
+// import { Geist, Geist_Mono } from "next/font/google";
+// import "./globals.css";
+// import { Navbar } from "@/components/Navbar";
+// import { LoadingProvider, useLoading } from '@/components/LoadingProvider';
 
-"use client";
-import React from 'react'
-import { AuthProvider } from '@/contexts/AuthContext';
-import useNavigationProgress from '../hooks/useNavigationProgress'; 
+
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
+
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
+
+// export const metadata: Metadata = {
+//   title: "Synapse",
+//   description: "Synapse",
+// };
+
+// export default function RootLayout({
+  
+//   children,
+// }: Readonly<{
+//   children: React.ReactNode;
+// }>) {
+
+
+
+//   return (
+//     <>
+//     <html lang="en">
+//       <body
+//         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+//       >
+//         <ReduxProvider>
+//           <AuthProvider>
+//             <LoadingProvider>
+//             <Navbar/>
+//         {children}
+//         </LoadingProvider>
+//         </AuthProvider>
+//         </ReduxProvider>
+//       </body>
+//     </html>
+//     </>
+//   );
+// }
+
+
+
+
+
+
+
+
+// app/layout.tsx
+import type { Metadata } from "next";
+import {ReduxProvider} from './ReduxProvider'
+import AuthProvider from './(auth)/AuthProvider'
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import NavbarApp from '@/components/Navbar';
+import  Navbar  from "@/components/Navbar";
+// import { LoadingProvider } from '@/components/LoadingProvider';
 
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
+export const metadata: Metadata = {
+  title: "Synapse",
+  description: "Synapse",
+};
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
-
-
-  useNavigationProgress();
+}>) {
+  // const pageLoadKey = typeof window !== 'undefined' ? Date.now().toString() : '0';
 
   return (
     <html lang="en">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-        <title>Synapse</title>
-      </head>
-      <body className={` text-foreground bg-background min-h-screen`}>  
-          <main>
-            
-<NavbarApp/>
-<AuthProvider>
-  {children}
-
-  </AuthProvider>
-            
-          </main>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <ReduxProvider>
+          <AuthProvider>
+            {/* <LoadingProvider key={pageLoadKey}> */}
+              <Navbar />
+              {children}
+            {/* </LoadingProvider> */}
+          </AuthProvider>
+        </ReduxProvider>
       </body>
     </html>
   );
 }
-

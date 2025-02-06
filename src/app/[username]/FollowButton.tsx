@@ -1,21 +1,24 @@
+//src/app/[username]/FollowButton.tsx
 import React from "react";
-import { Button } from "@mui/material";
-
+import {Button, Skeleton} from '@mui/material'
 
 const Followbutton: React.FC<{
   isUpdating: boolean;
   followStatus: string;
   onFollowClick: () => void;
-}> = ({ isUpdating, followStatus, onFollowClick }) => {
+  className?: string;
+
+}> = ({ isUpdating, followStatus, onFollowClick, className }) => {
   return (
     <Button
-      className="follow-button"
+    className={` ${className || ''}`}
+variant="contained"
       onClick={onFollowClick}
       disabled={isUpdating}
       color="primary"
     >
       {isUpdating ? (
-        'Loading...'
+        <Skeleton size={15}/>
         
       ) : followStatus === "following" ? (
         "Following"
@@ -29,3 +32,5 @@ const Followbutton: React.FC<{
 };
 
 export default Followbutton;
+
+

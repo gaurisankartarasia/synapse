@@ -1,160 +1,193 @@
 
-
-// // app/api/post/comments/route.ts
-// import { NextRequest, NextResponse } from "next/server";
-// import { db } from "@/lib/firebaseAdmin";
-// import { verifyAuth } from "@/utils/auth";
-// import { getFormattedDate } from "@/utils/formatDate";
-// import { FieldValue } from "firebase-admin/firestore";
-
-// // GET handler - optimized for read efficiency
-// export async function GET(request: NextRequest) {
-//   try {
-//     const postId = request.nextUrl.searchParams.get("postId");
-//     if (!postId) {
-//       return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
-//     }
-
-//     // Fetch only the comments array and post existence check in one call
-//     const postDoc = await db.collection("posts").doc(postId).get();
-//     if (!postDoc.exists) {
-//       return NextResponse.json({ error: "Post not found" }, { status: 404 });
-//     }
-
-//     const comments = postDoc.data()?.comments || [];
-//     return NextResponse.json({ comments }, { status: 200 });
-//   } catch (error) {
-//     console.error("Error fetching comments:", error);
-//     return NextResponse.json({ error: "Failed to fetch comments" }, { status: 500 });
-//   }
-// }
-
-// // POST handler - optimized to reduce unnecessary reads
-// export async function POST(request: NextRequest) {
-//   try {
-//     const { postId, content } = await request.json();
-//     if (!postId || !content) {
-//       return NextResponse.json({ error: "Post ID and content are required" }, { status: 400 });
-//     }
-
-//     const user = await verifyAuth(request);
-//     if (!user) {
-//       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//     }
-
-//     // Fetch the username from the users collection once per user session
-//     const userDoc = await db.collection("users").doc(user.uid).get();
-//     const username = userDoc.exists ? userDoc.data()?.username : null;
-
-//     const postRef = db.collection("posts").doc(postId);
-
-//     // Prepare the new comment
-//     const newComment = {
-//       id: Date.now().toString(), 
-//       authorId: user.uid,
-//       content,
-//       author: username || user.uid, // Use username fetched from users collection
-//       createdAt: getFormattedDate(),
-//       likes: 0,
-//       likedBy: []
-//     };
-
-//     // Using a single update to add the comment and increment the comment count
-//     await postRef.update({
-//       comments: FieldValue.arrayUnion(newComment),
-//       commentCount: FieldValue.increment(1)
-//     });
-
-//     return NextResponse.json(newComment, { status: 201 });
-//   } catch (error) {
-//     console.error("Error adding comment:", error);
-//     return NextResponse.json({ error: "Failed to add comment" }, { status: 500 });
-//   }
-// }
-
-
-
-
-
-
-//-------------------------------------batch
-
-
-
-
-
-
+ // app/api/post/comments/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
-import { verifyAuth } from "@/utils/auth";
-import { getFormattedDate } from "@/utils/formatDate";
+import { cookies } from "next/headers";
+import { verifyJWT } from "@/lib/jwt";
+import { CustomJWTPayload } from "@/types/auth";
 import { FieldValue } from "firebase-admin/firestore";
 
-// GET handler - optimized for batch read efficiency
 export async function GET(request: NextRequest) {
   try {
-    const postId = request.nextUrl.searchParams.get("postId");
+    // Extract postId from query parameters
+    const { searchParams } = new URL(request.url);
+    const postId = searchParams.get('postId');
+
     if (!postId) {
-      return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Post ID is required" },
+        { status: 400 }
+      );
     }
 
-    // If you want to fetch multiple posts, pass an array of post IDs
-    const postRef = db.collection("posts").doc(postId);
-    const postDocs = await db.getAll(postRef); // Batch read operation
+    // Fetch comments for the post
+    const commentsSnapshot = await db
+      .collection("posts")
+      .doc(postId)
+      .collection("comments")
+      .orderBy("createdAt", "desc")
+      .get();
 
-    if (postDocs.length === 0 || !postDocs[0].exists) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
-    }
+    const comments = await Promise.all(
+      commentsSnapshot.docs.map(async (commentDoc) => {
+        const commentData = commentDoc.data();
+        const commentId = commentDoc.id;
 
-    const comments = postDocs[0].data()?.comments || [];
+        // Fetch the author's username from the users collection using authorId
+        const userDoc = await db.collection("users").doc(commentData.uid).get();
+        const username = userDoc.exists ? userDoc.data()?.username : null;
+        const photoURL = userDoc.exists ? userDoc.data()?.photoURL : null;
+        const displayName = userDoc.exists ? userDoc.data()?.displayName : null;
+        const is_verified = userDoc.exists ? userDoc.data()?.verified : null;
+        const is_private = userDoc.exists ? userDoc.data()?.private : null;
+
+        // Fetch replies for the comment
+        const repliesSnapshot = await db
+          .collection("posts")
+          .doc(postId)
+          .collection("comments")
+          .doc(commentId)
+          .collection("replies")
+          .orderBy("createdAt", "asc")
+          .get();
+
+        const replies = await Promise.all(
+          repliesSnapshot.docs.map(async (replyDoc) => {
+            const replyData = replyDoc.data();
+            const replyId = replyDoc.id;
+
+            // Fetch the author's username for each reply
+            const replyUserDoc = await db.collection("users").doc(replyData.uid).get();
+            const username = replyUserDoc.exists ? replyUserDoc.data()?.username : null;
+            const photoURL = userDoc.exists ? replyUserDoc.data()?.photoURL : null;
+            const displayName = userDoc.exists ? replyUserDoc.data()?.displayName : null;
+            const is_verified = userDoc.exists ? replyUserDoc.data()?.is_verified : null;
+            const is_private = userDoc.exists ? replyUserDoc.data()?.is_private : null;
+
+            // Fetch likes for the reply
+            const likesSnapshot = await db
+              .collection("posts")
+              .doc(postId)
+              .collection("comments")
+              .doc(commentId)
+              .collection("replies")
+              .doc(replyId)
+              .collection("likes")
+              .get();
+
+            return {
+              id: replyId,
+              uid: replyData.uid,
+              user:{
+                uid: replyData.uid,
+                username: username, 
+              photoURL:photoURL,
+              displayName: displayName,
+              is_verified : is_verified,
+              is_private : is_private,
+            
+              },
+              content: replyData.content,
+              createdAt: replyData.createdAt,
+              likes: replyData.likes || 0,
+              likedBy: likesSnapshot.docs.map((doc) => doc.id),
+            };
+          })
+        );
+
+        return {
+          id: commentId,
+          uid: commentData.uid,
+          content: commentData.content,
+          user:{
+            uid: commentData.uid,
+            username: username, 
+          photoURL:photoURL,
+          displayName: displayName,
+          is_verified : is_verified,
+          is_private : is_private,
+        
+          },
+          createdAt: commentData.createdAt,
+          likes: commentData.likes || 0,
+          likedBy: commentData.likedBy || [],
+          replies,
+        };
+      })
+    );
+
     return NextResponse.json({ comments }, { status: 200 });
   } catch (error) {
-    console.error("Error fetching comments:", error);
-    return NextResponse.json({ error: "Failed to fetch comments" }, { status: 500 });
+    console.error("Error fetching comments and replies:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch comments" },
+      { status: 500 }
+    );
   }
 }
 
 
+
 export async function POST(request: NextRequest) {
   try {
-    const { postId, content } = await request.json();
-    if (!postId || !content) {
-      return NextResponse.json({ error: "Post ID and content are required" }, { status: 400 });
-    }
+    // Get token from cookies
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token");
 
-    const user = await verifyAuth(request);
-    if (!user) {
+    if (!token?.value) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Fetch the username from the users collection once per user session
-    const userDoc = await db.collection("users").doc(user.uid).get();
-    const username = userDoc.exists ? userDoc.data()?.username : null;
+    // Verify token and type assert the payload
+    const payload = (await verifyJWT(token.value)) as CustomJWTPayload;
+
+    if (!payload.uid) {
+      return NextResponse.json({ error: "Invalid token payload" }, { status: 401 });
+    }
+
+    const { postId, content } = await request.json();
+    if (!postId || !content) {
+      return NextResponse.json(
+        { error: "Post ID and content are required" },
+        { status: 400 }
+      );
+    }
+
+    // Fetch the username from the users collection
+    const userDoc = await db.collection("users").doc(payload.uid).get();
 
     const postRef = db.collection("posts").doc(postId);
+    const commentsRef = postRef.collection("comments");
+
+    // Create a new document with an auto-generated ID
+    const newCommentRef = commentsRef.doc();
+    const commentId = newCommentRef.id; // Get the auto-generated ID
 
     // Prepare the new comment
     const newComment = {
-      id: Date.now().toString(),
-      authorId: user.uid,
+      id: commentId,
+      uid: payload.uid,
       content,
-      author: username || user.uid, // Use username fetched from users collection
-      createdAt: getFormattedDate(),
+      createdAt: FieldValue.serverTimestamp(),
       likes: 0,
-      likedBy: []
+      likedBy: [],
     };
 
-    // Start a write batch for more flexibility
+    // Start a write batch
     const batch = db.batch();
+    batch.set(newCommentRef, newComment);
     batch.update(postRef, {
-      comments: FieldValue.arrayUnion(newComment),
-      commentCount: FieldValue.increment(1)
+      commentCount: FieldValue.increment(1),
     });
 
     // Commit the batch write
     await batch.commit();
 
-    return NextResponse.json(newComment, { status: 201 });
+    // Fetch the saved comment with the actual timestamp
+    const savedComment = await newCommentRef.get();
+    const commentData = savedComment.data();
+
+    return NextResponse.json(commentData, { status: 201 });
   } catch (error) {
     console.error("Error adding comment:", error);
     return NextResponse.json({ error: "Failed to add comment" }, { status: 500 });

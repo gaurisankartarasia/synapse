@@ -1,10 +1,9 @@
-
-
 // app/api/post/comments/[commentId]/reply/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
-import { verifyAuth } from "@/utils/auth";
-import { getFormattedDate } from "@/utils/formatDate";
+import { cookies } from "next/headers";
+import { verifyJWT } from "@/lib/jwt";
+import { CustomJWTPayload } from "@/types/auth";
 import { FieldValue } from "firebase-admin/firestore";
 
 export async function POST(
@@ -12,6 +11,21 @@ export async function POST(
   { params }: { params: { commentId: string } }
 ) {
   try {
+    // Get token from cookies
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token");
+
+    if (!token?.value) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Verify token and type assert the payload
+    const payload = (await verifyJWT(token.value)) as CustomJWTPayload;
+    
+    if (!payload.uid) {
+      return NextResponse.json({ error: "Invalid token payload" }, { status: 401 });
+    }
+
     const { postId, content } = await request.json();
     const { commentId } = params;
 
@@ -22,54 +36,46 @@ export async function POST(
       );
     }
 
-    const user = await verifyAuth(request);
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
+    // Reference to the post, comment, and replies collection
+    const postRef = db.collection("posts").doc(postId);
+    const commentRef = postRef.collection("comments").doc(commentId);
+    const repliesRef = commentRef.collection("replies");
+    
+    // Create a new reply document
+    const newReplyRef = repliesRef.doc(); // Auto-generate ID
     const newReply = {
-      id: Date.now().toString(),
-      authorId: user.uid,
-      author: user.name || user.uid,
+      id: newReplyRef.id, // Use Firestore-generated ID
+      uid: payload.uid,
       content,
-      createdAt: getFormattedDate(),
+      createdAt: FieldValue.serverTimestamp(),
       likes: 0,
-      likedBy: [],
     };
 
-    // Reference to the post document
-    const postRef = db.collection("posts").doc(postId);
-    const postDoc = await postRef.get();
-
-    if (!postDoc.exists) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
-    }
-
-    const postData = postDoc.data();
-    const comments = postData?.comments || [];
-
-    // Find the comment and add the reply
-    const updatedComments = comments.map((comment: any) => {
-      if (comment.id === commentId) {
-        return {
-          ...comment,
-          replies: [...(comment.replies || []), newReply],
-        };
+    // Run transaction to add reply and update both reply count in the comment and comment count in the post
+    await db.runTransaction(async (transaction) => {
+      const commentDoc = await transaction.get(commentRef);
+      if (!commentDoc.exists) {
+        throw new Error("Comment not found");
       }
-      return comment;
-    });
 
-    // Update the comments in the database
-    await postRef.update({
-      comments: updatedComments,
+      // Add the reply
+      transaction.set(newReplyRef, newReply);
+      
+      // Increment the reply count on the comment
+      transaction.update(commentRef, {
+        replyCount: FieldValue.increment(1),
+      });
+
+      // Also increment the comment count on the post
+      transaction.update(postRef, {
+        commentCount: FieldValue.increment(1),
+      });
     });
 
     return NextResponse.json(newReply, { status: 201 });
   } catch (error) {
     console.error("Error adding reply:", error);
-    return NextResponse.json(
-      { error: "Failed to add reply" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to add reply" }, { status: 500 });
   }
 }

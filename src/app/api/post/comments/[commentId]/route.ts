@@ -1,9 +1,10 @@
 
-
 // app/api/post/comments/[commentId]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
-import { verifyAuth } from "@/utils/auth";
+import { cookies } from "next/headers";
+import { verifyJWT } from "@/lib/jwt";
+import { CustomJWTPayload } from "@/types/auth";
 import { FieldValue } from "firebase-admin/firestore";
 
 export async function DELETE(
@@ -11,9 +12,19 @@ export async function DELETE(
   { params }: { params: { commentId: string } }
 ) {
   try {
-    const user = await verifyAuth(request);
-    if (!user) {
+    // Get token from cookies
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token");
+
+    if (!token?.value) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Verify token and type assert the payload
+    const payload = (await verifyJWT(token.value)) as CustomJWTPayload;
+
+    if (!payload.uid) {
+      return NextResponse.json({ error: "Invalid token payload" }, { status: 401 });
     }
 
     const body = await request.json();
@@ -24,26 +35,33 @@ export async function DELETE(
     }
 
     const postRef = db.collection("posts").doc(postId);
-    const postDoc = await postRef.get();
+    const commentRef = postRef.collection("comments").doc(params.commentId);
 
-    if (!postDoc.exists) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    // Fetch the comment to verify ownership
+    const commentDoc = await commentRef.get();
+
+    if (!commentDoc.exists) {
+      return NextResponse.json({ error: "Comment not found" }, { status: 404 });
     }
 
-    const comments = postDoc.data()?.comments || [];
-    const commentIndex = comments.findIndex(
-      (c: any) => c.id === params.commentId && c.authorId === user.uid
-    );
+    const commentData = commentDoc.data();
 
-    if (commentIndex === -1) {
-      return NextResponse.json({ error: "Comment not found or unauthorized" }, { status: 404 });
+    if (commentData?.uid !== payload.uid) {
+      return NextResponse.json(
+        { error: "Unauthorized: You can only delete your own comments" },
+        { status: 403 }
+      );
     }
 
-    comments.splice(commentIndex, 1);
-    await postRef.update({
-      comments,
+    // Start batch operation
+    const batch = db.batch();
+    batch.delete(commentRef);
+    batch.update(postRef, {
       commentCount: FieldValue.increment(-1),
     });
+
+    // Commit batch delete
+    await batch.commit();
 
     return NextResponse.json({ success: true });
   } catch (error) {
