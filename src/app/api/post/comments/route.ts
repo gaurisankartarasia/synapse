@@ -154,7 +154,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Fetch the username from the users collection
-    const userDoc = await db.collection("users").doc(payload.uid).get();
+    // const userDoc = await db.collection("users").doc(payload.uid).get();
 
     const postRef = db.collection("posts").doc(postId);
     const commentsRef = postRef.collection("comments");

@@ -10,7 +10,6 @@ import FollowButton from "./FollowButton";
 import ModalList from "./ModalList";
 import ChatButton from "./ChatButton";
 import UserPosts from '../profile/Posts'
-import { Button } from "@mui/material";
 
 const PublicProfilePage: React.FC = () => {
   const params = useParams();
@@ -20,7 +19,7 @@ const PublicProfilePage: React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const [followersCount, setFollowersCount] = useState<number>(0);
   const [followingCount, setFollowingCount] = useState<number>(0);
-  const [followStatus, setFollowStatus] = useState<string>(""); // "" | "requested" | "following"
+  const [followStatus, setFollowStatus] = useState<string>(""); 
   const [followersList, setFollowersList] = useState<any[]>([]);
   const [followingList, setFollowingList] = useState<any[]>([]);
   const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);

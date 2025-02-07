@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from 'next/headers';
 import { verifyJWT } from '@/lib/jwt';
 import { CustomJWTPayload } from '@/types/auth';
-import { FieldValue } from "firebase-admin/firestore";
+// import { FieldValue } from "firebase-admin/firestore";
 
 export async function POST(request: NextRequest) {
   try {
@@ -37,36 +37,36 @@ export async function POST(request: NextRequest) {
     }
 
     const postRef = db.collection("posts").doc(postId);
-    const likesRef = postRef.collection("likes").doc(uid);
+    // const likesRef = postRef.collection("likes").doc(uid);
 
     // Use a transaction to ensure atomic updates
-    const result = await db.runTransaction(async (transaction) => {
-      const postDoc = await transaction.get(postRef);
+    // const result = await db.runTransaction(async (transaction) => {
+    //   const postDoc = await transaction.get(postRef);
       
-      if (!postDoc.exists) {
-        throw new Error("Post not found");
-      }
+    //   if (!postDoc.exists) {
+    //     throw new Error("Post not found");
+    //   }
 
-      const likeCount = postDoc.data()?.likeCount || 0;
-      const hasLiked = (await transaction.get(likesRef)).exists;
+    //   const likeCount = postDoc.data()?.likeCount || 0;
+    //   const hasLiked = (await transaction.get(likesRef)).exists;
 
-      if (hasLiked) {
-        // Unlike: Remove like document and decrement like count
-        transaction.delete(likesRef);
-        transaction.update(postRef, { likeCount: FieldValue.increment(-1) });
+    //   if (hasLiked) {
+    //     // Unlike: Remove like document and decrement like count
+    //     transaction.delete(likesRef);
+    //     transaction.update(postRef, { likeCount: FieldValue.increment(-1) });
         
-        return { liked: false, total: likeCount - 1 };
-      } else {
-        // Like: Add like document and increment like count
-        transaction.set(likesRef, {
-          uid: payload.uid,
-          timestamp: FieldValue.serverTimestamp(),
-        });
-        transaction.update(postRef, { likeCount: FieldValue.increment(1) });
+    //     return { liked: false, total: likeCount - 1 };
+    //   } else {
+    //     // Like: Add like document and increment like count
+    //     transaction.set(likesRef, {
+    //       uid: payload.uid,
+    //       timestamp: FieldValue.serverTimestamp(),
+    //     });
+    //     transaction.update(postRef, { likeCount: FieldValue.increment(1) });
 
-        return { liked: true, total: likeCount + 1 };
-      }
-    });
+    //     return { liked: true, total: likeCount + 1 };
+    //   }
+    // });
 
     return NextResponse.json({
       status: 'ok', 

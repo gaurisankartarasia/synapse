@@ -1,12 +1,15 @@
 import HashtagPage from "./component";
 
-export default function Page({ params }: { params: { tag: string } }) {
-  return <HashtagPage />;
+export default async function Page({ params }: { params: Promise<{ tag: string }> }) {
+  const { tag } = await params;
+  return <HashtagPage  />;
 }
 
-export async function generateMetadata({ params }: { params: { tag: string } }) {
+
+export async function generateMetadata({ params }: { params: Promise<{ tag: string }> }) {
+  const { tag } = await params;
   return {
-    title: `#${params.tag} - Posts`,
-    description: `Posts tagged with #${params.tag}`
+    title: `#${tag} - Posts`,
+    description: `Posts tagged with #${tag}`,
   };
 }

@@ -50,12 +50,6 @@ import type { NextConfig } from 'next';
 import type { webpack } from 'next/dist/compiled/webpack/webpack';
 
 const nextConfig: NextConfig = {
-  webpack: (config: webpack.Configuration, { isServer }) => {
-    if (isServer) {
-      config.externals?.push('socket.io-client');
-    }
-    return config;
-  },
 
   async headers() {
     return [

@@ -1,39 +1,35 @@
+
+
 // import { useState, useEffect, useCallback } from 'react';
+// import axios from 'axios';
+// import Image from 'next/image';
 // import Modal from '@/components/Modal';
-// import { useAuth } from '@/hooks/useAuth';
 // import { LikesModalProps, LikeUserResponse } from '@/types/likedby';
+// import { Skeleton } from "@mui/material";
+
 
 // const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
 //   const [users, setUsers] = useState<LikeUserResponse[]>([]);
 //   const [loading, setLoading] = useState(false);
-//   const { getIdToken } = useAuth();
 
 //   const fetchUsers = useCallback(async () => {
 //     if (!isOpen || !postId) return;
     
 //     try {
 //       setLoading(true);
-//       const token = await getIdToken();
-//       const response = await fetch(`/api/post/like/likedby?postId=${postId}`, {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
+//       const response = await axios.get(`/api/post/like/likedby`, {
+//         params: { postId },
+//         withCredentials: true 
 //       });
-//       const data = await response.json();
       
-//       if (response.ok) {
-//         setUsers(data.users || []);
-//       } else {
-//         console.error("Error fetching users:", data.error);
-//         setUsers([]);
-//       }
+//       setUsers(response.data.users || []);
 //     } catch (error) {
 //       console.error("Error fetching users:", error);
 //       setUsers([]);
 //     } finally {
 //       setLoading(false);
 //     }
-//   }, [postId, isOpen, getIdToken]);
+//   }, [postId, isOpen]);
 
 //   useEffect(() => {
 //     let isMounted = true;
@@ -91,10 +87,12 @@
 //                 className="flex items-center gap-3 p-4 hover:bg-gray-50 transition-colors"
 //               >
 //                 <div className="relative h-10 w-10 flex-shrink-0">
-//                   <img
+//                   <Image
 //                     src={`/api/proxy?url=${encodeURIComponent(user.profilePic)}`}
 //                     alt={user.username}
 //                     className="rounded-full object-cover"
+//                     height={50}
+//                     width={50}
 //                   />
 //                 </div>
 //                 <div className="flex-grow">
@@ -121,12 +119,14 @@
 
 
 
+
+
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import Image from 'next/image';
 import Modal from '@/components/Modal';
 import { LikesModalProps, LikeUserResponse } from '@/types/likedby';
 import { Skeleton } from "@mui/material";
-
 
 const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
   const [users, setUsers] = useState<LikeUserResponse[]>([]);
@@ -154,14 +154,18 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
   useEffect(() => {
     let isMounted = true;
 
-    if (isOpen && postId) {
-      fetchUsers();
-    }
+    const loadUsers = async () => {
+      if (isOpen && postId) {
+        await fetchUsers();
+      }
+    };
+
+    loadUsers();
 
     return () => {
       isMounted = false;
     };
-  }, [isOpen, postId]); // Remove fetchUsers from dependency array
+  }, [isOpen, postId, fetchUsers]); // Added fetchUsers to dependency array
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -207,10 +211,12 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
                 className="flex items-center gap-3 p-4 hover:bg-gray-50 transition-colors"
               >
                 <div className="relative h-10 w-10 flex-shrink-0">
-                  <img
+                  <Image
                     src={`/api/proxy?url=${encodeURIComponent(user.profilePic)}`}
                     alt={user.username}
                     className="rounded-full object-cover"
+                    height={50}
+                    width={50}
                   />
                 </div>
                 <div className="flex-grow">

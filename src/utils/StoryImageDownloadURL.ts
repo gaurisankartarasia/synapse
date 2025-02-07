@@ -1,6 +1,6 @@
 // src/lib/firebase.ts
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, adminStorage, serverTimestamp } from '@/lib/firebaseAdmin';
+// import { db, adminStorage, serverTimestamp } from '@/lib/firebaseAdmin';
 
 export async function uploadStoryImage(file: File, uid: string): Promise<string> {
   try {
