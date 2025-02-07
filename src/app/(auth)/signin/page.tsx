@@ -8,9 +8,9 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
-import { signInWithEmail, signInWithGoogle } from '@/redux/features/authSlice';
+import { signInWithEmail } from '@/redux/features/authSlice';
 import GoogleSignInButton from './GoogleSignInButton';
-import {Skeleton, colors} from '@mui/material'
+import {CircularProgress} from '@mui/material'
 
 export default function SignIn() {
   const router = useRouter();
@@ -108,7 +108,7 @@ export default function SignIn() {
             disabled={loading}
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
-            {loading ? <Skeleton color='inherit' size={25}/> : 'Sign In'}
+            {loading ? <CircularProgress color='inherit' size={25}/> : 'Sign In'}
           </button>
         </form>
 

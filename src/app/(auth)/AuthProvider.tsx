@@ -4,8 +4,8 @@
 
 import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/redux/store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
 import { auth } from '@/lib/firebaseClient';
 import { onAuthStateChanged } from 'firebase/auth';
 import { setUser } from '@/redux/features/authSlice';
@@ -20,10 +20,8 @@ export default function AuthProvider({
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((state: RootState) => state.auth);
-  const { username } = useSelector((state: RootState) => state.user);
 
-// useEffect(() => {
+
 //     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
 //       // Serialize the user before dispatching
 //       const serializedUser = firebaseUser ? {

@@ -12,7 +12,6 @@ import Likebutton from "@/app/post/components/LikeButton";
 import { PostHeader } from "@/app/post/components/PostHeader";
 import { Post } from "@/types/post";
 
-
 const POSTS_PER_PAGE = 5;
 
 const HashtagPage = () => {
@@ -25,14 +24,13 @@ const HashtagPage = () => {
   const observer = useRef<IntersectionObserver | null>(null);
   const loadingRef = useRef<HTMLDivElement>(null);
 
-  const fetchHashtagPosts = async (lastId: string | null = null) => {
+  const fetchHashtagPosts = useCallback(async (lastId: string | null = null) => {
     if (!tag) return;
 
     try {
       setLoading(true);
       setError(null);
 
-      // Encode the tag to handle special characters
       const encodedTag = encodeURIComponent(tag as string);
       const url = `/api/hashtag/${encodedTag}${lastId ? `?lastPostId=${lastId}` : ""}`;
       
@@ -45,7 +43,6 @@ const HashtagPage = () => {
 
       const data = await response.json();
       
-      // Merge posts or set new posts
       setPosts((prev) => (lastId ? [...prev, ...data.posts] : data.posts));
       setHasMore(data.hasMore);
       
@@ -58,7 +55,7 @@ const HashtagPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [tag]); // Add tag as a dependency since it's used in the function
 
   const lastPostElementRef = useCallback(
     (node: HTMLDivElement) => {
@@ -73,30 +70,18 @@ const HashtagPage = () => {
 
       if (node) observer.current.observe(node);
     },
-    [loading, hasMore, lastPostId]
+    [loading, hasMore, lastPostId, fetchHashtagPosts] // Add fetchHashtagPosts as a dependency
   );
 
   useEffect(() => {
     if (tag) {
       fetchHashtagPosts();
     }
-  }, [tag]);
+  }, [tag, fetchHashtagPosts]); // Add fetchHashtagPosts as a dependency
 
-
-  if (error) {
-    return (
-      <div className="container mx-auto px-4 py-8 text-center">
-        <h1 className="text-3xl font-bold mb-4">Error</h1>
-        <p className="text-red-500">{error}</p>
-        <Button 
-          onClick={() => fetchHashtagPosts()} 
-        >
-          Try Again
-        </Button>
-      </div>
-    );
-  }
-
+  // Rest of the component remains the same...
+  
+  // Including ImageGallery component and return statement for completeness
   const ImageGallery = ({ images }: { images: string[] }) => (
     <div className="grid grid-cols-2 gap-2 my-2">
       {images.map((url, index) => (
@@ -115,6 +100,18 @@ const HashtagPage = () => {
       ))}
     </div>
   );
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        <h1 className="text-3xl font-bold mb-4">Error</h1>
+        <p className="text-red-500">{error}</p>
+        <Button onClick={() => fetchHashtagPosts()}>
+          Try Again
+        </Button>
+      </div>
+    );
+  }
 
   if (loading && posts.length === 0) {
     return (
@@ -143,12 +140,13 @@ const HashtagPage = () => {
               className="bg-white shadow-md rounded-lg p-6"
             >
               <Link href={`/post/${post.id}`} className="block">
-              <PostHeader authorUsername={post.author}
-              authorPhotoURL={post.photoURL}
-              authorDisplayName={post.displayName}
-              />
+                <PostHeader 
+                  authorUsername={post.author}
+                  authorPhotoURL={post.photoURL}
+                  authorDisplayName={post.displayName}
+                  authorVerified={post.is_verified}
+                />
                 <div className="text-sm text-gray-600 mb-4">
-                  
                   <span>{formatRelativeTime(post.createdAt)}</span>
                 </div>
 

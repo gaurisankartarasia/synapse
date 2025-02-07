@@ -5,6 +5,8 @@ import { adminStorage } from '@/lib/firebaseAdmin';
 import { CustomJWTPayload } from '@/types/auth';
 import { cookies } from 'next/headers';
 import sharp from 'sharp';
+import { randomBytes } from 'crypto';
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -68,7 +70,8 @@ export async function POST(req: NextRequest) {
     const file = bucket.file(filename);
 
     // Generate a token for secure access
-    const storageToken = require('crypto').randomBytes(16).toString('hex');
+    // const storageToken = require('crypto').randomBytes(16).toString('hex');
+    const storageToken = randomBytes(16).toString('hex');
 
     // Upload image with metadata
     await file.save(resizedBuffer, {

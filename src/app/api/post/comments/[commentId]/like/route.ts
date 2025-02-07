@@ -7,8 +7,13 @@ import { verifyJWT } from "@/lib/jwt";
 import { CustomJWTPayload } from "@/types/auth";
 import { FieldValue } from "firebase-admin/firestore";
 
-export async function POST(request: NextRequest, { params }: { params: { commentId: string } }) {
+export async function POST(
+  request: NextRequest,
+   context: { params: Promise< { commentId: string }> }) {
   try {
+
+    const { commentId } = await context.params;
+
     // Get token from cookies
     const cookieStore = await cookies();
     const token = cookieStore.get("token");
@@ -29,7 +34,7 @@ export async function POST(request: NextRequest, { params }: { params: { comment
       return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
     }
 
-    const commentRef = db.collection("posts").doc(postId).collection("comments").doc(params.commentId);
+    const commentRef = db.collection("posts").doc(postId).collection("comments").doc(commentId);
     const likeRef = commentRef.collection("likes").doc(payload.uid);
 
     await db.runTransaction(async (transaction) => {

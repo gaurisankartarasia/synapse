@@ -1,4 +1,5 @@
 
+
 // // app/api/post/comments/[commentId]/reply/[replyId]/route.ts
 // import { NextRequest, NextResponse } from "next/server";
 // import { db } from "@/lib/firebaseAdmin";
@@ -34,10 +35,11 @@
 //     }
 
 //     // References to Firestore documents
-//     const commentRef = db.collection("posts").doc(postId).collection("comments").doc(commentId);
+//     const postRef = db.collection("posts").doc(postId);
+//     const commentRef = postRef.collection("comments").doc(commentId);
 //     const replyRef = commentRef.collection("replies").doc(replyId);
 
-//     // Run transaction to delete reply and update reply count
+//     // Run transaction to delete reply and update counts
 //     await db.runTransaction(async (transaction) => {
 //       const replyDoc = await transaction.get(replyRef);
 
@@ -55,6 +57,9 @@
 //       transaction.delete(replyRef);
 //       transaction.update(commentRef, {
 //         replyCount: FieldValue.increment(-1),
+//       });
+//       transaction.update(postRef, {
+//         commentCount: FieldValue.increment(-1),
 //       });
 //     });
 
@@ -82,7 +87,8 @@
 
 
 
-// app/api/post/comments/[commentId]/reply/[replyId]/route.ts
+
+
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
 import { cookies } from "next/headers";
@@ -92,9 +98,12 @@ import { FieldValue } from "firebase-admin/firestore";
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { commentId: string; replyId: string } }
+  context: { params: Promise<{ commentId: string; replyId: string }> }
 ) {
   try {
+    // Await the params promise
+    const { commentId, replyId } = await context.params;
+
     // Get token from cookies
     const cookieStore = await cookies();
     const token = cookieStore.get("token");
@@ -110,8 +119,6 @@ export async function DELETE(
     }
 
     const { postId } = await request.json();
-    const { commentId, replyId } = params;
-
     if (!postId || !commentId || !replyId) {
       return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
     }

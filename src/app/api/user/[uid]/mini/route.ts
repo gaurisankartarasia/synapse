@@ -1,5 +1,4 @@
 
-
 // // app/api/user/[uid]/mini/route.ts
 // import { NextResponse } from 'next/server';
 // import { cookies } from 'next/headers';
@@ -7,11 +6,23 @@
 // import { db } from '@/lib/firebaseAdmin';
 // import { CustomJWTPayload } from '@/types/auth';
 
+// // Define the correct segment configuration
+// export const dynamic = 'force-dynamic';
+// export const revalidate = 0;
+
 // export async function GET(
 //     request: Request,
 //     { params }: { params: { uid: string } }
 // ) {
 //     try {
+//         // Validate params
+//         if (!params.uid) {
+//             return NextResponse.json(
+//                 { error: 'User ID is required' },
+//                 { status: 400 }
+//             );
+//         }
+
 //         // Get token from cookies
 //         const cookieStore = await cookies();
 //         const token = cookieStore.get('token');
@@ -33,9 +44,7 @@
 //             );
 //         }
 
-//         // Optional: Check if the requesting user has permission to access this data
-//         // You might want to check if payload.uid matches params.uid or implement other checks
-        
+//         // Fetch user data
 //         const userRef = db.collection('users').doc(params.uid);
 //         const userSnap = await userRef.get();
       
@@ -46,8 +55,22 @@
 //             );
 //         }
   
-//         const { username, photoURL, displayName, verified } = userSnap.data() || {};
-//         return NextResponse.json({ username, photoURL, displayName, verified });
+//         const userData = userSnap.data();
+        
+//         if (!userData) {
+//             return NextResponse.json(
+//                 { error: 'User data is empty' },
+//                 { status: 404 }
+//             );
+//         }
+
+//         // Return only the required fields
+//         return NextResponse.json({
+//             username: userData.username || null,
+//             photoURL: userData.photoURL || null,
+//             displayName: userData.displayName || null,
+//             verified: userData.verified || false
+//         });
         
 //     } catch (error) {
 //         console.error('User mini fetch error:', error);
@@ -62,7 +85,8 @@
 
 
 
-// app/api/user/[uid]/mini/route.ts
+
+
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { verifyJWT } from '@/lib/jwt';
@@ -75,11 +99,13 @@ export const revalidate = 0;
 
 export async function GET(
     request: Request,
-    { params }: { params: { uid: string } }
+    context: { params: Promise<{ uid: string }> }
 ) {
     try {
-        // Validate params
-        if (!params.uid) {
+        // Await the params promise
+        const { uid } = await context.params;
+
+        if (!uid) {
             return NextResponse.json(
                 { error: 'User ID is required' },
                 { status: 400 }
@@ -108,7 +134,7 @@ export async function GET(
         }
 
         // Fetch user data
-        const userRef = db.collection('users').doc(params.uid);
+        const userRef = db.collection('users').doc(uid);
         const userSnap = await userRef.get();
       
         if (!userSnap.exists) {

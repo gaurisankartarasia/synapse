@@ -9,9 +9,10 @@ import { FieldValue } from "firebase-admin/firestore";
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { commentId: string } }
+  context: { params:Promise< { commentId: string }> }
 ) {
   try {
+    const { commentId } = await context.params;
     // Get token from cookies
     const cookieStore = await cookies();
     const token = cookieStore.get("token");
@@ -35,7 +36,7 @@ export async function DELETE(
     }
 
     const postRef = db.collection("posts").doc(postId);
-    const commentRef = postRef.collection("comments").doc(params.commentId);
+    const commentRef = postRef.collection("comments").doc(commentId);
 
     // Fetch the comment to verify ownership
     const commentDoc = await commentRef.get();

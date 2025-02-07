@@ -8,11 +8,11 @@ import { CustomJWTPayload } from "@/types/auth";
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { commentId: string; replyId: string } }
+  context: { params: Promise< { commentId: string; replyId: string }> }
 ) {
   try {
     const { postId } = await request.json();
-    const { commentId, replyId } = params;
+    const { commentId, replyId } = await context.params;
 
     const cookieStore = await cookies();
     const token = cookieStore.get("token");

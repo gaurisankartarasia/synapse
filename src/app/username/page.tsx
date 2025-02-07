@@ -29,9 +29,9 @@ const { user } = useSelector((state: RootState) => state.auth) as { user: Serial
     
     if (user?.uid) {
       try {
-        const resultAction = await dispatch(
-          setUsername({ uid: user.uid, username })
-        ).unwrap();
+        // const resultAction = await dispatch(
+        //   setUsername({ uid: user.uid, username })
+        // ).unwrap();
         router.push('/profile');
       } catch (err) {
         console.error('Failed to set username:', err);

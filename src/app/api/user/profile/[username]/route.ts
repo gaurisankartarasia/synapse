@@ -1,13 +1,13 @@
 
 
-// app/api/user/profile-info/[username]/route.ts
+// app/api/user/profile/[username]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
 import { verifyJWT } from "@/lib/jwt";
 
-export async function GET(req: NextRequest, { params }: { params: { username: string } }) {
+export async function GET(req: NextRequest, context: { params: Promise<{ username: string } >}) {
   try {
-    const { username } = params;
+    const { username } = await context.params;
     const token = req.cookies.get('token')?.value;
 
     // Fetch profile data

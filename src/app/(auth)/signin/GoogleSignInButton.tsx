@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInWithGoogle } from '@/redux/features/authSlice';
 import type { AppDispatch, RootState } from '@/redux/store';
-import {Skeleton} from "@mui/material"
+import {CircularProgress} from "@mui/material"
 
 export default function GoogleSignInButton() {
   const router = useRouter();
@@ -45,7 +45,7 @@ export default function GoogleSignInButton() {
         {loading ? (
           <div className="flex items-center gap-2">
             
-            <Skeleton size={20} color='inherit'/>
+            <CircularProgress size={20} color='inherit'/>
           </div>
         ) : (
           <>
