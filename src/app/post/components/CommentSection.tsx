@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { CommentItem } from "./commentItem"
 import { CommentForm } from './commentForm';
 import { Comment } from '@/types/comments';
-import { Skeleton } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 
 type CommentSectionProps = {
   postId: string;
@@ -218,7 +218,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
   return (
     <div className="comments-section mt-6">
       {loading ? (
-        <Skeleton/>
+        <CircularProgress/>
       ) : (
         <ul>
           {comments.map((comment) => (

@@ -7,7 +7,7 @@ import { auth } from "@/lib/firebaseClient";
 import Link from 'next/link'
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Skeleton } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import VerifiedIcon from '@mui/icons-material/Verified';
 import {
   HoverCard,
@@ -21,9 +21,9 @@ type ProfileData = {
   followersCount: number;
   followingCount: number;
   photoURL: string;
-  private: boolean;
+  is_private: boolean;
   username: string;
-  verified: boolean;
+  is_verified: boolean;
   uid: string;
   isFollowing?: boolean;
   isRequested?: boolean;
@@ -178,7 +178,7 @@ const router = useRouter()
       <HoverCardContent className="w-80" align="start">
         {loading ? (
           <div className="flex justify-center p-4">
-            <Skeleton  />
+            <CircularProgress  />
           </div>
         ) : profile ? (
           <div className="space-y-2">
@@ -233,10 +233,10 @@ const router = useRouter()
               )}
             </div>
             <div className="flex items-center gap-2 text-sm">
-              {profile.verified && (
+              {profile.is_verified && (
                 <span className="text-green-500">✓ Verified</span>
               )}
-              {profile.private && (
+              {profile.is_private && (
                 <span className="text-red-500">🔒 Private Account</span>
               )}
             </div>

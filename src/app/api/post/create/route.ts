@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { title, content, imageUrls, hashtags, allowCommenting } = body;
 
-    const createdAt = FieldValue.serverTimestamp();
+    const created_at = FieldValue.serverTimestamp();
     
     const batch = db.batch();
     const newPostRef = db.collection("posts").doc();
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
       title,
       content,
       author: username,
-      createdAt,
+      created_at,
       imageUrls: imageUrls || [],
       hashtags: hashtags || [],
       allowCommenting: allowCommenting ?? true,

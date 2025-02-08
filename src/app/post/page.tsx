@@ -8,7 +8,7 @@
 // import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 // import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 // import { useAuth } from '@/hooks/useAuth';
-// import { Skeleton } from "@mui/material";
+// import { CircularProgress } from "@mui/material";
 // import { Post } from "@/types/post";
 // import LikesModal from './components/LikedByModal';
 // import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -264,7 +264,7 @@
 
 //   return (
 //     <div className="mx-auto px-4">
-//       {loading && <Skeleton />}
+//       {loading && <CircularProgress />}
 //       <div className="space-y-4">
 //         {posts.map((post, index) => (
 //           <div key={post.id} ref={index === posts.length - 1 ? lastPostElementRef : null}>
@@ -278,7 +278,7 @@
 //          className="rounded-full"/>
 //          <strong>{post.author}</strong>
 //          {post.is_verified && "verified"}
-//                 <span className="text-gray-600 text-sm">{formatRelativeTime(post.createdAt)}</span>
+//                 <span className="text-gray-600 text-sm">{formatRelativeTime(post.created_at)}</span>
 //               </div>
 
 //               <Link href={`/post/${post.id}`} className="block">
@@ -379,7 +379,7 @@ import { formatRelativeTime } from "@/utils/date";
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { useAuth } from '@/hooks/useAuth';
-import { Skeleton } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { Post } from "@/types/post";
 import LikesModal from './components/LikedByModal';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -605,7 +605,7 @@ const PostPage = () => {
 
   return (
     <div className="mx-auto px-4">
-      {loading && <Skeleton />}
+      {loading && <CircularProgress />}
       <div className="space-y-4">
         {posts.map((post, index) => (
           <div key={post.id} ref={index === posts.length - 1 ? lastPostElementRef : null}>
@@ -619,7 +619,7 @@ const PostPage = () => {
          className="rounded-full"/>
          <strong>{post.author}</strong>
          {post.is_verified && "verified"}
-                <span className="text-gray-600 text-sm">{formatRelativeTime(post.createdAt)}</span>
+                <span className="text-gray-600 text-sm">{formatRelativeTime(post.created_at)}</span>
               </div>
 
               <Link href={`/post/${post.id}`} className="block">

@@ -10,7 +10,7 @@ import VerifiedIcon from '@mui/icons-material/Verified';
 // import styles from "./UserModal.module.css";
 import { auth } from "@/lib/firebaseClient";
 import { useRouter } from "next/navigation";
-import { Skeleton } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 
 type UserModalProps = {
   isOpen: boolean;
@@ -76,7 +76,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, type }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={type === "followers" ? "Followers" : "Following"}>
       {modalLoading ? (
-        <Skeleton/>
+        <CircularProgress/>
       ) : (
         <ul 
         // className={styles.modalList}

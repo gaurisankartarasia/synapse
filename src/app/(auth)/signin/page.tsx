@@ -20,18 +20,6 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-    
-  //   try {
-  //     const resultAction = await dispatch(signInWithEmail({ email, password }));
-  //     if (signInWithEmail.fulfilled.match(resultAction)) {
-  //       router.push('/');
-  //     }
-  //   } catch (err) {
-  //     console.error('Sign in failed:', err);
-  //   }
-  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();

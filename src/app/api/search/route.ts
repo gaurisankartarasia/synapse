@@ -89,7 +89,8 @@ export async function GET(request: Request) {
       username: doc.data().username,
       displayName: doc.data().displayName,
       photoURL: doc.data().photoURL,
-      private: doc.data().private || false,
+      is_private: doc.data().is_private,
+      is_verified: doc.data().is_verified
     }));
 
     return NextResponse.json({ users });

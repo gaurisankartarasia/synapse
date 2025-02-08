@@ -7,14 +7,16 @@ import axios from "axios";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { auth } from "@/lib/firebaseClient";
-import { OutlinedInput, Card, CardActionArea, Skeleton } from '@mui/material';
+import { OutlinedInput, Card, CardActionArea, CircularProgress } from '@mui/material';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 interface SearchResult {
   uid: string;
   username: string;
   displayName: string;
   photoURL: string;
-  private: boolean;
+  is_private: boolean;
+  is_verified:boolean;
 }
 
 const SearchPageContent: React.FC = () => {
@@ -74,24 +76,25 @@ const SearchPageContent: React.FC = () => {
     }, 300);
   };
 
+ 
+
   const handleProfileClick = async (uid: string) => {
     const currentUser = auth.currentUser;
-
+  
     if (currentUser) {
       if (currentUser.uid === uid) {
         router.push("/profile");
       } else {
-        try {
-          const response = await axios.get(`/api/get_username_from_uid?uid=${uid}`);
-          if (response.data.username) {
-            router.push(`/${response.data.username}`);
-          }
-        } catch (err) {
-          console.error("Error fetching username:", err);
+        const selectedUser = searchResults.find((user) => user.uid === uid);
+        if (selectedUser) {
+          router.push(`/${selectedUser.username}`);
+        } else {
+          console.error("User not found in search results.");
         }
       }
     }
   };
+  
 
   return (
     <main className="main container mx-auto">
@@ -106,7 +109,7 @@ const SearchPageContent: React.FC = () => {
         />
       </form>
 
-      {loading && <Skeleton/>}
+      {loading && <CircularProgress size={25}/>}
 
       {error && <div className="text-red-500 text-center">{error}</div>}
 
@@ -128,6 +131,7 @@ const SearchPageContent: React.FC = () => {
               />
               <div className="search_item_data">
                 <h1 className="search_username">@{user.username}</h1>
+                {user.is_verified && <VerifiedIcon/>}
                 <p className="search_displayName">
                   {user.displayName || user.username}
                 </p>

@@ -13,16 +13,6 @@ export default function GoogleSignInButton() {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.auth);
 
-  // const handleGoogleSignIn = async () => {
-  //   try {
-  //     await dispatch(signInWithGoogle()).unwrap();
-  //     router.push('/');
-  //     router.refresh();
-  //   } catch (error) {
-  //     console.error('Google sign in error:', error);
-  //   }
-  // };
-
   const handleGoogleSignIn = async () => {
     try {
       const resultAction = await dispatch(signInWithGoogle());

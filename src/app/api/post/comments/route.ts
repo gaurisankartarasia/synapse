@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       .collection("posts")
       .doc(postId)
       .collection("comments")
-      .orderBy("createdAt", "desc")
+      .orderBy("created_at", "desc")
       .get();
 
     const comments = await Promise.all(
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
           .collection("comments")
           .doc(commentId)
           .collection("replies")
-          .orderBy("createdAt", "asc")
+          .orderBy("created_at", "asc")
           .get();
 
         const replies = await Promise.all(
@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
             
               },
               content: replyData.content,
-              createdAt: replyData.createdAt,
+              created_at: replyData.created_at,
               likes: replyData.likes || 0,
               likedBy: likesSnapshot.docs.map((doc) => doc.id),
             };
@@ -108,7 +108,7 @@ export async function GET(request: NextRequest) {
           is_private : is_private,
         
           },
-          createdAt: commentData.createdAt,
+          created_at: commentData.created_at,
           likes: commentData.likes || 0,
           likedBy: commentData.likedBy || [],
           replies,
@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
       id: commentId,
       uid: payload.uid,
       content,
-      createdAt: FieldValue.serverTimestamp(),
+      created_at: FieldValue.serverTimestamp(),
       likes: 0,
       likedBy: [],
     };

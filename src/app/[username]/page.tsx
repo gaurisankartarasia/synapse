@@ -9,17 +9,33 @@ import FollowStats from "./FollowStats";
 import FollowButton from "./FollowButton";
 import ModalList from "./ModalList";
 import ChatButton from "./ChatButton";
-import UserPosts from '../profile/Posts'
+import UserPosts from '../profile/Posts';
+import LockPersonIcon from '@mui/icons-material/LockPerson';
+
+
+interface ProfileData {
+  uid: string;
+  username: string;
+  displayName: string;
+  photoURL: string;
+  created_at:string;
+  bio: string;
+  is_verified: boolean;
+  is_private:boolean;
+  followersCount: number;
+  followingCount: number;
+  isFollowing: boolean;
+  isRequested: boolean;
+  blocked?: boolean;
+}
+
 
 const PublicProfilePage: React.FC = () => {
   const params = useParams();
   const username = params?.username as string;
   const router = useRouter();
 
-  const [user, setUser] = useState<any>(null);
-  const [followersCount, setFollowersCount] = useState<number>(0);
-  const [followingCount, setFollowingCount] = useState<number>(0);
-  const [followStatus, setFollowStatus] = useState<string>(""); 
+  const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [followersList, setFollowersList] = useState<any[]>([]);
   const [followingList, setFollowingList] = useState<any[]>([]);
   const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
@@ -48,50 +64,25 @@ const PublicProfilePage: React.FC = () => {
         return;
       }
   
-      // Fetch user data from the API
-      const userResponse = await fetch(`/api/user-profile-public?username=${username}`, {
+      // Fetch user data from the merged API
+      const response = await fetch(`/api/user-profile/query?username=${username}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
   
-      if (!userResponse.ok) {
-        router.back()
-        // throw new Error("Failed to fetch user data f");
-      }
-  
-      const userData = await userResponse.json();
-      setUser(userData);
-  
-      // Fetch follow data
-      const followResponse = await fetch(`/api/get-following-followers?username=${username}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-  
-      if (followResponse.status === 403) {
-        console.log("You have blocked this user. Skipping followers/following fetch.");
-        setFollowersCount(0);
-        setFollowingCount(0);
-        setFollowStatus("");
+      if (!response.ok) {
+        if (response.status === 403) {
+          console.log("Content not available - User may be blocked");
+        }
+        router.back();
         return;
       }
   
-      if (!followResponse.ok) {
-        throw new Error("Failed to fetch follow data");
-      }
-  
-      const followData = await followResponse.json();
-      setFollowersCount(followData.followersCount || 0);
-      setFollowingCount(followData.followingCount || 0);
-      setFollowStatus(
-        followData.isFollowing ? "following" : followData.isRequested ? "requested" : ""
-      );
+      const data = await response.json();
+      setProfileData(data);
     } catch (error) {
       console.error("Error fetching user data:", error);
-      // router.push("/signin");
-    } finally {
-      // setLoadingProfile(false);
     }
   }, [username, router]);
-  
 
   const fetchModalData = useCallback(
     async (type: "followers" | "following") => {
@@ -114,7 +105,7 @@ const PublicProfilePage: React.FC = () => {
             setFollowingList(data.following || []);
           }
         } else {
-          throw new Error(`Failed to fetch ${type} data f`);
+          throw new Error(`Failed to fetch ${type} data`);
         }
       } catch (error) {
         console.error(error);
@@ -151,72 +142,87 @@ const PublicProfilePage: React.FC = () => {
   };
 
   const handleFollow = useCallback(async () => {
-    if (!auth.currentUser || isUpdating) return;
+    if (!auth.currentUser || isUpdating || !profileData) return;
 
-    const isFollowing = followStatus === "following";
-    const isRequesting = followStatus === "requested";
+    const isFollowing = profileData.isFollowing;
+    const isRequesting = profileData.isRequested;
 
     setIsUpdating(true);
 
     const tempFollowersCount = isFollowing
-      ? Math.max(0, followersCount - 1)
-      : followersCount + 1;
+      ? Math.max(0, profileData.followersCount - 1)
+      : profileData.followersCount + 1;
 
-    setFollowersCount(tempFollowersCount);
-    setFollowStatus(isFollowing || isRequesting ? "" : "requested");
+    setProfileData((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        followersCount: tempFollowersCount,
+        isFollowing: false,
+        isRequested: !isFollowing && !isRequesting
+      };
+    });
 
     try {
       const token = await auth.currentUser.getIdToken();
       const response = await fetch("/api/follow-user", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        headers: { 
+          "Content-Type": "application/json", 
+          Authorization: `Bearer ${token}` 
+        },
         body: JSON.stringify({ targetUsername: username }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        if (data.status === "Unfollowed") {
-          setFollowStatus("");
-          setFollowersCount(data.followersCount || followersCount);
-        } else if (data.status === "Follow request sent") {
-          setFollowStatus("requested");
-          setFollowersCount(data.followersCount || followersCount);
-        } else if (data.following) {
-          setFollowStatus("following");
-          setFollowersCount(data.followersCount || followersCount);
-        }
+        setProfileData((prev) => {
+          if (!prev) return null;
+          return {
+            ...prev,
+            followersCount: data.followersCount || prev.followersCount,
+            isFollowing: data.status === "Following",
+            isRequested: data.status === "Follow request sent"
+          };
+        });
       } else {
         throw new Error("Failed to follow/unfollow user");
       }
     } catch (error) {
       console.error("Follow action failed:", error);
-      setFollowersCount(followersCount);
-      setFollowStatus(isFollowing || isRequesting ? "following" : "");
+      setProfileData((prev) => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          followersCount: profileData.followersCount,
+          isFollowing: isFollowing,
+          isRequested: isRequesting
+        };
+      });
     } finally {
       setIsUpdating(false);
     }
-  }, [followStatus, followersCount, isUpdating, username]);
+  }, [profileData, isUpdating, username]);
 
-
-
-  if (!user) {
-    return null
-    ;
+  if (!profileData) {
+    return null;
   }
+
+  const followStatus = profileData.isFollowing ? "following" : profileData.isRequested ? "requested" : "";
 
   return (
     <main className="profile-container">
-          
       <ProfileHeader
-        photoURL={user.photoURL || "/default.webp"}
-        username={user.username}
-        displayName={user.displayName || user.username}
-        verified={user.verified}
-        bio={user.bio}
+        photoURL={profileData.photoURL || "/default.webp"}
+        username={profileData.username}
+        displayName={profileData.displayName || profileData.username}
+        is_verified={profileData.is_verified}
+        created_at={profileData.created_at}
+        bio={profileData.bio}
       />
       <FollowStats
-        followersCount={followersCount}
-        followingCount={followingCount}
+        followersCount={profileData.followersCount}
+        followingCount={profileData.followingCount}
         followStatus={followStatus}
         onFollowersClick={() => handleModalOpen("followers")}
         onFollowingClick={() => handleModalOpen("following")}
@@ -226,7 +232,10 @@ const PublicProfilePage: React.FC = () => {
         followStatus={followStatus}
         onFollowClick={handleFollow}
       />
-      <ChatButton targetUserId={user.uid} />
+
+{!profileData.is_private &&  <ChatButton targetUserId={profileData.uid} />}
+     
+
       <ModalList
         isOpen={isFollowersModalOpen}
         onClose={() => handleModalClose("followers")}
@@ -241,20 +250,23 @@ const PublicProfilePage: React.FC = () => {
         loading={loadingModal}
         items={followingList}
       />
-      <UserPosts uid={user.uid}/>
+    
+
+    <div>
+      {profileData.is_private ? 
+      <div className="flex flex-col items-center justify-center p-8 space-y-4 text-gray-600">
+        <LockPersonIcon fontSize='large' />
+        <p className="text-lg font-medium text-center">This user's posts are private</p>
+        <p className="text-sm text-center">Follow this user to see their posts</p>
+      </div> 
+      :
+       <UserPosts uid={profileData.uid}/>}
+    </div>
+    
+
+      
     </main>
   );
 };
 
 export default PublicProfilePage;
-
-
-
-
-
-
-
-
-
-
-

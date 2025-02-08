@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { Skeleton, Button } from "@mui/material";
+import { CircularProgress, Button } from "@mui/material";
 import { formatRelativeTime } from "@/utils/date";
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -116,7 +116,7 @@ const HashtagPage = () => {
   if (loading && posts.length === 0) {
     return (
       <div className="flex justify-center items-center">
-        <Skeleton />
+        <CircularProgress />
       </div>
     );
   }
@@ -147,7 +147,7 @@ const HashtagPage = () => {
                   authorVerified={post.is_verified}
                 />
                 <div className="text-sm text-gray-600 mb-4">
-                  <span>{formatRelativeTime(post.createdAt)}</span>
+                  <span>{formatRelativeTime(post.created_at)}</span>
                 </div>
 
                 {post.imageUrls?.length > 0 && <ImageGallery images={post.imageUrls} />}
@@ -187,7 +187,7 @@ const HashtagPage = () => {
 
       {loading && (
         <div ref={loadingRef} className="flex justify-center my-8">
-          <Skeleton />
+          <CircularProgress />
         </div>
       )}
 

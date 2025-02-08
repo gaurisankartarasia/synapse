@@ -9,7 +9,7 @@ export type Post = {
   content: string;
   author: string;
   is_verified:boolean;
-  createdAt: {
+  created_at: {
     _seconds: number;
     _nanoseconds: number;
   };

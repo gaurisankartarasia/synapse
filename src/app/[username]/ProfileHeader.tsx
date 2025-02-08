@@ -1,15 +1,17 @@
 import React from "react";
 import Image from "next/image";
-import { BadgeCheck } from "lucide-react"
+import VerifiedIcon from '@mui/icons-material/Verified';
 import "./globals.css";
+import { formatFullDate } from "@/utils/date";
 
 const ProfileHeader: React.FC<{ 
   photoURL: string; 
   username: string; 
   displayName: string; 
-  verified: boolean; 
+  is_verified: boolean; 
+  created_at: string;
   bio:string;
-}> = ({ photoURL, username, displayName, verified, bio }) => {
+}> = ({ photoURL, username, displayName, is_verified, bio, created_at }) => {
   return (
     <div className="">
       <Image
@@ -26,11 +28,12 @@ const ProfileHeader: React.FC<{
      
       <div className="flex items-center">
         <p className="user-name">@{username}</p>
-        {verified && <BadgeCheck size={22} className="text-blue-500 mt-1.5" />}
+        {is_verified && <VerifiedIcon className="text-blue-500 mt-1.5" />}
       </div>
       <h1 className="username mr-1 " >{displayName}</h1>
 
       <i>{bio}</i>
+      <small>Joined {formatFullDate(created_at)}</small>
     </div>
   ); 
 };

@@ -16,7 +16,7 @@
 //     // Query posts directly for the hashtag
 //     let query = db.collection("posts")
 //       .where("hashtags", "array-contains", tag)
-//     //   .orderBy("createdAt", "desc");
+//     //   .orderBy("created_at", "desc");
 
 //     if (lastPostId) {
 //       const lastPostDoc = await db.collection("posts").doc(lastPostId).get();

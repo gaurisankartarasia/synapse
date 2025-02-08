@@ -5,7 +5,7 @@
 // import Image from 'next/image';
 // import Modal from '@/components/Modal';
 // import { LikesModalProps, LikeUserResponse } from '@/types/likedby';
-// import { Skeleton } from "@mui/material";
+// import { CircularProgress } from "@mui/material";
 
 
 // const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
@@ -76,7 +76,7 @@
 //     <Modal isOpen={isOpen} onClose={onClose} title="Liked by">
 //       <div className="max-h-[70vh] overflow-y-auto">
 //         {loading ? (
-//           <Skeleton/>
+//           <CircularProgress/>
 //         ) : users.length === 0 ? (
 //           <div className="text-center p-4 text-gray-500">No likes yet</div>
 //         ) : (
@@ -126,7 +126,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import Modal from '@/components/Modal';
 import { LikesModalProps, LikeUserResponse } from '@/types/likedby';
-import { Skeleton } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 
 const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
   const [users, setUsers] = useState<LikeUserResponse[]>([]);
@@ -200,7 +200,7 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
     <Modal isOpen={isOpen} onClose={onClose} title="Liked by">
       <div className="max-h-[70vh] overflow-y-auto">
         {loading ? (
-          <Skeleton/>
+          <CircularProgress/>
         ) : users.length === 0 ? (
           <div className="text-center p-4 text-gray-500">No likes yet</div>
         ) : (

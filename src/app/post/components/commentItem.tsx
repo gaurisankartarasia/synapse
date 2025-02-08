@@ -94,7 +94,7 @@
 // </div>
 
 //           <p className="mt-1">{comment.content}</p>
-//           <p>{formatRelativeTime(comment.createdAt)}</p>
+//           <p>{formatRelativeTime(comment.created_at)}</p>
 //           <div className="flex items-center gap-4 mt-2">
 //             <Button 
 //               onClick={() => onLike(comment.id)}
@@ -138,7 +138,7 @@
 // </div>
 
 //                   <p className="mt-1">{reply.content}</p>
-//                   <p>{formatRelativeTime(reply.createdAt)}</p>
+//                   <p>{formatRelativeTime(reply.created_at)}</p>
 //                   <div className="flex items-center gap-4 mt-2">
 //                     <Button
 //                       onClick={() => onLikeReply(comment.id, reply.id)}
@@ -315,7 +315,7 @@ export const CommentItem = ({
           </div>
 
           <p className="mt-1">{comment.content}</p>
-          <p>{formatRelativeTime(comment.createdAt)}</p>
+          <p>{formatRelativeTime(comment.created_at)}</p>
           <div className="flex items-center gap-4 mt-2">
             <Button 
               onClick={() => onLike(comment.id)}
@@ -353,7 +353,7 @@ export const CommentItem = ({
                   </div>
 
                   <p className="mt-1">{reply.content}</p>
-                  <p>{formatRelativeTime(reply.createdAt)}</p>
+                  <p>{formatRelativeTime(reply.created_at)}</p>
                   <div className="flex items-center gap-4 mt-2">
                     <Button
                       onClick={() => onLikeReply(comment.id, reply.id)}

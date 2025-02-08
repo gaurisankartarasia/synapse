@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebaseClient";
 import { onAuthStateChanged, getIdToken } from "firebase/auth";
-import { Skeleton, Switch } from "@mui/material";
+import { CircularProgress, Switch } from "@mui/material";
 
 const PostPage = () => {
   const router = useRouter();
@@ -135,7 +135,7 @@ const PostPage = () => {
   return (
     <div className="p-4 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Write a post</h1>
-      {loading && <Skeleton/>}
+      {loading && <CircularProgress/>}
       
       
    

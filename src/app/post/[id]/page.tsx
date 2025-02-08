@@ -10,7 +10,7 @@
  import { CommentSection } from "../components/CommentSection";
  import ImageGallery from "../components/ImageGallery";
  import { formatRelativeTime } from "@/utils/date";
- import { Skeleton } from "@mui/material";
+ import { CircularProgress } from "@mui/material";
  import { Post } from "@/types/post";
  import { useAuth } from '@/hooks/useAuth';
  import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -182,7 +182,7 @@
    
  
    if (loading) {
-     return <Skeleton />;
+     return <CircularProgress />;
    }
  
    if (!post) {
@@ -215,7 +215,7 @@
            authorVerified={post.is_verified}
          />
          <small className="text-gray-600">
-           {formatRelativeTime(post.createdAt)}
+           {formatRelativeTime(post.created_at)}
          </small>
          {user?.uid === post?.uid && (
        <button onClick={handleDelete} className="text-red-500">

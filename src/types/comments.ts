@@ -11,7 +11,7 @@ export interface Comment {
     is_private: boolean ;
   }
   content: string;
-  createdAt: {
+  created_at: {
     _seconds: number;
     _nanoseconds: number;
   };
@@ -32,7 +32,7 @@ export interface Reply {
     is_private: boolean;
   }
   content: string;
-  createdAt: {
+  created_at: {
     _seconds: number;
     _nanoseconds: number;
   };
@@ -44,7 +44,7 @@ export type Report = {
   commentId: string;
   reporterId: string;
   reason: string;
-  createdAt: {
+  created_at: {
     _seconds: number;
     _nanoseconds: number;
   };

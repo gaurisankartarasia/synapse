@@ -1,18 +1,38 @@
 
+// // app/api/follow-user/route.ts
 // import { NextResponse } from "next/server";
-// import { auth, db, admin } from "../../../lib/firebaseAdmin";
+// import { cookies } from 'next/headers';
+// import { verifyJWT } from "@/lib/jwt";
+// import { CustomJWTPayload } from "@/types/auth";
+// import { db, admin } from "@/lib/firebaseAdmin";
 
 // export async function POST(request: Request) {
-//   const token = request.headers.get("Authorization")?.split("Bearer ")[1];
-
-//   if (!token) {
-//     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//   }
-
 //   try {
-//     const { targetUsername } = await request.json();
-//     const decodedToken = await auth.verifyIdToken(token);
+//     const cookieStore = await cookies();
+//     const token = cookieStore.get('token');
+
+//     if (!token?.value) {
+//       return NextResponse.json(
+//         { error: 'Unauthorized' },
+//         { status: 401 }
+//       );
+//     }
+
+//     const decodedToken = await verifyJWT(token.value) as CustomJWTPayload;
+    
+//     if (!decodedToken.uid) {
+//       return NextResponse.json(
+//         { error: 'Invalid token payload' },
+//         { status: 401 }
+//       );
+//     }
+
 //     const currentUid = decodedToken.uid;
+//     const { targetUsername } = await request.json();
+
+//     // Fetch current user data for notification
+//     const currentUserDoc = await db.collection("users").doc(currentUid).get();
+//     const currentUserData = currentUserDoc.data();
 
 //     // Fetch target user data
 //     const userQuery = await db
@@ -22,7 +42,10 @@
 //       .get();
 
 //     if (userQuery.empty) {
-//       return NextResponse.json({ error: "User not found" }, { status: 404 });
+//       return NextResponse.json(
+//         { error: "User not found" },
+//         { status: 404 }
+//       );
 //     }
 
 //     const targetUserDoc = userQuery.docs[0];
@@ -30,7 +53,10 @@
 //     const targetUserData = targetUserDoc.data();
 
 //     if (currentUid === targetUid) {
-//       return NextResponse.json({ error: "You cannot follow yourself" }, { status: 400 });
+//       return NextResponse.json(
+//         { error: "You cannot follow yourself" },
+//         { status: 400 }
+//       );
 //     }
 
 //     const followingRef = db
@@ -51,6 +77,12 @@
 //       .collection("followRequests")
 //       .doc(currentUid);
 
+//     const notificationRef = db
+//       .collection("users")
+//       .doc(targetUid)
+//       .collection("notifications")
+//       .doc();
+
 //     const followRequestDoc = await followRequestRef.get();
 //     const isFollowing = (await followingRef.get()).exists;
 
@@ -68,9 +100,18 @@
 //           await followRequestRef.set({
 //             timestamp: admin.firestore.FieldValue.serverTimestamp(),
 //           });
+//           // Add notification for follow request
+//           await notificationRef.set({
+//             type: 'follow_request',
+//             fromUid: currentUid,
+//             fromUsername: currentUserData?.username,
+//             fromDisplayName: currentUserData?.displayName,
+//             fromPhotoURL: currentUserData?.photoURL,
+//             timestamp: admin.firestore.FieldValue.serverTimestamp(),
+//             read: false
+//           });
 //           return NextResponse.json({ status: "Follow request sent" });
 //         } else {
-//           // If follow request already exists, cancel it
 //           await followRequestRef.delete();
 //           return NextResponse.json({ status: "Follow request canceled" });
 //         }
@@ -87,6 +128,17 @@
 //         });
 //         await followerRef.set({
 //           timestamp: admin.firestore.FieldValue.serverTimestamp(),
+//         });
+        
+//         // Add notification for new follower
+//         await notificationRef.set({
+//           type: 'new_follower',
+//           fromUid: currentUid,
+//           fromUsername: currentUserData?.username,
+//           fromDisplayName: currentUserData?.displayName,
+//           fromPhotoURL: currentUserData?.photoURL,
+//           timestamp: admin.firestore.FieldValue.serverTimestamp(),
+//           read: false
 //         });
 //       }
 
@@ -116,14 +168,12 @@
 //     }
 //   } catch (error) {
 //     console.error("Error following/unfollowing user:", error);
-//     return NextResponse.json({ error: "Failed to follow/unfollow user" }, { status: 500 });
+//     return NextResponse.json(
+//       { error: "Internal server error" },
+//       { status: 500 }
+//     );
 //   }
 // }
-
-
-
-
-
 
 
 
@@ -141,7 +191,6 @@ import { db, admin } from "@/lib/firebaseAdmin";
 
 export async function POST(request: Request) {
   try {
-    // Get token from cookies
     const cookieStore = await cookies();
     const token = cookieStore.get('token');
 
@@ -152,7 +201,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Verify JWT token
     const decodedToken = await verifyJWT(token.value) as CustomJWTPayload;
     
     if (!decodedToken.uid) {
@@ -164,6 +212,10 @@ export async function POST(request: Request) {
 
     const currentUid = decodedToken.uid;
     const { targetUsername } = await request.json();
+
+    // Fetch current user data for notification
+    const currentUserDoc = await db.collection("users").doc(currentUid).get();
+    const currentUserData = currentUserDoc.data();
 
     // Fetch target user data
     const userQuery = await db
@@ -219,15 +271,44 @@ export async function POST(request: Request) {
         if (followRequestDoc.exists) {
           await followRequestRef.delete();
         }
+        
+        // Delete the follow notification
+        const notificationsQuery = await db
+          .collection("users")
+          .doc(targetUid)
+          .collection("notifications")
+          .where("fromUid", "==", currentUid)
+          .where("type", "==", "new_follower")
+          .get();
+          
+        const deletePromises = notificationsQuery.docs.map(doc => doc.ref.delete());
+        await Promise.all(deletePromises);
+
         return NextResponse.json({ status: "Unfollowed" });
       } else {
         if (!followRequestDoc.exists) {
           await followRequestRef.set({
             timestamp: admin.firestore.FieldValue.serverTimestamp(),
           });
+          
+          // Add notification for follow request
+          const notificationRef = db
+            .collection("users")
+            .doc(targetUid)
+            .collection("notifications")
+            .doc();
+
+          await notificationRef.set({
+            type: 'follow_request',
+            fromUid: currentUid,
+            fromUsername: currentUserData?.username,
+            fromDisplayName: currentUserData?.displayName,
+            fromPhotoURL: currentUserData?.photoURL,
+            timestamp: admin.firestore.FieldValue.serverTimestamp(),
+            read: false
+          });
           return NextResponse.json({ status: "Follow request sent" });
         } else {
-          // If follow request already exists, cancel it
           await followRequestRef.delete();
           return NextResponse.json({ status: "Follow request canceled" });
         }
@@ -237,6 +318,19 @@ export async function POST(request: Request) {
         // Unfollow a public user
         await followingRef.delete();
         await followerRef.delete();
+
+        // Delete the follow notification
+        const notificationsQuery = await db
+          .collection("users")
+          .doc(targetUid)
+          .collection("notifications")
+          .where("fromUid", "==", currentUid)
+          .where("type", "==", "new_follower")
+          .get();
+          
+        const deletePromises = notificationsQuery.docs.map(doc => doc.ref.delete());
+        await Promise.all(deletePromises);
+
       } else {
         // Follow a public user
         await followingRef.set({
@@ -244,6 +338,23 @@ export async function POST(request: Request) {
         });
         await followerRef.set({
           timestamp: admin.firestore.FieldValue.serverTimestamp(),
+        });
+        
+        // Add notification for new follower
+        const notificationRef = db
+          .collection("users")
+          .doc(targetUid)
+          .collection("notifications")
+          .doc();
+
+        await notificationRef.set({
+          type: 'new_follower',
+          fromUid: currentUid,
+          fromUsername: currentUserData?.username,
+          fromDisplayName: currentUserData?.displayName,
+          fromPhotoURL: currentUserData?.photoURL,
+          timestamp: admin.firestore.FieldValue.serverTimestamp(),
+          read: false
         });
       }
 

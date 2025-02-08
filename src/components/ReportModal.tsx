@@ -9,7 +9,7 @@ import {
   TextField,
   Select,
   MenuItem,
-  Skeleton,
+  CircularProgress,
 } from "@mui/material";
 
 type ReportModalProps = {
@@ -89,7 +89,7 @@ export const ReportModal = ({ isOpen, onClose, onSubmit }: ReportModalProps) => 
           onClick={handleSubmit}
           disabled={loading}
         >
-          {loading ? <Skeleton /> : "Report"}
+          {loading ? <CircularProgress /> : "Report"}
         </Button>
       </DialogActions>
     </Dialog>

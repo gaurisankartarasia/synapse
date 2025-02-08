@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { UserProfile } from '@/types/profile';
 import UserPosts from './Posts'
 import { formatFullDate } from '@/utils/date';
-import {Skeleton} from '@mui/material'
+import {CircularProgress} from '@mui/material'
 import {Card} from '@mui/material'
 import UserModal from './FollowModal';
 import {Button} from '@mui/material'
@@ -40,7 +40,7 @@ export default function ProfilePage() {
 
 
   if (loading) {
-    return <Skeleton/>;
+    return <CircularProgress/>;
   }
 
   if (error) {
@@ -69,7 +69,7 @@ export default function ProfilePage() {
           <div>
           <p className="text-2xl ">@{profile.username}</p>
 
-          {profile.verified && (
+          {profile.is_verified && (
             <VerifiedIcon/>
           )}
 
@@ -101,7 +101,7 @@ export default function ProfilePage() {
           <div>
             <h2 className="text-lg font-semibold mb-2">Joined</h2>
             <p className="text-gray-700">
-              {formatFullDate(profile.createdAt)}
+              {formatFullDate(profile.created_at)}
             </p>
           </div>
         </div>
