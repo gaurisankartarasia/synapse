@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import VerifiedIcon from '@mui/icons-material/Verified';
 import "./globals.css";
-import { formatFullDate } from "@/utils/date";
+// import { formatFullDate } from "@/utils/date";
 
 const ProfileHeader: React.FC<{ 
   photoURL: string; 
@@ -33,7 +33,7 @@ const ProfileHeader: React.FC<{
       <h1 className="username mr-1 " >{displayName}</h1>
 
       <i>{bio}</i>
-      <small>Joined {formatFullDate(created_at)}</small>
+      {/* <small>Joined {formatFullDate(created_at)}</small> */}
     </div>
   ); 
 };
