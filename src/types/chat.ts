@@ -40,7 +40,7 @@ export interface ChatRoom {
   participants: string[];
   participantKey: string;
   lastMessage?: Message;
-  created_at: number;
+  createdAt: number;
   toDate: number;
   otherUser: {
     displayName: string;

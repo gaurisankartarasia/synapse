@@ -6,7 +6,7 @@ export interface Story {
   userId: string;
   mediaUrl: string;
   mediaType: string;
-  created_at: Timestamp;
+  createdAt: Timestamp;
   expiresAt: Date;
   views: number;
 }

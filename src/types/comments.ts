@@ -5,13 +5,13 @@ export interface Comment {
   user:{
     uid: string;
     username: string | "User";
-    photoURL: string | "User";
+    profilePhotoURL: string | "User";
     displayName: string | "User";
-    is_verified: boolean | "...";
-    is_private: boolean ;
+    isVerified: boolean | "...";
+    isPrivate: boolean ;
   }
   content: string;
-  created_at: {
+  createdAt: {
     _seconds: number;
     _nanoseconds: number;
   };
@@ -26,13 +26,13 @@ export interface Reply {
   user:{
     uid: string;
     username: string;
-    photoURL: string;
+    profilePhotoURL: string;
     displayName: string;
-    is_verified: boolean;
-    is_private: boolean;
+    isVerified: boolean;
+    isPrivate: boolean;
   }
   content: string;
-  created_at: {
+  createdAt: {
     _seconds: number;
     _nanoseconds: number;
   };
@@ -44,7 +44,7 @@ export type Report = {
   commentId: string;
   reporterId: string;
   reason: string;
-  created_at: {
+  createdAt: {
     _seconds: number;
     _nanoseconds: number;
   };

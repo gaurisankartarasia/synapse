@@ -4,12 +4,12 @@ import Image from 'next/image';
 import {Button} from '@mui/material'
 
 interface ZoomModalProps {
-  imageUrl: string;
+  imageURL: string;
   isOpen: boolean;
   onClose: () => void;
 }
 
-const ZoomModal: React.FC<ZoomModalProps> = ({ imageUrl, isOpen, onClose }) => {
+const ZoomModal: React.FC<ZoomModalProps> = ({ imageURL, isOpen, onClose }) => {
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -106,7 +106,7 @@ const ZoomModal: React.FC<ZoomModalProps> = ({ imageUrl, isOpen, onClose }) => {
           className="relative"
         >
           <Image
-            src={imageUrl}
+            src={imageURL}
             width={1200}
             height={800}
             className="max-w-none"

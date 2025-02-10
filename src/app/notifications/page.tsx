@@ -10,7 +10,7 @@
 //   user: {
 //     uid: string;
 //     username: string;
-//     photoURL: string;
+//     profilePhotoURL: string;
 //     displayName: string;
 //   };
 // }
@@ -91,8 +91,8 @@ interface NotificationData {
   type: 'follow_request' | 'new_follower';
   fromUid: string;
   fromUsername: string;
-  fromDisplayName: string;
-  fromPhotoURL: string;
+  fromdisplayName: string;
+  fromprofilePhotoURL: string;
   timestamp: any;
 }
 

@@ -2,14 +2,14 @@
 export interface UserProfile {
     uid: string;
     username: string;
-    is_verified:boolean;
+    isVerified:boolean;
     displayName:string;
     email: string;
-    photoURL: string;
-    followersCount:number;
+    profilePhotoURL: string;
+    followerCount:number;
     followingCount:number;
     bio?: string;
-    created_at: {
+    createdAt: {
       _seconds: number;
       _nanoseconds: number;
   };    

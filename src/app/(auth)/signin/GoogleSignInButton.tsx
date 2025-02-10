@@ -25,6 +25,9 @@ export default function GoogleSignInButton() {
     }
   };
 
+
+ 
+
   return (
     <div className="space-y-2">
       <button
@@ -44,9 +47,9 @@ export default function GoogleSignInButton() {
           </>
         )}
       </button>
-      {error && (
+      {/* {error && (
         <div className="text-red-500 text-sm text-center">{error}</div>
-      )}
+      )} */}
     </div>
   );
 }

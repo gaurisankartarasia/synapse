@@ -3,19 +3,19 @@ export type Post = {
   id: string;
   uid: string;
   title: string;
-  imageUrls: string[];
-  photoURL:string;
+  imageURLs: string[];
+  profilePhotoURL:string;
   displayName:string;
   content: string;
   author: string;
-  is_verified:boolean;
-  created_at: {
+  isVerified:boolean;
+  createdAt: {
     _seconds: number;
     _nanoseconds: number;
   };
-  likeCount: number;
-  allowCommenting: boolean,
-  commentCount: number;
+  like_count: number;
+  allow_commenting: boolean,
+  comment_count: number;
   hashtags?: string[];
   is_saved: boolean;
   is_liked:boolean;
@@ -25,9 +25,9 @@ export type Post = {
 
 export type ProfileData = {
   displayName: string;
-  followersCount: number;
+  followerCount: number;
   followingCount: number;
-  photoURL: string;
+  profilePhotoURL: string;
   private: boolean;
   username: string;
   verified: boolean;

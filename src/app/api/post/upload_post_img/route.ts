@@ -84,13 +84,13 @@ export async function POST(req: NextRequest) {
     });
 
     // Construct the image URL with token
-    const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(
+    const imageURL = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(
       filename
     )}?alt=media&token=${storageToken}`;
 
     return NextResponse.json({ 
       message: 'Image uploaded successfully',
-      imageUrl 
+      imageURL 
     });
 
   } catch (error) {

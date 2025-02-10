@@ -22,7 +22,7 @@
 //       uid: doc.id,
 //       username: doc.data().username,
 //       displayName: doc.data().displayName,
-//       photoURL: doc.data().photoURL,
+//       profilePhotoURL: doc.data().profilePhotoURL,
 //       private: doc.data().private || false,
 //     }));
 
@@ -88,9 +88,9 @@ export async function GET(request: Request) {
       uid: doc.id,
       username: doc.data().username,
       displayName: doc.data().displayName,
-      photoURL: doc.data().photoURL,
-      is_private: doc.data().is_private,
-      is_verified: doc.data().is_verified
+      profilePhotoURL: doc.data().profilePhotoURL,
+      isPrivate: doc.data().isPrivate,
+      isVerified: doc.data().isVerified
     }));
 
     return NextResponse.json({ users });

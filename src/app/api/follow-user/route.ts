@@ -105,8 +105,8 @@
 //             type: 'follow_request',
 //             fromUid: currentUid,
 //             fromUsername: currentUserData?.username,
-//             fromDisplayName: currentUserData?.displayName,
-//             fromPhotoURL: currentUserData?.photoURL,
+//             fromdisplayName: currentUserData?.displayName,
+//             fromprofilePhotoURL: currentUserData?.profilePhotoURL,
 //             timestamp: admin.firestore.FieldValue.serverTimestamp(),
 //             read: false
 //           });
@@ -135,8 +135,8 @@
 //           type: 'new_follower',
 //           fromUid: currentUid,
 //           fromUsername: currentUserData?.username,
-//           fromDisplayName: currentUserData?.displayName,
-//           fromPhotoURL: currentUserData?.photoURL,
+//           fromdisplayName: currentUserData?.displayName,
+//           fromprofilePhotoURL: currentUserData?.profilePhotoURL,
 //           timestamp: admin.firestore.FieldValue.serverTimestamp(),
 //           read: false
 //         });
@@ -157,12 +157,12 @@
 //         .get();
 //       const followingCount = followingSnapshot.size;
 
-//       await targetUserDoc.ref.update({ followersCount: followerCount });
+//       await targetUserDoc.ref.update({ followerCount: followerCount });
 //       await db.collection("users").doc(currentUid).update({ followingCount: followingCount });
 
 //       return NextResponse.json({
 //         following: !isFollowing,
-//         followersCount: followerCount,
+//         followerCount: followerCount,
 //         followingCount: followingCount,
 //       });
 //     }
@@ -263,7 +263,7 @@ export async function POST(request: Request) {
     const followRequestDoc = await followRequestRef.get();
     const isFollowing = (await followingRef.get()).exists;
 
-    if (targetUserData?.private) {
+    if (targetUserData?.isPrivate) {
       if (isFollowing) {
         // Unfollow a private user and handle follow requests
         await followingRef.delete();
@@ -302,8 +302,8 @@ export async function POST(request: Request) {
             type: 'follow_request',
             fromUid: currentUid,
             fromUsername: currentUserData?.username,
-            fromDisplayName: currentUserData?.displayName,
-            fromPhotoURL: currentUserData?.photoURL,
+            fromdisplayName: currentUserData?.displayName,
+            fromprofilePhotoURL: currentUserData?.profilePhotoURL,
             timestamp: admin.firestore.FieldValue.serverTimestamp(),
             read: false
           });
@@ -351,8 +351,8 @@ export async function POST(request: Request) {
           type: 'new_follower',
           fromUid: currentUid,
           fromUsername: currentUserData?.username,
-          fromDisplayName: currentUserData?.displayName,
-          fromPhotoURL: currentUserData?.photoURL,
+          fromdisplayName: currentUserData?.displayName,
+          fromprofilePhotoURL: currentUserData?.profilePhotoURL,
           timestamp: admin.firestore.FieldValue.serverTimestamp(),
           read: false
         });
@@ -373,12 +373,12 @@ export async function POST(request: Request) {
         .get();
       const followingCount = followingSnapshot.size;
 
-      await targetUserDoc.ref.update({ followersCount: followerCount });
+      await targetUserDoc.ref.update({ followerCount: followerCount });
       await db.collection("users").doc(currentUid).update({ followingCount: followingCount });
 
       return NextResponse.json({
         following: !isFollowing,
-        followersCount: followerCount,
+        followerCount: followerCount,
         followingCount: followingCount,
       });
     }

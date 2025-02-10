@@ -58,7 +58,7 @@ export async function DELETE(
     const batch = db.batch();
     batch.delete(commentRef);
     batch.update(postRef, {
-      commentCount: FieldValue.increment(-1),
+      comment_count: FieldValue.increment(-1),
     });
 
     // Commit batch delete

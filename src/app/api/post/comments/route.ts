@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       .collection("posts")
       .doc(postId)
       .collection("comments")
-      .orderBy("created_at", "desc")
+      .orderBy("createdAt", "desc")
       .get();
 
     const comments = await Promise.all(
@@ -36,10 +36,10 @@ export async function GET(request: NextRequest) {
         // Fetch the author's username from the users collection using authorId
         const userDoc = await db.collection("users").doc(commentData.uid).get();
         const username = userDoc.exists ? userDoc.data()?.username : null;
-        const photoURL = userDoc.exists ? userDoc.data()?.photoURL : null;
+        const profilePhotoURL = userDoc.exists ? userDoc.data()?.profilePhotoURL : null;
         const displayName = userDoc.exists ? userDoc.data()?.displayName : null;
-        const is_verified = userDoc.exists ? userDoc.data()?.verified : null;
-        const is_private = userDoc.exists ? userDoc.data()?.private : null;
+        const isVerified = userDoc.exists ? userDoc.data()?.verified : null;
+        const isPrivate = userDoc.exists ? userDoc.data()?.private : null;
 
         // Fetch replies for the comment
         const repliesSnapshot = await db
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
           .collection("comments")
           .doc(commentId)
           .collection("replies")
-          .orderBy("created_at", "asc")
+          .orderBy("createdAt", "asc")
           .get();
 
         const replies = await Promise.all(
@@ -59,10 +59,10 @@ export async function GET(request: NextRequest) {
             // Fetch the author's username for each reply
             const replyUserDoc = await db.collection("users").doc(replyData.uid).get();
             const username = replyUserDoc.exists ? replyUserDoc.data()?.username : null;
-            const photoURL = userDoc.exists ? replyUserDoc.data()?.photoURL : null;
+            const profilePhotoURL = userDoc.exists ? replyUserDoc.data()?.profilePhotoURL : null;
             const displayName = userDoc.exists ? replyUserDoc.data()?.displayName : null;
-            const is_verified = userDoc.exists ? replyUserDoc.data()?.is_verified : null;
-            const is_private = userDoc.exists ? replyUserDoc.data()?.is_private : null;
+            const isVerified = userDoc.exists ? replyUserDoc.data()?.isVerified : null;
+            const isPrivate = userDoc.exists ? replyUserDoc.data()?.isPrivate : null;
 
             // Fetch likes for the reply
             const likesSnapshot = await db
@@ -81,14 +81,14 @@ export async function GET(request: NextRequest) {
               user:{
                 uid: replyData.uid,
                 username: username, 
-              photoURL:photoURL,
+              profilePhotoURL:profilePhotoURL,
               displayName: displayName,
-              is_verified : is_verified,
-              is_private : is_private,
+              isVerified : isVerified,
+              isPrivate : isPrivate,
             
               },
               content: replyData.content,
-              created_at: replyData.created_at,
+              createdAt: replyData.createdAt,
               likes: replyData.likes || 0,
               likedBy: likesSnapshot.docs.map((doc) => doc.id),
             };
@@ -102,13 +102,13 @@ export async function GET(request: NextRequest) {
           user:{
             uid: commentData.uid,
             username: username, 
-          photoURL:photoURL,
+          profilePhotoURL:profilePhotoURL,
           displayName: displayName,
-          is_verified : is_verified,
-          is_private : is_private,
+          isVerified : isVerified,
+          isPrivate : isPrivate,
         
           },
-          created_at: commentData.created_at,
+          createdAt: commentData.createdAt,
           likes: commentData.likes || 0,
           likedBy: commentData.likedBy || [],
           replies,
@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
       id: commentId,
       uid: payload.uid,
       content,
-      created_at: FieldValue.serverTimestamp(),
+      createdAt: FieldValue.serverTimestamp(),
       likes: 0,
       likedBy: [],
     };
@@ -177,7 +177,7 @@ export async function POST(request: NextRequest) {
     const batch = db.batch();
     batch.set(newCommentRef, newComment);
     batch.update(postRef, {
-      commentCount: FieldValue.increment(1),
+      comment_count: FieldValue.increment(1),
     });
 
     // Commit the batch write

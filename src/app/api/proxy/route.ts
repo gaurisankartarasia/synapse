@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const imageUrl = request.nextUrl.searchParams.get("url");
-  if (!imageUrl) {
+  const imageURL = request.nextUrl.searchParams.get("url");
+  if (!imageURL) {
     return NextResponse.json({ error: "No URL provided" }, { status: 400 });
   }
 
   try {
-    const response = await fetch(imageUrl);
+    const response = await fetch(imageURL);
     const contentType = response.headers.get("content-type");
 
     return new NextResponse(response.body, {
@@ -18,7 +18,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Failed to fetch image" }, { status: 500 });
   }
 }
-
 
 
 

@@ -27,12 +27,12 @@ export default function RootLayout({
         className={` antialiased`}
       >
         <ReduxProvider>
-          <AuthProvider>
+          {/* <AuthProvider> */}
             {/* <LoadingProvider key={pageLoadKey}> */}
               <Navbar />
               {children}
             {/* </LoadingProvider> */}
-          </AuthProvider>
+          {/* </AuthProvider> */}
         </ReduxProvider>
       </body>
     </html>

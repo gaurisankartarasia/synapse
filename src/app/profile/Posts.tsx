@@ -88,9 +88,9 @@ export default function UserPosts({ uid }: UserPostsProps) {
           {posts.map((post) => (
             <Link href={`/post/${post.id}`} key={post.id} className="overflow-hidden">
               <div className="relative group">
-                {post.imageUrls && post.imageUrls.length > 0 && (
+                {post.imageURLs && post.imageURLs.length > 0 && (
                   <div className="grid grid-cols-2 gap-2">
-                    {post.imageUrls.map((url, index) => (
+                    {post.imageURLs.map((url, index) => (
                       <div key={index} className="relative aspect-square overflow-hidden">
                         <Image 
                           src={url} 
@@ -104,11 +104,11 @@ export default function UserPosts({ uid }: UserPostsProps) {
                           <div className="text-white text-lg font-semibold bg-black bg-opacity-50 p-2 rounded">
                             <div className="flex items-center space-x-1">
                               <FavoriteIcon className="w-4 h-4" />
-                              <span>{post.likeCount}</span>
+                              <span>{post.like_count}</span>
                             </div>
                             <div className="flex items-center space-x-1">
                               <ChatBubbleOutlineIcon className="w-4 h-4" />
-                              <span>{post.commentCount}</span>
+                              <span>{post.comment_count}</span>
                             </div>
                           </div>
                         </div>

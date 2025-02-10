@@ -11,18 +11,18 @@ interface FirestorePost {
   uid: string;
   title: string;
   content: string;
-  imageUrls: string[];
-  created_at: FirebaseFirestore.Timestamp;
-  likeCount: number;
-  allowCommenting: boolean;
-  commentCount: number;
+  imageURLs: string[];
+  createdAt: FirebaseFirestore.Timestamp;
+  like_count: number;
+  allow_commenting: boolean;
+  comment_count: number;
 }
 
 interface FirestoreUser {
   username: string;
   displayName: string;
-  photoURL: string;
-  is_verified: boolean;
+  profilePhotoURL: string;
+  isVerified: boolean;
 }
 
 const getPostsFromDb = cache(async (ids: string[]) => {
@@ -111,18 +111,18 @@ export async function GET(request: NextRequest, { params }: Props) {
     const responseData = {
       uid: postData.uid,
       id,
-      photoURL: userData?.photoURL,
+      profilePhotoURL: userData?.profilePhotoURL,
       displayName: userData?.displayName,
       content: postData.content,
       author: userData?.username,
-      created_at: postData.created_at,
-      imageUrls: postData.imageUrls || [],
-      allowCommenting: postData.allowCommenting,
-      likeCount: postData.likeCount || 0,
-      commentCount: postData.commentCount || 0,
+      createdAt: postData.createdAt,
+      imageURLs: postData.imageURLs || [],
+      allow_commenting: postData.allow_commenting,
+      like_count: postData.like_count || 0,
+      comment_count: postData.comment_count || 0,
       is_saved,
       is_liked,
-      is_verified: userData?.is_verified
+      isVerified: userData?.isVerified
     };
 
     return NextResponse.json(responseData, { headers });

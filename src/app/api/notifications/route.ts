@@ -40,7 +40,7 @@
 //           user: {
 //             uid: userData.id,
 //             username: userData.data()?.username,
-//             photoURL: userData.data()?.photoURL,
+//             profilePhotoURL: userData.data()?.profilePhotoURL,
 //             displayName: userData.data()?.displayName
 //           }
 //         };
@@ -112,7 +112,7 @@ export async function GET(request: Request) {
           user: {
             uid: userDoc.id,
             username: userData?.username || "Unknown",
-            photoURL: userData?.photoURL || "",
+            profilePhotoURL: userData?.profilePhotoURL || "",
             displayName: userData?.displayName || "",
           },
         };

@@ -25,9 +25,9 @@ export async function GET(req: NextRequest, context: { params: Promise<{ usernam
     const profile = {
       uid: userDoc.id,
       displayName: userData.displayName || "",
-      followersCount: userData.followersCount || 0,
+      followerCount: userData.followerCount || 0,
       followingCount: userData.followingCount || 0,
-      photoURL: userData.photoURL || "",
+      profilePhotoURL: userData.profilePhotoURL || "",
       private: userData.private || false,
       username: userData.username || "",
       verified: userData.verified || false,
@@ -58,7 +58,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ usernam
     return NextResponse.json({ 
       profile,
       ...followStatus,
-      followersCount: profile.followersCount 
+      followerCount: profile.followerCount 
     }, {
       headers: {
         'Cache-Control': 'public, max-age=120, stale-while-revalidate=300',

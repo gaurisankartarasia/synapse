@@ -20,7 +20,7 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
   const [editingMessage, setEditingMessage] = useState<Message | null>(null);
   const [userInfo, setUserInfo] = useState<{ 
     username: string, 
-    photoURL: string, 
+    profilePhotoURL: string, 
     displayName: string, 
     verified: string 
   } | null>(null);
@@ -97,7 +97,7 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
         {userInfo && (
           <Link href={`/${userInfo.username}`} className='flex items-center'>
             <Image 
-              src={userInfo.photoURL} 
+              src={userInfo.profilePhotoURL} 
               alt={`${userInfo.username}'s avatar`} 
               height={30} 
               width={30} 

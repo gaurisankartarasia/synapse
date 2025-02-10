@@ -29,7 +29,7 @@
    const [loading, setLoading] = useState(true);
    const { user } = useAuth();
    const [isLiked, setIsLiked] = useState(false);
-   const [likeCount, setLikeCount] = useState(0);
+   const [like_count, setlike_count] = useState(0);
    const [isLikeLoading, setIsLikeLoading] = useState(false);
    const [isSaveLoading, setIsSaveLoading] = useState(false);
    const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,7 +53,7 @@
 
         const data = await response.json();
         setPost(data);
-        setLikeCount(data.likeCount || 0);
+        setlike_count(data.like_count || 0);
         setIsLiked(data.is_liked || false);
       } catch (error) {
         console.error("Error fetching post data:", error);
@@ -73,11 +73,11 @@
 
     setIsLikeLoading(true);
     const prevLiked = isLiked;
-    const prevLikes = likeCount;
+    const prevLikes = like_count;
 
     // Optimistic update
     setIsLiked(!prevLiked);
-    setLikeCount(prevLiked ? prevLikes - 1 : prevLikes + 1);
+    setlike_count(prevLiked ? prevLikes - 1 : prevLikes + 1);
 
     try {
       const response = await fetch('/api/post/like', {
@@ -96,7 +96,7 @@
       console.error('Error toggling like:', error);
       // Revert optimistic update on error
       setIsLiked(prevLiked);
-      setLikeCount(prevLikes);
+      setlike_count(prevLikes);
     } finally {
       setIsLikeLoading(false);
     }
@@ -210,12 +210,12 @@
        <div className="flex items-center gap-3">
          <PostHeader
            authorUsername={post.author}
-           authorDisplayName={post.displayName}
-           authorPhotoURL={post.photoURL}
-           authorVerified={post.is_verified}
+           authordisplayName={post.displayName}
+           authorprofilePhotoURL={post.profilePhotoURL}
+           authorVerified={post.isVerified}
          />
          <small className="text-gray-600">
-           {formatRelativeTime(post.created_at)}
+           {formatRelativeTime(post.createdAt)}
          </small>
          {user?.uid === post?.uid && (
        <button onClick={handleDelete} className="text-red-500">
@@ -232,8 +232,8 @@
  
        <div className="prose prose-lg max-w-none mt-6">{post.content}</div>
  
-       {post.imageUrls && post.imageUrls.length > 0 && (
-         <ImageGallery images={post.imageUrls} />
+       {post.imageURLs && post.imageURLs.length > 0 && (
+         <ImageGallery images={post.imageURLs} />
        )}
  
        <div className="mt-6 pt-6 border-t flex gap-4 items-center">
@@ -262,18 +262,18 @@
            className="hover:bg-gray-300 focus:outline-none"
          >
            <div className="flex items-center">
-             {likeCount} {likeCount === 1 ? 'Like' : 'Likes'}
+             {like_count} {like_count === 1 ? 'Like' : 'Likes'}
              <NavigateNextIcon />
            </div>
          </button>
  
-         {post.allowCommenting && (
-           <p>{post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}</p>
+         {post.allow_commenting && (
+           <p>{post.comment_count} {post.comment_count === 1 ? 'Comment' : 'Comments'}</p>
          )}
        </div>
  
        <div className="mt-6">
-         {post.allowCommenting ? (
+         {post.allow_commenting ? (
            <CommentSection postId={post.id} />
          ) : (
           <p className="text-center">Comments are turned off for this post.</p>

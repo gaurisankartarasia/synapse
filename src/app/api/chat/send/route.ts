@@ -26,7 +26,7 @@
 //     batch.set(newChatRoomRef, {
 //       participants: participantIds,
 //       participantKey,
-//       created_at: Date.now(),
+//       createdAt: Date.now(),
 //       lastMessage: message,
 //       lastMessageTime: Date.now(),
 //       unreadCounts: {
@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
       batch.set(newChatRoomRef, {
         participants: participantIds,
         participantKey,
-        created_at: Date.now(),
+        createdAt: Date.now(),
         lastMessage: message,
         lastMessageTime: Date.now(),
         unreadCounts: {

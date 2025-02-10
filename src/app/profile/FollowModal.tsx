@@ -86,7 +86,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, type }) => {
             //  className={styles.modalListItem}
              >
               <Image
-                src={`/api/proxy?url=${encodeURIComponent(user.photoURL || "/default.webp")}`}
+                src={`/api/proxy?url=${encodeURIComponent(user.profilePhotoURL || "/default.webp")}`}
                 alt={user.username}
                 width={50}
                 height={50}

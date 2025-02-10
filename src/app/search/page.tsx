@@ -14,9 +14,9 @@ interface SearchResult {
   uid: string;
   username: string;
   displayName: string;
-  photoURL: string;
-  is_private: boolean;
-  is_verified:boolean;
+  profilePhotoURL: string ;
+  isPrivate: boolean;
+  isVerified:boolean;
 }
 
 const SearchPageContent: React.FC = () => {
@@ -123,7 +123,8 @@ const SearchPageContent: React.FC = () => {
             >
               <CardActionArea>
               <Image
-                src={`/api/proxy?url=${encodeURIComponent(user.photoURL || '/default.webp')}`}
+                src={`/api/proxy?url=${encodeURIComponent(user.profilePhotoURL)}`}
+
                 alt={user.username}
                 className="search_avatar"
                 height={50}
@@ -131,7 +132,7 @@ const SearchPageContent: React.FC = () => {
               />
               <div className="search_item_data">
                 <h1 className="search_username">@{user.username}</h1>
-                {user.is_verified && <VerifiedIcon/>}
+                {user.isVerified && <VerifiedIcon/>}
                 <p className="search_displayName">
                   {user.displayName || user.username}
                 </p>

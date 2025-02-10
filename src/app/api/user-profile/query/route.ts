@@ -70,7 +70,7 @@
 //       uid: targetUid,
       
 //       // Follow status
-//       followersCount: targetUserData.followersCount ?? 0,
+//       followerCount: targetUserData.followerCount ?? 0,
 //       followingCount: targetUserData.followingCount ?? 0,
 //       isFollowing: followingStatus.exists,
 //       isRequested: requestStatus.exists,
@@ -157,12 +157,12 @@ export async function GET(request: Request) {
     return NextResponse.json({
       username: userData.username,
       displayName: userData.displayName,
-      is_verified: userData.is_verified ?? false,
-      is_private: userData.is_private ?? false,
-      created_at: userData.created_at,
-      photoURL: userData.photoURL,
+      isVerified: userData.isVerified ?? false,
+      isPrivate: userData.isPrivate ?? false,
+      createdAt: userData.createdAt,
+      profilePhotoURL: userData.profilePhotoURL,
       uid: targetUid,
-      followersCount: userData.followersCount ?? 0,
+      followerCount: userData.followerCount ?? 0,
       followingCount: userData.followingCount ?? 0,
       isFollowing: followingStatus.exists,
       isRequested: requestStatus.exists,

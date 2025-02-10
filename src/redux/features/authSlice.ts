@@ -10,7 +10,7 @@ interface SerializableUser {
   uid: string;
   email: string | null;
   displayName: string | null;
-  photoURL: string | null;
+  profilePhotoURL: string | null;
   emailVerified: boolean;
 }
 
@@ -34,7 +34,7 @@ const serializeUser = (firebaseUser: User | null): SerializableUser | null => {
     uid: firebaseUser.uid,
     email: firebaseUser.email,
     displayName: firebaseUser.displayName,
-    photoURL: firebaseUser.photoURL,
+    profilePhotoURL: firebaseUser.photoURL,
     emailVerified: firebaseUser.emailVerified,
   };
 };
@@ -105,6 +105,47 @@ export const signInWithEmail = createAsyncThunk(
   }
 );
 
+// export const signInWithGoogle = createAsyncThunk(
+
+//   'auth/signInWithGoogle',
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const result = await signInWithPopup(auth, googleProvider);
+//       const idToken = await result.user.getIdToken();
+
+//       const response = await fetch('/api/auth/google', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({
+//           idToken,
+//           userInfo: {
+//             email: result.user.email,
+//             displayName: result.user.displayName,
+//             profilePhotoURL: result.user.photoURL,
+//           },
+//         }),
+//         credentials: 'include',
+//       });
+
+//       if (!response.ok) {
+//         throw new Error('Google authentication failed');
+//       }
+
+//       // Check username after successful sign in
+//       const userDoc = await getDoc(doc(db, 'users', result.user.uid));
+//       const hasUsername = userDoc.exists() && userDoc.data().username;
+
+//       return {
+//         user: serializeUser(result.user),
+//         hasUsername,
+//       };
+//     } catch (error: any) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
+
+// In signInWithGoogle thunk
 export const signInWithGoogle = createAsyncThunk(
   'auth/signInWithGoogle',
   async (_, { rejectWithValue }) => {
@@ -120,25 +161,29 @@ export const signInWithGoogle = createAsyncThunk(
           userInfo: {
             email: result.user.email,
             displayName: result.user.displayName,
-            photoURL: result.user.photoURL,
+            profilePhotoURL: result.user.photoURL,
           },
         }),
         credentials: 'include',
       });
 
       if (!response.ok) {
-        throw new Error('Google authentication failed');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Google authentication failed');
       }
 
+      const data = await response.json();
+      
       // Check username after successful sign in
       const userDoc = await getDoc(doc(db, 'users', result.user.uid));
-      const hasUsername = userDoc.exists() && userDoc.data().username;
+      const hasUsername = userDoc.exists() && userDoc.data()?.username;
 
       return {
         user: serializeUser(result.user),
         hasUsername,
       };
     } catch (error: any) {
+      console.error('Google sign-in error:', error);
       return rejectWithValue(error.message);
     }
   }

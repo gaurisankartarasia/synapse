@@ -51,7 +51,7 @@ export async function GET(request: Request) {
     const targetUserDoc = userQuery.docs[0];
     const targetUid = targetUserDoc.id;
     const userData = targetUserDoc.data() || {};
-    const followersCount = userData.followersCount ?? 0;
+    const followerCount = userData.followerCount ?? 0;
     const followingCount = userData.followingCount ?? 0;
 
     // Check if current user is following target user
@@ -95,7 +95,7 @@ export async function GET(request: Request) {
     }
 
     return NextResponse.json({
-      followersCount,
+      followerCount,
       followingCount,
       isFollowing,
       isRequested,

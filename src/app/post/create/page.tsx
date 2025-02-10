@@ -14,9 +14,9 @@ const PostPage = () => {
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [userToken, setUserToken] = useState<string | null>(null);
   const [images, setImages] = useState<File[]>([]);
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [imageURLs, setimageURLs] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const [allowCommenting, setAllowCommenting] = useState<boolean>(true);
+  const [allow_commenting, setallow_commenting] = useState<boolean>(true);
 
 
   useEffect(() => {
@@ -33,12 +33,12 @@ const PostPage = () => {
 
   useEffect(() => {
     // Create preview URLs for selected images
-    const newImageUrls = images.map(file => URL.createObjectURL(file));
-    setImageUrls(newImageUrls);
+    const newimageURLs = images.map(file => URL.createObjectURL(file));
+    setimageURLs(newimageURLs);
 
     // Cleanup function to revoke object URLs
     return () => {
-      newImageUrls.forEach(url => URL.revokeObjectURL(url));
+      newimageURLs.forEach(url => URL.revokeObjectURL(url));
     };
   }, [images]);
 
@@ -55,7 +55,7 @@ const PostPage = () => {
 
   const removeImage = (index: number) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
-    setImageUrls(prevUrls => prevUrls.filter((_, i) => i !== index));
+    setimageURLs(prevUrls => prevUrls.filter((_, i) => i !== index));
   };
 
 
@@ -72,13 +72,13 @@ const PostPage = () => {
 
 
   const handleCommentingToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAllowCommenting(event.target.checked); // Toggle the boolean value
+    setallow_commenting(event.target.checked); 
   };
 
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const uploadedImageUrls = [];
+      const uploadedimageURLs = [];
 
       // Upload each image
       for (const image of images) {
@@ -98,7 +98,7 @@ const PostPage = () => {
         }
 
         const imageData = await imageResponse.json();
-        uploadedImageUrls.push(imageData.imageUrl);
+        uploadedimageURLs.push(imageData.imageURL);
       }
 
       // Submit the post with all image URLs and hashtags
@@ -111,9 +111,9 @@ const PostPage = () => {
         body: JSON.stringify({
           title: postTitle,
           content,
-          imageUrls: uploadedImageUrls,
+          imageURLs: uploadedimageURLs,
           hashtags: hashtags,
-          allowCommenting,
+          allow_commenting,
         }),
       });
 
@@ -149,7 +149,7 @@ const PostPage = () => {
           className="mb-2"
         />
         <div className="flex gap-4 flex-wrap">
-          {imageUrls.map((url, index) => (
+          {imageURLs.map((url, index) => (
             <div key={index} className="relative">
               <Image
                 src={url}
@@ -204,7 +204,7 @@ const PostPage = () => {
       <div className="flex items-center mb-4">
         <span className="mr-2">Allow Commenting</span>
         <Switch
-          checked={allowCommenting}
+          checked={allow_commenting}
           onChange={handleCommentingToggle}
         />
       </div>

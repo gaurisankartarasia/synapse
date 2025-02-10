@@ -48,7 +48,7 @@
 //       return {
 //         uid,
 //         username: userData?.username || "Unknown User",
-//         profilePic: userData?.photoURL || "/default.webp",
+//         profilePic: userData?.profilePhotoURL || "/default.webp",
 //         timestamp: timestamp as Timestamp
 //       };
 //     });
@@ -130,7 +130,7 @@ export async function GET(request: NextRequest) {
       return {
         uid: userId,
         username: userData?.username || "Unknown User",
-        profilePic: userData?.photoURL || "/default.webp",
+        profilePic: userData?.profilePhotoURL || "/default.webp",
         timestamp: doc.data()?.timestamp?.toDate().toISOString() || null,
       };
     });

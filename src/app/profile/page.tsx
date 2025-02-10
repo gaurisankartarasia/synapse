@@ -55,21 +55,20 @@ export default function ProfilePage() {
     <div className="max-w-2xl mx-auto p-4">
       <Card className="p-5">
         <div className="flex items-center space-x-4 mb-6">
-          {profile.photoURL && (
+          {/* {profile.profilePhotoURL && ( */}
             <div className="relative w-24 h-24">
               <Image
-                src={profile.photoURL}
-                alt={profile.displayName}
+    src={profile.profilePhotoURL ? profile.profilePhotoURL : "/profile-default-photo.svg"}
+    alt={profile.displayName} 
                 fill
                 className="rounded-full object-cover"
-
               />
             </div>
-          )}
+          {/* )} */}
           <div>
           <p className="text-2xl ">@{profile.username}</p>
 
-          {profile.is_verified && (
+          {profile.isVerified && (
             <VerifiedIcon/>
           )}
 
@@ -79,10 +78,10 @@ export default function ProfilePage() {
         </div>
         <div style={{ display: 'flex', gap: 2, marginTop: 2 }}>
             <Button onClick={() => setModalType("followers")}>
-              <strong>{profile.followersCount || 0}</strong> Followers
+              <p>{profile.followerCount || 0} </p> &nbsp; Followers
             </Button>
             <Button onClick={() => setModalType("following")}>
-              <strong>{profile.followingCount || 0}</strong> Following
+              <p>{profile.followingCount || 0} </p>&nbsp;  Following
             </Button>
           </div>
         <div className="space-y-4">
@@ -101,7 +100,7 @@ export default function ProfilePage() {
           <div>
             <h2 className="text-lg font-semibold mb-2">Joined</h2>
             <p className="text-gray-700">
-              {formatFullDate(profile.created_at)}
+              {formatFullDate(profile.createdAt)}
             </p>
           </div>
         </div>

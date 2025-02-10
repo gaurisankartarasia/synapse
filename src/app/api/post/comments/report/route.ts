@@ -14,7 +14,7 @@ export async function POST(req: Request) {
       commentId,
       replyId: replyId || null,
       reason,
-      created_at: FieldValue.serverTimestamp(),
+      createdAt: FieldValue.serverTimestamp(),
       report_type: "comment"
     };
 

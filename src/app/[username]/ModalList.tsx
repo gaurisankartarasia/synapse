@@ -21,7 +21,7 @@ const ModalList: React.FC<{
           {items.map((item) => (
             
             <li key={item.uid} className="flex m-2">
-               <Image src={`/api/proxy?url=${encodeURIComponent(item.photoURL)}`}
+               <Image src={`/api/proxy?url=${encodeURIComponent(item.profilePhotoURL)}`}
               alt={item.username} 
               height={100}
               width={100}/>

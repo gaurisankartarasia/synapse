@@ -52,7 +52,7 @@ export async function GET(request: Request) {
       );
     }
 
-    const isPrivate = targetUserData?.is_private;
+    const isPrivate = targetUserData?.isPrivate;
     
     // Check if requesting user is following the target user
     const isFollowing = (
@@ -76,7 +76,7 @@ export async function GET(request: Request) {
     const postsRef = db.collection('posts');
     const snapshot = await postsRef
       .where('uid', '==', targetUid)
-      // .orderBy('created_at', 'desc') // Uncomment if you have the proper index
+      // .orderBy('createdAt', 'desc') // Uncomment if you have the proper index
       .get();
 
     const posts = snapshot.docs.map(doc => ({

@@ -2,14 +2,14 @@ import React from "react";
 import "./globals.css";
 
 const FollowStats: React.FC<{
-  followersCount: number;
+  followerCount: number;
   followingCount: number;
   followStatus: string;
   onFollowersClick: () => void;
   onFollowingClick: () => void;
   errorMessage?: string;
 }> = ({
-  followersCount,
+  followerCount,
   followingCount,
   followStatus,
   onFollowersClick,
@@ -26,7 +26,7 @@ const FollowStats: React.FC<{
           else alert("Follow this user to see the follower list");
         }}
       >
-        {followersCount} Followers
+        {followerCount} Followers
       </div>
       <div
         className="following"

@@ -59,7 +59,7 @@
 //         replyCount: FieldValue.increment(-1),
 //       });
 //       transaction.update(postRef, {
-//         commentCount: FieldValue.increment(-1),
+//         comment_count: FieldValue.increment(-1),
 //       });
 //     });
 
@@ -148,7 +148,7 @@ export async function DELETE(
         replyCount: FieldValue.increment(-1),
       });
       transaction.update(postRef, {
-        commentCount: FieldValue.increment(-1),
+        comment_count: FieldValue.increment(-1),
       });
     });
 

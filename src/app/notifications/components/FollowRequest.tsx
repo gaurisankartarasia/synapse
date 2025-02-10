@@ -5,7 +5,7 @@ import Image from 'next/image';
 interface User {
   uid: string;
   username: string;
-  photoURL: string;
+  profilePhotoURL: string;
   displayName: string;
 }
 
@@ -49,7 +49,7 @@ export const FollowRequest = ({ user, onActionComplete }: FollowRequestProps) =>
     <div className="flex items-center justify-between p-4 border-b">
       <div className="flex items-center space-x-4">
         <Image
-          src={user.photoURL || '/default-avatar.png'}
+          src={user.profilePhotoURL || '/default-avatar.png'}
           alt={user.username}
           width={40}
           height={40}

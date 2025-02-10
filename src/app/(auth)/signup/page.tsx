@@ -143,7 +143,7 @@ export default function SignUp() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [displayName, setDisplayName] = useState('');
+  const [displayName, setdisplayName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [formError, setFormError] = useState('');
 
@@ -206,7 +206,7 @@ export default function SignUp() {
               required
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
               value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
+              onChange={(e) => setdisplayName(e.target.value)}
             />
           </div>
 

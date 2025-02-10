@@ -75,7 +75,7 @@ export async function GET(request: Request) {
       return NextResponse.json({
         username: targetUserData.username,
         displayName: targetUserData.displayName,
-        photoURL: targetUserData.photoURL,
+        profilePhotoURL: targetUserData.profilePhotoURL,
         blocked: true
       });
     }

@@ -67,7 +67,7 @@
 //         // Return only the required fields
 //         return NextResponse.json({
 //             username: userData.username || null,
-//             photoURL: userData.photoURL || null,
+//             profilePhotoURL: userData.profilePhotoURL || null,
 //             displayName: userData.displayName || null,
 //             verified: userData.verified || false
 //         });
@@ -156,7 +156,7 @@ export async function GET(
         // Return only the required fields
         return NextResponse.json({
             username: userData.username || null,
-            photoURL: userData.photoURL || null,
+            profilePhotoURL: userData.profilePhotoURL || "/profile-default-photo.svg",
             displayName: userData.displayName || null,
             verified: userData.verified || false
         });

@@ -1,21 +1,18 @@
- // src/app/api/username/verify/route.ts
-
+// src/app/api/user/username/route.ts
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers'; // Import cookies utility from Next.js
-import { db } from '@/lib/firebaseAdmin';
+import { cookies } from 'next/headers';
+import { db, FieldValue } from '@/lib/firebaseAdmin';
 import { verifyJWT } from '@/lib/jwt';
 
 export async function POST(request: Request) {
   try {
-    // Resolve cookies
-    const cookieStore = await cookies(); // Await the cookies function
-    const token = cookieStore.get('token'); // Use the get method to retrieve the token cookie
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token');
     
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Verify token and get user data
     const payload = await verifyJWT(token.value);
     
     if (!payload.uid) {
@@ -24,7 +21,7 @@ export async function POST(request: Request) {
 
     const { username } = await request.json();
 
-    // Check if username exists in Firestore
+    // Check if username exists
     const snapshot = await db
       .collection('users')
       .where('username', '==', username)
@@ -37,7 +34,16 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ available: true });
+    // Set the username in Firestore using admin SDK
+    await db.collection('users').doc(payload.uid).set({
+      username,
+      updatedAt: FieldValue.serverTimestamp(),
+      isPrivate:false,
+        isVerified:false,
+        bio:"Hey I am using Synapse!"
+    }, { merge: true });
+
+    return NextResponse.json({ username });
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message },

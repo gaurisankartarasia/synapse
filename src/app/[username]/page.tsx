@@ -17,12 +17,12 @@ interface ProfileData {
   uid: string;
   username: string;
   displayName: string;
-  photoURL: string;
-  created_at:string;
+  profilePhotoURL: string;
+  createdAt:string;
   bio: string;
-  is_verified: boolean;
-  is_private:boolean;
-  followersCount: number;
+  isVerified: boolean;
+  isPrivate:boolean;
+  followerCount: number;
   followingCount: number;
   isFollowing: boolean;
   isRequested: boolean;
@@ -149,15 +149,15 @@ const PublicProfilePage: React.FC = () => {
 
     setIsUpdating(true);
 
-    const tempFollowersCount = isFollowing
-      ? Math.max(0, profileData.followersCount - 1)
-      : profileData.followersCount + 1;
+    const tempfollowerCount = isFollowing
+      ? Math.max(0, profileData.followerCount - 1)
+      : profileData.followerCount + 1;
 
     setProfileData((prev) => {
       if (!prev) return null;
       return {
         ...prev,
-        followersCount: tempFollowersCount,
+        followerCount: tempfollowerCount,
         isFollowing: false,
         isRequested: !isFollowing && !isRequesting
       };
@@ -180,7 +180,7 @@ const PublicProfilePage: React.FC = () => {
           if (!prev) return null;
           return {
             ...prev,
-            followersCount: data.followersCount || prev.followersCount,
+            followerCount: data.followerCount || prev.followerCount,
             isFollowing: data.status === "Following",
             isRequested: data.status === "Follow request sent"
           };
@@ -194,7 +194,7 @@ const PublicProfilePage: React.FC = () => {
         if (!prev) return null;
         return {
           ...prev,
-          followersCount: profileData.followersCount,
+          followerCount: profileData.followerCount,
           isFollowing: isFollowing,
           isRequested: isRequesting
         };
@@ -213,15 +213,15 @@ const PublicProfilePage: React.FC = () => {
   return (
     <main className="profile-container">
       <ProfileHeader
-        photoURL={profileData.photoURL || "/default.webp"}
+        profilePhotoURL={profileData.profilePhotoURL || "/default.webp"}
         username={profileData.username}
         displayName={profileData.displayName || profileData.username}
-        is_verified={profileData.is_verified}
-        created_at={profileData.created_at}
+        isVerified={profileData.isVerified}
+        createdAt={profileData.createdAt}
         bio={profileData.bio}
       />
       <FollowStats
-        followersCount={profileData.followersCount}
+        followerCount={profileData.followerCount}
         followingCount={profileData.followingCount}
         followStatus={followStatus}
         onFollowersClick={() => handleModalOpen("followers")}
@@ -233,7 +233,7 @@ const PublicProfilePage: React.FC = () => {
         onFollowClick={handleFollow}
       />
 
-{!profileData.is_private &&  <ChatButton targetUserId={profileData.uid} />}
+{!profileData.isPrivate &&  <ChatButton targetUserId={profileData.uid} />}
      
 
       <ModalList
@@ -253,16 +253,17 @@ const PublicProfilePage: React.FC = () => {
     
 
     <div>
-      {profileData.is_private ? 
+      {/* {profileData.isPrivate ? 
       <div className="flex flex-col items-center justify-center p-8 space-y-4 text-gray-600">
         <LockPersonIcon fontSize='large' />
         <p className="text-lg font-medium text-center">This user's posts are private</p>
         <p className="text-sm text-center">Follow this user to see their posts</p>
       </div> 
       :
-       <UserPosts uid={profileData.uid}/>}
+       <UserPosts uid={profileData.uid}/>} */}
     </div>
     
+    <UserPosts uid={profileData.uid}/>
 
       
     </main>

@@ -48,7 +48,7 @@
 //       id: newReplyRef.id, // Use Firestore-generated ID
 //       uid: payload.uid,
 //       content,
-//       created_at: FieldValue.serverTimestamp(),
+//       createdAt: FieldValue.serverTimestamp(),
 //       likes: 0,
 //     };
 
@@ -69,7 +69,7 @@
 
 //       // Also increment the comment count on the post
 //       transaction.update(postRef, {
-//         commentCount: FieldValue.increment(1),
+//         comment_count: FieldValue.increment(1),
 //       });
 //     });
 
@@ -141,7 +141,7 @@ export async function POST(
         });
       } else {
         // If not liked, add like
-        transaction.set(likeRef, { uid: payload.uid, created_at: FieldValue.serverTimestamp() });
+        transaction.set(likeRef, { uid: payload.uid, createdAt: FieldValue.serverTimestamp() });
         transaction.update(commentRef, {
           likes: FieldValue.increment(1),
         });

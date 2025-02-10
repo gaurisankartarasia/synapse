@@ -9,7 +9,7 @@ import { AppDispatch } from '@/redux/store';
 import { auth } from '@/lib/firebaseClient';
 import { onAuthStateChanged } from 'firebase/auth';
 import { setUser } from '@/redux/features/authSlice';
-import { checkUsername } from '@/redux/features/userSlice';
+// import { checkUsername } from '@/redux/features/userSlice';
 
 
 export default function AuthProvider({
@@ -28,7 +28,7 @@ export default function AuthProvider({
 //         uid: firebaseUser.uid,
 //         email: firebaseUser.email,
 //         displayName: firebaseUser.displayName,
-//         photoURL: firebaseUser.photoURL,
+//         profilePhotoURL: firebaseUser.profilePhotoURL,
 //         emailVerified: firebaseUser.emailVerified
 //       } : null;
       
@@ -64,7 +64,7 @@ useEffect(() => {
         uid: firebaseUser.uid,
         email: firebaseUser.email,
         displayName: firebaseUser.displayName,
-        photoURL: firebaseUser.photoURL,
+        profilePhotoURL: firebaseUser.profilePhotoURL,
         emailVerified: firebaseUser.emailVerified
       } : null;
       

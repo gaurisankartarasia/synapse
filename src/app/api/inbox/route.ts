@@ -29,7 +29,7 @@ export async function GET() {
         otherParticipant: {
           id: otherParticipantId,
           name: userData?.name || 'Unknown',
-          avatar: userData?.photoURL || '',
+          avatar: userData?.profilePhotoURL || '',
         },
         lastMessage: data.lastMessage || '',
         lastMessageTimestamp: data.lastMessageTimestamp?.toDate() || new Date(),

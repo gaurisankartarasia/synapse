@@ -69,7 +69,7 @@ export async function GET(request: Request) {
         if (data) {
           return {
             uid: doc.id,
-            photoURL: data.photoURL || null,
+            profilePhotoURL: data.profilePhotoURL || null,
             displayName: data.displayName || null,
             username: data.username || null,
             verified: data.verified || false,

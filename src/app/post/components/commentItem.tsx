@@ -84,17 +84,17 @@
 
 // <div className="flex items-center gap-1">
 // <Image
-//     src={comment.user.photoURL}
+//     src={comment.user.profilePhotoURL}
 //     alt={comment.user.username }
 //     height={30}
 //     width={30}
 //     />
 //     <strong>{comment.user.username}</strong>
-//     <span>{comment.user.is_verified && (<VerifiedIcon fontSize="small"/>)}</span>
+//     <span>{comment.user.isVerified && (<VerifiedIcon fontSize="small"/>)}</span>
 // </div>
 
 //           <p className="mt-1">{comment.content}</p>
-//           <p>{formatRelativeTime(comment.created_at)}</p>
+//           <p>{formatRelativeTime(comment.createdAt)}</p>
 //           <div className="flex items-center gap-4 mt-2">
 //             <Button 
 //               onClick={() => onLike(comment.id)}
@@ -128,17 +128,17 @@
 
 // <div className="flex items-center gap-1">
 // <Image
-//     src={reply.user.photoURL}
+//     src={reply.user.profilePhotoURL}
 //     alt={reply.user.username}
 //     height={30}
 //     width={30}
 //     />
 //     <strong>{reply.user.username}</strong>
-//     <span>{reply.user.is_verified && (<VerifiedIcon fontSize="small"/>)}</span>
+//     <span>{reply.user.isVerified && (<VerifiedIcon fontSize="small"/>)}</span>
 // </div>
 
 //                   <p className="mt-1">{reply.content}</p>
-//                   <p>{formatRelativeTime(reply.created_at)}</p>
+//                   <p>{formatRelativeTime(reply.createdAt)}</p>
 //                   <div className="flex items-center gap-4 mt-2">
 //                     <Button
 //                       onClick={() => onLikeReply(comment.id, reply.id)}
@@ -307,15 +307,15 @@ export const CommentItem = ({
         <div className="w-full">
           <div className="flex items-center gap-1">
             <UserAvatar 
-              src={comment.user.photoURL} 
+              src={comment.user.profilePhotoURL} 
               username={comment.user.username}
             />
             <strong>{comment.user.username || "User"}</strong>
-            <span>{comment.user.is_verified && (<VerifiedIcon fontSize="small"/>)}</span>
+            <span>{comment.user.isVerified && (<VerifiedIcon fontSize="small"/>)}</span>
           </div>
 
           <p className="mt-1">{comment.content}</p>
-          <p>{formatRelativeTime(comment.created_at)}</p>
+          <p>{formatRelativeTime(comment.createdAt)}</p>
           <div className="flex items-center gap-4 mt-2">
             <Button 
               onClick={() => onLike(comment.id)}
@@ -345,15 +345,15 @@ export const CommentItem = ({
                 <div key={reply.id} className="border-l pl-4 py-2">
                   <div className="flex items-center gap-1">
                     <UserAvatar 
-                      src={reply.user.photoURL} 
+                      src={reply.user.profilePhotoURL} 
                       username={reply.user.username}
                     />
                     <strong>{reply.user.username || "User"}</strong>
-                    <span>{reply.user.is_verified && (<VerifiedIcon fontSize="small"/>)}</span>
+                    <span>{reply.user.isVerified && (<VerifiedIcon fontSize="small"/>)}</span>
                   </div>
 
                   <p className="mt-1">{reply.content}</p>
-                  <p>{formatRelativeTime(reply.created_at)}</p>
+                  <p>{formatRelativeTime(reply.createdAt)}</p>
                   <div className="flex items-center gap-4 mt-2">
                     <Button
                       onClick={() => onLikeReply(comment.id, reply.id)}

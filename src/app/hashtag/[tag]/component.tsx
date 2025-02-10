@@ -142,15 +142,15 @@ const HashtagPage = () => {
               <Link href={`/post/${post.id}`} className="block">
                 <PostHeader 
                   authorUsername={post.author}
-                  authorPhotoURL={post.photoURL}
-                  authorDisplayName={post.displayName}
-                  authorVerified={post.is_verified}
+                  authorprofilePhotoURL={post.profilePhotoURL}
+                  authordisplayName={post.displayName}
+                  authorVerified={post.isVerified}
                 />
                 <div className="text-sm text-gray-600 mb-4">
-                  <span>{formatRelativeTime(post.created_at)}</span>
+                  <span>{formatRelativeTime(post.createdAt)}</span>
                 </div>
 
-                {post.imageUrls?.length > 0 && <ImageGallery images={post.imageUrls} />}
+                {post.imageURLs?.length > 0 && <ImageGallery images={post.imageURLs} />}
 
                 <p className="text-gray-800 mb-4">{post.content}</p>
 
@@ -176,7 +176,7 @@ const HashtagPage = () => {
                   className="flex items-center space-x-2 hover:text-blue-600"
                 >
                   <ChatBubbleOutlineIcon />
-                  <span>{post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}</span>
+                  <span>{post.comment_count} {post.comment_count === 1 ? 'Comment' : 'Comments'}</span>
                   <NavigateNextIcon />
                 </Link>
               </div>

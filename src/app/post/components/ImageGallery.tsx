@@ -63,7 +63,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
 
       {/* Zoom Modal */}
       <ZoomModal
-        imageUrl={images[activeImageIndex]}
+        imageURL={images[activeImageIndex]}
         isOpen={isZoomed}
         onClose={() => setIsZoomed(false)}
       />

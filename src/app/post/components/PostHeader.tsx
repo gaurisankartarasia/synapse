@@ -18,12 +18,12 @@ import FollowButton from "@/app/[username]/FollowButton";
 
 type ProfileData = {
   displayName: string;
-  followersCount: number;
+  followerCount: number;
   followingCount: number;
-  photoURL: string;
-  is_private: boolean;
+  profilePhotoURL: string;
+  isPrivate: boolean;
   username: string;
-  is_verified: boolean;
+  isVerified: boolean;
   uid: string;
   isFollowing?: boolean;
   isRequested?: boolean;
@@ -34,15 +34,15 @@ const profileCache = new Map<string, { data: ProfileData, timestamp: number }>()
 
 interface PostHeaderProps {
   authorUsername: string;
-  authorDisplayName: string;  
-  authorPhotoURL: string;  
+  authordisplayName: string;  
+  authorprofilePhotoURL: string;  
   authorVerified: boolean
 }
 
 export const PostHeader: React.FC<PostHeaderProps> = ({ 
   authorUsername, 
-  authorDisplayName, 
-  authorPhotoURL,
+  authordisplayName, 
+  authorprofilePhotoURL,
   authorVerified
 }) => {
   const [profile, setProfile] = useState<ProfileData | null>(null);
@@ -50,7 +50,7 @@ export const PostHeader: React.FC<PostHeaderProps> = ({
   const [isUpdating, setIsUpdating] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [followStatus, setFollowStatus] = useState<"" | "requested" | "following">("");
- const [followersCount, setFollowersCount] = useState<number>(0);
+ const [followerCount, setfollowerCount] = useState<number>(0);
 
 const router = useRouter()
 
@@ -112,11 +112,11 @@ const router = useRouter()
 
     setIsUpdating(true);
 
-    const tempFollowersCount = isFollowing
-      ? Math.max(0, followersCount - 1)
-      : followersCount + 1;
+    const tempfollowerCount = isFollowing
+      ? Math.max(0, followerCount - 1)
+      : followerCount + 1;
 
-    setFollowersCount(tempFollowersCount);
+    setfollowerCount(tempfollowerCount);
     setFollowStatus(isFollowing || isRequesting ? "" : "requested");
 
     try {
@@ -131,25 +131,25 @@ const router = useRouter()
         const data = await response.json();
         if (data.status === "Unfollowed") {
           setFollowStatus("");
-          setFollowersCount(data.followersCount || followersCount);
+          setfollowerCount(data.followerCount || followerCount);
         } else if (data.status === "Follow request sent") {
           setFollowStatus("requested");
-          setFollowersCount(data.followersCount || followersCount);
+          setfollowerCount(data.followerCount || followerCount);
         } else if (data.following) {
           setFollowStatus("following");
-          setFollowersCount(data.followersCount || followersCount);
+          setfollowerCount(data.followerCount || followerCount);
         }
       } else {
         throw new Error("Failed to follow/unfollow user");
       }
     } catch (error) {
       console.error("Follow action failed:", error);
-      setFollowersCount(followersCount);
+      setfollowerCount(followerCount);
       setFollowStatus(isFollowing || isRequesting ? "following" : "");
     } finally {
       setIsUpdating(false);
     }
-  }, [followStatus, followersCount, isUpdating, authorUsername]);
+  }, [followStatus, followerCount, isUpdating, authorUsername]);
 
   return (
     <HoverCard>
@@ -160,10 +160,10 @@ const router = useRouter()
         onClick={handleProfileClick}
       >
         <div className="flex items-center gap-2">
-          {authorPhotoURL && (
+          {authorprofilePhotoURL && (
             <Image
-              src={authorPhotoURL}
-              alt={authorDisplayName || authorUsername}
+              src={authorprofilePhotoURL}
+              alt={authordisplayName || authorUsername}
               width={30}
               height={30}
               className="rounded-full"
@@ -184,7 +184,7 @@ const router = useRouter()
           <div className="space-y-2">
             <div className="flex items-center space-x-3">
               <Image
-                src={`/api/proxy?url=${encodeURIComponent(profile.photoURL)}`}
+                src={`/api/proxy?url=${encodeURIComponent(profile.profilePhotoURL)}`}
                 alt={profile.displayName}
                 width={50}
                 height={50}
@@ -197,7 +197,7 @@ const router = useRouter()
               </div>
             </div>
             <div className="flex gap-3 text-sm">
-              <span> followers {profile.followersCount} </span>
+              <span> followers {profile.followerCount} </span>
               <span>following {profile.followingCount} </span>
             </div>
             <div className="flex gap-2">
@@ -233,10 +233,10 @@ const router = useRouter()
               )}
             </div>
             <div className="flex items-center gap-2 text-sm">
-              {profile.is_verified && (
+              {profile.isVerified && (
                 <span className="text-green-500">✓ Verified</span>
               )}
-              {profile.is_private && (
+              {profile.isPrivate && (
                 <span className="text-red-500">🔒 Private Account</span>
               )}
             </div>

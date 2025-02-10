@@ -60,7 +60,7 @@
 //         .doc(currentUid)
 //         .collection("followers")
 //         .get();
-//       const followersCount = followersSnapshot.size;
+//       const followerCount = followersSnapshot.size;
 
 //       const followingSnapshot = await db
 //         .collection("users")
@@ -69,7 +69,7 @@
 //         .get();
 //       const followingCount = followingSnapshot.size;
 
-//       await db.collection("users").doc(currentUid).update({ followersCount });
+//       await db.collection("users").doc(currentUid).update({ followerCount });
 //       await db.collection("users").doc(fromUid).update({ followingCount });
 //     }
 
@@ -157,7 +157,7 @@ export async function POST(request: Request) {
         .doc(currentUid)
         .collection("followers")
         .get();
-      const followersCount = followersSnapshot.size;
+      const followerCount = followersSnapshot.size;
 
       const followingSnapshot = await db
         .collection("users")
@@ -166,7 +166,7 @@ export async function POST(request: Request) {
         .get();
       const followingCount = followingSnapshot.size;
 
-      await db.collection("users").doc(currentUid).update({ followersCount });
+      await db.collection("users").doc(currentUid).update({ followerCount });
       await db.collection("users").doc(fromUid).update({ followingCount });
     }
 

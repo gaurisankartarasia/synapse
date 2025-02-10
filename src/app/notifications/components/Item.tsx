@@ -9,8 +9,8 @@ interface NotificationItemProps {
     type: 'follow_request' | 'new_follower';
     fromUid: string;
     fromUsername: string;
-    fromDisplayName: string;
-    fromPhotoURL: string;
+    fromdisplayName: string;
+    fromprofilePhotoURL: string;
     timestamp: any;
   };
   onActionComplete?: () => void;
@@ -53,7 +53,7 @@ export const NotificationItem = ({ notification, onActionComplete }: Notificatio
     <div className="flex items-center justify-between p-4 border-b">
       <div className="flex items-center space-x-4">
         <Image
-          src={notification.fromPhotoURL || '/default-avatar.png'}
+          src={notification.fromprofilePhotoURL || '/default-avatar.png'}
           alt={notification.fromUsername}
           width={40}
           height={40}
@@ -61,7 +61,7 @@ export const NotificationItem = ({ notification, onActionComplete }: Notificatio
         />
         <div>
           <Link href={`/${notification.fromUsername}`} className="hover:underline">
-            <span className="font-semibold">{notification.fromDisplayName}</span>
+            <span className="font-semibold">{notification.fromdisplayName}</span>
           </Link>
           {notification.type === 'new_follower' ? (
             <p className="text-sm text-gray-600">started following you</p>
