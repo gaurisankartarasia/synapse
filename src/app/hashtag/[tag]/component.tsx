@@ -4,9 +4,9 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { CircularProgress, Button } from "@mui/material";
+import { Spinner, Button } from "@/components/ui/";
 import { formatRelativeTime } from "@/utils/date";
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import MessageSquareText from '@mui/icons-material/ChatBubbleOutline';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Likebutton from "@/app/post/components/LikeButton";
 import { PostHeader } from "@/app/post/components/PostHeader";
@@ -116,7 +116,7 @@ const HashtagPage = () => {
   if (loading && posts.length === 0) {
     return (
       <div className="flex justify-center items-center">
-        <CircularProgress />
+        <Spinner />
       </div>
     );
   }
@@ -175,7 +175,7 @@ const HashtagPage = () => {
                   href={`/post/${post.id}`} 
                   className="flex items-center space-x-2 hover:text-blue-600"
                 >
-                  <ChatBubbleOutlineIcon />
+                  <MessageSquareText />
                   <span>{post.comment_count} {post.comment_count === 1 ? 'Comment' : 'Comments'}</span>
                   <NavigateNextIcon />
                 </Link>
@@ -187,7 +187,7 @@ const HashtagPage = () => {
 
       {loading && (
         <div ref={loadingRef} className="flex justify-center my-8">
-          <CircularProgress />
+          <Spinner />
         </div>
       )}
 

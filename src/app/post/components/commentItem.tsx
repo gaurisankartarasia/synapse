@@ -5,9 +5,9 @@
 // import type { Comment } from "@/types/comments";
 // import Image from "next/image";
 // import { ReportModal } from "@/components/ReportModal";
-// import {Button} from '@mui/material'
+// import {Button} from '@/components/ui/'
 // import { formatRelativeTime } from "@/utils/date";
-// import VerifiedIcon from '@mui/icons-material/Verified';
+// import BadgeCheck from 'lucide-react';
 
 // type CommentItemProps = {
 //   comment: Comment;
@@ -90,7 +90,7 @@
 //     width={30}
 //     />
 //     <strong>{comment.user.username}</strong>
-//     <span>{comment.user.isVerified && (<VerifiedIcon fontSize="small"/>)}</span>
+//     <span>{comment.user.isVerified && (<BadgeCheck fontSize="small"/>)}</span>
 // </div>
 
 //           <p className="mt-1">{comment.content}</p>
@@ -134,7 +134,7 @@
 //     width={30}
 //     />
 //     <strong>{reply.user.username}</strong>
-//     <span>{reply.user.isVerified && (<VerifiedIcon fontSize="small"/>)}</span>
+//     <span>{reply.user.isVerified && (<BadgeCheck fontSize="small"/>)}</span>
 // </div>
 
 //                   <p className="mt-1">{reply.content}</p>
@@ -224,9 +224,9 @@ import { useState } from "react";
 import type { Comment } from "@/types/comments";
 import Image from "next/image";
 import { ReportModal } from "@/components/ReportModal";
-import { Button } from '@mui/material';
+import { Button } from '@/components/ui/button';
 import { formatRelativeTime } from "@/utils/date";
-import VerifiedIcon from '@mui/icons-material/Verified';
+import {BadgeCheck} from 'lucide-react';
 
 type CommentItemProps = {
   comment: Comment;
@@ -311,7 +311,7 @@ export const CommentItem = ({
               username={comment.user.username}
             />
             <strong>{comment.user.username || "User"}</strong>
-            <span>{comment.user.isVerified && (<VerifiedIcon fontSize="small"/>)}</span>
+            <span>{comment.user.isVerified && (<BadgeCheck fontSize="small"/>)}</span>
           </div>
 
           <p className="mt-1">{comment.content}</p>
@@ -349,7 +349,7 @@ export const CommentItem = ({
                       username={reply.user.username}
                     />
                     <strong>{reply.user.username || "User"}</strong>
-                    <span>{reply.user.isVerified && (<VerifiedIcon fontSize="small"/>)}</span>
+                    <span>{reply.user.isVerified && (<BadgeCheck fontSize="small"/>)}</span>
                   </div>
 
                   <p className="mt-1">{reply.content}</p>

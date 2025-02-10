@@ -1,7 +1,7 @@
 // components/ImageZoom/ZoomModal.tsx
 import React, { useState } from 'react';
 import Image from 'next/image';
-import {Button} from '@mui/material'
+import {Button} from '@/components/ui/button'
 
 interface ZoomModalProps {
   imageURL: string;

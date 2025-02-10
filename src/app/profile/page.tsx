@@ -8,11 +8,12 @@ import Image from 'next/image';
 import { UserProfile } from '@/types/profile';
 import UserPosts from './Posts'
 import { formatFullDate } from '@/utils/date';
-import {CircularProgress} from '@mui/material'
-import {Card} from '@mui/material'
+import { Spinner } from '@/components/ui/spinner';
+import {Card} from '@/components/ui/card'
 import UserModal from './FollowModal';
-import {Button} from '@mui/material'
-import VerifiedIcon from '@mui/icons-material/Verified';
+import {Button} from '@/components/ui/button'
+import { BadgeCheck } from 'lucide-react';
+
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -40,7 +41,7 @@ export default function ProfilePage() {
 
 
   if (loading) {
-    return <CircularProgress/>;
+    return <Spinner/>;
   }
 
   if (error) {
@@ -69,7 +70,7 @@ export default function ProfilePage() {
           <p className="text-2xl ">@{profile.username}</p>
 
           {profile.isVerified && (
-            <VerifiedIcon/>
+            <BadgeCheck/>
           )}
 
             <p >{profile.displayName}</p>

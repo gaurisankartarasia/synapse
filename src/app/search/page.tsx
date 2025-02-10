@@ -7,8 +7,10 @@ import axios from "axios";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { auth } from "@/lib/firebaseClient";
-import { OutlinedInput, Card, CardActionArea, CircularProgress } from '@mui/material';
-import VerifiedIcon from '@mui/icons-material/Verified';
+import {Card, CardContent} from "@/components/ui/card"
+import { Spinner } from "@/components/ui/spinner";
+import {Input} from '@/components/ui/input'
+import {BadgeCheck} from 'lucide-react';
 
 interface SearchResult {
   uid: string;
@@ -19,7 +21,7 @@ interface SearchResult {
   isVerified:boolean;
 }
 
-const SearchPageContent: React.FC = () => {
+  const SearchPageContent: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -100,7 +102,7 @@ const SearchPageContent: React.FC = () => {
     <main className="main container mx-auto">
       <h2 className="search_page_title">Search</h2>
       <form className="search_form mx-auto" onSubmit={(e) => e.preventDefault()}>
-        <OutlinedInput
+        <Input
           className="search_input max-w-[400px]"
           type="text"
           placeholder="Search by username"
@@ -109,7 +111,7 @@ const SearchPageContent: React.FC = () => {
         />
       </form>
 
-      {loading && <CircularProgress size={25}/>}
+      {loading && <Spinner  />}
 
       {error && <div className="text-red-500 text-center">{error}</div>}
 
@@ -121,7 +123,7 @@ const SearchPageContent: React.FC = () => {
               onClick={() => handleProfileClick(user.uid)}
               className="cursor-pointer search_item"
             >
-              <CardActionArea>
+              <CardContent>
               <Image
                 src={`/api/proxy?url=${encodeURIComponent(user.profilePhotoURL)}`}
 
@@ -132,12 +134,12 @@ const SearchPageContent: React.FC = () => {
               />
               <div className="search_item_data">
                 <h1 className="search_username">@{user.username}</h1>
-                {user.isVerified && <VerifiedIcon/>}
+                {user.isVerified && <BadgeCheck/>}
                 <p className="search_displayName">
                   {user.displayName || user.username}
                 </p>
               </div>
-              </CardActionArea>
+              </CardContent>
             </Card>
           ))}
         </ul>

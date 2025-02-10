@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Modal from "../../components/Modal";
 import Link from "next/link";
-import { CircularProgress } from "@mui/material";
+import { Spinner } from "@/components/ui/spinner"
 
 const ModalList: React.FC<{
   isOpen: boolean;
@@ -15,7 +15,7 @@ const ModalList: React.FC<{
     <Modal  isOpen={isOpen} onClose={onClose} title={title}>
    <div className="p-5">
       {loading ? (
-       <CircularProgress/>
+       <Spinner/>
       ) : (
         <ul >
           {items.map((item) => (

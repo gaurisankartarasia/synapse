@@ -10,7 +10,6 @@ import FollowButton from "./FollowButton";
 import ModalList from "./ModalList";
 import ChatButton from "./ChatButton";
 import UserPosts from '../profile/Posts';
-import LockPersonIcon from '@mui/icons-material/LockPerson';
 
 
 interface ProfileData {

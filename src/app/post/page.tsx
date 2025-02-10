@@ -5,16 +5,12 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { formatRelativeTime } from "@/utils/date";
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { useAuth } from '@/hooks/useAuth';
-import { CircularProgress } from "@mui/material";
+import { Spinner } from "@/components/ui/spinner";
 import { Post } from "@/types/post";
 import LikesModal from './components/LikedByModal';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
+import { Heart, Bookmark, MessageSquare, ChevronRight } from 'lucide-react';
+
 
 const POSTS_PER_PAGE = 5;
 
@@ -234,7 +230,7 @@ const PostPage = () => {
 
   return (
     <div className="mx-auto px-4">
-      {loading && <CircularProgress />}
+      {loading && <Spinner />}
       <div className="space-y-4">
         {/* {posts.map((post, index) => (
           <div key={post.id} ref={index === posts.length - 1 ? lastPostElementRef : null}>
@@ -281,7 +277,7 @@ const PostPage = () => {
                     disabled={likeStates[post.id]?.loading}
                     className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
                   >
-                    {likeStates[post.id]?.isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                    {likeStates[post.id]?.isLiked ? <Heart /> : <FavoriteBorderIcon />}
                   </button>
                 )}
                 <button
@@ -295,7 +291,7 @@ const PostPage = () => {
                 </button>
                 {post.allow_commenting && (
                 <Link href={`/post/${post.id}`} className="flex items-center gap-1">
-                  <ChatBubbleOutlineIcon />
+                  <MessageSquareText />
                  
           <p>{post.comment_count} {post.comment_count === 1 ? 'Comment' : 'Comments'}</p>
        
@@ -338,7 +334,7 @@ const PostPage = () => {
         disabled={saveStates[post.id]?.loading}
         className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
       >
-        {post.is_saved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+        {post.is_saved ? <Bookmark /> : "Saved"}
       </button>
     )}
 
@@ -353,7 +349,7 @@ const PostPage = () => {
                     disabled={likeStates[post.id]?.loading}
                     className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
                   >
-                    {likeStates[post.id]?.isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                    {likeStates[post.id]?.isLiked ? <Heart /> : < Heart/>}
                   </button>
                 )}
                 <button
@@ -362,16 +358,16 @@ const PostPage = () => {
                 >
                   <div className="flex items-center">
                     {likeStates[post.id]?.count || 0} {(likeStates[post.id]?.count || 0) === 1 ? 'Like' : 'Likes'}
-                    <NavigateNextIcon />
+                    <ChevronRight />
                   </div>
                 </button>
                 {post.allow_commenting && (
                 <Link href={`/post/${post.id}`} className="flex items-center gap-1">
-                  <ChatBubbleOutlineIcon />
+                  <MessageSquare />
                  
           <p>{post.comment_count} {post.comment_count === 1 ? 'Comment' : 'Comments'}</p>
        
-                  <NavigateNextIcon />
+                  <ChevronRight />
                 </Link>
                  )}
               </div>

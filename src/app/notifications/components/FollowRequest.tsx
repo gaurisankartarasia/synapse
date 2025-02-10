@@ -1,6 +1,9 @@
 // components/FollowRequest.tsx
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar'
 
 interface User {
   uid: string;
@@ -46,36 +49,49 @@ export const FollowRequest = ({ user, onActionComplete }: FollowRequestProps) =>
   };
 
   return (
+    <div>
+
+    
+   
+
     <div className="flex items-center justify-between p-4 border-b">
-      <div className="flex items-center space-x-4">
-        <Image
-          src={user.profilePhotoURL || '/default-avatar.png'}
+      <div >
+      <Link href={`/${user.username}`} className="flex items-center space-x-4">
+        {/* <Image
+          src={user.profilePhotoURL || '/profile-default-photo.svg'}
           alt={user.username}
           width={40}
           height={40}
           className="rounded-full"
-        />
+        /> */}
+         <Avatar>
+      <AvatarImage src={user.profilePhotoURL || '/profile-default-photo.svg'} alt={user.username} />
+      <AvatarFallback>{user.username}</AvatarFallback>
+    </Avatar>
         <div>
-          <p className="font-semibold">{user.displayName}</p>
-          <p className="text-sm text-gray-500">@{user.username}</p>
+          <p className="font-semibold hover:underline">{user.username}</p>
+          <p className="text-sm text-gray-500">{user.displayName}</p>
         </div>
+        </Link>
       </div>
       <div className="flex space-x-2">
-        <button
+        <Button
           onClick={() => handleAction('accept')}
           disabled={isLoading}
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 disabled:opacity-50"
         >
-          Accept
-        </button>
-        <button
+          Confirm
+        </Button>
+        <Button
           onClick={() => handleAction('reject')}
           disabled={isLoading}
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 disabled:opacity-50"
+          variant="secondary"
         >
           Reject
-        </button>
+        </Button>
       </div>
+    </div>
     </div>
   );
 };
+
+

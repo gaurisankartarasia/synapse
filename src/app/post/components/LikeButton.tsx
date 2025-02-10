@@ -6,7 +6,7 @@ import { db } from '@/lib/firebaseClient';
 import { useAuth } from '@/hooks/useAuth'; 
 import LikesModal from '../components/LikedByModal'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import Heart from '@mui/icons-material/Favorite';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 interface LikebuttonProps {
@@ -86,7 +86,7 @@ const Likebutton = ({
       className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
     >
       {isLiked ? (
-        <FavoriteIcon/>
+        <Heart/>
       ) : (
         <FavoriteBorderIcon/>
       )}

@@ -6,11 +6,11 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Modal from "@/components/Modal";
 import Image from "next/image";
-import VerifiedIcon from '@mui/icons-material/Verified';
+import {BadgeCheck} from 'lucide-react';
 // import styles from "./UserModal.module.css";
 import { auth } from "@/lib/firebaseClient";
 import { useRouter } from "next/navigation";
-import { CircularProgress } from "@mui/material";
+import { Spinner } from "@/components/ui/spinner";
 
 type UserModalProps = {
   isOpen: boolean;
@@ -76,12 +76,13 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, type }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={type === "followers" ? "Followers" : "Following"}>
       {modalLoading ? (
-        <CircularProgress/>
+        <Spinner/>
       ) : (
         <ul 
         // className={styles.modalList}
         >
           {modalData.map((user) => (
+            
             <li key={user.uid}
             //  className={styles.modalListItem}
              >
@@ -103,7 +104,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, type }) => {
                   <p>{user.displayName}</p>
                 </div>
               </div>
-              {user.verified && <VerifiedIcon/>}
+              {user.verified && <BadgeCheck/>}
             </li>
           ))}
         </ul>

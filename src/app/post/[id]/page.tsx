@@ -10,16 +10,13 @@
  import { CommentSection } from "../components/CommentSection";
  import ImageGallery from "../components/ImageGallery";
  import { formatRelativeTime } from "@/utils/date";
- import { CircularProgress } from "@mui/material";
+ import { Spinner } from "@/components/ui/spinner";
  import { Post } from "@/types/post";
  import { useAuth } from '@/hooks/useAuth';
- import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
- import FavoriteIcon from '@mui/icons-material/Favorite';
- import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
- import BookmarkIcon from '@mui/icons-material/Bookmark';
- import NavigateNextIcon from '@mui/icons-material/NavigateNext';
  import LikesModal from '../components/LikedByModal';
  import { ReportModal } from "@/components/ReportModal";
+ import { Heart, Bookmark, MessageSquare, ChevronRight } from 'lucide-react';
+
 
  
  const PostPage = () => {
@@ -182,7 +179,7 @@
    
  
    if (loading) {
-     return <CircularProgress />;
+     return <Spinner />;
    }
  
    if (!post) {
@@ -244,7 +241,7 @@
                disabled={isLikeLoading}
                className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50 transition-all duration-200"
              >
-               {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+               {isLiked ? <Heart /> : "Liked"}
              </button>
  
              <button
@@ -252,7 +249,7 @@
                disabled={isSaveLoading}
                className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
              >
-               {post.is_saved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+               {post.is_saved ? <Bookmark /> : "saved"}
              </button>
            </>
          )}
@@ -263,7 +260,7 @@
          >
            <div className="flex items-center">
              {like_count} {like_count === 1 ? 'Like' : 'Likes'}
-             <NavigateNextIcon />
+             <ChevronRight />
            </div>
          </button>
  

@@ -4,8 +4,9 @@
 // import Link from 'next/link';
 // // import Image from 'next/image';
 // import { usePathname, useRouter } from 'next/navigation';
-// import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-// import CloseIcon from '@mui/icons-material/Close';
+// import Menu from '@mui/icons-material/MenuOpen';
+// import { X } from 'lucide-react';
+
 // import LogoutButton from '@/app/(auth)/logoutButton'
 
 // type NavLink = {
@@ -68,7 +69,7 @@
 //             {isOpen ? (
 //               <CloseIcon className="h-6 w-6" />
 //             ) : (
-//               <MenuOpenIcon className="h-6 w-6" />
+//               <Menu className="h-6 w-6" />
 //             )}
 //           </button>
 //         </div>
@@ -109,9 +110,10 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 // import Image from 'next/image';
 import { usePathname } from 'next/navigation'; //  use useRouter is deprecated for this.
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import CloseIcon from '@mui/icons-material/Close';
-import LogoutButton from '@/app/(auth)/logoutButton'
+import { X, Menu } from 'lucide-react';
+
+import LogoutButton from '@/app/(auth)/logoutButton';
+
 
 type NavLink = {
   name: string;
@@ -179,9 +181,9 @@ export default function Navbar() {
             aria-label="Toggle menu"
           >
             {isOpen ? (
-              <CloseIcon className="h-6 w-6" />
+              <X className="h-6 w-6" />
             ) : (
-              <MenuOpenIcon className="h-6 w-6" />
+              <Menu className="h-6 w-6" />
             )}
           </button>
         </div>

@@ -5,11 +5,17 @@ import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebaseClient";
 import { onAuthStateChanged, getIdToken } from "firebase/auth";
-import { CircularProgress, Switch } from "@mui/material";
+import { Spinner } from "@/components/ui/spinner";
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import {Textarea} from '@/components/ui/textarea'
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+
 
 const PostPage = () => {
   const router = useRouter();
-  const [postTitle, setPostTitle] = useState("");
   const [content, setContent] = useState("");
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [userToken, setUserToken] = useState<string | null>(null);
@@ -71,10 +77,20 @@ const PostPage = () => {
   };
 
 
-  const handleCommentingToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setallow_commenting(event.target.checked); 
-  };
+  // const handleCommentingToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setallow_commenting(event.target.checked); 
+  // };
 
+  // const handleCommentingToggle = (event: React.FormEvent<HTMLButtonElement>) => {
+  //   const isChecked = (event.target as HTMLButtonElement).ariaPressed === 'true';
+  //   setallow_commenting(isChecked);
+  // };
+
+  const handleCommentingToggle = (checked: boolean) => {
+    setallow_commenting(checked);
+  };
+  
+  
   const handleSubmit = async () => {
     setLoading(true);
     try {
@@ -109,7 +125,6 @@ const PostPage = () => {
           Authorization: `Bearer ${userToken}`,
         },
         body: JSON.stringify({
-          title: postTitle,
           content,
           imageURLs: uploadedimageURLs,
           hashtags: hashtags,
@@ -135,13 +150,13 @@ const PostPage = () => {
   return (
     <div className="p-4 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Write a post</h1>
-      {loading && <CircularProgress/>}
+      {loading && <Progress />}
       
       
    
 
       <div className="mb-4">
-        <input
+        <Input
           type="file"
           accept="image/*"
           onChange={handleImageChange}
@@ -174,18 +189,17 @@ const PostPage = () => {
         </p>
       </div>
    
-   <textarea
+   <Textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Write your content here..."
-        className="w-full p-2 mb-4 border rounded min-h-[200px]"
+        className="w-full p-2 mb-4   min-h-[200px]"
       />
  <div className="mb-4">
-        <input
+        <Input
           type="text"
           placeholder="Add hashtags (comma-separated, e.g., tech, programming)"
           onChange={handleHashtagChange}
-          className="w-full p-2 mb-2 border rounded"
         />
         {hashtags.length > 0 && (
           <div className="flex gap-2 mb-2">
@@ -202,28 +216,31 @@ const PostPage = () => {
       </div>
 
       <div className="flex items-center mb-4">
-        <span className="mr-2">Allow Commenting</span>
-        <Switch
+    
+          <div className="flex items-center space-x-2">
+  <Label htmlFor="allow-commenting">Allow Commenting</Label>  
+    {/* <Switch id="airplane-mode" /> */}
+    <Switch
+    id="allow-commenting"
           checked={allow_commenting}
-          onChange={handleCommentingToggle}
-        />
+          onCheckedChange={handleCommentingToggle}
+        /> 
+    </div>
       </div>
 
       <div className="flex gap-4">
-        <button
+        <Button
           onClick={handleSubmit}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
           disabled={loading}
         >
           Post
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => router.push("/")}
-          className="px-4 py-2 border rounded"
           disabled={loading}
-        >
+          variant="secondary"        >
           Cancel
-        </button>
+        </Button>
       </div>
     </div>
   );

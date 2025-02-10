@@ -7,8 +7,8 @@ import { auth } from "@/lib/firebaseClient";
 import Link from 'next/link'
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { CircularProgress } from "@mui/material";
-import VerifiedIcon from '@mui/icons-material/Verified';
+import { Spinner } from "@/components/ui/spinner";
+import {BadgeCheck} from 'lucide-react';
 import {
   HoverCard,
   HoverCardContent,
@@ -172,13 +172,13 @@ const router = useRouter()
           <p className="hover:opacity-60 text-lg font-semibold">
             {authorUsername}
           </p>
-          <span>{authorVerified && (<VerifiedIcon fontSize="small"/>)}</span>
+          <span>{authorVerified && (<BadgeCheck fontSize="small"/>)}</span>
         </div>
       </HoverCardTrigger>
       <HoverCardContent className="w-80" align="start">
         {loading ? (
           <div className="flex justify-center p-4">
-            <CircularProgress  />
+            <Spinner  />
           </div>
         ) : profile ? (
           <div className="space-y-2">

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import ZoomModal from './ZoomModal';
-import {Button} from '@mui/material'
+import {Button} from '@/components/ui/button'
 
 interface ImageGalleryProps {
   images: string[];

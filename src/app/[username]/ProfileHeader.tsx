@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import VerifiedIcon from '@mui/icons-material/Verified';
+import {BadgeCheck} from 'lucide-react';
 import "./globals.css";
 // import { formatFullDate } from "@/utils/date";
 
@@ -28,7 +28,7 @@ const ProfileHeader: React.FC<{
      
       <div className="flex items-center">
         <p className="user-name">@{username}</p>
-        {isVerified && <VerifiedIcon className="text-blue-500 mt-1.5" />}
+        {isVerified && <BadgeCheck className="text-blue-500 mt-1.5" />}
       </div>
       <h1 className="username mr-1 " >{displayName}</h1>
 

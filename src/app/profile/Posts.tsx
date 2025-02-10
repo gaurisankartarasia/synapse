@@ -5,9 +5,8 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Post } from '@/types/post';
 import Link from 'next/link';
-import { CircularProgress } from "@mui/material";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import { Spinner } from "@/components/ui/spinner";
+import { Heart, MessageSquareText } from 'lucide-react';
 
 interface UserPostsProps {
   uid: string;
@@ -54,7 +53,7 @@ export default function UserPosts({ uid }: UserPostsProps) {
   }, [uid]);
 
   if (!uid) return null;
-  if (loading) return <div className="flex justify-center p-8"><CircularProgress /></div>;
+  if (loading) return <div className="flex justify-center p-8"><Spinner /></div>;
   
   if (isPrivate) {
     return (
@@ -103,11 +102,11 @@ export default function UserPosts({ uid }: UserPostsProps) {
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <div className="text-white text-lg font-semibold bg-black bg-opacity-50 p-2 rounded">
                             <div className="flex items-center space-x-1">
-                              <FavoriteIcon className="w-4 h-4" />
+                              <Heart className="w-4 h-4" />
                               <span>{post.like_count}</span>
                             </div>
                             <div className="flex items-center space-x-1">
-                              <ChatBubbleOutlineIcon className="w-4 h-4" />
+                              <MessageSquareText className="w-4 h-4" />
                               <span>{post.comment_count}</span>
                             </div>
                           </div>

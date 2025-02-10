@@ -8,7 +8,7 @@ import ChatInput from './ChatInput';
 import { useRouter } from 'next/navigation';
 import { Message } from '@/types/chat';
 import { CustomJWTPayload } from '@/types/auth';
-import { LinearProgress } from '@mui/material';
+import { LinearProgress } from '@/components/ui/';
 
 export default function ChatPage({ params }: { params: Promise<{ userId: string }> }) {
   const router = useRouter();
