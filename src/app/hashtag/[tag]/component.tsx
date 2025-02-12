@@ -4,10 +4,10 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { Spinner, Button } from "@/components/ui/";
 import { formatRelativeTime } from "@/utils/date";
-import MessageSquareText from '@mui/icons-material/ChatBubbleOutline';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@/components/ui/button";
+import { MessageSquare, ChevronRight } from 'lucide-react';
 import Likebutton from "@/app/post/components/LikeButton";
 import { PostHeader } from "@/app/post/components/PostHeader";
 import { Post } from "@/types/post";
@@ -175,9 +175,9 @@ const HashtagPage = () => {
                   href={`/post/${post.id}`} 
                   className="flex items-center space-x-2 hover:text-blue-600"
                 >
-                  <MessageSquareText />
+                  <MessageSquare />
                   <span>{post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}</span>
-                  <NavigateNextIcon />
+                  <ChevronRight />
                 </Link>
               </div>
             </div>

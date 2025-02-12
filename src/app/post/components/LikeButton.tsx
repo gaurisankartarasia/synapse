@@ -5,9 +5,7 @@ import { onSnapshot, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebaseClient';
 import { useAuth } from '@/hooks/useAuth'; 
 import LikesModal from '../components/LikedByModal'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import Heart from '@mui/icons-material/Favorite';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import {Heart,ChevronRight } from 'lucide-react';
 
 interface LikebuttonProps {
   postId: string;
@@ -88,19 +86,19 @@ const Likebutton = ({
       {isLiked ? (
         <Heart/>
       ) : (
-        <FavoriteBorderIcon/>
+        <Heart/>
       )}
     </button>
   );
 
-  const likeCount = () => (
+  const LikeCount = () => (
     <button
       onClick={() => setIsModalOpen(true)}
       className="hover:bg-gray-300 focus:outline-none"
     >
       <div className='flex items-center'>
         {likes} {likes === 1 ? 'Like' : 'Likes'}
-        <NavigateNextIcon/>
+        <ChevronRight/>
       </div>
     </button>
   );
@@ -109,7 +107,7 @@ const Likebutton = ({
     <>
       <div className='flex items-center'>
         {user && <LikeButton />} {/* Only show like button if user is authenticated */}
-        <likeCount /> {/* Always show the like count */}
+        <LikeCount /> {/* Always show the like count */}
         <LikesModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
