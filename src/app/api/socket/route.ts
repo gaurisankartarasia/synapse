@@ -8,7 +8,7 @@ import { db } from '@/lib/firebaseAdmin';
 
 const io = new Server({
   cors: {
-    origin: process.env.NEXT_PUBLIC_APP_URL,
+    origin: process.env.NEXT_PUBLIC_API_URL,
     methods: ['GET', 'POST'],
     credentials: true,
   },

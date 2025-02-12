@@ -4,29 +4,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { auth } from "../../lib/firebaseClient";
-import ProfileHeader from "./ProfileHeader";
-import FollowStats from "./FollowStats";
-import FollowButton from "./FollowButton";
+import {ProfileHeader} from "./ProfileHeader";
+import {FollowStats} from "./FollowStats";
+import {FollowButton} from "./FollowButton";
 import ModalList from "./ModalList";
-import ChatButton from "./ChatButton";
+import {ChatButton} from "./ChatButton";
 import UserPosts from '../profile/Posts';
-
-
-interface ProfileData {
-  uid: string;
-  username: string;
-  displayName: string;
-  profilePhotoURL: string;
-  createdAt:string;
-  bio: string;
-  isVerified: boolean;
-  isPrivate:boolean;
-  followerCount: number;
-  followingCount: number;
-  isFollowing: boolean;
-  isRequested: boolean;
-  blocked?: boolean;
-}
+import { ProfileData } from "@/types/profile";
 
 
 const PublicProfilePage: React.FC = () => {
@@ -207,10 +191,10 @@ const PublicProfilePage: React.FC = () => {
     return null;
   }
 
-  const followStatus = profileData.isFollowing ? "following" : profileData.isRequested ? "requested" : "";
+  const followStatus = profileData.isFollowing ? "following" : profileData.isRequested ? "requested" : "none";
 
   return (
-    <main className="profile-container">
+    <main className="">
       <ProfileHeader
         profilePhotoURL={profileData.profilePhotoURL || "/default.webp"}
         username={profileData.username}
@@ -226,13 +210,15 @@ const PublicProfilePage: React.FC = () => {
         onFollowersClick={() => handleModalOpen("followers")}
         onFollowingClick={() => handleModalOpen("following")}
       />
-      <FollowButton
+     <div className="flex ">
+     <FollowButton
         isUpdating={isUpdating}
         followStatus={followStatus}
         onFollowClick={handleFollow}
       />
 
 {!profileData.isPrivate &&  <ChatButton targetUserId={profileData.uid} />}
+     </div>
      
 
       <ModalList
@@ -252,14 +238,7 @@ const PublicProfilePage: React.FC = () => {
     
 
     <div>
-      {/* {profileData.isPrivate ? 
-      <div className="flex flex-col items-center justify-center p-8 space-y-4 text-gray-600">
-        <LockPersonIcon fontSize='large' />
-        <p className="text-lg font-medium text-center">This user's posts are private</p>
-        <p className="text-sm text-center">Follow this user to see their posts</p>
-      </div> 
-      :
-       <UserPosts uid={profileData.uid}/>} */}
+    
     </div>
     
     <UserPosts uid={profileData.uid}/>
@@ -270,3 +249,8 @@ const PublicProfilePage: React.FC = () => {
 };
 
 export default PublicProfilePage;
+
+
+
+
+

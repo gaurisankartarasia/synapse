@@ -47,24 +47,24 @@ export async function POST(request: NextRequest) {
         throw new Error("Post not found");
       }
 
-      const like_count = postDoc.data()?.like_count || 0;
+      const likeCount = postDoc.data()?.likeCount || 0;
       const hasLiked = (await transaction.get(likesRef)).exists;
 
       if (hasLiked) {
         // Unlike: Remove like document and decrement like count
         transaction.delete(likesRef);
-        transaction.update(postRef, { like_count: FieldValue.increment(-1) });
+        transaction.update(postRef, { likeCount: FieldValue.increment(-1) });
         
-        return { liked: false, total: like_count - 1 };
+        return { liked: false, total: likeCount - 1 };
       } else {
         // Like: Add like document and increment like count
         transaction.set(likesRef, {
           uid: payload.uid,
           createdAt: FieldValue.serverTimestamp(),
         });
-        transaction.update(postRef, { like_count: FieldValue.increment(1) });
+        transaction.update(postRef, { likeCount: FieldValue.increment(1) });
 
-        return { liked: true, total: like_count + 1 };
+        return { liked: true, total: likeCount + 1 };
       }
     });
 
@@ -107,13 +107,13 @@ export async function GET(request: NextRequest) {
     }
 
     const postDoc = await db.collection("posts").doc(postId).get();
-    const like_count = postDoc.data()?.like_count || 0;
+    const likeCount = postDoc.data()?.likeCount || 0;
     const likesRef = db.collection("posts").doc(postId).collection("likes").doc(uid);
     const hasLiked = (await likesRef.get()).exists;
     
     return NextResponse.json({ 
       liked: hasLiked,
-      total: like_count
+      total: likeCount
     });
   } catch (error) {
     console.error("Error checking like status:", error);

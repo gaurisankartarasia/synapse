@@ -6,7 +6,9 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInWithGoogle } from '@/redux/features/authSlice';
 import type { AppDispatch, RootState } from '@/redux/store';
-import {Spinner} from "@/components/ui/"
+import {Spinner} from "@/components/ui/spinner"
+import { Button } from '@/components/ui/button';
+
 
 export default function GoogleSignInButton() {
   const router = useRouter();
@@ -30,15 +32,15 @@ export default function GoogleSignInButton() {
 
   return (
     <div className="space-y-2">
-      <button
+      <Button
         onClick={handleGoogleSignIn}
         disabled={loading}
-        className="w-full flex items-center justify-center gap-2 bg-white text-gray-700 border border-gray-300 rounded-md px-4 py-2 text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-center gap-2 disabled:cursor-not-allowed"
       >
         {loading ? (
           <div className="flex items-center gap-2">
             
-            <Spinner size={20} color='inherit'/>
+            <Spinner size={20}/>
           </div>
         ) : (
           <>
@@ -46,7 +48,7 @@ export default function GoogleSignInButton() {
             Continue with Google
           </>
         )}
-      </button>
+      </Button>
       {/* {error && (
         <div className="text-red-500 text-sm text-center">{error}</div>
       )} */}

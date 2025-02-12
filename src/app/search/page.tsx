@@ -11,6 +11,8 @@ import {Card, CardContent} from "@/components/ui/card"
 import { Spinner } from "@/components/ui/spinner";
 import {Input} from '@/components/ui/input'
 import {BadgeCheck} from 'lucide-react';
+import UserSuggestions from "@/components/UserSuggestions/UserSuggestions";
+
 
 interface SearchResult {
   uid: string;
@@ -99,7 +101,8 @@ interface SearchResult {
   
 
   return (
-    <main className="main container mx-auto">
+    <>
+    <main className="main container mx-auto flex">
       <h2 className="search_page_title">Search</h2>
       <form className="search_form mx-auto" onSubmit={(e) => e.preventDefault()}>
         <Input
@@ -145,12 +148,17 @@ interface SearchResult {
         </ul>
       )}
 
+
       {searchResults.length === 0 && !loading && !error && (
         <div className="text-center">
           <small>No results</small>
         </div>
       )}
+
+<UserSuggestions />
     </main>
+  
+    </>
   );
 };
 
@@ -159,5 +167,7 @@ const SearchPage: React.FC = () => (
     <SearchPageContent />
   </Suspense>
 );
+
+
 
 export default SearchPage;

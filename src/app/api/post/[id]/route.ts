@@ -13,9 +13,9 @@ interface FirestorePost {
   content: string;
   imageURLs: string[];
   createdAt: FirebaseFirestore.Timestamp;
-  like_count: number;
-  allow_commenting: boolean;
-  comment_count: number;
+  likeCount: number;
+  allowCommenting: boolean;
+  commentCount: number;
 }
 
 interface FirestoreUser {
@@ -85,8 +85,8 @@ export async function GET(request: NextRequest, { params }: Props) {
     const userData = userDoc.data() as FirestoreUser | undefined;
 
     // Check if post is saved and liked by the current user
-    let is_saved = false;
-    let is_liked = false;
+    let isSaved = false;
+    let isLiked = false;
     
     if (userId) {
       const [savedPostDoc, likeDoc] = await Promise.all([
@@ -103,8 +103,8 @@ export async function GET(request: NextRequest, { params }: Props) {
           .get()
       ]);
       
-      is_saved = !savedPostDoc.empty;
-      is_liked = likeDoc.exists;
+      isSaved = !savedPostDoc.empty;
+      isLiked = likeDoc.exists;
     }
 
     // Format response data
@@ -114,14 +114,14 @@ export async function GET(request: NextRequest, { params }: Props) {
       profilePhotoURL: userData?.profilePhotoURL,
       displayName: userData?.displayName,
       content: postData.content,
-      author: userData?.username,
+      username: userData?.username,
       createdAt: postData.createdAt,
       imageURLs: postData.imageURLs || [],
-      allow_commenting: postData.allow_commenting,
-      like_count: postData.like_count || 0,
-      comment_count: postData.comment_count || 0,
-      is_saved,
-      is_liked,
+      allowCommenting: postData.allowCommenting,
+      likeCount: postData.likeCount || 0,
+      commentCount: postData.commentCount || 0,
+      isSaved,
+      isLiked,
       isVerified: userData?.isVerified
     };
 

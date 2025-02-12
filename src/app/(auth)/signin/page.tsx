@@ -10,7 +10,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { signInWithEmail } from '@/redux/features/authSlice';
 import GoogleSignInButton from './GoogleSignInButton';
-import {Spinner} from '@/components/ui/'
+import {Spinner} from '@/components/ui/spinner'
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardTitle, CardHeader, CardFooter, CardDescription } from '@/components/ui/card';
 
 export default function SignIn() {
   const router = useRouter();
@@ -38,10 +41,12 @@ export default function SignIn() {
 
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
-        <h2 className="text-3xl font-bold text-center text-black">Sign In</h2>
-        
+    <div className="min-h-screen flex items-center justify-center ">
+      <Card className="max-w-md w-full space-y-8 ">
+        <CardHeader>
+        <CardTitle>Sign In</CardTitle>
+        </CardHeader>
+        <CardContent>
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
             {error}
@@ -54,59 +59,60 @@ export default function SignIn() {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300" />
+              <div className="w-full border-t " />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or continue with</span>
+              <span className="px-2 ">Or continue with</span>
             </div>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="email" className="block text-sm font-medium ">
               Email
             </label>
-            <input
+            <Input
               id="email"
               type="email"
               required
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+              className="mt-1 block w-full p-2"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="block text-sm font-medium ">
               Password
             </label>
-            <input
+            <Input
               id="password"
               type="password"
               required
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+              className="mt-1 block w-full border p-2"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
-          <button
+          <Button
             type="submit"
             disabled={loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="w-full flex justify-center py-2 px-4 "
           >
-            {loading ? <Spinner color='inherit' size={25}/> : 'Sign In'}
-          </button>
+            {loading ? <Spinner size={25}/> : 'Sign In'}
+          </Button>
         </form>
-
-        <p className="text-center text-sm text-black">
+        </CardContent>
+        <CardFooter>
+        <CardDescription>
           Don't have an account?{' '}
-          <Link href="/signup" className="text-blue-600 hover:text-blue-500">
+          <Link href="/signup" className="underline">
             Sign up
           </Link>
-        </p>
-      </div>
+        </CardDescription></CardFooter>
+      </Card>
     </div>
   );
 }

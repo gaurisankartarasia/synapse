@@ -42,23 +42,23 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { content, imageURLs, hashtags, allow_commenting } = body;
+    const { content, imageURLs, hashtags, allowCommenting } = body;
 
     const createdAt = FieldValue.serverTimestamp();
     
     const batch = db.batch();
     const newPostRef = db.collection("posts").doc();
 
-    // Update post document to include title, hashtags, and author
+    // Update post document to include title, hashtags, and username
     batch.set(newPostRef, {
       uid,
       content,
-      author: username,
+      username: username,
       createdAt,
       imageURLs: imageURLs || [],
       hashtags: hashtags || [],
-      allow_commenting: allow_commenting ?? true,
-      comment_count: 0
+      allowCommenting: allowCommenting ?? true,
+      commentCount: 0
     });
 
     // Add hashtags to a separate collection for easy querying

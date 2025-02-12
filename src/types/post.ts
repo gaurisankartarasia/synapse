@@ -7,18 +7,18 @@ export type Post = {
   profilePhotoURL:string;
   displayName:string;
   content: string;
-  author: string;
+  username: string;
   isVerified:boolean;
   createdAt: {
     _seconds: number;
     _nanoseconds: number;
   };
-  like_count: number;
-  allow_commenting: boolean,
-  comment_count: number;
+  likeCount: number;
+  allowCommenting: boolean,
+  commentCount: number;
   hashtags?: string[];
-  is_saved: boolean;
-  is_liked:boolean;
+  isSaved: boolean;
+  isLiked:boolean;
 };
 
 

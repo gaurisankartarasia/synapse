@@ -103,11 +103,11 @@ export default function UserPosts({ uid }: UserPostsProps) {
                           <div className="text-white text-lg font-semibold bg-black bg-opacity-50 p-2 rounded">
                             <div className="flex items-center space-x-1">
                               <Heart className="w-4 h-4" />
-                              <span>{post.like_count}</span>
+                              <span>{post.likeCount}</span>
                             </div>
                             <div className="flex items-center space-x-1">
                               <MessageSquareText className="w-4 h-4" />
-                              <span>{post.comment_count}</span>
+                              <span>{post.commentCount}</span>
                             </div>
                           </div>
                         </div>

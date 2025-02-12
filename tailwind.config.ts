@@ -64,10 +64,16 @@ export default {
   				'50%': {
   					opacity: '1'
   				}
-  			}
+  			},
+			  'progress-bar': {
+				'0%': { transform: 'scaleX(0)' },
+				'100%': { transform: 'scaleX(1)' }
+			  }
   		},
   		animation: {
-  			'spinner-leaf-fade': 'spinner-leaf-fade 800ms linear infinite'
+  			'spinner-leaf-fade': 'spinner-leaf-fade 800ms linear infinite',
+			  'progress-bar': 'progress-bar 0.5s linear' 
+
   		}
   	}
   },

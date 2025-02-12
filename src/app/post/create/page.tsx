@@ -22,7 +22,7 @@ const PostPage = () => {
   const [images, setImages] = useState<File[]>([]);
   const [imageURLs, setimageURLs] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const [allow_commenting, setallow_commenting] = useState<boolean>(true);
+  const [allowCommenting, setallowCommenting] = useState<boolean>(true);
 
 
   useEffect(() => {
@@ -78,16 +78,16 @@ const PostPage = () => {
 
 
   // const handleCommentingToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setallow_commenting(event.target.checked); 
+  //   setallowCommenting(event.target.checked); 
   // };
 
   // const handleCommentingToggle = (event: React.FormEvent<HTMLButtonElement>) => {
   //   const isChecked = (event.target as HTMLButtonElement).ariaPressed === 'true';
-  //   setallow_commenting(isChecked);
+  //   setallowCommenting(isChecked);
   // };
 
   const handleCommentingToggle = (checked: boolean) => {
-    setallow_commenting(checked);
+    setallowCommenting(checked);
   };
   
   
@@ -128,7 +128,7 @@ const PostPage = () => {
           content,
           imageURLs: uploadedimageURLs,
           hashtags: hashtags,
-          allow_commenting,
+          allowCommenting,
         }),
       });
 
@@ -222,7 +222,7 @@ const PostPage = () => {
     {/* <Switch id="airplane-mode" /> */}
     <Switch
     id="allow-commenting"
-          checked={allow_commenting}
+          checked={allowCommenting}
           onCheckedChange={handleCommentingToggle}
         /> 
     </div>

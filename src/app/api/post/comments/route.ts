@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
         const commentData = commentDoc.data();
         const commentId = commentDoc.id;
 
-        // Fetch the author's username from the users collection using authorId
+        // Fetch the username's username from the users collection using authorId
         const userDoc = await db.collection("users").doc(commentData.uid).get();
         const username = userDoc.exists ? userDoc.data()?.username : null;
         const profilePhotoURL = userDoc.exists ? userDoc.data()?.profilePhotoURL : null;
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
             const replyData = replyDoc.data();
             const replyId = replyDoc.id;
 
-            // Fetch the author's username for each reply
+            // Fetch the username's username for each reply
             const replyUserDoc = await db.collection("users").doc(replyData.uid).get();
             const username = replyUserDoc.exists ? replyUserDoc.data()?.username : null;
             const profilePhotoURL = userDoc.exists ? replyUserDoc.data()?.profilePhotoURL : null;
@@ -177,7 +177,7 @@ export async function POST(request: NextRequest) {
     const batch = db.batch();
     batch.set(newCommentRef, newComment);
     batch.update(postRef, {
-      comment_count: FieldValue.increment(1),
+      commentCount: FieldValue.increment(1),
     });
 
     // Commit the batch write

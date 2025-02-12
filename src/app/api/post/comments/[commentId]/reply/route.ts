@@ -69,7 +69,7 @@
 
 //       // Also increment the comment count on the post
 //       transaction.update(postRef, {
-//         comment_count: FieldValue.increment(1),
+//         commentCount: FieldValue.increment(1),
 //       });
 //     });
 

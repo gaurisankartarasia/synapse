@@ -93,7 +93,7 @@ const Likebutton = ({
     </button>
   );
 
-  const like_count = () => (
+  const likeCount = () => (
     <button
       onClick={() => setIsModalOpen(true)}
       className="hover:bg-gray-300 focus:outline-none"
@@ -109,7 +109,7 @@ const Likebutton = ({
     <>
       <div className='flex items-center'>
         {user && <LikeButton />} {/* Only show like button if user is authenticated */}
-        <like_count /> {/* Always show the like count */}
+        <likeCount /> {/* Always show the like count */}
         <LikesModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}

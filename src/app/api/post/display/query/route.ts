@@ -12,8 +12,8 @@
 //   content: string;
 //   imageURLs: string[];
 //   createdAt: FirebaseFirestore.Timestamp;
-//   like_count: number;
-//   comment_count: number;
+//   likeCount: number;
+//   commentCount: number;
 // }
 
 // const POSTS_PER_PAGE = 5;
@@ -117,13 +117,13 @@
       
 //       return {
 //         ...post,
-//         author: userData.username,
+//         username: userData.username,
 //         displayName: userData.displayName,
 //         profilePhotoURL: userData.profilePhotoURL,
 //         isVerified: userData.isVerified,
 //         createdAt: post.createdAt,
-//         is_saved: savedPostIds.has(post.id),
-//         is_liked: likedPosts.get(post.id) || false
+//         isSaved: savedPostIds.has(post.id),
+//         isLiked: likedPosts.get(post.id) || false
 //       };
 //     });
 
@@ -162,10 +162,10 @@ interface FirestorePost {
   content: string;
   imageURLs: string[];
   createdAt: FirebaseFirestore.Timestamp;
-  like_count: number;
-  comment_count: number;
+  likeCount: number;
+  commentCount: number;
   hashtags?: string[];
-  allow_commenting?: boolean;
+  allowCommenting?: boolean;
 }
 
 const POSTS_PER_PAGE = 5;
@@ -288,14 +288,14 @@ export async function GET(request: NextRequest) {
       
       return {
         ...post,
-        author: userData.username,
+        username: userData.username,
         displayName: userData.displayName,
         profilePhotoURL: userData.profilePhotoURL,
         isVerified: userData.isVerified,
         createdAt: post.createdAt,
-        is_saved: savedPostIds.has(post.id),
-        is_liked: likedPosts.get(post.id) || false,
-        allow_commenting: post.allow_commenting ?? true, // Default to true if not specified
+        isSaved: savedPostIds.has(post.id),
+        isLiked: likedPosts.get(post.id) || false,
+        allowCommenting: post.allowCommenting ?? true, // Default to true if not specified
         hashtags: post.hashtags || [],
       };
     });

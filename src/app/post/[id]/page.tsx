@@ -26,7 +26,7 @@
    const [loading, setLoading] = useState(true);
    const { user } = useAuth();
    const [isLiked, setIsLiked] = useState(false);
-   const [like_count, setlike_count] = useState(0);
+   const [likeCount, setlikeCount] = useState(0);
    const [isLikeLoading, setIsLikeLoading] = useState(false);
    const [isSaveLoading, setIsSaveLoading] = useState(false);
    const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,8 +50,8 @@
 
         const data = await response.json();
         setPost(data);
-        setlike_count(data.like_count || 0);
-        setIsLiked(data.is_liked || false);
+        setlikeCount(data.likeCount || 0);
+        setIsLiked(data.isLiked || false);
       } catch (error) {
         console.error("Error fetching post data:", error);
         alert("An error occurred while fetching the post.");
@@ -70,11 +70,11 @@
 
     setIsLikeLoading(true);
     const prevLiked = isLiked;
-    const prevLikes = like_count;
+    const prevLikes = likeCount;
 
     // Optimistic update
     setIsLiked(!prevLiked);
-    setlike_count(prevLiked ? prevLikes - 1 : prevLikes + 1);
+    setlikeCount(prevLiked ? prevLikes - 1 : prevLikes + 1);
 
     try {
       const response = await fetch('/api/post/like', {
@@ -93,7 +93,7 @@
       console.error('Error toggling like:', error);
       // Revert optimistic update on error
       setIsLiked(prevLiked);
-      setlike_count(prevLikes);
+      setlikeCount(prevLikes);
     } finally {
       setIsLikeLoading(false);
     }
@@ -103,10 +103,10 @@
      if (!user || isSaveLoading || !id || !post) return;
  
      setIsSaveLoading(true);
-     const prevSaved = post.is_saved;
+     const prevSaved = post.isSaved;
  
      // Optimistic update
-     setPost(prev => prev ? { ...prev, is_saved: !prev.is_saved } : null);
+     setPost(prev => prev ? { ...prev, isSaved: !prev.isSaved } : null);
  
      try {
        const response = await fetch('/api/post/save', {
@@ -124,7 +124,7 @@
      } catch (error) {
        console.error('Error toggling save status:', error);
        // Revert optimistic update on error
-       setPost(prev => prev ? { ...prev, is_saved: prevSaved } : null);
+       setPost(prev => prev ? { ...prev, isSaved: prevSaved } : null);
      } finally {
        setIsSaveLoading(false);
      }
@@ -206,7 +206,7 @@
  
        <div className="flex items-center gap-3">
          <PostHeader
-           authorUsername={post.author}
+           authorUsername={post.username}
            authordisplayName={post.displayName}
            authorprofilePhotoURL={post.profilePhotoURL}
            authorVerified={post.isVerified}
@@ -249,7 +249,7 @@
                disabled={isSaveLoading}
                className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
              >
-               {post.is_saved ? <Bookmark /> : "saved"}
+               {post.isSaved ? <Bookmark /> : "saved"}
              </button>
            </>
          )}
@@ -259,18 +259,18 @@
            className="hover:bg-gray-300 focus:outline-none"
          >
            <div className="flex items-center">
-             {like_count} {like_count === 1 ? 'Like' : 'Likes'}
+             {likeCount} {likeCount === 1 ? 'Like' : 'Likes'}
              <ChevronRight />
            </div>
          </button>
  
-         {post.allow_commenting && (
-           <p>{post.comment_count} {post.comment_count === 1 ? 'Comment' : 'Comments'}</p>
+         {post.allowCommenting && (
+           <p>{post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}</p>
          )}
        </div>
  
        <div className="mt-6">
-         {post.allow_commenting ? (
+         {post.allowCommenting ? (
            <CommentSection postId={post.id} />
          ) : (
           <p className="text-center">Comments are turned off for this post.</p>

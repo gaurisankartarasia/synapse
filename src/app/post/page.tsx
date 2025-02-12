@@ -42,18 +42,17 @@ const PostPage = () => {
       const data = await response.json();
       setPosts((prev) => (lastId ? [...prev, ...data.posts] : data.posts));
       
-      // Initialize like states using the is_liked value from the API
+      // Initialize like states using the isLiked value from the API
       const newLikeStates: Record<string, { isLiked: boolean; count: number; loading: boolean }> = {};
       data.posts.forEach((post: Post) => {
         newLikeStates[post.id] = {
-          isLiked: post.is_liked || false,
-          count: post.like_count || 0,
+          isLiked: post.isLiked || false,
+          count: post.likeCount || 0,
           loading: false
         };
       });
       setLikeStates(prev => ({ ...prev, ...newLikeStates }));
 
-      // ... rest of the function ...
     } catch (error) {
       console.error(error);
       alert("Error fetching posts");
@@ -121,7 +120,7 @@ const PostPage = () => {
     setPosts(prevPosts => 
       prevPosts.map(post => 
         post.id === postId 
-          ? { ...post, is_saved: !post.is_saved }
+          ? { ...post, isSaved: !post.isSaved }
           : post
       )
     );
@@ -150,7 +149,7 @@ const PostPage = () => {
       setPosts(prevPosts => 
         prevPosts.map(post => 
           post.id === postId 
-            ? { ...post, is_saved: !post.is_saved }
+            ? { ...post, isSaved: !post.isSaved }
             : post
         )
       );
@@ -191,8 +190,8 @@ const PostPage = () => {
       {images.map((url, index) => (
         <div key={index} className="relative aspect-square">
           <Image
-            // src={`/api/proxy?url=${encodeURIComponent(url)}`}
-            src={url}
+            src={`/api/proxy?url=${encodeURIComponent(url)}`}
+            // src={url}
 
             fill
             sizes="(max-width: 468px) 50vw, (max-width: 600px) 50vw, 33vw"
@@ -242,7 +241,7 @@ const PostPage = () => {
          width={30}
          alt="profile"
          className="rounded-full"/>
-         <strong>{post.author}</strong>
+         <strong>{post.username}</strong>
          {post.isVerified && "verified"}
                 <span className="text-gray-600 text-sm">{formatRelativeTime(post.createdAt)}</span>
               </div>
@@ -262,7 +261,7 @@ const PostPage = () => {
         disabled={saveStates[post.id]?.loading}
         className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
       >
-        {post.is_saved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+        {post.isSaved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
       </button>
     )}
 
@@ -289,11 +288,11 @@ const PostPage = () => {
                     <NavigateNextIcon />
                   </div>
                 </button>
-                {post.allow_commenting && (
+                {post.allowCommenting && (
                 <Link href={`/post/${post.id}`} className="flex items-center gap-1">
                   <MessageSquareText />
                  
-          <p>{post.comment_count} {post.comment_count === 1 ? 'Comment' : 'Comments'}</p>
+          <p>{post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}</p>
        
                   <NavigateNextIcon />
                 </Link>
@@ -314,7 +313,7 @@ const PostPage = () => {
          width={30}
          alt="profile"
          className="rounded-full"/>
-         <strong>{post.author}</strong>
+         <strong>{post.username}</strong>
          {post.isVerified && "verified"}
                 <span className="text-gray-600 text-sm">{formatRelativeTime(post.createdAt)}</span>
               </div>
@@ -334,7 +333,7 @@ const PostPage = () => {
         disabled={saveStates[post.id]?.loading}
         className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
       >
-        {post.is_saved ? <Bookmark /> : "Saved"}
+        {post.isSaved ? <Bookmark /> : "Saved"}
       </button>
     )}
 
@@ -349,7 +348,8 @@ const PostPage = () => {
                     disabled={likeStates[post.id]?.loading}
                     className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
                   >
-                    {likeStates[post.id]?.isLiked ? <Heart /> : < Heart/>}
+                    {/* {likeStates[post.id]?.isLiked ? <Heart /> : < Heart/>} */}
+                    
                   </button>
                 )}
                 <button
@@ -361,11 +361,11 @@ const PostPage = () => {
                     <ChevronRight />
                   </div>
                 </button>
-                {post.allow_commenting && (
+                {post.allowCommenting && (
                 <Link href={`/post/${post.id}`} className="flex items-center gap-1">
                   <MessageSquare />
                  
-          <p>{post.comment_count} {post.comment_count === 1 ? 'Comment' : 'Comments'}</p>
+          <p>{post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}</p>
        
                   <ChevronRight />
                 </Link>

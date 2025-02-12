@@ -1,13 +1,17 @@
 "use client";
 
 import PostPage from "./post/page";
+import UserSuggestions from "@/components/UserSuggestions/UserSuggestions";
+
+
 
 export default function Home() {
 
 
   return (
-    <main>
-      <PostPage/>
+    <main className="flex ">
+     
+      <PostPage/><UserSuggestions />
     </main>
   );
 }

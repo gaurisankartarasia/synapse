@@ -169,6 +169,8 @@
 
 import { useState, useEffect } from 'react';
 import { Message } from '@/types/chat';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 interface ChatInputProps {
   userId: string;
@@ -272,23 +274,23 @@ export default function ChatInput({
   };
 
   return (
-    <div className="fixed bottom-0 w-full bg-white p-4 border-t">
+    <div className="fixed bottom-0 w-full  p-4 border-t">
       {(replyingTo || editingMessage) && (
-        <div className="flex items-center justify-between bg-gray-100 p-2 rounded mb-2">
-          <p className="text-sm text-gray-600">
+        <div className="flex items-center justify-between  p-2  mb-2">
+          <p className="text-sm ">
             {editingMessage ? 'Editing message' : `Replying to: ${replyingTo?.content}`}
           </p>
-          <button 
+          <Button 
             onClick={onCancelAction}
             color="inherit"
           >
             Cancel
-          </button>
+          </Button>
         </div>
       )}
       <div className="flex gap-2">
-        <input
-          className="flex-1 p-2 border rounded"
+        <Input
+          className=" p-2"
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -302,12 +304,12 @@ export default function ChatInput({
                 : "Type a message..."
           }
         />
-        <button 
+        <Button 
           onClick={handleAction} 
           disabled={!message.trim() || !!error}
         >
           {getActionButton()}
-        </button>
+        </Button>
       </div>
       {error && <p className="text-red-500 mt-2">Error: {error}</p>}
     </div>

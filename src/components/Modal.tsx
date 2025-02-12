@@ -64,7 +64,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
 
@@ -82,7 +81,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
     if (isOpen) {
       setIsVisible(true);
     } else {
-      const timer = setTimeout(() => setIsVisible(false), 300); // Match animation duration
+      const timer = setTimeout(() => setIsVisible(false), 300); 
       return () => clearTimeout(timer);
     }
   }, [isOpen]);

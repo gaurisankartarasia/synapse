@@ -49,7 +49,7 @@
 
 //       const replyData = replyDoc.data();
 
-//       // Ensure only the reply's author can delete it
+//       // Ensure only the reply's username can delete it
 //       if (replyData?.uid !== payload.uid) {
 //         throw new Error("Unauthorized to delete this reply");
 //       }
@@ -59,7 +59,7 @@
 //         replyCount: FieldValue.increment(-1),
 //       });
 //       transaction.update(postRef, {
-//         comment_count: FieldValue.increment(-1),
+//         commentCount: FieldValue.increment(-1),
 //       });
 //     });
 
@@ -138,7 +138,7 @@ export async function DELETE(
 
       const replyData = replyDoc.data();
 
-      // Ensure only the reply's author can delete it
+      // Ensure only the reply's username can delete it
       if (replyData?.uid !== payload.uid) {
         throw new Error("Unauthorized to delete this reply");
       }
@@ -148,7 +148,7 @@ export async function DELETE(
         replyCount: FieldValue.increment(-1),
       });
       transaction.update(postRef, {
-        comment_count: FieldValue.increment(-1),
+        commentCount: FieldValue.increment(-1),
       });
     });
 

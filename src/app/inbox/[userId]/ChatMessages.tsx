@@ -4,7 +4,7 @@
 import { useEffect } from 'react';
 import { useChatMessages } from '@/hooks/useChatMessages';
 import { Message } from '@/types/chat';
-import { Spinner } from "@/components/ui/";
+import { Spinner } from "@/components/ui/spinner";
 
 
 interface ChatMessagesProps {

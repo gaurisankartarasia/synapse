@@ -141,7 +141,7 @@ const HashtagPage = () => {
             >
               <Link href={`/post/${post.id}`} className="block">
                 <PostHeader 
-                  authorUsername={post.author}
+                  authorUsername={post.username}
                   authorprofilePhotoURL={post.profilePhotoURL}
                   authordisplayName={post.displayName}
                   authorVerified={post.isVerified}
@@ -176,7 +176,7 @@ const HashtagPage = () => {
                   className="flex items-center space-x-2 hover:text-blue-600"
                 >
                   <MessageSquareText />
-                  <span>{post.comment_count} {post.comment_count === 1 ? 'Comment' : 'Comments'}</span>
+                  <span>{post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}</span>
                   <NavigateNextIcon />
                 </Link>
               </div>

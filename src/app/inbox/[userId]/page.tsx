@@ -8,7 +8,7 @@ import ChatInput from './ChatInput';
 import { useRouter } from 'next/navigation';
 import { Message } from '@/types/chat';
 import { CustomJWTPayload } from '@/types/auth';
-import { LinearProgress } from '@/components/ui/';
+import { Spinner } from '@/components/ui/spinner';
 
 export default function ChatPage({ params }: { params: Promise<{ userId: string }> }) {
   const router = useRouter();
@@ -88,12 +88,12 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
   };
 
   if (!currentUser || !targetUserId) {
-    return <LinearProgress/>;
+    return <Spinner/>;
   }
 
   return (
     <>
-      <header className="p-4 bg-gray-100">
+      <header className="p-4 ">
         {userInfo && (
           <Link href={`/${userInfo.username}`} className='flex items-center'>
             <Image 
