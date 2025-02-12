@@ -9,7 +9,6 @@ import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import { MessageSquare, ChevronRight } from 'lucide-react';
 import Likebutton from "@/app/post/components/LikeButton";
-import { PostHeader } from "@/app/post/components/PostHeader";
 import { Post } from "@/types/post";
 
 const POSTS_PER_PAGE = 5;
@@ -140,12 +139,13 @@ const HashtagPage = () => {
               className="bg-white shadow-md rounded-lg p-6"
             >
               <Link href={`/post/${post.id}`} className="block">
-                <PostHeader 
-                  authorUsername={post.username}
-                  authorprofilePhotoURL={post.profilePhotoURL}
-                  authordisplayName={post.displayName}
-                  authorVerified={post.isVerified}
-                />
+                   <Image src={post.profilePhotoURL}
+                        height={30}
+                        width={30}
+                        alt="profile"
+                        className="rounded-full"/>
+                        <strong>{post.username}</strong>
+                        {post.isVerified && "verified"}
                 <div className="text-sm text-gray-600 mb-4">
                   <span>{formatRelativeTime(post.createdAt)}</span>
                 </div>

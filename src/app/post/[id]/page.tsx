@@ -5,8 +5,8 @@
  "use client";
  import { useState, useEffect } from "react";
  import { useParams } from "next/navigation";
- import { PostHeader } from "../components/PostHeader";
  import Link from "next/link";
+ import Image from "next/image";
  import { CommentSection } from "../components/CommentSection";
  import ImageGallery from "../components/ImageGallery";
  import { formatRelativeTime } from "@/utils/date";
@@ -205,12 +205,14 @@
        </Link>
  
        <div className="flex items-center gap-3">
-         <PostHeader
-           authorUsername={post.username}
-           authordisplayName={post.displayName}
-           authorprofilePhotoURL={post.profilePhotoURL}
-           authorVerified={post.isVerified}
-         />
+             <Image src={post.profilePhotoURL}
+                  height={30}
+                  width={30}
+                  alt="profile"
+                  className="rounded-full"/>
+                  <strong>{post.username}</strong>
+                  {post.isVerified && "verified"}
+
          <small className="text-gray-600">
            {formatRelativeTime(post.createdAt)}
          </small>
