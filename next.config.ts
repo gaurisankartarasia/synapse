@@ -47,9 +47,9 @@
 
 
 import type { NextConfig } from 'next';
-import type { webpack } from 'next/dist/compiled/webpack/webpack';
 
 const nextConfig: NextConfig = {
+
 
   async headers() {
     return [
@@ -64,7 +64,6 @@ const nextConfig: NextConfig = {
             key: 'Access-Control-Allow-Origin', 
             value: '*' 
           },
-          // ... rest of headers
         ],
       },
     ];

@@ -1,44 +1,3 @@
-//   // src/app/api/get-followers/route.ts
-//   import { NextResponse } from "next/server";
-//   import { auth, db } from "../../../lib/firebaseAdmin";
-
-//   export async function GET(request: Request) {
-//     const token = request.headers.get("Authorization")?.split("Bearer ")[1];
-
-//     if (!token) {
-//       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//     }
-
-//     try {
-//       const decodedToken = await auth.verifyIdToken(token);
-//       const uid = decodedToken.uid;
-
-//       const followersSnapshot = await db
-//         .collection("users")
-//         .doc(uid)
-//         .collection("followers")
-//         .get();
-
-//       const followers = await Promise.all(
-//         followersSnapshot.docs.map(async (doc) => {
-//           const followerData = await db.collection("users").doc(doc.id).get();
-//           return { uid: doc.id, ...followerData.data() };
-//         })
-//       );
-
-//       return NextResponse.json({ followers });
-//     } catch (error) {
-//       console.error("Error fetching followers:", error);
-//       return NextResponse.json({ error: "Failed to fetch followers" }, { status: 500 });
-//     }
-//   }
-
-
-
-
-
-
-
 
 // src/app/api/get-followers/route.ts
 import { NextResponse } from "next/server";
@@ -53,11 +12,11 @@ export async function GET(request: Request) {
 
   try {
     const decodedToken = await auth.verifyIdToken(token);
-    const uid = decodedToken.uid;
+    const currentUid = decodedToken.uid;
 
     const followersSnapshot = await db
       .collection("users")
-      .doc(uid)
+      .doc(currentUid)
       .collection("followers")
       .get();
 
@@ -67,6 +26,22 @@ export async function GET(request: Request) {
         const data = followerData.data();
 
         if (data) {
+          // Check if current user is following this follower
+          const followingStatus = await db
+            .collection("users")
+            .doc(currentUid)
+            .collection("following")
+            .doc(doc.id)
+            .get();
+
+          // Check for follow request if user is private
+          const followRequestStatus = data.private ? await db
+            .collection("users")
+            .doc(doc.id)
+            .collection("followRequests")
+            .doc(currentUid)
+            .get() : null;
+
           return {
             uid: doc.id,
             profilePhotoURL: data.profilePhotoURL || null,
@@ -74,6 +49,8 @@ export async function GET(request: Request) {
             username: data.username || null,
             verified: data.verified || false,
             private: data.private || false,
+            isFollowing: followingStatus.exists,
+            isRequested: followRequestStatus?.exists || false
           };
         }
 

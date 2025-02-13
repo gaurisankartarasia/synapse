@@ -9,7 +9,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { Spinner } from "@/components/ui/spinner";
 import { Post } from "@/types/post";
 import LikesModal from './components/LikedByModal';
-import { Heart, Bookmark, MessageSquare, ChevronRight } from 'lucide-react';
+import {  Bookmark, MessageSquare, ChevronRight } from 'lucide-react';
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 
 
 const POSTS_PER_PAGE = 5;
@@ -348,7 +349,7 @@ const PostPage = () => {
                     disabled={likeStates[post.id]?.loading}
                     className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
                   >
-                    {/* {likeStates[post.id]?.isLiked ? <Heart /> : < Heart/>} */}
+                    {likeStates[post.id]?.isLiked ? <FaHeart /> : < FaRegHeart/>}
                     
                   </button>
                 )}

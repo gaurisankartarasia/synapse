@@ -56,6 +56,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import ThemeProviderWrapper from './ThemeProviderWrapper';
 
+
+
 export const metadata: Metadata = {
   title: "Synapse",
   description: "Synapse",
@@ -65,7 +67,9 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
+
 }>) {
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">

@@ -136,8 +136,6 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import LogoutButton from '@/app/(auth)/logoutButton';
-// import PageLoader from './PageLoader';
-import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 
 
 type NavLink = {
@@ -224,7 +222,7 @@ export default function Navbar() {
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+            <SheetContent side="right" className="w-[300px] sm:w-[400px]" >
               <nav className="flex flex-col space-y-4">
                 {NAV_LINKS.map((link) => (
                   <Link
@@ -245,13 +243,7 @@ export default function Navbar() {
           </Sheet>
         </div>
       </div>
-      {/* <PageLoader /> */}
-      <ProgressBar
-        height="4px"
-        color="#29D"
-        options={{ showSpinner: false }}
-        shallowRouting
-      />
+     
     </nav>
   );
 }

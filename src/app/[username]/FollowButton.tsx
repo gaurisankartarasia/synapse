@@ -34,7 +34,7 @@
 
 
 
-// components/profile/FollowButton.tsx
+//./FollowButton.tsx
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { FollowStatus } from "@/types/profile";

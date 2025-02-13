@@ -102,7 +102,7 @@ interface SearchResult {
 
   return (
     <>
-    <main className="main container mx-auto flex">
+    <main className="main container mx-auto ">
       <h2 className="search_page_title">Search</h2>
       <form className="search_form mx-auto" onSubmit={(e) => e.preventDefault()}>
         <Input
@@ -171,3 +171,11 @@ const SearchPage: React.FC = () => (
 
 
 export default SearchPage;
+
+
+
+
+
+
+
+

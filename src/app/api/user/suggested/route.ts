@@ -1,4 +1,5 @@
-// app/api/suggestions/route.ts
+
+// Update the API route in app/api/user/suggested/route.ts
 import { NextResponse } from "next/server";
 import { cookies } from 'next/headers';
 import { db } from "@/lib/firebaseAdmin";
@@ -7,7 +8,6 @@ import { CustomJWTPayload } from "@/types/auth";
 
 export async function GET() {
   try {
-    // Get and verify token
     const cookieStore = await cookies();
     const token = cookieStore.get('token');
     if (!token?.value) {
@@ -27,30 +27,49 @@ export async function GET() {
 
     const currentUid = decodedToken.uid;
 
-    // Get random users excluding current user
+    // Get current user's blocked users
+    const blockedUsersSnapshot = await db.collection("users")
+      .doc(currentUid)
+      .collection("blocked")
+      .get();
+    
+    const blockedUids = blockedUsersSnapshot.docs.map(doc => doc.id);
+
+    // Get random users excluding current user and blocked users
     const usersSnapshot = await db.collection("users")
       .where("uid", "!=", currentUid)
-      .limit(5) // Adjust limit as needed
+      .limit(10)
       .get();
 
     const users = await Promise.all(
-      usersSnapshot.docs.map(async (doc) => {
-        const userData = doc.data();
-        const followingStatus = await db.collection("users")
-          .doc(currentUid)
-          .collection("following")
-          .doc(doc.id)
-          .get();
+      usersSnapshot.docs
+        .filter(doc => !blockedUids.includes(doc.id))
+        .slice(0, 5)
+        .map(async (doc) => {
+          const userData = doc.data();
+          const followingStatus = await db.collection("users")
+            .doc(currentUid)
+            .collection("following")
+            .doc(doc.id)
+            .get();
 
-        return {
-          uid: doc.id,
-          username: userData.username,
-          displayName: userData.displayName,
-          profilePhotoURL: userData.profilePhotoURL,
-          isVerified:userData.isVerified,
-          isFollowing: followingStatus.exists,
-        };
-      })
+          const followRequestStatus = userData.isPrivate ? await db.collection("users")
+            .doc(doc.id)
+            .collection("followRequests")
+            .doc(currentUid)
+            .get() : null;
+
+          return {
+            uid: doc.id,
+            username: userData.username,
+            displayName: userData.displayName,
+            profilePhotoURL: userData.profilePhotoURL,
+            isVerified: userData.isVerified,
+            isPrivate: userData.isPrivate,
+            isFollowing: followingStatus.exists,
+            isRequested: followRequestStatus?.exists || false,
+          };
+        })
     );
 
     return NextResponse.json(users);

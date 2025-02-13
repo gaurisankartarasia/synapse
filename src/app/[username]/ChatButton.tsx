@@ -81,7 +81,6 @@ export const ChatButton: React.FC<ChatButtonProps> = ({ targetUserId }) => {
     <Button
       onClick={startChat}
       variant="outline"
-      className="w-full max-w-[200px] mx-auto mt-2"
     >
       Message
     </Button>

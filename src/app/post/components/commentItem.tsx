@@ -318,21 +318,22 @@ export const CommentItem = ({
           <p>{formatRelativeTime(comment.createdAt)}</p>
           <div className="flex items-center gap-4 mt-2">
             <Button 
+            variant="ghost"
               onClick={() => onLike(comment.id)}
             >
               {comment.likes || 0} Likes
             </Button>
             <Button
               onClick={() => setShowReplies(!showReplies)}
-              className="text-sm text-gray-500 hover:text-blue-500"
+              variant="ghost"
             >
               {showReplies ? "Hide" : "Show"} Replies ({comment.replies?.length || 0})
             </Button>
            
             {currentUserId && currentUserId !== comment.user.uid && (
               <Button
+              variant="ghost"
                 onClick={() => openReportModal(comment.id)}
-                className="text-sm text-gray-500 hover:text-red-500"
               >
                 Report
               </Button>
@@ -356,8 +357,8 @@ export const CommentItem = ({
                   <p>{formatRelativeTime(reply.createdAt)}</p>
                   <div className="flex items-center gap-4 mt-2">
                     <Button
+                    variant="ghost"
                       onClick={() => onLikeReply(comment.id, reply.id)}
-                      className="text-sm text-gray-500 hover:text-blue-500"
                     >
                       {reply.likes || 0} Likes
                     </Button>
@@ -365,6 +366,7 @@ export const CommentItem = ({
                       <Button
                         onClick={() => onDeleteReply(comment.id, reply.id)}
                         color='error'
+                        variant="ghost"
                       >
                         Delete
                       </Button>
@@ -373,8 +375,8 @@ export const CommentItem = ({
                     {currentUserId && currentUserId !== reply.user.uid && (
                       <Button
                         onClick={() => openReportModal(comment.id, reply.id)}
-                        className="text-sm text-gray-500 hover:text-red-500"
-                      >
+                        variant="ghost"
+                                              >
                         Report
                       </Button>
                     )}
@@ -408,6 +410,7 @@ export const CommentItem = ({
             onClick={() => onDelete(comment.id)}
             disabled={isDeleting}
             color='error'
+            variant="ghost"
           >
             Delete
           </Button>

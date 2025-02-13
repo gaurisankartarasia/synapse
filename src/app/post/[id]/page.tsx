@@ -16,6 +16,8 @@
  import LikesModal from '../components/LikedByModal';
  import { ReportModal } from "@/components/ReportModal";
  import { Heart, Bookmark, MessageSquare, ChevronRight } from 'lucide-react';
+ import { FaRegHeart, FaHeart, FaBookmark, FaRegBookmark } from "react-icons/fa";
+
 
 
  
@@ -243,7 +245,7 @@
                disabled={isLikeLoading}
                className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50 transition-all duration-200"
              >
-               {isLiked ? <Heart /> : "Liked"}
+               {isLiked ? <FaHeart /> : <FaRegHeart/>}
              </button>
  
              <button
@@ -251,7 +253,7 @@
                disabled={isSaveLoading}
                className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
              >
-               {post.isSaved ? <Bookmark /> : "saved"}
+               {post.isSaved ? <FaBookmark /> : <FaRegBookmark/>}
              </button>
            </>
          )}
