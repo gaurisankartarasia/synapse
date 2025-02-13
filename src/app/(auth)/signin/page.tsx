@@ -104,6 +104,9 @@ export default function SignIn() {
             {loading ? <Spinner size={25}/> : 'Sign In'}
           </Button>
         </form>
+        <Link href="/forgot-password" className="underline float-end m-3">
+    Forgot Password?
+  </Link>
         </CardContent>
         <CardFooter>
         <CardDescription>
