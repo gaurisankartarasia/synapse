@@ -56,7 +56,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
     <Button
       onClick={onFollowClick}
       disabled={isUpdating}
-      className={`w-full max-w-[200px] mx-auto ${className || ''}`}
+      className={` ${className || ''}`}
     >
       {isUpdating ? (
         <Spinner />

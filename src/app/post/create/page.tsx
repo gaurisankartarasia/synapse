@@ -77,15 +77,6 @@ const PostPage = () => {
   };
 
 
-  // const handleCommentingToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setallowCommenting(event.target.checked); 
-  // };
-
-  // const handleCommentingToggle = (event: React.FormEvent<HTMLButtonElement>) => {
-  //   const isChecked = (event.target as HTMLButtonElement).ariaPressed === 'true';
-  //   setallowCommenting(isChecked);
-  // };
-
   const handleCommentingToggle = (checked: boolean) => {
     setallowCommenting(checked);
   };
@@ -219,7 +210,6 @@ const PostPage = () => {
     
           <div className="flex items-center space-x-2">
   <Label htmlFor="allow-commenting">Allow Commenting</Label>  
-    {/* <Switch id="airplane-mode" /> */}
     <Switch
     id="allow-commenting"
           checked={allowCommenting}
@@ -233,7 +223,7 @@ const PostPage = () => {
           onClick={handleSubmit}
           disabled={loading}
         >
-          Post
+          Upload
         </Button>
         <Button
           onClick={() => router.push("/")}

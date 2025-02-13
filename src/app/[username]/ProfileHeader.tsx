@@ -1,6 +1,6 @@
 // import React from "react";
 // import Image from "next/image";
-// import {BadgeCheck} from 'lucide-react';
+// import {RiVerifiedBadgeFill} from 'lucide-react';
 // import "./globals.css";
 // // import { formatFullDate } from "@/utils/date";
 
@@ -28,7 +28,7 @@
      
 //       <div className="flex items-center">
 //         <p className="user-name">@{username}</p>
-//         {isVerified && <BadgeCheck className="text-blue-500 mt-1.5" />}
+//         {isVerified && <RiVerifiedBadgeFill className="text-blue-500 mt-1.5" />}
 //       </div>
 //       <h1 className="username mr-1 " >{displayName}</h1>
 
@@ -46,7 +46,8 @@
 import React from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, CheckCircle, BadgeCheck } from "lucide-react";
+import { Calendar, CheckCircle } from "lucide-react";
+import {RiVerifiedBadgeFill} from 'react-icons/ri'
 import { formatFullDate } from "@/utils/date";
 
 interface ProfileHeaderProps {
@@ -89,7 +90,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       
       <div className="flex items-center gap-2 mb-2">
         <p className="text-xl">@{username}</p>
-        {isVerified && <BadgeCheck className="text-blue-500 w-5 h-5" />}
+        {isVerified && <RiVerifiedBadgeFill className="text-blue-500 w-5 h-5" />}
       </div>
       
       <h1 className="text-2xl font-bold mb-2">{displayName}</h1>

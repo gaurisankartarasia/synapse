@@ -9,7 +9,8 @@
 // import { useDispatch, useSelector } from 'react-redux';
 // import { Card, CardContent } from "@/components/ui/card";
 // import { User } from '@/types/user';
-// import { BadgeCheck } from 'lucide-react';
+// import { RiVerifiedBadgeFill } from "react-icons/ri";
+
 // import { FollowButton } from '../../app/[username]/FollowButton';
 // import { AppDispatch, RootState } from '@/redux/store';
 // import { setFollowStatus, toggleFollow } from '@/redux/features/followSlice';
@@ -128,7 +129,7 @@
 //                 <div>
 //                   <div className='flex'>
 //                     <p className="font-medium text-sm">{user.username}</p>
-//                     {user.isVerified && <BadgeCheck size={15} />}
+//                     {user.isVerified && <RiVerifiedBadgeFill size={15} />}
 //                   </div>
 //                   <p className="text-gray-500 text-xs">{user.displayName}</p>
 //                 </div>
@@ -160,7 +161,8 @@ import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, CardContent } from "@/components/ui/card";
 import { User } from '@/types/user';
-import { BadgeCheck } from 'lucide-react';
+import { RiVerifiedBadgeFill } from "react-icons/ri";
+
 import { FollowButton } from '../../app/[username]/FollowButton'
 import { AppDispatch, RootState } from '@/redux/store';
 import { setFollowStatus, toggleFollow } from '@/redux/features/followSlice';
@@ -268,7 +270,7 @@ export default function UserSuggestions() {
                 <div>
                   <div className='flex'>
                     <p className="font-medium text-sm">{user.username}</p>
-                    {user.isVerified && <BadgeCheck size={15} />}
+                    {user.isVerified && <RiVerifiedBadgeFill size={15} />}
                   </div>
                   <p className="text-gray-500 text-xs">{user.displayName}</p>
                 </div>

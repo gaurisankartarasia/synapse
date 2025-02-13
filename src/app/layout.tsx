@@ -55,7 +55,7 @@ import { ReduxProvider } from './ReduxProvider'
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import ThemeProviderWrapper from './ThemeProviderWrapper';
-
+import { LoadingProvider } from '@/components/LoadingProvider';
 
 
 export const metadata: Metadata = {
@@ -75,8 +75,10 @@ export default function RootLayout({
       <body className="antialiased">
         <ThemeProviderWrapper>
           <ReduxProvider>
+            <LoadingProvider>
             <Navbar />
             {children}
+            </LoadingProvider>
           </ReduxProvider>
         </ThemeProviderWrapper>
       </body>

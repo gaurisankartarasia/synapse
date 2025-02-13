@@ -30,13 +30,14 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading }) => {
       <div className="flex flex-col items-center">
         <div className="relative h-16 w-16 animate-pulse">
           <Image
-            src="/next.svg" 
+            src="/favicon.ico" 
             alt="Synapse Logo"
             fill
             style={{ objectFit: 'contain' }}
             priority
           />
         </div>
+        <b>Synapse</b>
         <div className="mt-4 flex items-center gap-2">
           <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-foreground/80 [animation-delay:-0.3s]" />
           <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-foreground/80 [animation-delay:-0.15s]" />

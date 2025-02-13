@@ -18,6 +18,6 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
-setPersistence(auth, browserLocalPersistence);
+// setPersistence(auth, browserLocalPersistence);
 
 export {  auth, googleProvider, db, sendPasswordResetEmail , fetchSignInMethodsForEmail};

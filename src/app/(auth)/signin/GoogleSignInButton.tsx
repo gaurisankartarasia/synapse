@@ -20,7 +20,8 @@ export default function GoogleSignInButton() {
       const resultAction = await dispatch(signInWithGoogle());
       if (signInWithGoogle.fulfilled.match(resultAction)) {
         const { hasUsername } = resultAction.payload;
-        router.push(hasUsername ? '/' : '/username');
+        // router.push(hasUsername ? '/' : '/username');
+        window.location.href = hasUsername ? '/' : '/username';
       }
     } catch (err) {
       console.error('Google sign in failed:', err);

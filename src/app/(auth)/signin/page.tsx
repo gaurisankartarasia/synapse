@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { signInWithEmail } from '@/redux/features/authSlice';
@@ -31,7 +32,8 @@ export default function SignIn() {
     const resultAction = await dispatch(signInWithEmail({ email, password }));
     if (signInWithEmail.fulfilled.match(resultAction)) {
       const { hasUsername } = resultAction.payload;
-      router.push(hasUsername ? '/' : '/username');
+      // router.push(hasUsername ? '/' : '/username');
+      window.location.href = hasUsername ? '/' : '/username';
     }
   } catch (err) {
     console.error('Sign in failed:', err);
@@ -40,8 +42,11 @@ export default function SignIn() {
 
 
 
-  return (
+  return ( 
+    <main>
+  
     <div className="min-h-screen flex items-center justify-center ">
+   
       <Card className="max-w-md w-full space-y-8 ">
         <CardHeader>
         <CardTitle>Sign In</CardTitle>
@@ -117,6 +122,7 @@ export default function SignIn() {
         </CardDescription></CardFooter>
       </Card>
     </div>
+    </main>
   );
 }
 

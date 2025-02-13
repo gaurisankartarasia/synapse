@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { X, Menu, Moon, Sun } from 'lucide-react';
+import Image from 'next/image';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import {
@@ -62,6 +63,13 @@ export default function Navbar() {
       <div className="container flex h-16 items-center">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center space-x-2">
+          <Image
+          src="https://firebasestorage.googleapis.com/v0/b/quixxle.appspot.com/o/assets%2Fsynapse_logo_c.jpg?alt=media&token=53517ee9-01a4-4e3c-87dc-f34de9a88193"
+          alt='Logo'
+          height={35}
+          width={35}
+          className='rounded-full'
+          />
             <span className="text-xl font-bold">Synapse</span>
           </Link>
         </div>

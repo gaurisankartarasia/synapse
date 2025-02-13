@@ -47,8 +47,8 @@ export async function GET(request: Request) {
             profilePhotoURL: data.profilePhotoURL || null,
             displayName: data.displayName || null,
             username: data.username || null,
-            verified: data.verified || false,
-            private: data.private || false,
+            isVerified: data.isVerified || false,
+            isPrivate: data.isPrivate || false,
             isFollowing: followingStatus.exists,
             isRequested: followRequestStatus?.exists || false
           };

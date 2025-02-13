@@ -15,7 +15,8 @@ const LogoutButton: React.FC = () => {
 
       if (response.ok) {
         // Redirect or refresh the page after logging out
-        router.push('/signin'); // Redirect to the login page
+        // router.push('/signin'); 
+        window.location.href = '/signin'
       } else {
         console.error('Failed to log out');
       }

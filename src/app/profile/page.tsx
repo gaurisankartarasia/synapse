@@ -10,7 +10,8 @@ import { formatFullDate } from '@/utils/date';
 import { Spinner } from '@/components/ui/spinner';
 import { Button } from '@/components/ui/button';
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Calendar, Lock, BadgeCheck } from "lucide-react";
+import { CheckCircle, Calendar, Lock } from "lucide-react";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 import UserModal from './FollowModal';
 
 
@@ -64,7 +65,7 @@ export default function ProfilePage() {
             <h1 className="text-2xl font-bold mb-1">{profile.displayName}</h1>
             <div className="flex items-center gap-2 mb-4">
               <p className="text-muted-foreground">@{profile.username}</p>
-              {profile.isVerified && <BadgeCheck className="text-primary w-5 h-5" />}
+              {profile.isVerified && <RiVerifiedBadgeFill className="text-primary w-5 h-5" />}
             </div>
 
             <div className="flex space-x-4 mb-6">

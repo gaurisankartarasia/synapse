@@ -86,6 +86,12 @@ const nextConfig: NextConfig = {
         hostname: 'firebasestorage.googleapis.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'quixxle.appspot.com',
+        pathname: '/**',
+      },
+      
     ],
   },
 };

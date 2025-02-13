@@ -10,7 +10,7 @@ import { auth } from "@/lib/firebaseClient";
 import {Card, CardContent} from "@/components/ui/card"
 import { Spinner } from "@/components/ui/spinner";
 import {Input} from '@/components/ui/input'
-import {BadgeCheck} from 'lucide-react';
+import {RiVerifiedBadgeFill} from 'react-icons/ri';
 import UserSuggestions from "@/components/UserSuggestions/UserSuggestions";
 
 
@@ -137,7 +137,7 @@ interface SearchResult {
               />
               <div className="search_item_data">
                 <h1 className="search_username">@{user.username}</h1>
-                {user.isVerified && <BadgeCheck/>}
+                {user.isVerified && <RiVerifiedBadgeFill/>}
                 <p className="search_displayName">
                   {user.displayName || user.username}
                 </p>

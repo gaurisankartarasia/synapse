@@ -4,7 +4,8 @@
 // import React, { useState, useEffect, useCallback, useRef } from "react";
 // import Modal from "@/components/Modal";
 // import Image from "next/image";
-// import { BadgeCheck } from 'lucide-react';
+// import { RiVerifiedBadgeFill } from "react-icons/ri";
+
 // import { auth } from "@/lib/firebaseClient";
 // import { useRouter } from "next/navigation";
 // import { Spinner } from "@/components/ui/spinner";
@@ -146,7 +147,7 @@
 //                       >
 //                         {user.username}
 //                       </span>
-//                       {user.verified && <BadgeCheck className="w-4 h-4 text-blue-500" />}
+//                       {user.verified && <RiVerifiedBadgeFill className="w-4 h-4 text-blue-500" />}
 //                     </div>
 //                     <p className="text-sm text-gray-500">{user.displayName}</p>
 //                   </div>
@@ -181,7 +182,8 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Modal from "@/components/Modal";
 import Image from "next/image";
-import { BadgeCheck, UserMinus } from 'lucide-react';
+import {  UserMinus } from 'lucide-react';
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { auth } from "@/lib/firebaseClient";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
@@ -191,13 +193,19 @@ import { setFollowStatus, toggleFollow } from '@/redux/features/followSlice';
 import { FollowButton } from "../[username]/FollowButton";
 import { ChatButton } from "../[username]/ChatButton";
 import { Button } from "@/components/ui/button";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 
 interface User {
   uid: string;
   username: string;
   displayName: string;
   profilePhotoURL: string;
-  verified: boolean;
+  isVerified: boolean;
+  isPrivate:boolean;
   isFollowing?: boolean;
   isRequested?: boolean;
 }
@@ -337,14 +345,19 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, type }) => {
             return (
               <li key={user.uid} className="flex items-center justify-between p-4">
                 <div className="flex items-center space-x-3">
-                  <Image
-                    src={`/api/proxy?url=${encodeURIComponent(user.profilePhotoURL || "/default.webp")}`}
+                  {/* <Image
+                    src={`/api/proxy?url=${encodeURIComponent(user.profilePhotoURL)}`}
                     alt={user.username}
                     width={50}
                     height={50}
                     className="rounded-full cursor-pointer"
                     onClick={() => handleUserClick(user.uid)}
-                  />
+                  /> */}
+
+<Avatar  onClick={() => handleUserClick(user.uid)}  className="cursor-pointer">
+      <AvatarImage src={`/api/proxy?url=${encodeURIComponent(user.profilePhotoURL)}`} alt="@shadcn" />
+      <AvatarFallback>{user.displayName.slice(0,2)}</AvatarFallback>
+    </Avatar>
                   <div>
                     <div className="flex items-center space-x-1">
                       <span 
@@ -353,7 +366,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, type }) => {
                       >
                         {user.username}
                       </span>
-                      {user.verified && <BadgeCheck className="w-4 h-4 text-blue-500" />}
+                      {user.isVerified && <RiVerifiedBadgeFill className="w-4 h-4 text-blue-500" />}
                     </div>
                     <p className="text-sm text-gray-500">{user.displayName}</p>
                   </div>
@@ -380,7 +393,8 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, type }) => {
                     onFollowClick={() => handleFollow(user.username)}
                     className="w-24"
                   />
-                  <ChatButton targetUserId={user.uid}/>
+                  {user.isFollowing && <ChatButton targetUserId={user.uid}/>}
+                  
                 </div>
               </li>
             );
