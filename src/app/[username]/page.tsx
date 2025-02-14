@@ -245,6 +245,7 @@ import { ProfileData } from "@/types/profile";
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { toggleFollow, setFollowStatus } from '../../redux/features/followSlice';
+import MutualFollowers  from './MutualFollowers'
 
 const PublicProfilePage: React.FC = () => {
   const params = useParams();
@@ -398,6 +399,10 @@ const PublicProfilePage: React.FC = () => {
         onFollowersClick={() => handleModalOpen("followers")}
         onFollowingClick={() => handleModalOpen("following")}
       />
+      <MutualFollowers 
+  username={username} 
+  onUserClick={(username) => router.push(`/${username}`)}
+/>
       <div className="flex">
         <FollowButton
           isUpdating={followStatus.loading ?? false} // Ensure boolean type with fallback
