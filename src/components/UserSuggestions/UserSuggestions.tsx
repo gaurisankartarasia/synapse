@@ -131,7 +131,7 @@
 //                     <p className="font-medium text-sm">{user.username}</p>
 //                     {user.isVerified && <RiVerifiedBadgeFill size={15} />}
 //                   </div>
-//                   <p className="text-gray-500 text-xs">{user.displayName}</p>
+//                   <p className="t500 text-xs">{user.displayName}</p>
 //                 </div>
 //               </div>
 //               <FollowButton
@@ -272,7 +272,7 @@ export default function UserSuggestions() {
                     <p className="font-medium text-sm">{user.username}</p>
                     {user.isVerified && <RiVerifiedBadgeFill size={15} />}
                   </div>
-                  <p className="text-gray-500 text-xs">{user.displayName}</p>
+                  <p className="t500 text-xs">{user.displayName}</p>
                 </div>
               </div>
               <FollowButton

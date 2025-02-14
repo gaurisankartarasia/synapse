@@ -56,7 +56,7 @@ export default function NotificationsPage() {
     <div className="max-w-2xl mx-auto">
       <h1 className="p-4 text-2xl font-bold">Notifications</h1>
       {notifications.length === 0 ? (
-        <div className="p-4 text-gray-500">No new notifications</div>
+        <div className="p-4 t500">No new notifications</div>
       ) : (
         <div className="divide-y">
            <b>Pending requests  </b>
@@ -138,7 +138,7 @@ export default function NotificationsPage() {
 //     <div className="max-w-2xl mx-auto">
 //       <h1 className="p-4 text-2xl font-bold">Notifications</h1>
 //       {notifications.length === 0 ? (
-//         <div className="p-4 text-gray-500">No new notifications</div>
+//         <div className="p-4 t500">No new notifications</div>
 //       ) : (
 //         <div className="divide-y">
 //           {notifications.map((notification) => (

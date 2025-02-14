@@ -15,8 +15,15 @@
  import { useAuth } from '@/hooks/useAuth';
  import LikesModal from '../components/LikedByModal';
  import { ReportModal } from "@/components/ReportModal";
- import { Heart, Bookmark, MessageSquare, ChevronRight } from 'lucide-react';
+ import {ChevronRight } from 'lucide-react';
  import { FaRegHeart, FaHeart, FaBookmark, FaRegBookmark } from "react-icons/fa";
+ import { RiVerifiedBadgeFill } from "react-icons/ri";
+ import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+
 
 
 
@@ -207,15 +214,21 @@
        </Link>
  
        <div className="flex items-center gap-3">
-             <Image src={post.profilePhotoURL}
+             {/* <Image src={post.profilePhotoURL}
                   height={30}
                   width={30}
                   alt="profile"
-                  className="rounded-full"/>
-                  <strong>{post.username}</strong>
-                  {post.isVerified && "verified"}
+                  className="rounded-full"/> */}
 
-         <small className="text-gray-600">
+    <Avatar>
+      <AvatarImage src={post.profilePhotoURL} alt={post.username} />
+      <AvatarFallback>{post.username.slice(0,2)}</AvatarFallback>
+    </Avatar>
+
+                  <strong>{post.username}</strong>
+                  {post.isVerified && <RiVerifiedBadgeFill/>}
+
+         <small className="t600">
            {formatRelativeTime(post.createdAt)}
          </small>
          {user?.uid === post?.uid && (
@@ -260,7 +273,6 @@
  
          <button
            onClick={() => setIsModalOpen(true)}
-           className="hover:bg-gray-300 focus:outline-none"
          >
            <div className="flex items-center">
              {likeCount} {likeCount === 1 ? 'Like' : 'Likes'}

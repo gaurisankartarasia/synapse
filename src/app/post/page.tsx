@@ -11,6 +11,12 @@ import { Post } from "@/types/post";
 import LikesModal from './components/LikedByModal';
 import {  Bookmark, MessageSquare, ChevronRight } from 'lucide-react';
 import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 
 
 const POSTS_PER_PAGE = 5;
@@ -244,11 +250,11 @@ const PostPage = () => {
          className="rounded-full"/>
          <strong>{post.username}</strong>
          {post.isVerified && "verified"}
-                <span className="text-gray-600 text-sm">{formatRelativeTime(post.createdAt)}</span>
+                <span className="t600 text-sm">{formatRelativeTime(post.createdAt)}</span>
               </div>
 
               <Link href={`/post/${post.id}`} className="block">
-                <p className="mt-2 text-gray-800">{post.content}</p>
+                <p className="mt-2 t800">{post.content}</p>
                 {post.imageURLs?.length > 0 && <ImageGallery images={post.imageURLs} />}
               </Link>
               
@@ -309,18 +315,24 @@ const PostPage = () => {
              <div className="p-4 border-b">
               <div className="flex items-center gap-2">
          
-         <Image src={post.profilePhotoURL}
+         {/* <Image src={post.profilePhotoURL}
          height={30}
          width={30}
          alt="profile"
-         className="rounded-full"/>
+         className="rounded-full"/> */}
+
+<Avatar>
+      <AvatarImage src={post.profilePhotoURL} alt={post.username} />
+      <AvatarFallback>{post.username.slice(0,2)}</AvatarFallback>
+    </Avatar>
+
          <strong>{post.username}</strong>
-         {post.isVerified && "verified"}
-                <span className="text-gray-600 text-sm">{formatRelativeTime(post.createdAt)}</span>
+         {post.isVerified && <RiVerifiedBadgeFill/>}
+                <span className="t600 text-sm">{formatRelativeTime(post.createdAt)}</span>
               </div>
 
               <Link href={`/post/${post.id}`} className="block">
-                <p className="mt-2 text-gray-800">{post.content}</p>
+                <p className="mt-2 t800">{post.content}</p>
                 {post.imageURLs?.length > 0 && <ImageGallery images={post.imageURLs} />}
               </Link>
               
@@ -377,8 +389,8 @@ const PostPage = () => {
           ))
         ) : !loading && (
           <div className="flex flex-col items-center justify-center py-12">
-            <p className="text-gray-600 text-lg">No posts available</p>
-            <p className="text-gray-500 mt-2">Be the first to create a post!</p>
+            <p className="t600 text-lg">No posts available</p>
+            <p className="t500 mt-2">Be the first to create a post!</p>
             <Link className="text-blue-500 hover:underline" href={'/post/create'}>Create</Link>
           </div>
         )}

@@ -52,7 +52,7 @@
 
 //         <form onSubmit={handleSubmit} className="space-y-6">
 //           <div>
-//             <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+//             <label htmlFor="username" className="block text-sm font-medium r">
 //               Username
 //             </label>
 //             <input

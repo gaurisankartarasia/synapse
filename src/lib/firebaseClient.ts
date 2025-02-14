@@ -1,6 +1,6 @@
 // src/lib/firebaseClient.ts
 import { initializeApp, getApp, getApps } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, sendPasswordResetEmail,fetchSignInMethodsForEmail, setPersistence, browserLocalPersistence } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, sendPasswordResetEmail,fetchSignInMethodsForEmail, signOut } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -18,6 +18,4 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
-// setPersistence(auth, browserLocalPersistence);
-
-export {  auth, googleProvider, db, sendPasswordResetEmail , fetchSignInMethodsForEmail};
+export {  auth, googleProvider, db, sendPasswordResetEmail , fetchSignInMethodsForEmail, signOut};

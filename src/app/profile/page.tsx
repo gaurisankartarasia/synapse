@@ -9,22 +9,27 @@ import UserPosts from './Posts';
 import { formatFullDate } from '@/utils/date';
 import { Spinner } from '@/components/ui/spinner';
 import { Button } from '@/components/ui/button';
-import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Calendar, Lock } from "lucide-react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import UserModal from './FollowModal';
-
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+import { useToast } from '@/hooks/use-toast';
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [modalType, setModalType] = useState<"followers" | "following" | null>(null);
+  const toast = useToast()
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get<{ user: UserProfile }>('/api/user/my_profile', {
+        const response = await axios.get<{ user: UserProfile }>('/api/user/my_profile/query', {
           withCredentials: true
         });
         setProfile(response.data.user);
@@ -38,35 +43,32 @@ export default function ProfilePage() {
   }, []);
 
   if (loading) return <Spinner />;
+
+
+
   if (error) return <div className="p-4 text-red-500">{error}</div>;
   if (!profile) return <div className="p-4">Profile not found</div>;
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-2xl mx-auto">
+     
         <div className="p-6">
           <div className="flex flex-col items-center">
             <div className="relative mb-4">
-              <Image
-                src={profile.profilePhotoURL || "/profile-default-photo.svg"}
-                alt={profile.displayName}
-                width={200}
-                height={200}
-                className="rounded-full object-cover"
-              />
-              {profile.isVerified && (
-                <Badge className="absolute bottom-0 right-0 bg-primary">
-                  <CheckCircle className="w-4 h-4 mr-1" />
-                  Verified
-                </Badge>
-              )}
+<Avatar className='w-32 h-32'>
+      <AvatarImage src={`/api/proxy?url=${encodeURIComponent(profile.profilePhotoURL)}`} alt="@shadcn" />
+      <AvatarFallback>{profile.displayName.slice(0,2)}</AvatarFallback>
+    </Avatar>
+    
+             
             </div>
-
-            <h1 className="text-2xl font-bold mb-1">{profile.displayName}</h1>
             <div className="flex items-center gap-2 mb-4">
-              <p className="text-muted-foreground">@{profile.username}</p>
+              <p className="text-2xl font-bold">@{profile.username}</p>
               {profile.isVerified && <RiVerifiedBadgeFill className="text-primary w-5 h-5" />}
             </div>
+            <p className=" mb-1">{profile.displayName}</p>
+           
 
             <div className="flex space-x-4 mb-6">
               <Button 
@@ -87,18 +89,12 @@ export default function ProfilePage() {
               </Button>
             </div>
 
-            <div className="w-full space-y-4">
+            <div className="w-full space-y-4 text-center">
               {profile.bio && (
                 <div>
-                  <h2 className="text-lg font-semibold mb-2">Bio</h2>
-                  <p className="text-gray-700">{profile.bio}</p>
+                  <p>{profile.bio}</p>
                 </div>
               )}
-
-              <div>
-                <h2 className="text-lg font-semibold mb-2">Email</h2>
-                <p className="text-gray-700">{profile.email}</p>
-              </div>
 
               {profile.isPrivate && (
                 <div className="flex items-center text-yellow-600">

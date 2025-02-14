@@ -53,7 +53,7 @@ export default function ChatMessages({
     if (msg.readBy?.length > 0) {
       return <span className="text-blue-500">✓✓</span>;
     }
-    return <span className="text-gray-500">✓</span>;
+    return <span className="t500">✓</span>;
   };
 
   const deleteMessage = async (messageId: string, roomId: string | undefined, deleteType: 'me' | 'everyone') => {
@@ -104,17 +104,17 @@ export default function ChatMessages({
             <div key={msg.id} className="p-4 border-b">
               {msg.replyTo && !msg.deletedForEveryone && (
                 <div className="ml-4 pl-2 border-l-2 border-gray-300 mb-2">
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm t600">
                     Replying to: {msg.replyTo.content}
                   </p>
                 </div>
               )}
               <div className="flex justify-between items-start">
                 <div className="flex-1">
-                  <p className={msg.deletedForEveryone ? "italic text-gray-500" : ""}>
+                  <p className={msg.deletedForEveryone ? "italic t500" : ""}>
                     {msg.deletedForEveryone ? "This message was deleted" : msg.content}
                   </p>
-                  <div className="flex items-center gap-1 text-sm text-gray-500">
+                  <div className="flex items-center gap-1 text-sm t500">
                     {msg.edited && !msg.deletedForEveryone && (
                       <span className="text-xs">(edited)</span>
                     )}

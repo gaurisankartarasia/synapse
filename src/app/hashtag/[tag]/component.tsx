@@ -127,7 +127,7 @@ const HashtagPage = () => {
       </h1>
 
       {posts.length === 0 ? (
-        <div className="text-center text-gray-500">
+        <div className="text-center t500">
           No posts found for this hashtag.
         </div>
       ) : (
@@ -146,13 +146,13 @@ const HashtagPage = () => {
                         className="rounded-full"/>
                         <strong>{post.username}</strong>
                         {post.isVerified && "verified"}
-                <div className="text-sm text-gray-600 mb-4">
+                <div className="text-sm t600 mb-4">
                   <span>{formatRelativeTime(post.createdAt)}</span>
                 </div>
 
                 {post.imageURLs?.length > 0 && <ImageGallery images={post.imageURLs} />}
 
-                <p className="text-gray-800 mb-4">{post.content}</p>
+                <p className="t800 mb-4">{post.content}</p>
 
                 {post.hashtags && (
                   <div className="flex flex-wrap gap-2 mb-4">
@@ -169,7 +169,7 @@ const HashtagPage = () => {
                 )}
               </Link>
 
-              <div className="flex items-center text-gray-600">
+              <div className="flex items-center t600">
                 <Likebutton postId={post.id} />
                 <Link 
                   href={`/post/${post.id}`} 
@@ -192,7 +192,7 @@ const HashtagPage = () => {
       )}
 
       {!loading && posts.length > 0 && !hasMore && (
-        <div className="text-center text-gray-500 mt-8">
+        <div className="text-center t500 mt-8">
           No more posts to load
         </div>
       )}

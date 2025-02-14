@@ -157,9 +157,9 @@ export const ReportModal = ({ isOpen, onClose, onSubmit }: ReportModalProps) => 
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Report Comment</DialogTitle>
+          <DialogTitle>Report</DialogTitle>
           <DialogDescription>
-            Select a reason for reporting this comment
+            Select a reason for reporting
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

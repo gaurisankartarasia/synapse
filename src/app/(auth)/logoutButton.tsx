@@ -3,12 +3,14 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import { auth, signOut } from '@/lib/firebaseClient'
 
 const LogoutButton: React.FC = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
     try {
+      await signOut(auth);
       const response = await fetch('/api/auth/signout', {
         method: 'POST',
       });

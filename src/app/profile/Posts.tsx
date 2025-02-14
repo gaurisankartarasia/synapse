@@ -75,11 +75,11 @@ export default function UserPosts({ uid }: UserPostsProps) {
     <div className="space-y-4 mt-12">
       <div className="flex items-center justify-between">
         <b>Uploads</b>
-        <span className="text-sm text-gray-600">{posts.length} posts</span>
+        <span className="text-sm t600">{posts.length} posts</span>
       </div>
       
       {posts.length === 0 ? (
-        <div className="flex items-center justify-center p-8 text-gray-500">
+        <div className="flex items-center justify-center p-8 t500">
           No posts yet
         </div>
       ) : (

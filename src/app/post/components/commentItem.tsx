@@ -103,7 +103,7 @@
 //             </Button>
 //             <Button
 //               onClick={() => setShowReplies(!showReplies)}
-//               className="text-sm text-gray-500 hover:text-blue-500"
+//               className="text-sm t500 hover:text-blue-500"
 //             >
 //               {showReplies ? "Hide" : "Show"} Replies ({comment.replies?.length || 0})
 //             </Button> 
@@ -111,7 +111,7 @@
 //             {currentUserId && currentUserId !== comment.user.uid && (
 //               <Button
 //                 onClick={() => openReportModal(comment.id)}
-//                 className="text-sm text-gray-500 hover:text-red-500"
+//                 className="text-sm t500 hover:text-red-500"
 //               >
 //                 Report
 //               </Button>
@@ -142,7 +142,7 @@
 //                   <div className="flex items-center gap-4 mt-2">
 //                     <Button
 //                       onClick={() => onLikeReply(comment.id, reply.id)}
-//                       className="text-sm text-gray-500 hover:text-blue-500"
+//                       className="text-sm t500 hover:text-blue-500"
 //                     >
 //                       {reply.likes || 0} Likes
 //                     </Button>
@@ -160,7 +160,7 @@
 //                     {currentUserId && currentUserId !== reply.user.uid && (
 //                       <Button
 //                         onClick={() => openReportModal(comment.id, reply.id)}
-//                         className="text-sm text-gray-500 hover:text-red-500"
+//                         className="text-sm t500 hover:text-red-500"
 //                       >
 //                         Report
 //                       </Button>
@@ -226,7 +226,7 @@ import Image from "next/image";
 import { ReportModal } from "@/components/ReportModal";
 import { Button } from '@/components/ui/button';
 import { formatRelativeTime } from "@/utils/date";
-import {RiVerifiedBadgeFill} from 'lucide-react';
+import {RiVerifiedBadgeFill} from 'react-icons/ri';
 
 type CommentItemProps = {
   comment: Comment;

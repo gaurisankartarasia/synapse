@@ -149,7 +149,7 @@
 //                       </span>
 //                       {user.verified && <RiVerifiedBadgeFill className="w-4 h-4 text-blue-500" />}
 //                     </div>
-//                     <p className="text-sm text-gray-500">{user.displayName}</p>
+//                     <p className="text-sm t500">{user.displayName}</p>
 //                   </div>
 //                 </div>
 //                 <FollowButton
@@ -181,7 +181,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Modal from "@/components/Modal";
-import Image from "next/image";
+import Link from "next/link";
 import {  UserMinus } from 'lucide-react';
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { auth } from "@/lib/firebaseClient";
@@ -270,20 +270,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, type }) => {
     }
   }, [isOpen]);
 
-  const handleUserClick = async (uid: string) => {
-    try {
-      const response = await fetch(`/api/get_username_from_uid?uid=${uid}`);
-      const result = await response.json();
 
-      if (response.ok && result.username) {
-        router.push(`/${result.username}`);
-      } else {
-        console.error("Failed to fetch username:", result.error);
-      }
-    } catch (error) {
-      console.error("Error fetching username from uid:", error);
-    }
-  };
 
   const handleFollow = async (username: string) => {
     try {
@@ -345,30 +332,26 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, type }) => {
             return (
               <li key={user.uid} className="flex items-center justify-between p-4">
                 <div className="flex items-center space-x-3">
-                  {/* <Image
-                    src={`/api/proxy?url=${encodeURIComponent(user.profilePhotoURL)}`}
-                    alt={user.username}
-                    width={50}
-                    height={50}
-                    className="rounded-full cursor-pointer"
-                    onClick={() => handleUserClick(user.uid)}
-                  /> */}
+                 <Link href={user.username}>
 
-<Avatar  onClick={() => handleUserClick(user.uid)}  className="cursor-pointer">
+<Avatar  className="cursor-pointer">
       <AvatarImage src={`/api/proxy?url=${encodeURIComponent(user.profilePhotoURL)}`} alt="@shadcn" />
       <AvatarFallback>{user.displayName.slice(0,2)}</AvatarFallback>
     </Avatar>
+    </Link>
                   <div>
                     <div className="flex items-center space-x-1">
+                    <Link href={user.username}>
                       <span 
                         className="font-medium cursor-pointer hover:underline"
-                        onClick={() => handleUserClick(user.uid)}
+                        
                       >
                         {user.username}
                       </span>
+                      </Link>
                       {user.isVerified && <RiVerifiedBadgeFill className="w-4 h-4 text-blue-500" />}
                     </div>
-                    <p className="text-sm text-gray-500">{user.displayName}</p>
+                    <p className="text-sm t500">{user.displayName}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -379,6 +362,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, type }) => {
                       onClick={() => handleRemoveFollower(user.uid)}
                       disabled={removingUser === user.uid}
                       className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                      title="Remove follower"
                     >
                       {removingUser === user.uid ? (
                         <Spinner className="w-4 h-4" />

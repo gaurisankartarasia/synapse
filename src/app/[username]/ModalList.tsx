@@ -27,7 +27,7 @@ const ModalList: React.FC<{
               width={100}/>
             <div>
             <Link href={`/${item.username}`}> {item.username}</Link>
-            <p className="text-gray-400">{item.displayName}</p>
+            <p className="t400">{item.displayName}</p>
             </div>
             
               

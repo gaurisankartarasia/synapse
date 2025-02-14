@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import { Message } from '@/types/chat';
 import { CustomJWTPayload } from '@/types/auth';
 import { Spinner } from '@/components/ui/spinner';
+import { RiVerifiedBadgeFill } from "react-icons/ri";
+
 
 export default function ChatPage({ params }: { params: Promise<{ userId: string }> }) {
   const router = useRouter();
@@ -22,7 +24,7 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
     username: string, 
     profilePhotoURL: string, 
     displayName: string, 
-    verified: string 
+    isVerified: string 
   } | null>(null);
 
   // Check authentication status
@@ -104,13 +106,8 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
               className="rounded-full mr-4" 
             />
             <h1 className="text-lg font-semibold">{userInfo.username}</h1>
-            {userInfo.verified && (
-              <span 
-                className="material-symbols-outlined" 
-                title='This user is verified'
-              >
-                verified
-              </span>
+            {userInfo.isVerified && (
+              <RiVerifiedBadgeFill/>
             )}
           </Link>
         )}

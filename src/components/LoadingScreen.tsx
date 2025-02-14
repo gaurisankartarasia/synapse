@@ -38,11 +38,11 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading }) => {
           />
         </div>
         <b>Synapse</b>
-        <div className="mt-4 flex items-center gap-2">
-          <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-foreground/80 [animation-delay:-0.3s]" />
-          <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-foreground/80 [animation-delay:-0.15s]" />
-          <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-foreground/80" />
-        </div>
+        <div className='flex space-x-2 justify-center dark:invert m-3'>
+  	<div className='h-1.5 w-1.5 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+	<div className='h-1.5 w-1.5 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+	<div className='h-1.5 w-1.5 bg-black rounded-full animate-bounce'></div>
+</div>
       </div>
     </div>
   );

@@ -70,7 +70,7 @@ export const FollowRequest = ({ user, onActionComplete }: FollowRequestProps) =>
     </Avatar>
         <div>
           <p className="font-semibold hover:underline">{user.username}</p>
-          <p className="text-sm text-gray-500">{user.displayName}</p>
+          <p className="text-sm t500">{user.displayName}</p>
         </div>
         </Link>
       </div>

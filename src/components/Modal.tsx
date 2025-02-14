@@ -94,7 +94,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
         </DialogHeader>
         <div className="py-4">{children}</div>
         <DialogFooter>
-          <Button onClick={onClose} variant="outline">
+          <Button onClick={onClose} variant="outline" title="Close this modal">
             Close
           </Button>
         </DialogFooter>

@@ -78,7 +78,7 @@
 //         {loading ? (
 //           <Spinner/>
 //         ) : users.length === 0 ? (
-//           <div className="text-center p-4 text-gray-500">No likes yet</div>
+//           <div className="text-center p-4 t500">No likes yet</div>
 //         ) : (
 //           <div className="divide-y divide-gray-200">
 //             {users.map((user) => (
@@ -96,8 +96,8 @@
 //                   />
 //                 </div>
 //                 <div className="flex-grow">
-//                   <h3 className="font-medium text-gray-900">{user.username}</h3>
-//                   <p className="text-sm text-gray-500">
+//                   <h3 className="font-medium t900">{user.username}</h3>
+//                   <p className="text-sm t500">
 //                     {formatDate(user.timestamp)}
 //                   </p>
 //                 </div>
@@ -202,7 +202,7 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
         {loading ? (
           <Spinner/>
         ) : users.length === 0 ? (
-          <div className="text-center p-4 text-gray-500">No likes yet</div>
+          <div className="text-center p-4 t500">No likes yet</div>
         ) : (
           <div className="divide-y divide-gray-200">
             {users.map((user) => (
@@ -220,8 +220,8 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
                   />
                 </div>
                 <div className="flex-grow">
-                  <h3 className="font-medium text-gray-900">{user.username}</h3>
-                  <p className="text-sm text-gray-500">
+                  <h3 className="font-medium t900">{user.username}</h3>
+                  <p className="text-sm t500">
                     {formatDate(user.timestamp)}
                   </p>
                 </div>
