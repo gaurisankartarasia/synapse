@@ -16,6 +16,7 @@ import {
 import LogoutButton from '@/app/(auth)/logoutButton';
 
 
+
 type NavLink = {
   name: string;
   href: string;
@@ -47,6 +48,7 @@ const ThemeToggle = () => {
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+
 
   useEffect(() => {
     setIsOpen(false);
@@ -128,7 +130,7 @@ export default function Navbar() {
           </Sheet>
         </div>
       </div>
-     
+
     </nav>
   );
 }

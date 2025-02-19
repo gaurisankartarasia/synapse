@@ -1,5 +1,4 @@
-
-// Update the API route in app/api/user/suggested/route.ts
+//app/api/user/suggested/route.ts
 import { NextResponse } from "next/server";
 import { cookies } from 'next/headers';
 import { db } from "@/lib/firebaseAdmin";
@@ -81,3 +80,6 @@ export async function GET() {
     );
   }
 }
+
+
+

@@ -1,22 +1,12 @@
-// types/story.ts
-import { Timestamp } from 'firebase-admin/firestore';
-
+// src/types/story.ts
 export interface Story {
   id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  createdAt: Date | null;
+  updatedAt: Date | null;
   userId: string;
-  mediaUrl: string;
-  mediaType: string;
-  createdAt: Timestamp;
-  expiresAt: Date;
-  views: number;
-}
-
-export interface StoryResponse {
-  success: boolean;
-  storyId: string;
-  url: string;
-}
-
-export interface StoryError {
-  error: string;
+  username: string;
+  profilePhotoURL: string;
 }

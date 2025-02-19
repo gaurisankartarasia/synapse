@@ -1,4 +1,4 @@
-
+//src/app/api/user-profile/query/route.ts
 import { NextResponse } from "next/server";
 import { cookies } from 'next/headers';
 import { db } from "@/lib/firebaseAdmin";
@@ -82,3 +82,6 @@ export async function GET(request: Request) {
     );
   }
 }
+
+
+

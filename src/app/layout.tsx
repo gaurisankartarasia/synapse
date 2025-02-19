@@ -7,7 +7,6 @@ import Navbar from "@/components/Navbar";
 import ThemeProviderWrapper from './ThemeProviderWrapper';
 import { LoadingProvider } from '@/components/LoadingProvider';
 
-
 export const metadata: Metadata = {
   title: "Synapse",
   description: "Synapse",
@@ -27,8 +26,8 @@ export default function RootLayout({
           <ReduxProvider>
             <LoadingProvider>
             <Navbar />
+            
             {children}
-
             </LoadingProvider>
           </ReduxProvider>
         </ThemeProviderWrapper>
