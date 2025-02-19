@@ -17,12 +17,9 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
   return (
     <div className="space-y-4">
       {/* Main Image */}
-      {/* <div 
-        className="relative aspect-video w-full overflow-hidden rounded-lg cursor-zoom-in"
-        onClick={() => setIsZoomed(true)}
-      > */}
+   
       <div 
-  className="relative aspect-video w-full overflow-hidden rounded-lg cursor-zoom-in z-10"
+  className="relative aspect-video w-full overflow-hidden rounded-lg cursor-pointer z-10"
   onClick={() => setIsZoomed(true)}
 >
 
@@ -33,7 +30,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
           className="object-cover transition-transform hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
           alt={`Image ${activeImageIndex + 1}`}
-          quality={90}
         />
       </div>
 
@@ -72,3 +68,9 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
 };
 
 export default ImageGallery;
+
+
+
+
+
+

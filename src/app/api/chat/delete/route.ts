@@ -60,7 +60,7 @@
 
 
 // app/api/chat/delete/route.ts
-import { db } from '@/lib/firebaseAdmin';
+import { db, FieldValue } from '@/lib/firebaseAdmin';
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { verifyJWT } from '@/lib/jwt';
@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
       await messageRef.update({
         deletedForEveryone: true,
         content: 'This message was deleted',
-        deletedAt: Date.now()
+        deletedAt: FieldValue.serverTimestamp()
       });
     } else {
       if (!currentDeletedFor.includes(payload.uid)) {

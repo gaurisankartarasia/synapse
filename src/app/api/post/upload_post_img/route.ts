@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Validate file size (max 5MB)
-    const maxSize = 5 * 1024 * 1024;
+    const maxSize = 10 * 1024 * 1024;
     if (image.size > maxSize) {
       return NextResponse.json({ 
         error: 'Image size exceeds maximum allowed size of 5MB' 

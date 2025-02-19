@@ -24,11 +24,14 @@ export default function RootLayout({
       <body className="antialiased">
         <ThemeProviderWrapper>
           <ReduxProvider>
-            <LoadingProvider>
+            {/* <LoadingProvider> */}
             <Navbar />
-            
+            <main className="md:ml-16 lg:ml-64 pb-16 md:pb-0 pt-14">    
+
             {children}
-            </LoadingProvider>
+            </main>
+
+            {/* </LoadingProvider> */}
           </ReduxProvider>
         </ThemeProviderWrapper>
       </body>

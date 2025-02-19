@@ -1,5 +1,5 @@
 // app/api/chat/send/route.ts
-import { db } from '@/lib/firebaseAdmin';
+import { db, FieldValue } from '@/lib/firebaseAdmin';
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { verifyJWT } from '@/lib/jwt';
@@ -44,9 +44,9 @@ export async function POST(request: NextRequest) {
       batch.set(newChatRoomRef, {
         participants: participantIds,
         participantKey,
-        createdAt: Date.now(),
+        createdAt: FieldValue.serverTimestamp(),
         lastMessage: message,
-        lastMessageTime: Date.now(),
+        lastMessageTime:FieldValue.serverTimestamp(),
         unreadCounts: {
           [targetUserId]: 1,
           [payload.uid]: 0
@@ -60,12 +60,12 @@ export async function POST(request: NextRequest) {
       
       batch.update(roomRef, {
         lastMessage: message,
-        lastMessageTime: Date.now(),
+        lastMessageTime: FieldValue.serverTimestamp(),
         [`unreadCounts.${targetUserId}`]: (roomData.unreadCounts?.[targetUserId] || 0) + 1
       });
     }
 
-    const timestamp = Date.now();
+    const timestamp = FieldValue.serverTimestamp();
     const messageRef = db.collection('chatRooms').doc(chatRoomId)
       .collection('messages').doc();
 
@@ -73,11 +73,11 @@ export async function POST(request: NextRequest) {
       content: message,
       senderId: payload.uid,
       timestamp,
-      time: new Date(timestamp).toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      }).toLowerCase(),
+      // time: new Date(timestamp).toLocaleTimeString('en-US', {
+      //   hour: '2-digit',
+      //   minute: '2-digit',
+      //   hour12: true
+      // }).toLowerCase(),
       deletedFor: [],
       deletedForEveryone: false,
       readBy: [],

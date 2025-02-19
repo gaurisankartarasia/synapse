@@ -61,7 +61,7 @@ export default function UserSuggestions() {
 
   if (loading) {
     return (
-      <div className="w-full max-w-sm p-4">
+      <div className="w-full max-w-sm p-4 ">
         <div className="space-y-4">
           {[...Array(3)].map((_, i) => (
             <div key={i} className="flex items-center space-x-4 animate-pulse">
