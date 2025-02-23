@@ -25,7 +25,7 @@ export async function GET(request: Request) {
       return NextResponse.json(
         { error: 'Invalid token payload' },
         { status: 401 }
-      );
+      );  
     }
     const currentUid = decodedToken.uid;
 
@@ -67,6 +67,7 @@ export async function GET(request: Request) {
       isVerified: userData.isVerified ?? false,
       isPrivate: userData.isPrivate ?? false,
       createdAt: userData.createdAt,
+      bio: userData.bio,
       profilePhotoURL: userData.profilePhotoURL,
       uid: targetUid,
       followerCount: userData.followerCount ?? 0,

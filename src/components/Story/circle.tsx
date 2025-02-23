@@ -14,9 +14,9 @@ export function StoryCircle({ story, onClick }: StoryCircleProps) {
       className="flex flex-col items-center space-y-1 cursor-pointer"
       onClick={onClick}
     >
-      <div className="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-yellow-400 to-pink-500">
-        <div className="w-full h-full rounded-full p-[2px] bg-white">
-          <div className="relative w-full h-full rounded-full overflow-hidden">
+      <div className="w-16 h-16 rounded-md p-[2px] bg-gradient-to-tr from-yellow-400 to-pink-500">
+        <div className="w-full h-full rounded-md p-[2px] bg-white">
+          <div className="relative w-full h-full rounded-md overflow-hidden">
             <Image
               src={story.imageUrl}
               alt={story.title}

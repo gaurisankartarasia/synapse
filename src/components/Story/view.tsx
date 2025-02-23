@@ -76,7 +76,7 @@
 //         {/* Close button */}
 //         <button 
 //           onClick={onClose}
-//           className="absolute top-4 right-4 z-10 text-white p-2 rounded-full bg-black/20 hover:bg-black/40"
+//           className="absolute top-4 right-4 z-10 text-white p-2 rounded-md bg-black/20 hover:bg-black/40"
 //         >
 //           <X size={24} />
 //         </button>
@@ -84,7 +84,7 @@
 //         {/* Progress bars */}
 //         <div className="absolute top-0 left-0 right-0 flex gap-1 p-2 z-10">
 //           {stories.map((_, i) => (
-//             <div key={i} className="h-1 bg-white/30 flex-1 rounded-full overflow-hidden">
+//             <div key={i} className="h-1 bg-white/30 flex-1 rounded-md overflow-hidden">
 //               {i === currentIndex && (
 //                 <div 
 //                   className="h-full bg-white" 
@@ -124,7 +124,7 @@
 //           <button
 //             onClick={goToPreviousStory}
 //             disabled={currentIndex === 0}
-//             className="absolute top-1/2 left-2 -translate-y-1/2 p-2 rounded-full bg-black/20 hover:bg-black/40 disabled:opacity-0"
+//             className="absolute top-1/2 left-2 -translate-y-1/2 p-2 rounded-md bg-black/20 hover:bg-black/40 disabled:opacity-0"
 //           >
 //             <ChevronLeft size={24} className="text-white" />
 //           </button>
@@ -132,7 +132,7 @@
 //           <button
 //             onClick={goToNextStory}
 //             disabled={currentIndex === stories.length - 1}
-//             className="absolute top-1/2 right-2 -translate-y-1/2 p-2 rounded-full bg-black/20 hover:bg-black/40 disabled:opacity-0"
+//             className="absolute top-1/2 right-2 -translate-y-1/2 p-2 rounded-md bg-black/20 hover:bg-black/40 disabled:opacity-0"
 //           >
 //             <ChevronRight size={24} className="text-white" />
 //           </button>
@@ -140,7 +140,7 @@
 //           {/* Pause/Play button */}
 //           <button
 //             onClick={togglePause}
-//             className="absolute bottom-20 right-4 p-2 rounded-full bg-black/30 hover:bg-black/50"
+//             className="absolute bottom-20 right-4 p-2 rounded-md bg-black/30 hover:bg-black/50"
 //           >
 //             {isPaused ? (
 //               <Play size={20} className="text-white" />
@@ -229,7 +229,7 @@ export function StoryViewer({ stories, initialStoryIndex, onClose, onStoryEnd }:
         {/* Close button */}
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 text-white p-2 rounded-full bg-black/20 hover:bg-black/40"
+          className="absolute top-4 right-4 z-10 text-white p-2 rounded-md bg-black/20 hover:bg-black/40"
         >
           <X size={24} />
         </button>
@@ -237,7 +237,7 @@ export function StoryViewer({ stories, initialStoryIndex, onClose, onStoryEnd }:
         {/* Progress bars */}
         <div className="absolute top-0 left-0 right-0 flex gap-1 p-2 z-10">
           {stories.map((_, i) => (
-            <div key={i} className="h-1 bg-white/30 flex-1 rounded-full overflow-hidden">
+            <div key={i} className="h-1 bg-white/30 flex-1 rounded-md overflow-hidden">
               {i === currentIndex && (
                 <div 
                   className="h-full bg-white" 
@@ -274,7 +274,7 @@ export function StoryViewer({ stories, initialStoryIndex, onClose, onStoryEnd }:
           <button
             onClick={goToPreviousStory}
             disabled={currentIndex === 0}
-            className="absolute top-1/2 left-2 -translate-y-1/2 p-2 rounded-full bg-black/20 hover:bg-black/40 disabled:opacity-0"
+            className="absolute top-1/2 left-2 -translate-y-1/2 p-2 rounded-md bg-black/20 hover:bg-black/40 disabled:opacity-0"
           >
             <ChevronLeft size={24} className="text-white" />
           </button>
@@ -282,7 +282,7 @@ export function StoryViewer({ stories, initialStoryIndex, onClose, onStoryEnd }:
           <button
             onClick={goToNextStory}
             disabled={currentIndex === stories.length - 1}
-            className="absolute top-1/2 right-2 -translate-y-1/2 p-2 rounded-full bg-black/20 hover:bg-black/40 disabled:opacity-0"
+            className="absolute top-1/2 right-2 -translate-y-1/2 p-2 rounded-md bg-black/20 hover:bg-black/40 disabled:opacity-0"
           >
             <ChevronRight size={24} className="text-white" />
           </button>
@@ -290,7 +290,7 @@ export function StoryViewer({ stories, initialStoryIndex, onClose, onStoryEnd }:
           {/* Pause/Play button */}
           <button
             onClick={togglePause}
-            className="absolute bottom-20 right-4 p-2 rounded-full bg-black/30 hover:bg-black/50"
+            className="absolute bottom-20 right-4 p-2 rounded-md bg-black/30 hover:bg-black/50"
           >
             {isPaused ? (
               <Play size={20} className="text-white" />

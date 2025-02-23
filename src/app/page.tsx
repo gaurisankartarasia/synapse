@@ -11,8 +11,8 @@ import { Spinner } from "@/components/ui/spinner";
 export default function Home() {
 
   return (
-    <main className=" ">
-    <section className="flex items-center gap-2"> 
+   <> 
+   <section className="flex items-center gap-2"> 
 
 
        <UploadPage/>
@@ -26,7 +26,6 @@ export default function Home() {
       {/* <UserSuggestions /> */}
     
 
-
-    </main>
+</>
   );
 }

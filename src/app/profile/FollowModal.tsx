@@ -136,7 +136,7 @@
 //                     alt={user.username}
 //                     width={50}
 //                     height={50}
-//                     className="rounded-full cursor-pointer"
+//                     className="rounded-md cursor-pointer"
 //                     onClick={() => handleUserClick(user.uid)}
 //                   />
 //                   <div>

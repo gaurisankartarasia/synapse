@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Spinner } from "@/components/ui/spinner";
 import { Post } from "@/types/post";
 import LikesModal from './components/LikedByModal';
-import {  Bookmark, MessageSquare, ChevronRight } from 'lucide-react';
+import { Bookmark, MessageSquare, ChevronRight } from 'lucide-react';
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import {
@@ -19,6 +19,9 @@ import {
 } from "@/components/ui/avatar"
 import ImageGallery from "./components/ImageGallery";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
+import { UserHoverCard } from "@/components/user-profile-hover-card";
+import { PostSkeleton } from '@/components/Skeleton-loaders/feed-post'
+
 
 const POSTS_PER_PAGE = 5;
 
@@ -49,7 +52,7 @@ const PostPage = () => {
 
       const data = await response.json();
       setPosts((prev) => (lastId ? [...prev, ...data.posts] : data.posts));
-      
+
       // Initialize like states using the isLiked value from the API
       const newLikeStates: Record<string, { isLiked: boolean; count: number; loading: boolean }> = {};
       data.posts.forEach((post: Post) => {
@@ -69,13 +72,13 @@ const PostPage = () => {
     }
   };
 
-  
+
 
   const handleLike = async (postId: string) => {
     if (!user || likeStates[postId]?.loading) return;
 
     const prevState = likeStates[postId];
-    
+
     // Optimistic update
     setLikeStates(prev => ({
       ...prev,
@@ -123,16 +126,16 @@ const PostPage = () => {
 
     const currentPost = posts.find(post => post.id === postId);
     if (!currentPost) return;
-    
+
     // Optimistic update
-    setPosts(prevPosts => 
-      prevPosts.map(post => 
-        post.id === postId 
+    setPosts(prevPosts =>
+      prevPosts.map(post =>
+        post.id === postId
           ? { ...post, isSaved: !post.isSaved }
           : post
       )
     );
-    
+
     setSaveStates(prev => ({
       ...prev,
       [postId]: { loading: true }
@@ -154,9 +157,9 @@ const PostPage = () => {
     } catch (error) {
       console.error('Error toggling save status:', error);
       // Revert optimistic update on error
-      setPosts(prevPosts => 
-        prevPosts.map(post => 
-          post.id === postId 
+      setPosts(prevPosts =>
+        prevPosts.map(post =>
+          post.id === postId
             ? { ...post, isSaved: !post.isSaved }
             : post
         )
@@ -168,7 +171,7 @@ const PostPage = () => {
       }));
     }
   };
-  
+
 
   const lastPostElementRef = useCallback(
     (node: HTMLDivElement) => {
@@ -193,40 +196,19 @@ const PostPage = () => {
     }
   }, [authLoading, isClient]);
 
-  //  const ImageGallery = ({ images }: { images: string[] }) => (
-  //   <div className="grid grid-cols-2 gap-2 my-2">
-  //     {images.map((url, index) => (
-  //       <div key={index} className="relative aspect-square">
-  //         <Image
-  //           src={`/api/proxy?url=${encodeURIComponent(url)}`}
-  //           // src={url}
-
-  //           fill
-  //           sizes="(max-width: 468px) 50vw, (max-width: 600px) 50vw, 33vw"
-  //           className="object-cover rounded-lg"
-  //           alt={`Post image ${index + 1}`}
-  //           priority={index === 0}
-  //           loading={index === 0 ? "eager" : "lazy"}
-  //           quality={index === 0 ? 85 : 75}
-  //         />
-  //       </div>
-  //     ))}
-  //   </div>
-  // );
-
   const HashtagDisplay = ({ hashtags }: { hashtags?: string[] }) => {
     if (!hashtags || hashtags.length === 0) return null;
 
 
-    
+
 
     return (
       <div className="flex gap-2 mt-2">
         {hashtags.map((tag, index) => (
-          <Link 
-            key={index} 
+          <Link
+            key={index}
             href={`/hashtag/${tag.toLowerCase()}`}
-            className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm hover:underline"
+            className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-sm hover:underline"
           >
             #{tag}
           </Link>
@@ -237,90 +219,98 @@ const PostPage = () => {
 
   return (
     <div className="">
-      {loading && <Spinner />}
+      {loading && <PostSkeleton />}
       <div className="">
-      
 
-{posts.length > 0 ? (
+
+        {posts.length > 0 ? (
           posts.map((post, index) => (
             <div key={post.id} ref={index === posts.length - 1 ? lastPostElementRef : null}>
-             <div className="p-4 border-b">
-              <div className="flex items-center gap-2">
-       
-
-<Avatar>
-      <AvatarImage src={post.profilePhotoURL} alt={post.username} />
-      <AvatarFallback>{post.username.slice(0,2)}</AvatarFallback>
-    </Avatar>
-
-         <strong>{post.username}</strong>
-         {post.isVerified && <RiVerifiedBadgeFill/>}
-                <span className="t600 text-sm">{formatRelativeTime(post.createdAt)}</span>
-            <div className="float-end">
-
-{user && (
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          handleSave(post.id);
-        }}
-        disabled={saveStates[post.id]?.loading}
-        className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
-      >
-        {post.isSaved ? <FaBookmark size={15} /> : <FaRegBookmark size={15} />}
-      </button>
-    )}
-</div>  
-</div>
+              <div className="p-4 border-b">
+                <div className="flex items-center gap-2">
 
 
-              {/* <Link href={`/post/${post.id}`} className="block"> */}
+
+                  <Avatar>
+                    <AvatarImage src={post.profilePhotoURL} alt={post.username} />
+                    <AvatarFallback>{post.username.slice(0, 2)}</AvatarFallback>
+                  </Avatar>
+                  <UserHoverCard username={post.username} >
+                  <Link href={`/${post.username}`} className="hover:opacity-60 cursor-pointer font-semibold">{post.username}</Link>
+
+
+                  </UserHoverCard>
+                  {post.isVerified && <RiVerifiedBadgeFill />}
+                  <span className="t600 text-sm">{formatRelativeTime(post.createdAt)}</span>
+                  <div className="float-end">
+
+                    {user && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSave(post.id);
+                        }}
+                        disabled={saveStates[post.id]?.loading}
+                        className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
+                      >
+                        {post.isSaved ? <FaBookmark size={15} /> : <FaRegBookmark size={15} />}
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+
+                {/* <Link href={`/post/${post.id}`} className="block"> */}
                 <p className="mt-2 t800">{post.content}</p>
                 {post.imageURLs?.length > 0 && <ImageGallery images={post.imageURLs} />}
-              {/* </Link> */}
-              
-              <HashtagDisplay hashtags={post.hashtags} />
-            
+                {/* </Link> */}
+
+                <HashtagDisplay hashtags={post.hashtags} />
 
 
-              <div className="mt-4 flex items-center gap-4">
-                
-              <div className="flex items-center">
-              {user && (
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleLike(post.id);
-                    }}
-                    disabled={likeStates[post.id]?.loading}
-                    className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
-                  >
-                    {likeStates[post.id]?.isLiked ? <FaHeart color="red" size={20} /> : < FaRegHeart size={20}/>}
-                    
-                  </button>
-                )}
-                <button
-                  onClick={() => setSelectedPostId(post.id)}
-                  className="hover:bg-gray-300 focus:outline-none"
-                >
+
+                <div className="mt-4 flex items-center gap-4">
+
                   <div className="flex items-center">
-                    {likeStates[post.id]?.count || 0} {(likeStates[post.id]?.count || 0) === 1 ? 'Like' : 'Likes'}
-                    <ChevronRight />
-                  </div>
-                </button>
-              </div>
+                    
+                    {user && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleLike(post.id);
+                        }}
+                        disabled={likeStates[post.id]?.loading}
+                        className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
+                      >
+                        {likeStates[post.id]?.isLiked ? <FaHeart color="red" size={20} /> : < FaRegHeart size={20} />}
 
-                {post.allowCommenting && (
-                <Link href={`/post/${post.id}`} className="flex items-center gap-1">
-                  <MessageSquare size={20} />
-                 
-          <p>{post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}</p>
-       
-                  <ChevronRight size={20} />
-                </Link>
-                 )}
+                      </button>
+                    )}
+                    
+                    <button
+                      onClick={() => setSelectedPostId(post.id)}
+                      className="hover:bg-gray-300 focus:outline-none"
+                    >
+                      <div className="flex items-center">
+                        {likeStates[post.id]?.count || 0} {(likeStates[post.id]?.count || 0) === 1 ? 'Like' : 'Likes'}
+                        <ChevronRight />
+                      </div>
+                    </button>
+
+
+                  </div>
+
+                  {post.allowCommenting && (
+                    <Link href={`/post/${post.id}`} className="flex items-center gap-1">
+                      <MessageSquare size={20} />
+
+                      <p>{post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}</p>
+
+                      <ChevronRight size={20} />
+                    </Link>
+                  )}
+                </div>
               </div>
-            </div>
             </div>
           ))
         ) : !loading && (
@@ -342,3 +332,13 @@ const PostPage = () => {
 };
 
 export default PostPage;
+
+
+
+
+
+
+
+
+
+

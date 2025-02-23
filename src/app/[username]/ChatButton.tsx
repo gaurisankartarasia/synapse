@@ -1,70 +1,14 @@
-// // 'use client';
-
-// // import { useRouter } from 'next/navigation';
-// // import { useAuth } from '@/hooks/useAuth';
-
-// // interface ChatbuttonProps {
-// //   targetUserId: string;
-// // }
-
-// // export default function Chatbutton({ targetUserId }: ChatbuttonProps) {
-// //   const router = useRouter();
-// //   const { user } = useAuth();
-
-// //   const startChat = () => {
-// //     if (!user) {
-// //       // Handle not logged in state
-// //       return;
-// //     }
-// //     router.push(`/inbox/${targetUserId}`);
-// //   };
-
-// //   return (
-// //     <button
-// //       onClick={startChat}
-// //       className="m-2"
-// //       color='primary'
-// //     >
-// //      Message
-// //     </button>
-// //   );
-// // }
-
-
-
-
-
-
-
-
-// // components/ChatButton.tsx
-// 'use client';
-// import { useRouter } from 'next/navigation';
-// import { Button } from '@/components/ui/button';
-
-// export default function ChatButton({ targetUserId }: { targetUserId: string }) {
-//   const router = useRouter();
-//   // const { user } = useAuth();
-
-//   const startChat = () => {
-//     // if (!user) return router.push('/signin');
-//     router.push(`/inbox/${targetUserId}`);
-//   };
-
-//   return (
-//     <Button
-//       onClick={startChat}
-//     >
-//       Message
-//     </Button>
-//   );
-// }
-
 
 // components/profile/ChatButton.tsx
 'use client';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface ChatButtonProps {
   targetUserId: string;
@@ -78,12 +22,21 @@ export const ChatButton: React.FC<ChatButtonProps> = ({ targetUserId }) => {
   };
 
   return (
-    <Button
+    
+      <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+        <Button
       onClick={startChat}
       variant="outline"
-      title='Message to this user'
     >
       Message
     </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Message to this user</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };

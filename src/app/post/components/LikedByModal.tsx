@@ -90,7 +90,7 @@
 //                   <Image
 //                     src={`/api/proxy?url=${encodeURIComponent(user.profilePic)}`}
 //                     alt={user.username}
-//                     className="rounded-full object-cover"
+//                     className="rounded-md object-cover"
 //                     height={50}
 //                     width={50}
 //                   />
@@ -214,7 +214,7 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
                   <Image
                     src={`/api/proxy?url=${encodeURIComponent(user.profilePic)}`}
                     alt={user.username}
-                    className="rounded-full object-cover"
+                    className="rounded-md object-cover"
                     height={50}
                     width={50}
                   />

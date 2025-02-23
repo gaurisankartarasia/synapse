@@ -22,7 +22,8 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import {PostSkeleton} from '@/components/Skeleton-loaders/feed-post'
+import  {UserHoverCard}  from "@/components/user-profile-hover-card";
 
 
 
@@ -45,10 +46,10 @@ const PostPage = () => {
 
     const fetchPostData = async () => {
       try {
-        const response = await fetch(`/api/post/${id}`, {
-          headers: {
-            "Cache-Control": "max-age=300",
-          },
+        const response = await fetch(`/api/post/${id}/query`, {
+          // headers: {
+          //   "Cache-Control": "max-age=300",
+          // },
         });
 
         if (!response.ok) {
@@ -186,7 +187,7 @@ const PostPage = () => {
 
 
   if (loading) {
-    return <Spinner />;
+    return <PostSkeleton />;
   }
 
   if (!post) {
@@ -218,13 +219,27 @@ const PostPage = () => {
           <AvatarImage src={post.profilePhotoURL} alt={post.username} />
           <AvatarFallback>{post.username.slice(0, 2)}</AvatarFallback>
         </Avatar>
+        
+<UserHoverCard username={post.username} >
 
-        <strong>{post.username}</strong>
+  <Link href={`/${post.username}`} className="hover:opacity-60 cursor-pointer font-semibold">{post.username}</Link>
+
+</UserHoverCard>
+        
+
         {post.isVerified && <RiVerifiedBadgeFill />}
 
         <small className="t600">
           {formatRelativeTime(post.createdAt)}
         </small>
+
+        <button
+              onClick={handleSave}
+              disabled={isSaveLoading}
+              className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
+            >
+              {post.isSaved ? <FaBookmark size={15}  /> : <FaRegBookmark size={15}  />}
+            </button>
 
         {user?.uid === post?.uid && (
           <button onClick={handleDelete} className="text-red-500">
@@ -247,35 +262,29 @@ const PostPage = () => {
         <ImageGallery images={post.imageURLs} />
       )}
 
-      <div className="mt-6 pt-6 border-t flex gap-4 items-center">
+      <div className="mt-6 flex gap-4 items-center">
+        <div className="flex items-center"> 
         {user && (
-          <>
             <button
               onClick={handleLike}
               disabled={isLikeLoading}
               className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50 transition-all duration-200"
             >
-              {isLiked ? <FaHeart /> : <FaRegHeart />}
+              {isLiked ? <FaHeart size={20} color="red" /> : <FaRegHeart size={20}  />}
             </button>
 
-            <button
-              onClick={handleSave}
-              disabled={isSaveLoading}
-              className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
-            >
-              {post.isSaved ? <FaBookmark /> : <FaRegBookmark />}
-            </button>
-          </>
+           
         )}
 
         <button
           onClick={() => setIsModalOpen(true)}
         >
-          <div className="flex items-center">
+          <span className="flex items-center">
             {likeCount} {likeCount === 1 ? 'Like' : 'Likes'}
-            <ChevronRight />
-          </div>
+            <ChevronRight size={20}  />
+          </span>
         </button>
+        </div>
 
         {post.allowCommenting && (
           <p>{post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}</p>

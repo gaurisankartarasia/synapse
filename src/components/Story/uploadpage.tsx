@@ -13,7 +13,7 @@ export default function UploadPage() {
     <div className="">
       {/* Button to open modal */}
       <button
-      className="p-5 rounded-full bg-gray-200"
+      className="p-5 rounded-md bg-gray-200"
        onClick={() => setIsModalOpen(true)}><Plus/></button>
    <p className="text-center">
    <small>Add story</small>

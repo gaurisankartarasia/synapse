@@ -56,7 +56,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
     <Button
       onClick={onFollowClick}
       disabled={isUpdating}
-      className={` ${className || ''}`}
+      className={` ${className || ''} `}
     >
       {isUpdating ? (
         <Spinner />

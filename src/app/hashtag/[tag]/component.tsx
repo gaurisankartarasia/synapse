@@ -89,7 +89,7 @@ const HashtagPage = () => {
             src={`/api/proxy?url=${encodeURIComponent(url)}`}
             fill
             sizes="(max-width: 468px) 50vw, (max-width: 600px) 50vw, 33vw"
-            className="object-cover rounded-lg"
+            className="object-cover rounded-md"
             alt={`Post image ${index + 1}`}
             priority={index === 0}
             loading={index === 0 ? "eager" : "lazy"}
@@ -136,14 +136,14 @@ const HashtagPage = () => {
             <div 
               key={post.id} 
               ref={index === posts.length - 1 ? lastPostElementRef : null}
-              className="bg-white shadow-md rounded-lg p-6"
+              className="bg-white shadow-md rounded-md p-6"
             >
               <Link href={`/post/${post.id}`} className="block">
                    <Image src={post.profilePhotoURL}
                         height={30}
                         width={30}
                         alt="profile"
-                        className="rounded-full"/>
+                        className="rounded-md"/>
                         <strong>{post.username}</strong>
                         {post.isVerified && "verified"}
                 <div className="text-sm t600 mb-4">
@@ -160,7 +160,7 @@ const HashtagPage = () => {
                       <Link 
                         key={hashtag}
                         href={`/hashtag/${hashtag.toLowerCase()}`}
-                        className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm hover:bg-blue-200"
+                        className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-sm hover:bg-blue-200"
                       >
                         #{hashtag}
                       </Link>

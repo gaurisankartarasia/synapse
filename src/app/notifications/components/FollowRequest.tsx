@@ -62,7 +62,7 @@ export const FollowRequest = ({ user, onActionComplete }: FollowRequestProps) =>
           alt={user.username}
           width={40}
           height={40}
-          className="rounded-full"
+          className="rounded-md"
         /> */}
          <Avatar>
       <AvatarImage src={user.profilePhotoURL || '/profile-default-photo.svg'} alt={user.username} />

@@ -75,7 +75,7 @@
   
 
 //   return (
-//     <div className="p-3 border rounded-lg mb-4">
+//     <div className="p-3 border rounded-md mb-4">
 //       <div className="flex justify-between items-start">
 //         <div className="w-full">
        
@@ -176,7 +176,7 @@
 //                     value={replyContent}
 //                     onChange={(e) => setReplyContent(e.target.value)}
 //                     placeholder="Write a reply..."
-//                     className="w-full p-2 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                     className="w-full p-2 border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
 //                     rows={2}
 //                   />
 //                   <Button
@@ -227,6 +227,7 @@ import { ReportModal } from "@/components/ReportModal";
 import { Button } from '@/components/ui/button';
 import { formatRelativeTime } from "@/utils/date";
 import {RiVerifiedBadgeFill} from 'react-icons/ri';
+import { UserHoverCard } from "@/components/user-profile-hover-card";
 
 type CommentItemProps = {
   comment: Comment;
@@ -252,7 +253,7 @@ const UserAvatar = ({ src, username }: { src: string | null | undefined, usernam
         alt={username || "User"}
         width={30}
         height={30}
-        className="rounded-full"
+        className="rounded-md"
         // Unset onError to prevent loops
       />
     </div>
@@ -302,15 +303,18 @@ export const CommentItem = ({
   };
 
   return (
-    <div className="p-3 border rounded-lg mb-4">
+    <div className="p-3 border rounded-md mb-4">
       <div className="flex justify-between items-start">
         <div className="w-full">
           <div className="flex items-center gap-1">
+            
             <UserAvatar 
               src={comment.user.profilePhotoURL} 
               username={comment.user.username}
             />
-            <strong>{comment.user.username || "User"}</strong>
+            <UserHoverCard username={comment.user.username} >
+            <strong className="cursor-pointer hover:opacity-70">{comment.user.username || "User"}</strong>
+</UserHoverCard>
             <span>{comment.user.isVerified && (<RiVerifiedBadgeFill fontSize="small"/>)}</span>
           </div>
 
@@ -390,7 +394,7 @@ export const CommentItem = ({
                     value={replyContent}
                     onChange={(e) => setReplyContent(e.target.value)}
                     placeholder="Write a reply..."
-                    className="w-full p-2 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                     rows={2}
                   />
                   <Button

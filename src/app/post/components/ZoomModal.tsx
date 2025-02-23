@@ -71,7 +71,7 @@ const ZoomModal: React.FC<ZoomModalProps> = ({ imageURL, isOpen, onClose }) => {
       >
         {/* Close button */}
         <Button 
-          className="absolute top-4 right-4 text-white z-10 bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75"
+          className="absolute top-4 right-4 text-white z-10 bg-black bg-opacity-50 rounded-md p-2 hover:bg-opacity-75"
           onClick={handleModalClose}
         >
           ✕

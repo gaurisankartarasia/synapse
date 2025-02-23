@@ -39,9 +39,9 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading }) => {
         </div>
         <b>Synapse</b>
         <div className='flex space-x-2 justify-center dark:invert m-3'>
-  	<div className='h-1.5 w-1.5 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
-	<div className='h-1.5 w-1.5 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
-	<div className='h-1.5 w-1.5 bg-black rounded-full animate-bounce'></div>
+  	<div className='h-1.5 w-1.5 bg-black rounded-md animate-bounce [animation-delay:-0.3s]'></div>
+	<div className='h-1.5 w-1.5 bg-black rounded-md animate-bounce [animation-delay:-0.15s]'></div>
+	<div className='h-1.5 w-1.5 bg-black rounded-md animate-bounce'></div>
 </div>
       </div>
     </div>

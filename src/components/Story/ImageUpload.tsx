@@ -97,7 +97,7 @@ export default function ImageUpload({ onUploadComplete }: ImageUploadProps) {
       <CardContent className="p-4 space-y-4">
         <div
           {...getRootProps()}
-          className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors
+          className={`border-2 border-dashed rounded-md p-6 text-center cursor-pointer transition-colors
             ${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}`}
         >
           <input {...getInputProps()} />
@@ -109,7 +109,7 @@ export default function ImageUpload({ onUploadComplete }: ImageUploadProps) {
                 alt="Preview"
                 width={400}
                 height={300}
-                className="mx-auto rounded-lg"
+                className="mx-auto rounded-md"
                 objectFit="cover"
               />
               {!isUploading && (
@@ -118,7 +118,7 @@ export default function ImageUpload({ onUploadComplete }: ImageUploadProps) {
                     e.stopPropagation();
                     removeImage();
                   }}
-                  className="absolute top-2 right-2 p-1 bg-red-500 rounded-full text-white hover:bg-red-600"
+                  className="absolute top-2 right-2 p-1 bg-red-500 rounded-md text-white hover:bg-red-600"
                 >
                   <X size={16} />
                 </button>

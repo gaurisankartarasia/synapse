@@ -19,7 +19,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
       {/* Main Image */}
    
       <div 
-  className="relative aspect-video w-full overflow-hidden rounded-lg cursor-pointer z-10"
+  className="relative aspect-video w-full overflow-hidden rounded-md cursor-pointer z-10"
   onClick={() => setIsZoomed(true)}
 >
 
@@ -27,7 +27,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
           src={images[activeImageIndex]}
           fill
           priority
-          className="object-cover transition-transform hover:scale-105"
+          className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
           alt={`Image ${activeImageIndex + 1}`}
         />

@@ -6,13 +6,12 @@ import React, { useState, useEffect, useRef, Suspense } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { auth } from "@/lib/firebaseClient";
 import {Card, CardContent} from "@/components/ui/card"
 import { Spinner } from "@/components/ui/spinner";
 import {Input} from '@/components/ui/input'
 import {RiVerifiedBadgeFill} from 'react-icons/ri';
 import UserSuggestions from "@/components/UserSuggestions/UserSuggestions";
-
+import Link from "next/link";
 
 interface SearchResult {
   uid: string;
@@ -82,22 +81,22 @@ interface SearchResult {
 
  
 
-  const handleProfileClick = async (uid: string) => {
-    const currentUser = auth.currentUser;
+  // const handleProfileClick = async (uid: string) => {
+  //   const currentUser = auth.currentUser;
   
-    if (currentUser) {
-      if (currentUser.uid === uid) {
-        router.push("/profile");
-      } else {
-        const selectedUser = searchResults.find((user) => user.uid === uid);
-        if (selectedUser) {
-          router.push(`/${selectedUser.username}`);
-        } else {
-          console.error("User not found in search results.");
-        }
-      }
-    }
-  };
+  //   if (currentUser) {
+  //     if (currentUser.uid === uid) {
+  //       router.push("/profile");
+  //     } else {
+  //       const selectedUser = searchResults.find((user) => user.uid === uid);
+  //       if (selectedUser) {
+  //         router.push(`/${selectedUser.username}`);
+  //       } else {
+  //         console.error("User not found in search results.");
+  //       }
+  //     }
+  //   }
+  // };
   
 
   return (
@@ -123,9 +122,9 @@ interface SearchResult {
           {searchResults.map((user) => (
             <Card
               key={user.uid}
-              onClick={() => handleProfileClick(user.uid)}
               className="cursor-pointer search_item"
             >
+<Link href={user.username} >
               <CardContent>
               <Image
                 src={`/api/proxy?url=${encodeURIComponent(user.profilePhotoURL)}`}
@@ -143,6 +142,7 @@ interface SearchResult {
                 </p>
               </div>
               </CardContent>
+              </Link>
             </Card>
           ))}
         </ul>

@@ -72,7 +72,7 @@ export default function StoriesContainer() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center flex-col h-20">
-        <div className='p-9 bg-gray-200 rounded-full'></div>
+        <div className='p-9 bg-gray-200 rounded-md'></div>
         <small>Loading...</small>
       </div>
     );

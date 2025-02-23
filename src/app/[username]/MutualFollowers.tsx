@@ -70,7 +70,7 @@
 
 //               <div
 //                 key={follower.uid}
-//                 className="flex items-center space-x-1 p-2 rounded-lg "
+//                 className="flex items-center space-x-1 p-2 rounded-md "
 //                 onClick={() => onUserClick?.(follower.username)}
 //               >              
 
@@ -182,7 +182,7 @@ const MutualFollowers: React.FC<MutualFollowersProps> = ({ username, onUserClick
             {mutualFollowers.slice(0, 2).map((follower) => (
               <div
                 key={follower.uid}
-                className="flex items-center space-x-1 p-2 rounded-lg"
+                className="flex items-center space-x-1 p-2 rounded-md"
                 onClick={() => onUserClick?.(follower.username)}
               >              
                 <Avatar className='h-6 w-6 cursor-pointer'>

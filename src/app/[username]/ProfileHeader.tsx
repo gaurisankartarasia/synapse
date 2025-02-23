@@ -76,16 +76,11 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         <Image
           src={`/api/proxy?url=${encodeURIComponent(profilePhotoURL || '/default.webp')}`}
           alt={displayName}
-          width={200}
-          height={200}
-          className="rounded-full object-cover"
+          width={100}
+          height={100}
+          className="rounded-md object-cover"
         />
-        {isVerified && (
-          <Badge className="absolute bottom-0 right-0 bg-primary">
-            <CheckCircle className="w-4 h-4 mr-1" />
-            Verified
-          </Badge>
-        )}
+        
       </div>
       
       <div className="flex items-center gap-2 mb-2">
@@ -94,7 +89,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       </div>
       
       <h1 className="text-2xl font-bold mb-2">{displayName}</h1>
-      {bio && <p className="t600 text-center mb-4 italic">{bio}</p>}
+      {bio && <p className="t600 text-center mb-4 ">{bio}</p>}
       <div className="flex items-center text-muted-foreground text-sm">
         <Calendar className="w-4 h-4 mr-2" />
         <span>Joined {formatFullDate(createdAt)}</span>
