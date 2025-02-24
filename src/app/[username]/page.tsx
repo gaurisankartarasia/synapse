@@ -328,8 +328,8 @@ const PublicProfilePage: React.FC = () => {
       try {
         const endpoint =
           type === "followers"
-            ? `/api/followers_list/query`
-            : `/api/followings_list/query`;
+            ? `/api/followers_list/query?username=${username}`
+            : `/api/followings_list/query?username=${username}`;
 
         const response = await fetch(endpoint, {
           credentials: "include",
@@ -481,6 +481,7 @@ const PublicProfilePage: React.FC = () => {
       </div>
 
       <EnhancedModalList
+      
         isOpen={isFollowersModalOpen}
         onClose={() => handleModalClose("followers")}
         title="Followers"
