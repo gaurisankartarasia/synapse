@@ -25,10 +25,10 @@ export async function PUT(request: Request) {
     const updates: any = { displayName, bio: bio || '', profilePhotoURL };
 
     // Handle username update constraints
-    if (username !== userData.username) {
+    if (username !== userData?.username) {
       const now = new Date();
-      const lastUpdated = userData.usernameLastUpdated?.toDate();
-      const editCount = userData.usernameEditCount || 0;
+      const lastUpdated = userData?.usernameLastUpdated?.toDate();
+      const editCount = userData?.usernameEditCount || 0;
       const daysSinceLast = lastUpdated ? (now.getTime() - lastUpdated.getTime()) / (86400000) : 16;
 
       if (daysSinceLast > 15) {

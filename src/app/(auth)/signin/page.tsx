@@ -193,7 +193,7 @@ export default function SignIn() {
     <main>
       <div className="min-h-screen flex items-center justify-center">
       
-        <Card className="max-w-md w-full space-y-8">
+        <div className="max-w-md w-full space-y-8">
           <CardHeader>
             <CardTitle>Sign In</CardTitle>
           </CardHeader>
@@ -254,7 +254,7 @@ export default function SignIn() {
               Don't have an account? <Link href="/signup" className="underline">Sign up</Link>
             </CardDescription>
           </CardFooter>
-        </Card>
+        </div>
       </div>
     </main>
   );

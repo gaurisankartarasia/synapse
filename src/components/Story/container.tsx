@@ -5,6 +5,7 @@ import { StoryCircle } from './circle';
 import { StoryViewer } from './view';
 import { Story } from '@/types/story';
 import { toast } from '@/hooks/use-toast';
+import { Spinner } from '../ui/spinner';
 
 export default function StoriesContainer() {
   const [stories, setStories] = useState<Story[]>([]);
@@ -71,18 +72,13 @@ export default function StoriesContainer() {
   
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center flex-col h-20">
-        <div className='p-9 bg-gray-200 rounded-md'></div>
-        <small>Loading...</small>
-      </div>
+      <Spinner/>
     );
   }
   
   if (stories.length === 0) {
     return (
-      <div className="text-center py-6 text-gray-500">
-        No stories available
-      </div>
+      null
     );
   }
   

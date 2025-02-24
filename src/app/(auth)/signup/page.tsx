@@ -146,7 +146,8 @@ export default function SignUp() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [displayName, setdisplayName] = useState('');
+  const [username, setUsername] = useState('');
+
   const [confirmPassword, setConfirmPassword] = useState('');
   const [formError, setFormError] = useState('');
 
@@ -165,9 +166,9 @@ export default function SignUp() {
     }
 
     try {
-      const resultAction = await dispatch(signUpWithEmail({ email, password, displayName }));
+      const resultAction = await dispatch(signUpWithEmail({ email, password, username }));
       if (signUpWithEmail.fulfilled.match(resultAction)) {
-        router.push('/username');
+        router.push(`/${username}`);
       }
     } catch (err) {
       console.error('Sign up failed:', err);
@@ -176,7 +177,7 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <Card className="max-w-md w-full space-y-8 ">
+      <div className="max-w-md w-full space-y-8 ">
         <CardHeader>
    <CardTitle>Sign Up</CardTitle>   
     </CardHeader>
@@ -204,16 +205,16 @@ export default function SignUp() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="displayName" className="block text-sm font-medium ">
-              Full Name
+            <label htmlFor="username" className="block text-sm font-medium ">
+              Username
             </label>
             <Input
-              id="displayName"
+              id="username"
               type="text"
               required
               className="mt-1 block w-full p-2"
-              value={displayName}
-              onChange={(e) => setdisplayName(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
 
@@ -277,7 +278,7 @@ export default function SignUp() {
         </CardDescription>
         </CardFooter>
        
-      </Card>
+      </div>
     </div>
   );
 }

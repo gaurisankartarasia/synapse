@@ -1,6 +1,6 @@
 
 
-// Update the JWT verification function in src/lib/jwt.ts
+//src/lib/jwt.ts
 import * as jose from 'jose';
 import { CustomJWTPayload } from '@/types/auth';
 

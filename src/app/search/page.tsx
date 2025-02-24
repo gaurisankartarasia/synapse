@@ -163,7 +163,7 @@ interface SearchResult {
 };
 
 const SearchPage: React.FC = () => (
-  <Suspense fallback={<div>Loading...</div>}>
+  <Suspense fallback={<div><Spinner/></div>}>
     <SearchPageContent />
   </Suspense>
 );

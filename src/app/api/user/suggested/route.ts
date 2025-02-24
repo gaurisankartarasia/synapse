@@ -37,7 +37,7 @@ export async function GET() {
     // Get random users excluding current user and blocked users
     const usersSnapshot = await db.collection("users")
       .where("uid", "!=", currentUid)
-      .limit(10)
+      .limit(5)
       .get();
 
     const users = await Promise.all(

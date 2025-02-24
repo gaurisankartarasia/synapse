@@ -10,53 +10,81 @@ import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import LogoutButton from '@/app/(auth)/logoutButton';
 import { Sun, Moon } from 'lucide-react';
+import { useProfile } from '@/hooks/useProfile';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 
-const navLinks = [
-  { name: 'Home', href: '/', icon: Home },
-  { name: 'Create', href: '/post/create', icon: Plus },
-  { name: 'Search', href: '/search', icon: Search },
-  { name: 'Notifications', href: '/notifications', icon: Bell },
-  { name: 'Profile', href: '/profile', icon: User },
-];
+
+
 
 export default function SideNavigation() {
+  const { profile} = useProfile();
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
 
   if (['/signin', '/signup', '/forgot-password'].includes(pathname)) return null;
 
+  if (!profile) {
+    return null;
+  }
+
+  const navLinks = [
+    { name: 'Home', href: '/', icon: Home },
+    { name: 'Create', href: '/post/create', icon: Plus },
+    { name: 'Search', href: '/search', icon: Search },
+    { name: 'Notifications', href: '/notifications', icon: Bell },
+    { name: 'Profile', href: `/${profile.username}`,  icon: () => (
+      <Avatar>
+      <AvatarImage src={profile.profilePhotoURL} alt="user" />
+      <AvatarFallback>{profile.username.slice(0,1)}</AvatarFallback>
+    </Avatar>
+    
+    
+    )}
+      
+      
+      
+      ,
+  ];
+
   return (
     <>
       {/* Desktop & Tablet Navigation */}
-      <aside className="hidden md:block fixed left-0 top-0 h-screen w-16 lg:w-64 border-r bg-background/95 transition-all duration-300 z-50">
+      <aside className="hidden md:block fixed left-0 top-0 h-screen w-16 lg:w-64 border-r bg-background/95 transition-all duration-300 z-0">
         <div className="flex flex-col h-full p-4">
           {/* Logo */}
-          <Link href="/" className="mb-8 flex items-center">
+          <Link href="/" className="py-12 flex items-center gap-2">
             <Image
               src="https://firebasestorage.googleapis.com/v0/b/quixxle.appspot.com/o/assets%2Fsynapse_logo_c.jpg?alt=media&token=53517ee9-01a4-4e3c-87dc-f34de9a88193"
               alt="Logo"
-              width={40}
-              height={40}
-              className="rounded-md"
+              width={35}
+              height={35}
+              className="rounded-full "
             />
             <b className='text-2xl hidden lg:block'>Synapse</b>
           </Link>
 
           {/* Navigation Links */}
-          <nav className="flex flex-1 flex-col gap-4">
+          <nav className="flex flex-1 flex-col gap-2 ">
             {navLinks.map(({ name, href, icon: Icon }) => (
               <Link
+              prefetch
                 key={href}
                 href={href}
                 className={cn(
-                  'flex items-center gap-4 p-2 rounded-md hover:bg-accent active:scale-95 transition-all duration-300 ',
-                  pathname === href && 'bg-accent'
+                  'flex items-center gap-4 py-3 hover:opacity-60 rounded-md transition-all duration-300 '
+                  // pathname === href && 'bg-accent'
                 )}
               >
                 <Icon className="h-6 w-6" />
-                <span className="hidden lg:block text-sm">{name}</span>
+                <span className="hidden lg:block text-md font-medium">{name}</span>
               </Link>
             ))}
+           
+
           </nav>
 
           {/* Settings Section */}
@@ -132,3 +160,11 @@ export default function SideNavigation() {
     </>
   );
 }
+
+
+
+
+
+
+
+

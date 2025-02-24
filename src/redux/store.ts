@@ -6,6 +6,8 @@ import authReducer from './features/authSlice';
 import userReducer from './features/userSlice';
 import followReducer from './features/followSlice';
 import postReducer from './features/postSlice';
+import suggestionsReducer from './features/suggestionSlice';
+
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +15,8 @@ export const store = configureStore({
     user: userReducer,
     follow: followReducer,
     post: postReducer, 
+    suggestions: suggestionsReducer,
+
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

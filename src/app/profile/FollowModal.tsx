@@ -176,6 +176,7 @@
 
 
 
+//src/app/profile/FollowModal.tsx
 
 "use client";
 
@@ -365,7 +366,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, type }) => {
                       title="Remove follower"
                     >
                       {removingUser === user.uid ? (
-                        <Spinner className="w-4 h-4" />
+                        <Spinner/>
                       ) : (
                         <UserMinus className="w-4 h-4" />
                       )}

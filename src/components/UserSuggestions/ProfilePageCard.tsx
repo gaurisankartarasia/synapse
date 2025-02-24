@@ -47,19 +47,22 @@ export default function UserSuggestions() {
   };
 
   if (loading) {
-    return <div className='flex justify-center'><Spinner /></div>;
+    return <div><Spinner /></div>;
   }
 
   if (error) {
     return (
-     null
+      <Card className="w-full max-w-sm p-4">
+        <CardContent>
+          <p className="text-red-500">Error: {error}</p>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
     <div className="w-full max-w-sm">
-             <h3 className="font-semibold mb-4">Suggested for you</h3>
-
+      <h3 className="font-semibold mb-4">Suggested for you</h3>
       <div className="space-y-4">
         {suggestions.map((user) => {
           const currentFollowStatus = followState.followStatus[user.username] || {
@@ -106,4 +109,3 @@ export default function UserSuggestions() {
     </div>
   );
 }
-

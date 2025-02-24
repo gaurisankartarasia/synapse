@@ -42,14 +42,14 @@ const serializeUser = (firebaseUser: User | null): SerializableUser | null => {
 export const signUpWithEmail = createAsyncThunk(
   'auth/signUpWithEmail',
   async (
-    { email, password, displayName }: { email: string; password: string; displayName: string },
+    { email, password, username }: { email: string; password: string; username: string },
     { rejectWithValue }
   ) => {
     try {
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, displayName }),
+        body: JSON.stringify({ email, password, username }),
         credentials: 'include',
       });
 

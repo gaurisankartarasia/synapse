@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { FollowRequest } from './components/FollowRequest';
+import { Spinner } from '@/components/ui/spinner';
 
 interface NotificationData {
   id: string;
@@ -45,7 +46,7 @@ export default function NotificationsPage() {
   }, []);
 
   if (loading) {
-    return <div className="p-4">Loading notifications...</div>;
+    return <div className="flex justify-center"> <Spinner/> </div>;
   }
 
   if (error) {

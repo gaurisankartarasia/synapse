@@ -1,127 +1,263 @@
-"use client";
+// src/app/profile/edit/page.tsx
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import imageCompression from "browser-image-compression";
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@/hooks/use-toast';
 
-const EditProfile = () => {
+interface ProfileData {
+  username: string;
+  displayName: string;
+  bio: string;
+  profilePhotoURL: string;
+  lastEditedAt?: string;
+}
+
+const EditProfilePage = () => {
   const router = useRouter();
-  const [bio, setBio] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [username, setUsername] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
-  const [profilePhotoURL, setProfilePhotoURL] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [profile, setProfile] = useState<ProfileData>({
+    username: '',
+    displayName: '',
+    bio: '',
+    profilePhotoURL: '',
+  });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>('');
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const res = await fetch("/api/user-profile/query");
-        const data = await res.json();
-
-        if (!res.ok) throw new Error(data.error);
-
-        setBio(data.bio);
-        setDisplayName(data.displayName);
-        setUsername(data.username);
-        setProfilePhotoURL(data.profilePhotoURL);
-      } catch (error) {
-        console.error("Failed to fetch profile:", error);
-      }
-    };
-
-    fetchUserProfile();
+    fetchProfileData();
   }, []);
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const options = { maxSizeMB: 0.1, maxWidthOrHeight: 300, useWebWorker: true };
+  const fetchProfileData = async () => {
     try {
-      const compressedFile = await imageCompression(file, options);
-      const compressedURL = URL.createObjectURL(compressedFile);
-      setProfilePhoto(compressedFile);
-      setProfilePhotoURL(compressedURL);
+      const response = await fetch('/api/user-profile/edit/form_data');
+      if (!response.ok) throw new Error('Failed to fetch profile');
+      const data = await response.json();
+      setProfile(data);
+      setPreviewUrl(data.profilePhotoURL);
     } catch (error) {
-      console.error("Image compression error:", error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load profile data',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const compressImage = async (file: File): Promise<Blob> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        // Create HTMLImageElement instead of using new Image()
+        const img = document.createElement('img') as HTMLImageElement;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          // Max dimensions
+          const MAX_WIDTH = 800;
+          const MAX_HEIGHT = 800;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(
+            (blob) => {
+              if (blob) resolve(blob);
+              else reject(new Error('Canvas to Blob conversion failed'));
+            },
+            'image/webp',
+            0.85 // quality
+          );
+        };
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        const compressedBlob = await compressImage(file);
+        const compressedFile = new File([compressedBlob], file.name, {
+          type: 'image/webp',
+        });
+        setImageFile(compressedFile);
+        setPreviewUrl(URL.createObjectURL(compressedBlob));
+      } catch (error) {
+        toast({
+          title: 'Error',
+          description: 'Failed to process image',
+          variant: 'destructive',
+        });
+      }
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setLoading(true);
     try {
-      const formData = new FormData();
-      formData.append("bio", bio);
-      formData.append("displayName", displayName);
-      formData.append("username", username);
-      if (profilePhoto) formData.append("profilePhoto", profilePhoto);
-
-      const res = await fetch("/api/user-profile/update", {
-        method: "POST",
-        body: JSON.stringify({ bio, displayName, username, profilePhotoURL }),
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error);
+      // Check edit cooldown
+      const response = await fetch('/api/user-profile/edit/verify');
+      const { canEdit } = await response.json();
+      if (!canEdit) {
+        toast({
+          title: 'Error',
+          description: 'You can only edit your profile twice in 15 days',
+          variant: 'destructive',
+        });
+        return;
       }
 
-      router.push("/profile");
+      // Upload image if changed
+      let newPhotoURL = profile.profilePhotoURL;
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        const uploadRes = await fetch('/api/user-profile/edit/image_update', {
+          method: 'POST',
+          body: formData,
+        });
+        if (!uploadRes.ok) throw new Error('Failed to upload image');
+        const { url } = await uploadRes.json();
+        newPhotoURL = url;
+      }
+
+      // Update profile
+      const updateRes = await fetch('/api/user-profile/edit/update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...profile,
+          profilePhotoURL: newPhotoURL,
+        }),
+      });
+
+      if (!updateRes.ok) throw new Error('Failed to update profile');
+
+      toast({
+        title: 'Success',
+        description: 'Profile updated successfully',
+      });
+      router.push(`/${profile.username}`);
     } catch (error) {
-      console.error("Profile update failed:", error);
+      toast({
+        title: 'Error',
+        description: 'Failed to update profile',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white rounded-md shadow-md">
-      <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium">Display Name</label>
-          <input
-            type="text"
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
-            className="w-full p-2 border rounded"
-          />
-        </div>
+    <div className="max-w-2xl mx-auto mt-8">
+      <CardHeader>
+        <CardTitle>Edit Profile</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="relative w-32 h-32">
+              <Image
+                src={previewUrl || profile.profilePhotoURL || '/default-avatar.png'}
+                alt="Profile photo"
+                fill
+                sizes="128px"
+                priority
+                className="rounded-full object-cover"
+              />
+            </div>
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="max-w-xs"
+            />
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium">Bio</label>
-          <textarea
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            className="w-full p-2 border rounded"
-          />
-        </div>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-1" htmlFor="displayName">
+                Display Name
+              </label>
+              <Input
+                id="displayName"
+                value={profile.displayName}
+                onChange={(e) =>
+                  setProfile({ ...profile, displayName: e.target.value })
+                }
+                maxLength={50}
+                required
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium">Username</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full p-2 border rounded"
-          />
-          <p className="text-xs text-gray-500">
-            Can be changed twice every 15 days.
-          </p>
-        </div>
+            <div>
+              <label className="block text-sm font-medium mb-1" htmlFor="username">
+                Username
+              </label>
+              <Input
+                id="username"
+                value={profile.username}
+                onChange={(e) =>
+                  setProfile({ ...profile, username: e.target.value })
+                }
+                maxLength={30}
+                required
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium">Profile Photo</label>
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
-          {profilePhotoURL && <img src={profilePhotoURL} className="w-24 h-24 mt-2 rounded-md" />}
-        </div>
+            <div>
+              <label className="block text-sm font-medium mb-1" htmlFor="bio">
+                Bio
+              </label>
+              <Textarea
+                id="bio"
+                value={profile.bio}
+                onChange={(e) =>
+                  setProfile({ ...profile, bio: e.target.value })
+                }
+                maxLength={160}
+              />
+            </div>
+          </div>
 
-        <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">
-          Update Profile
-        </button>
-      </form>
+          <Button type="submit" disabled={loading}>
+            {loading ? 'Updating...' : 'Save Changes'}
+          </Button>
+        </form>
+      </CardContent>
     </div>
   );
 };
 
-export default EditProfile;
+export default EditProfilePage;

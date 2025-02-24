@@ -1,35 +1,4 @@
-// import { NextApiRequest, NextApiResponse } from 'next';
-// import jwt from 'jsonwebtoken';
-
-// const secret = process.env.JWT_SECRET as string;
-
-
-
-// export default function handler(req: NextApiRequest, res: NextApiResponse) {
-
-//    // Only allow GET requests
-//    if (req.method !== 'GET') {
-//     return res.status(405).json({ error: 'Method not allowed' });
-//   }
-
-//   const token = req.cookies.token; // Assuming the cookie is named 'token'
-
-//   if (!token) {
-//     return res.status(401).json({ error: 'Unauthorized' });
-//   }
-
-//   try {
-//     const decoded = jwt.verify(token, secret);
-//     res.status(200).json({ user: decoded });
-//   } catch (err) {
-//     res.status(401).json({ error: 'Invalid token' });
-//   }
-// }
-
-
-
-
-
+//src/app/api/auth/verify_jwt/route.ts
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
@@ -57,3 +26,8 @@ export async function GET() {
     );
   }
 }
+
+
+
+
+

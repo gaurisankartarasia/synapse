@@ -45,10 +45,15 @@
 // components/profile/ProfileHeader.tsx
 import React from "react";
 import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
 import { Calendar, CheckCircle } from "lucide-react";
 import {RiVerifiedBadgeFill} from 'react-icons/ri'
 import { formatFullDate } from "@/utils/date";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+
 
 interface ProfileHeaderProps {
   profilePhotoURL: string;
@@ -73,13 +78,12 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   return (
     <div className="flex flex-col items-center">
       <div className="relative mb-4">
-        <Image
-          src={`/api/proxy?url=${encodeURIComponent(profilePhotoURL || '/default.webp')}`}
-          alt={displayName}
-          width={100}
-          height={100}
-          className="rounded-md object-cover"
-        />
+
+
+<Avatar className="h-32 w-32">
+      <AvatarImage src={`/api/proxy?url=${encodeURIComponent(profilePhotoURL)}`} alt="user" />
+      <AvatarFallback>{username.slice(0,1)}</AvatarFallback>
+    </Avatar>
         
       </div>
       

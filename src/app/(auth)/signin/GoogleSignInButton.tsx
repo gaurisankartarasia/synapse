@@ -19,9 +19,7 @@ export default function GoogleSignInButton() {
     try {
       const resultAction = await dispatch(signInWithGoogle());
       if (signInWithGoogle.fulfilled.match(resultAction)) {
-        const { hasUsername } = resultAction.payload;
-        // router.push(hasUsername ? '/' : '/username');
-        window.location.href = hasUsername ? '/' : '/username';
+       router.push('/')
       }
     } catch (err) {
       console.error('Google sign in failed:', err);
@@ -39,10 +37,10 @@ export default function GoogleSignInButton() {
         className="w-full flex items-center justify-center gap-2 disabled:cursor-not-allowed"
       >
         {loading ? (
-          <div className="flex items-center gap-2">
+          <span className="flex items-center gap-2">
             
             <Spinner size={20}/>
-          </div>
+          </span>
         ) : (
           <>
            
