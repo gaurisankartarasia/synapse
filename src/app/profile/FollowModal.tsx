@@ -336,7 +336,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, type }) => {
                  <Link href={user.username}>
 
 <Avatar  className="cursor-pointer">
-      <AvatarImage src={`/api/proxy?url=${encodeURIComponent(user.profilePhotoURL)}`} alt="@shadcn" />
+      <AvatarImage src={`/api/proxy?url=${encodeURIComponent(user.profilePhotoURL)}`} alt={user.username} className='object-cover'/>
       <AvatarFallback>{user.displayName.slice(0,2)}</AvatarFallback>
     </Avatar>
     </Link>

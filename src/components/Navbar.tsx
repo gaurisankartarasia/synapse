@@ -38,7 +38,7 @@ export default function SideNavigation() {
     { name: 'Notifications', href: '/notifications', icon: Bell },
     { name: 'Profile', href: `/${profile.username}`,  icon: () => (
       <Avatar>
-      <AvatarImage src={profile.profilePhotoURL} alt="user" />
+      <AvatarImage src={profile.profilePhotoURL} alt="user" className='object-cover'/>
       <AvatarFallback>{profile.username.slice(0,1)}</AvatarFallback>
     </Avatar>
     
@@ -75,12 +75,12 @@ export default function SideNavigation() {
                 key={href}
                 href={href}
                 className={cn(
-                  'flex items-center gap-4 py-3 hover:opacity-60 rounded-md transition-all duration-300 '
-                  // pathname === href && 'bg-accent'
+                  'flex items-center gap-4 py-3 hover:opacity-60 rounded-md transition-all duration-300 font-medium',
+                  pathname === href && 'font-bold'
                 )}
               >
                 <Icon className="h-6 w-6" />
-                <span className="hidden lg:block text-md font-medium">{name}</span>
+                <span className="hidden lg:block text-md ">{name}</span>
               </Link>
             ))}
            

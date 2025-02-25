@@ -95,7 +95,7 @@ export function UserHoverCard({ username, children }: UserHoverCardProps) {
             <div className="space-y-1.5">
               <div className="flex items-center gap-2">
                 <h4 className="text-sm font-semibold">
-                  {profile.displayName}
+                  {profile.username}
                 </h4>
                 {profile.isVerified && (
                   <svg
@@ -113,7 +113,7 @@ export function UserHoverCard({ username, children }: UserHoverCardProps) {
                 )}
               </div>
               
-              <p className="text-sm text-muted-foreground">@{profile.username}</p>
+              <p className="text-sm text-muted-foreground">{profile.displayName}</p>
               
               <div className="flex gap-4 pt-1">
                 <div className="flex items-center gap-1">

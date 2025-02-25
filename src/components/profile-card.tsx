@@ -29,7 +29,7 @@ export function Profile() {
      
 
 <Avatar>
-      <AvatarImage src={profile.profilePhotoURL} alt="user" />
+      <AvatarImage src={profile.profilePhotoURL} alt="user" className='object-cover'/>
       <AvatarFallback>{profile.username.slice(0,1)}</AvatarFallback>
     </Avatar>
 

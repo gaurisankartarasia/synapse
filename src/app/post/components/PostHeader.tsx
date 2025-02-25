@@ -19,7 +19,7 @@ interface PostHeaderProps {
 export const PostHeader = ({ post, user, onSave, saveDisabled }: PostHeaderProps) => (
   <div className="flex items-center gap-2">
     <Avatar>
-      <AvatarImage src={post.profilePhotoURL} alt={post.username} />
+      <AvatarImage src={post.profilePhotoURL} alt={post.username}className='object-cover' />
       <AvatarFallback>{post.username.slice(0, 2)}</AvatarFallback>
     </Avatar>
     <UserHoverCard username={post.username}>

@@ -81,7 +81,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
 
 <Avatar className="h-32 w-32">
-      <AvatarImage src={`/api/proxy?url=${encodeURIComponent(profilePhotoURL)}`} alt="user" />
+      <AvatarImage src={`/api/proxy?url=${encodeURIComponent(profilePhotoURL)}`} alt="user" className='object-cover'/>
       <AvatarFallback>{username.slice(0,1)}</AvatarFallback>
     </Avatar>
         

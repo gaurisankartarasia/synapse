@@ -200,6 +200,7 @@ const EnhancedModalList: React.FC<EnhancedModalListProps> = ({
                       <AvatarImage 
                         src={`/api/proxy?url=${encodeURIComponent(user.profilePhotoURL)}`} 
                         alt={user.username} 
+                        className='object-cover'
                       />
                       <AvatarFallback>{user.displayName.slice(0,2)}</AvatarFallback>
                     </Avatar>

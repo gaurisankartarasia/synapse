@@ -79,7 +79,7 @@ export default function UploadPage() {
           onClick={() => setIsModalOpen(true)}
         >
           <Avatar className="h-14 w-14">
-            <AvatarImage src={profile?.profilePhotoURL} alt="user" />
+            <AvatarImage src={profile?.profilePhotoURL} alt="user" className='object-cover'/>
             <AvatarFallback>{profile?.username.slice(0, 1)}</AvatarFallback>
           </Avatar>
         </Card>

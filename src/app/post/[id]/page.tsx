@@ -214,7 +214,7 @@ const PostPage = () => {
 
 
         <Avatar>
-          <AvatarImage src={post.profilePhotoURL} alt={post.username} />
+          <AvatarImage src={post.profilePhotoURL} alt={post.username} className='object-cover'/>
           <AvatarFallback>{post.username.slice(0, 2)}</AvatarFallback>
         </Avatar>
         

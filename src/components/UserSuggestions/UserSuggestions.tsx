@@ -14,6 +14,11 @@ import { setFollowStatus, toggleFollow } from '@/redux/features/followSlice';
 import { fetchSuggestedUsers } from '@/redux/features/suggestionSlice';
 import { Spinner } from '../ui/spinner';
 import { UserHoverCard } from '../user-profile-hover-card';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 
 export default function UserSuggestions() {
   const dispatch = useDispatch<AppDispatch>();
@@ -77,13 +82,11 @@ export default function UserSuggestions() {
           return (
             <div key={user.uid} className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <Image
-                  src={user.profilePhotoURL || "/profile-default-photo.svg"}
-                  alt={user.username}
-                  width={40}
-                  height={40}
-                  className="rounded-md"
-                />
+                
+                 <Avatar>
+      <AvatarImage src={user.profilePhotoURL} alt={user.username} className='object-cover' />
+      <AvatarFallback>{user.username.slice(0,1)}</AvatarFallback>
+    </Avatar>
                 <div>
                   <div className='flex'>
                     <UserHoverCard username={user.username} >

@@ -19,7 +19,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
       {/* Main Image */}
    
       <div 
-  className="relative aspect-video w-full overflow-hidden rounded-md cursor-pointer z-10"
+  className="relative aspect-video w-full overflow-hidden rounded-md cursor-pointer z-0"
   onClick={() => setIsZoomed(true)}
 >
 

@@ -73,7 +73,7 @@ const MutualFollowers: React.FC<MutualFollowersProps> = ({ username, onUserClick
                 onClick={() => onUserClick?.(follower.username)}
               >              
                 <Avatar className='h-6 w-6 cursor-pointer'>
-                  <AvatarImage src={follower.profilePhotoURL} />
+                  <AvatarImage src={follower.profilePhotoURL} className='object-cover' />
                   <AvatarFallback>
                     {follower.username.slice(0,2)}
                   </AvatarFallback>
