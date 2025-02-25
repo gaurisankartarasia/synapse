@@ -32,7 +32,6 @@
     "@types/fluent-ffmpeg": "^2.1.27",
     "@types/formidable": "^3.4.5",
     "and": "^0.0.3",
-    "axios": "^1.7.9",
     "browser-image-compression": "^2.0.2",
     "bun": "^1.2.2",
     "class-variance-authority": "^0.7.1",

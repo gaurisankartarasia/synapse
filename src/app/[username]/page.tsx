@@ -1,299 +1,5 @@
 
 
-// //src/app/[username]/page.tsx
-
-// "use client";
-
-// import React, { useState, useCallback, useEffect } from "react";
-// import { useParams, useRouter } from "next/navigation";
-// import { ProfileHeader } from "./ProfileHeader";
-// import { FollowStats } from "./FollowStats";
-// import { FollowButton } from "./FollowButton";
-// import EnhancedModalList from "./ModalList";
-// import { ChatButton } from "./ChatButton";
-// import UserPosts from "../profile/Posts";
-// import { ProfileData } from "@/types/profile";
-// import { useDispatch, useSelector } from "react-redux";
-// import { AppDispatch, RootState } from "../../redux/store";
-// import {
-//   toggleFollow,
-//   setFollowStatus,
-// } from "../../redux/features/followSlice";
-// import MutualFollowers from "./MutualFollowers";
-// import { useAuth } from "@/hooks/useAuth";
-// import { Button } from "@/components/ui/button";
-// import { Spinner } from "@/components/ui/spinner";
-
-// const PublicProfilePage: React.FC = () => {
-//   const params = useParams();
-//   const username = params?.username as string;
-//   const router = useRouter();
-//   const dispatch = useDispatch<AppDispatch>();
-//   const { user: authUser } = useAuth();
-
-//   const [profileData, setProfileData] = useState<ProfileData | null>(null);
-//   const [isLoading, setIsLoading] = useState(false);
-//   const [followersList, setFollowersList] = useState<any[]>([]);
-//   const [followingList, setFollowingList] = useState<any[]>([]);
-//   const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
-//   const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
-//   const [loadingModal, setLoadingModal] = useState<boolean>(false);
-
-//   // Get follow state from Redux with default values to ensure type safety
-//   const followStatus = useSelector(
-//     (state: RootState) =>
-//       state.follow.followStatus[username] ?? {
-//         isFollowing: false,
-//         isRequested: false,
-//         followerCount: 0,
-//         loading: false,
-//       }
-//   );
-
-//   const fetchUserData = useCallback(async () => {
-//     setIsLoading(true);
-//     try {
-
-      
-
-//       if (!authUser) {
-//         return;
-//       }
-
-//       const response = await fetch(
-//         `/api/user-profile/query?username=${username}`,
-//         {
-//           credentials: "include",
-//         }
-//       );
-
-//       if (!response.ok) {
-//         if (response.status === 403) {
-//           console.log("Content not available - User may be blocked");
-//         }
-//         router.back();
-//         return; 
-//       }
-
-//       const data = await response.json();
-//       setProfileData(data);
-
-//       // Initialize follow status in Redux
-//       dispatch(
-//         setFollowStatus({
-//           username: data.username,
-//           isFollowing: data.isFollowing,
-//           isRequested: data.isRequested,
-//           followerCount: data.followerCount,
-//         })
-//       );
-
-//       setIsLoading(false);
-//     } catch (error) {
-//       console.error("Error fetching user data:", error);
-//     }
-//   }, [username, router, dispatch, authUser]);
-
-//   const fetchModalData = useCallback(
-//     async (type: "followers" | "following") => {
-//       setLoadingModal(true);
-//       try {
-//         const endpoint =
-//           type === "followers"
-//             ? `/api/followers_list/query?username=${username}`
-//             : `/api/followings_list/query?username=${username}`;
-
-//         const response = await fetch(endpoint, {
-//           credentials: "include",
-//         });
-
-//         if (response.ok) {
-//           const data = await response.json();
-//           if (type === "followers") {
-//             setFollowersList(data.followers || []);
-//           } else {
-//             setFollowingList(data.following || []);
-//           }
-//         }
-//       } catch (error) {
-//         console.error(error);
-//       } finally {
-//         setLoadingModal(false);
-//       }
-//     },
-//     [username]
-//   );
-
-//   useEffect(() => {
-//     fetchUserData();
-//   }, [fetchUserData, authUser]);
-
-//   const handleModalOpen = (type: "followers" | "following") => {
-//     if (type === "followers") {
-//       setIsFollowersModalOpen(true);
-//       fetchModalData("followers");
-//     } else {
-//       setIsFollowingModalOpen(true);
-//       fetchModalData("following");
-//     }
-//   };
-
-//   const handleModalClose = (type: "followers" | "following") => {
-//     if (type === "followers") {
-//       setIsFollowersModalOpen(false);
-//     } else {
-//       setIsFollowingModalOpen(false);
-//     }
-//     window.history.pushState(null, "", `/${username}`);
-//   };
-
-//   const handleFollow = useCallback(() => {
-//     if (!authUser || followStatus.loading || !profileData) return;
-//     dispatch(toggleFollow(username));
-//   }, [dispatch, username, profileData, authUser, followStatus.loading]);
-
-//   const currentFollowState = followStatus.isFollowing
-//     ? "following"
-//     : followStatus.isRequested
-//     ? "requested"
-//     : "none";
-
-//   const goToSettingsPage = () => {
-//     router.push("/settings");
-//   };
-
-//   const goToEditPage = () => {
-//     router.push("/profile/edit");
-//   };
-
-//   const handleRemoveFollower = async (followerUid: string) => {
-//     try {
-//       const response = await fetch("/api/remove-follower", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         credentials: "include",
-//         body: JSON.stringify({ followerUid }),
-//       });
-
-//       if (response.ok) {
-//         // Update followers list
-//         setFollowersList((prev) =>
-//           prev.filter((user) => user.uid !== followerUid)
-//         );
-//         // Update follower count in Redux
-//         dispatch(
-//           setFollowStatus({
-//             username,
-//             followerCount: (followStatus.followerCount || 0) - 1,
-//             isFollowing: followStatus.isFollowing,
-//             isRequested: followStatus.isRequested,
-//           })
-//         );
-//       }
-//     } catch (error) {
-//       console.error("Error removing follower:", error);
-//     }
-//   };
-
-//   if (isLoading) {
-//     return (
-//       <div className="flex justify-center items-center">
-//         <Spinner />
-//       </div>
-//     );
-//   }
-
-//   if (!profileData) return null;
-
-//   return (
-//     <main className="">
-//       <ProfileHeader
-//         profilePhotoURL={profileData.profilePhotoURL || "/default.webp"}
-//         username={profileData.username}
-//         displayName={profileData.displayName || profileData.username}
-//         isVerified={profileData.isVerified}
-//         createdAt={profileData.createdAt}
-//         bio={profileData.bio}
-//       />
-//       <FollowStats
-//         profileUid={profileData.uid} // Pass user ID for ownership check
-//         followerCount={followStatus.followerCount}
-//         followingCount={profileData.followingCount}
-//         followStatus={currentFollowState}
-//         onFollowersClick={() => handleModalOpen("followers")}
-//         onFollowingClick={() => handleModalOpen("following")}
-//       />
-//       <MutualFollowers
-//         username={username}
-//         onUserClick={(username) => router.push(`/${username}`)}
-//       />
-
-//       <div className="flex justify-center gap-2">
-//         {profileData.uid === authUser?.uid ? (
-//           <Button variant="secondary" onClick={goToEditPage}>
-//             Edit Profile
-//           </Button>
-//         ) : (
-//           <FollowButton
-//             isUpdating={followStatus.loading ?? false}
-//             followStatus={currentFollowState}
-//             onFollowClick={handleFollow}
-//           />
-//         )}
-
-//         {profileData.uid === authUser?.uid ? (
-//           <Button variant="secondary" onClick={goToSettingsPage}>
-//             Settings
-//           </Button>
-//         ) : (
-//           <ChatButton targetUserId={profileData.uid} />
-//         )}
-//       </div>
-
-//       <EnhancedModalList
-      
-//         isOpen={isFollowersModalOpen}
-//         onClose={() => handleModalClose("followers")}
-//         title="Followers"
-//         loading={loadingModal}
-//         items={followersList}
-//         isOwnProfile={profileData?.uid === authUser?.uid}
-//         onRemoveFollower={handleRemoveFollower}
-//       />
-//       <EnhancedModalList
-//         isOpen={isFollowingModalOpen}
-//         onClose={() => handleModalClose("following")}
-//         title="Following"
-//         loading={loadingModal}
-//         items={followingList}
-//         isOwnProfile={profileData?.uid === authUser?.uid}
-//       />
-
-//       <UserPosts uid={profileData.uid} currentUserUid={authUser?.uid} />
-//     </main>
-//   );
-// };
-
-// export default PublicProfilePage;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //src/app/[username]/page.tsx
 
 "use client";
@@ -317,7 +23,6 @@ import MutualFollowers from "./MutualFollowers";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import axios, { AxiosError } from 'axios';
 
 const PublicProfilePage: React.FC = () => {
   const params = useParams();
@@ -345,39 +50,34 @@ const PublicProfilePage: React.FC = () => {
       }
   );
 
-
-
- 
-
   const fetchUserData = useCallback(async () => {
     setIsLoading(true);
-    
-    // Guard clause for missing auth
-    if (!authUser) {
-      setIsLoading(false);
-      return;
-    }
-    
     try {
-      // Create an axios instance with defaults for better performance
-      const axiosInstance = axios.create({
-        baseURL: '/api',
-        timeout: 5000, // 5 second timeout
-        withCredentials: true, // Equivalent to credentials: "include"
-     
-      });
+
       
-      // Use axios instead of fetch
-      const response = await axiosInstance.get(`/user-profile/query`, {
-        params: { username },
-      });
-      
-      // Axios automatically throws on non-2xx responses, so we handle differently
-      const data = response.data; // No need for .json()
-      
-      // Set profile data
+
+      if (!authUser) {
+        return;
+      }
+
+      const response = await fetch(
+        `/api/user-profile/query?username=${username}`,
+        {
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        if (response.status === 403) {
+          console.log("Content not available - User may be blocked");
+        }
+        router.back();
+        return; 
+      }
+
+      const data = await response.json();
       setProfileData(data);
-      
+
       // Initialize follow status in Redux
       dispatch(
         setFollowStatus({
@@ -387,26 +87,10 @@ const PublicProfilePage: React.FC = () => {
           followerCount: data.followerCount,
         })
       );
-    } catch (error: unknown) {
-      // Type guard for Axios errors
-      if (axios.isAxiosError(error)) {
-        // Now TypeScript knows this is an AxiosError
-        const axiosError = error as AxiosError;
-        
-        if (axiosError.response) {
-          if (axiosError.response.status === 403) {
-            console.log("Content not available - User may be blocked");
-          }
-          router.back();
-          return;
-        }
-      }
-      
-      // For any other types of errors
-      console.error("Error fetching user data:", error);
-    } finally {
-      // Always set loading to false when done, whether success or error
+
       setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
     }
   }, [username, router, dispatch, authUser]);
 
@@ -414,71 +98,31 @@ const PublicProfilePage: React.FC = () => {
     async (type: "followers" | "following") => {
       setLoadingModal(true);
       try {
-        const axiosInstance = axios.create({
-          baseURL: "/api",
-          timeout: 5000,
-          withCredentials: true,
-        });
-  
         const endpoint =
-          type === "followers" ? "/followers_list/query" : "/followings_list/query";
-        
-        const response = await axiosInstance.get(endpoint, {
-          params: { username },
+          type === "followers"
+            ? `/api/followers_list/query?username=${username}`
+            : `/api/followings_list/query?username=${username}`;
+
+        const response = await fetch(endpoint, {
+          credentials: "include",
         });
-  
-        const data = response.data;
-        if (type === "followers") {
-          setFollowersList(data.followers || []);
-        } else {
-          setFollowingList(data.following || []);
+
+        if (response.ok) {
+          const data = await response.json();
+          if (type === "followers") {
+            setFollowersList(data.followers || []);
+          } else {
+            setFollowingList(data.following || []);
+          }
         }
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.error("Axios error fetching modal data:", error.response?.data || error.message);
-        } else {
-          console.error("Unexpected error:", error);
-        }
+        console.error(error);
       } finally {
         setLoadingModal(false);
       }
     },
     [username]
   );
-  
-  const handleRemoveFollower = async (followerUid: string) => {
-    try {
-      const axiosInstance = axios.create({
-        baseURL: "/api",
-        timeout: 5000,
-        withCredentials: true,
-      });
-  
-      await axiosInstance.post("/remove-follower", { followerUid }, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  
-      setFollowersList((prev) => prev.filter((user) => user.uid !== followerUid));
-      
-      dispatch(
-        setFollowStatus({
-          username,
-          followerCount: (followStatus.followerCount || 0) - 1,
-          isFollowing: followStatus.isFollowing,
-          isRequested: followStatus.isRequested,
-        })
-      );
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error("Axios error removing follower:", error.response?.data || error.message);
-      } else {
-        console.error("Unexpected error:", error);
-      }
-    }
-  };
-  
 
   useEffect(() => {
     fetchUserData();
@@ -522,7 +166,36 @@ const PublicProfilePage: React.FC = () => {
     router.push("/profile/edit");
   };
 
- 
+  const handleRemoveFollower = async (followerUid: string) => {
+    try {
+      const response = await fetch("/api/remove-follower", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ followerUid }),
+      });
+
+      if (response.ok) {
+        // Update followers list
+        setFollowersList((prev) =>
+          prev.filter((user) => user.uid !== followerUid)
+        );
+        // Update follower count in Redux
+        dispatch(
+          setFollowStatus({
+            username,
+            followerCount: (followStatus.followerCount || 0) - 1,
+            isFollowing: followStatus.isFollowing,
+            isRequested: followStatus.isRequested,
+          })
+        );
+      }
+    } catch (error) {
+      console.error("Error removing follower:", error);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -604,3 +277,18 @@ const PublicProfilePage: React.FC = () => {
 };
 
 export default PublicProfilePage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

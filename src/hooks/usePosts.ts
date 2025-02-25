@@ -1,51 +1,5 @@
-// // src/app/post/hooks/usePosts.ts
-// import { useState, useRef, useCallback } from 'react';
-// import { Post } from '@/types/post';
-
-// export const usePosts = () => {
-//   const [posts, setPosts] = useState<Post[]>([]);
-//   const [loading, setLoading] = useState(true);
-//   const [hasMore, setHasMore] = useState(true);
-//   const [lastPostId, setLastPostId] = useState<string | null>(null);
-//   const hasFetchedInitial = useRef(false);
-
-//   const fetchPosts = async (lastId: string | null = null) => {
-//     try {
-//       const url = `/api/post/display/query${lastId ? `?lastPostId=${lastId}` : ""}`;
-//       const response = await fetch(url);
-//       if (!response.ok) throw new Error("Failed to fetch posts");
-
-//       const data = await response.json();
-//       setPosts((prev) => (lastId ? [...prev, ...data.posts] : data.posts));
-//       return data.posts;
-//     } catch (error) {
-//       console.error(error);
-//       alert("Error fetching posts");
-//       return [];
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return {
-//     posts,
-//     setPosts,
-//     loading,
-//     hasMore,
-//     lastPostId,
-//     hasFetchedInitial,
-//     fetchPosts
-//   };
-// };
-
-
-
-
-
-
-
-import { useState, useRef } from 'react';
-import axios from 'axios';
+// src/app/post/hooks/usePosts.ts
+import { useState, useRef, useCallback } from 'react';
 import { Post } from '@/types/post';
 
 export const usePosts = () => {
@@ -57,21 +11,15 @@ export const usePosts = () => {
 
   const fetchPosts = async (lastId: string | null = null) => {
     try {
-      const axiosInstance = axios.create({
-        baseURL: '/api',
-        timeout: 5000,
-      });
+      const url = `/api/post/display/query${lastId ? `?lastPostId=${lastId}` : ""}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Failed to fetch posts");
 
-      const { data } = await axiosInstance.get(`/post/display/query${lastId ? `?lastPostId=${lastId}` : ""}`);
-      
+      const data = await response.json();
       setPosts((prev) => (lastId ? [...prev, ...data.posts] : data.posts));
       return data.posts;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error('Axios error fetching posts:', error.response?.data || error.message);
-      } else {
-        console.error('Unexpected error:', error);
-      }
+      console.error(error);
       alert("Error fetching posts");
       return [];
     } finally {
@@ -89,3 +37,8 @@ export const usePosts = () => {
     fetchPosts
   };
 };
+
+
+
+
+

@@ -119,10 +119,7 @@
 
 
 
-
-
 import { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
 import Image from 'next/image';
 import Modal from '@/components/Modal';
 import { LikesModalProps, LikeUserResponse } from '@/types/likedby';
@@ -137,12 +134,14 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
     
     try {
       setLoading(true);
-      const response = await axios.get(`/api/post/like/likedby`, {
-        params: { postId },
-        withCredentials: true 
+      const response = await fetch(`/api/post/like/likedby?postId=${postId}`, {
+        credentials: 'include',
       });
       
-      setUsers(response.data.users || []);
+      if (!response.ok) throw new Error("Failed to fetch users");
+      
+      const data = await response.json();
+      setUsers(data.users || []);
     } catch (error) {
       console.error("Error fetching users:", error);
       setUsers([]);
@@ -152,49 +151,30 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
   }, [postId, isOpen]);
 
   useEffect(() => {
-    let isMounted = true;
-
-    const loadUsers = async () => {
-      if (isOpen && postId) {
-        await fetchUsers();
-      }
-    };
-
-    loadUsers();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [isOpen, postId, fetchUsers]); // Added fetchUsers to dependency array
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (diffInSeconds < 60) {
-      return 'just now';
-    } else if (diffInSeconds < 3600) {
-      const minutes = Math.floor(diffInSeconds / 60);
-      return `${minutes}m ago`;
-    } else if (diffInSeconds < 86400) {
-      const hours = Math.floor(diffInSeconds / 3600);
-      return `${hours}h ago`;
-    } else if (diffInSeconds < 604800) {
-      const days = Math.floor(diffInSeconds / 86400);
-      return `${days}d ago`;
-    } else {
-      return date.toLocaleDateString();
+    if (isOpen && postId) {
+      fetchUsers();
     }
-  };
+  }, [isOpen, postId, fetchUsers]);
 
-  // Reset users when modal closes
   useEffect(() => {
     if (!isOpen) {
       setUsers([]);
       setLoading(false);
     }
   }, [isOpen]);
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    if (diffInSeconds < 60) return 'just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+    
+    return date.toLocaleDateString();
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Liked by">
@@ -221,9 +201,7 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
                 </div>
                 <div className="flex-grow">
                   <h3 className="font-medium t900">{user.username}</h3>
-                  <p className="text-sm t500">
-                    {formatDate(user.timestamp)}
-                  </p>
+                  <p className="text-sm t500">{formatDate(user.timestamp)}</p>
                 </div>
               </div>
             ))}
