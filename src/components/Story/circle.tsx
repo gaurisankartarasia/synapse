@@ -2,6 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Story } from '@/types/story';
+import { Card } from '../ui/card';
 
 interface StoryCircleProps {
   story: Story;
@@ -14,9 +15,9 @@ export function StoryCircle({ story, onClick }: StoryCircleProps) {
       className="flex flex-col items-center space-y-1 cursor-pointer"
       onClick={onClick}
     >
-      <div className="w-16 h-16 rounded-md p-[2px] bg-gradient-to-tr from-yellow-400 to-pink-500">
-        <div className="w-full h-full rounded-md p-[2px] bg-white">
-          <div className="relative w-full h-full rounded-md overflow-hidden">
+      <div className="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-yellow-400 to-pink-500">
+        <Card className="w-full h-full rounded-full p-[2px] bg-white">
+          <div className="relative w-full h-full rounded-full overflow-hidden">
             <Image
               src={story.imageUrl}
               alt={story.title}
@@ -24,7 +25,7 @@ export function StoryCircle({ story, onClick }: StoryCircleProps) {
               className="object-cover"
             />
           </div>
-        </div>
+        </Card>
       </div>
       <span className="text-xs text-gray-700 truncate max-w-[70px] text-center">
         {story.username}

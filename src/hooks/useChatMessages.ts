@@ -15,7 +15,7 @@ import {
 } from 'firebase/firestore';
 import { Message } from '../types/chat';
 
-const BATCH_SIZE = 50;
+const BATCH_SIZE = 12;
 
 export const useChatMessages = (userId: string, currentUserId: string) => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -133,6 +133,5 @@ export const useChatMessages = (userId: string, currentUserId: string) => {
 
   return { messages, loading, error, loadMoreMessages, hasMore };
 };
-
 
 

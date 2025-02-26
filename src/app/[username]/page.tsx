@@ -232,7 +232,7 @@ const PublicProfilePage: React.FC = () => {
 
       <div className="flex justify-center gap-2">
         {profileData.uid === authUser?.uid ? (
-          <Button variant="secondary" onClick={goToEditPage}>
+          <Button variant='destructive' onClick={goToEditPage}>
             Edit Profile
           </Button>
         ) : (

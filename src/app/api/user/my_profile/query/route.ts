@@ -1,4 +1,4 @@
-// src/app/api/profile/route.ts
+// src/app/api/user/my_profile/route.ts
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { verifyJWT } from '@/lib/jwt';
@@ -39,7 +39,17 @@ export async function GET() {
     }
 
     const userData = userDoc.data();
-    return NextResponse.json({ user: userData });
+
+    const user ={
+profilePhotoURL:   userData?.profilePhotoURL,
+username:userData?.username,
+displayname:userData?.displayName,
+isVerified: userData?.isVerified
+    }
+
+ 
+
+    return NextResponse.json({  user });
     
   } catch (error) {
     console.error('Profile fetch error:', error);

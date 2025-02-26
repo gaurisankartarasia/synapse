@@ -1,6 +1,5 @@
 // src/components/Profile.tsx
 import { useProfile } from '@/hooks/useProfile';
-import Image from 'next/image';
 import { Spinner } from './ui/spinner';
 import Link from 'next/link';
 import {
@@ -17,7 +16,7 @@ export function Profile() {
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <p> {error}</p>;
   }
 
   if (!profile) {

@@ -87,7 +87,8 @@ export default function UploadPage() {
           <Plus className="w-4 h-4 text-gray-700" />
         </div>
       </div>
-      <p className="text-center"></p>
+      <p><small className="text-center">Add story</small></p>
+      
 
       {/* Image Upload Modal */}
       <Modal

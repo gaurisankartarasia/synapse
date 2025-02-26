@@ -103,7 +103,7 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
               alt={`${userInfo.username}'s avatar`} 
               height={30} 
               width={30} 
-              className="rounded-md mr-4" 
+              className="rounded-full object-cover mr-4" 
             />
             <h1 className="text-lg font-semibold">{userInfo.username}</h1>
             {userInfo.isVerified && (
