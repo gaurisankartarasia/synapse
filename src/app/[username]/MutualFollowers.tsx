@@ -1,6 +1,7 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
-import { auth } from "@/lib/firebaseClient";
+// import { auth } from "@/lib/firebaseClient";
+import {useAuth} from '@/hooks/useAuth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface MutualFollower {
@@ -17,6 +18,7 @@ interface MutualFollowersProps {
 }
 
 const MutualFollowers: React.FC<MutualFollowersProps> = ({ username, onUserClick }) => {
+  const {user} = useAuth()
   const [mutualFollowers, setMutualFollowers] = useState<MutualFollower[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -26,15 +28,15 @@ const MutualFollowers: React.FC<MutualFollowersProps> = ({ username, onUserClick
       setLoading(true);
       setError(null);
       
-      const token = await auth.currentUser?.getIdToken();
+      // const token = await auth.currentUser?.getIdToken();
       
-      if (!token) {
+      if (!user) {
         setError('Authentication required');
         return;
       }
 
       const response = await fetch(`/api/mutual-followers?username=${username}`, {
-        headers: { Authorization: `Bearer ${token}` }
+       credentials:"include"
       });
 
       if (!response.ok) {
@@ -48,7 +50,7 @@ const MutualFollowers: React.FC<MutualFollowersProps> = ({ username, onUserClick
     } finally {
       setLoading(false);
     }
-  }, [username]);
+  }, [user, username]);
 
   useEffect(() => {
     fetchMutualFollowers();

@@ -4,10 +4,11 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { auth } from '../../lib/firebaseClient';
 
 interface FollowState {
-  followStatus: {
+  followStatus: { 
     [key: string]: {
       isFollowing: boolean;
       isRequested: boolean;
+      isFollowingWithoutFollowback:boolean;
       followerCount: number;
       loading?: boolean; // Add loading state per user
     };
@@ -55,10 +56,11 @@ const followSlice = createSlice({
   initialState,
   reducers: {
     setFollowStatus: (state, action) => {
-      const { username, isFollowing, isRequested, followerCount } = action.payload;
+      const { username, isFollowing, isRequested, isFollowingWithoutFollowback, followerCount } = action.payload;
       state.followStatus[username] = {
         isFollowing,
         isRequested,
+        isFollowingWithoutFollowback,
         followerCount,
         loading: false,
       };
@@ -74,6 +76,7 @@ const followSlice = createSlice({
           state.followStatus[username] = {
             isFollowing: false,
             isRequested: false,
+            isFollowingWithoutFollowback:false,
             followerCount: 0,
             loading: true,
           };
@@ -85,6 +88,7 @@ const followSlice = createSlice({
         state.followStatus[targetUsername] = {
           isFollowing: status === 'Following',
           isRequested: status === 'Follow request sent',
+          isFollowingWithoutFollowback: status === 'Follow back',
           followerCount,
           loading: false,
         };

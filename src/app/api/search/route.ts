@@ -71,7 +71,7 @@
 
 
 
-
+//src/app/api/search/route.ts
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verifyJWT } from "@/lib/jwt";

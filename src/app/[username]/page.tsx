@@ -45,6 +45,7 @@ const PublicProfilePage: React.FC = () => {
       state.follow.followStatus[username] ?? {
         isFollowing: false,
         isRequested: false,
+        isFollowingWithoutFollowback: false,
         followerCount: 0,
         loading: false,
       }
@@ -84,6 +85,7 @@ const PublicProfilePage: React.FC = () => {
           username: data.username,
           isFollowing: data.isFollowing,
           isRequested: data.isRequested,
+          isFollowingWithoutFollowback: data.isFollowingWithoutFollowback,
           followerCount: data.followerCount,
         })
       );
@@ -156,6 +158,8 @@ const PublicProfilePage: React.FC = () => {
     ? "following"
     : followStatus.isRequested
     ? "requested"
+    :followStatus.isFollowingWithoutFollowback
+    ? "followBack"
     : "none";
 
   const goToSettingsPage = () => {
@@ -189,6 +193,7 @@ const PublicProfilePage: React.FC = () => {
             followerCount: (followStatus.followerCount || 0) - 1,
             isFollowing: followStatus.isFollowing,
             isRequested: followStatus.isRequested,
+            isFollowingWithoutFollowback: followStatus.isFollowingWithoutFollowback
           })
         );
       }
@@ -217,6 +222,7 @@ const PublicProfilePage: React.FC = () => {
         createdAt={profileData.createdAt}
         bio={profileData.bio}
       />
+
       <FollowStats
         profileUid={profileData.uid} // Pass user ID for ownership check
         followerCount={followStatus.followerCount}
@@ -225,6 +231,11 @@ const PublicProfilePage: React.FC = () => {
         onFollowersClick={() => handleModalOpen("followers")}
         onFollowingClick={() => handleModalOpen("following")}
       />
+
+{followStatus.isFollowingWithoutFollowback && (
+  <p className="text-sm text-gray-500">This user follows you but you don't.</p>
+)}
+
       <MutualFollowers
         username={username}
         onUserClick={(username) => router.push(`/${username}`)}
@@ -232,7 +243,7 @@ const PublicProfilePage: React.FC = () => {
 
       <div className="flex justify-center gap-2">
         {profileData.uid === authUser?.uid ? (
-          <Button variant='destructive' onClick={goToEditPage}>
+          <Button variant='outline' onClick={goToEditPage}>
             Edit Profile
           </Button>
         ) : (
@@ -244,7 +255,7 @@ const PublicProfilePage: React.FC = () => {
         )}
 
         {profileData.uid === authUser?.uid ? (
-          <Button variant="secondary" onClick={goToSettingsPage}>
+          <Button variant="outline" onClick={goToSettingsPage}>
             Settings
           </Button>
         ) : (

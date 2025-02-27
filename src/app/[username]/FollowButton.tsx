@@ -64,6 +64,8 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
         "Following"
       ) : followStatus === "requested" ? (
         "Requested"
+           ) : followStatus === "followBack" ? (
+        "Follow back"
       ) : (
         "Follow"
       )}

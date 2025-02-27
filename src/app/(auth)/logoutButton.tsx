@@ -2,7 +2,6 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
 import { auth, signOut } from '@/lib/firebaseClient'
 
 const LogoutButton: React.FC = () => {

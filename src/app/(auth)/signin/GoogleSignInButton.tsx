@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 export default function GoogleSignInButton() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error } = useSelector((state: RootState) => state.auth);
+  const { loading } = useSelector((state: RootState) => state.auth);
 
   const handleGoogleSignIn = async () => {
     try {

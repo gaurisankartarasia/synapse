@@ -86,7 +86,7 @@ export const FollowRequest = ({ user, onActionComplete }: FollowRequestProps) =>
         <Button
           onClick={() => handleAction('reject')}
           disabled={isLoading}
-          variant="secondary"
+          variant="outline"
         >
           Reject
         </Button>

@@ -43,7 +43,7 @@ export async function GET() {
     const user ={
 profilePhotoURL:   userData?.profilePhotoURL,
 username:userData?.username,
-displayname:userData?.displayName,
+displayName:userData?.displayName,
 isVerified: userData?.isVerified
     }
 

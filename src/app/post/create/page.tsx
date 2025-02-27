@@ -228,7 +228,7 @@
 //         <Button
 //           onClick={() => router.push("/")}
 //           disabled={loading}
-//           variant="secondary"        >
+//           variant="outline"        >
 //           Cancel
 //         </Button>
 //       </div>
@@ -244,7 +244,175 @@
 
 
 
-// src/app/post/create/page.tsx
+// // src/app/post/create/page.tsx
+// "use client";
+// import { useState, useEffect } from "react";
+// import { useRouter } from "next/navigation";
+// import { useDispatch, useSelector } from 'react-redux';
+// import { AppDispatch, RootState } from '@/redux/store';
+// import { createPost, setDirty, resetPostState } from '@/redux/features/postSlice';
+// import { Switch } from "@/components/ui/switch";
+// import { Label } from "@/components/ui/label";
+// import { Textarea } from '@/components/ui/textarea';
+// import { Button } from "@/components/ui/button";
+// import { Progress } from "@/components/ui/progress";
+// import { ImageUploader } from './components/ImageUploader';
+// import { HashtagInput } from './components/HashtagInput';
+// import { uploadImages } from '@/utils/imageUpload';
+// import { useAuth } from '@/hooks/useAuth';
+
+// const PostPage = () => {
+//   const router = useRouter();
+//   const dispatch = useDispatch<AppDispatch>();
+//   const { loading: postLoading, error: postError } = useSelector((state: RootState) => state.post);
+//   const { user, loading: authLoading, error: authError, isAuthenticated } = useAuth();
+  
+//   const [content, setContent] = useState("");
+//   const [hashtags, setHashtags] = useState<string[]>([]);
+//   const [images, setImages] = useState<File[]>([]);
+//   const [allowCommenting, setAllowCommenting] = useState<boolean>(true);
+//   const [uploadLoading, setUploadLoading] = useState(false);
+
+//   // Redirect if not authenticated
+//   useEffect(() => {
+//     if (!authLoading && !isAuthenticated) {
+//       router.push("/signin");
+//     }
+//   }, [authLoading, isAuthenticated, router]);
+
+//   useEffect(() => {
+//     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+//       if (content || images.length > 0) {
+//         dispatch(setDirty(true));
+//         e.preventDefault();
+//         e.returnValue = '';
+//       }
+//     };
+
+//     window.addEventListener('beforeunload', handleBeforeUnload);
+
+//     return () => {
+//       window.removeEventListener('beforeunload', handleBeforeUnload);
+//       dispatch(resetPostState());
+//     };
+//   }, [content, images, dispatch]);
+
+//   const handleSubmit = async () => {
+//     if (!isAuthenticated || !user) {
+//       return;
+//     }
+
+//     try {
+//       setUploadLoading(true);
+      
+//       // Get fresh authentication state by making API request
+//       const authResponse = await fetch('/api/auth/verify_jwt', {
+//         credentials: 'include'
+//       });
+      
+//       if (!authResponse.ok) {
+//         throw new Error('Authentication failed. Please log in again.');
+//       }
+
+//       const uploadedImageURLs = await uploadImages(images);
+      
+//       await dispatch(createPost({
+//         content,
+//         imageURLs: uploadedImageURLs,
+//         hashtags,
+//         allowCommenting,
+//         uid: user.id
+//       })).unwrap();
+      
+//       router.push("/");
+//     } catch (error) {
+//       console.error("Error posting:", error);
+//     } finally {
+//       setUploadLoading(false);
+//     }
+//   };
+
+//   const isLoading = postLoading || authLoading || uploadLoading;
+//   const error = postError || authError;
+
+//   if (authLoading) {
+//     return (
+//       <div className="flex justify-center items-center min-h-screen">
+//         <Progress />
+//       </div>
+//     );
+//   }
+
+//   if (!isAuthenticated) {
+//     return null; // Redirect will happen in useEffect
+//   }
+
+//   return (
+//     <div className="p-4 max-w-2xl mx-auto">
+//       <h1 className="text-2xl font-bold mb-4">Create a post</h1>
+//       {isLoading && <Progress />}
+//       {error && <div className="text-red-500 mb-4">{error}</div>}
+
+//       <ImageUploader 
+//         onImagesChange={setImages}
+//         maxImages={4}
+//       />
+
+//       <Textarea
+//         value={content}
+//         onChange={(e) => {
+//           setContent(e.target.value);
+//           dispatch(setDirty(true));
+//         }}
+//         placeholder="Write your content here..."
+//         className="w-full p-2 mb-4 min-h-[200px]"
+//       />
+
+//       <HashtagInput
+//         onChange={(newHashtags) => {
+//           setHashtags(newHashtags);
+//           dispatch(setDirty(true));
+//         }}
+//       />
+
+//       <div className="flex items-center mb-4">
+//         <div className="flex items-center space-x-2">
+//           <Label htmlFor="allow-commenting">Allow Commenting</Label>  
+//           <Switch
+//             id="allow-commenting"
+//             checked={allowCommenting}
+//             onCheckedChange={(checked) => {
+//               setAllowCommenting(checked);
+//               dispatch(setDirty(true));
+//             }}
+//           /> 
+//         </div>
+//       </div>
+
+//       <div className="flex gap-4">
+//         <Button
+//           onClick={handleSubmit}
+//           disabled={isLoading}
+//         >
+//           Upload
+//         </Button>
+//         <Button
+//           onClick={() => router.push("/")}
+//           disabled={isLoading}
+//           variant="outline"
+//         >
+//           Cancel
+//         </Button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default PostPage;
+
+
+
+
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -253,11 +421,11 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { createPost, setDirty, resetPostState } from '@/redux/features/postSlice';
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Textarea } from '@/components/ui/textarea';
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import { Spinner } from "@/components/ui/spinner";
 import { ImageUploader } from './components/ImageUploader';
 import { HashtagInput } from './components/HashtagInput';
+import { MentionTextarea } from './components/TextArea';
 import { uploadImages } from '@/utils/imageUpload';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -337,9 +505,7 @@ const PostPage = () => {
 
   if (authLoading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Progress />
-      </div>
+     null
     );
   }
 
@@ -349,8 +515,8 @@ const PostPage = () => {
 
   return (
     <div className="p-4 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Create a post</h1>
-      {isLoading && <Progress />}
+      <b className="text-2xl mb-4">Create a post</b>
+      {isLoading && <Spinner />}
       {error && <div className="text-red-500 mb-4">{error}</div>}
 
       <ImageUploader 
@@ -358,10 +524,10 @@ const PostPage = () => {
         maxImages={4}
       />
 
-      <Textarea
+      <MentionTextarea
         value={content}
-        onChange={(e) => {
-          setContent(e.target.value);
+        onChange={(newContent) => {
+          setContent(newContent);
           dispatch(setDirty(true));
         }}
         placeholder="Write your content here..."
@@ -399,7 +565,7 @@ const PostPage = () => {
         <Button
           onClick={() => router.push("/")}
           disabled={isLoading}
-          variant="secondary"
+          variant="outline"
         >
           Cancel
         </Button>

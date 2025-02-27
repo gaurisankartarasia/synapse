@@ -39,6 +39,7 @@ export interface ProfileData {
   followingCount: number;
   isFollowing: boolean;
   isRequested: boolean;
+  isFollowingWithoutFollowback:boolean;
   blocked?: boolean;
 }
 
@@ -51,4 +52,4 @@ export interface FollowUser {
   isVerified: boolean;
 }
 
-export type FollowStatus = 'none' | 'following' | 'requested';
+export type FollowStatus = 'none' | 'following' | 'requested' | 'followBack' ;
