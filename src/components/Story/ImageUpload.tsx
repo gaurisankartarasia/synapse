@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { toast } from '@/hooks/use-toast';
 
 interface ImageUploadProps {
   onUploadComplete?: (storyId: string) => void;
@@ -45,11 +44,7 @@ export default function ImageUpload({ onUploadComplete }: ImageUploadProps) {
 
   const handleSubmit = async () => {
     if (!selectedFile || !title.trim()) {
-      toast({
-        title: "Error",
-        description: "Please provide both an image and a title",
-        variant: "destructive",
-      });
+     
       return;
     }
 
@@ -71,10 +66,7 @@ export default function ImageUpload({ onUploadComplete }: ImageUploadProps) {
 
       const { storyId } = await response.json();
       onUploadComplete?.(storyId);
-      toast({
-        title: "Success",
-        description: "Story uploaded successfully",
-      });
+    
       
       // Reset form
       setTitle('');
@@ -82,11 +74,7 @@ export default function ImageUpload({ onUploadComplete }: ImageUploadProps) {
       removeImage();
     } catch (error) {
       console.error('Upload error:', error);
-      toast({
-        title: "Error",
-        description: "Failed to upload story",
-        variant: "destructive",
-      });
+     
     } finally {
       setIsUploading(false);
     }

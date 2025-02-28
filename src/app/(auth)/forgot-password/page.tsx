@@ -5,6 +5,8 @@ import { auth, sendPasswordResetEmail, fetchSignInMethodsForEmail } from '@/lib/
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle, CardHeader, CardFooter, CardDescription } from '@/components/ui/card';
+import Link from 'next/link';
+
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -76,9 +78,9 @@ export default function ForgotPassword() {
         <CardFooter>
           <CardDescription>
             Remembered your password?{' '}
-            <a href="/signin" className="underline">
+            <Link href="/signin" className="underline">
               Sign in
-            </a>
+            </Link>
           </CardDescription>
         </CardFooter>
       </Card>

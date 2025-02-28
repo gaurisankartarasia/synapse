@@ -38,6 +38,9 @@ import UploadPage from "@/components/Story/uploadpage";
 import { Profile } from "@/components/profile-card";
 
 export default function Home() {
+
+ 
+
   return (
     <div className="flex flex-col lg:flex-row gap-4 px-4 lg:gap-8">
       {/* Main Feed Container */}
@@ -53,10 +56,11 @@ export default function Home() {
       </div>
 
       {/* Right Sidebar - User Suggestions */}
-      <div className="lg:w-80 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] lg:overflow-y-auto">
+      <div className="lg:w-96 lg:sticky lg:top-16 lg:h-[calc(100vh-1rem)] lg:overflow-y-auto">
         <Profile/>
         <UserSuggestions />
       </div>
     </div>
   );
 }
+

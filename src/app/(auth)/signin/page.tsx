@@ -157,13 +157,11 @@ import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardTitle, CardHeader, CardFooter, CardDescription } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
 
 export default function SignIn() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.auth);
-  const { toast } = useToast();
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -175,10 +173,7 @@ export default function SignIn() {
       if (signInWithEmail.fulfilled.match(resultAction)) {
         const { hasUsername } = resultAction.payload;
         
-        // Show success toast
-        toast({
-          description: "Signed in successfully!",
-        });
+       
 
         // Redirect user
         router.push( hasUsername ? "/" : "/username")

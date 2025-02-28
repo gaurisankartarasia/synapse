@@ -8,7 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { toast } from '@/hooks/use-toast';
 
 interface ProfileData {
   username: string;
@@ -42,11 +41,7 @@ const EditProfilePage = () => {
       setProfile(data);
       setPreviewUrl(data.profilePhotoURL);
     } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to load profile data',
-        variant: 'destructive',
-      });
+      
     }
   };
 
@@ -109,11 +104,7 @@ const EditProfilePage = () => {
         setImageFile(compressedFile);
         setPreviewUrl(URL.createObjectURL(compressedBlob));
       } catch (error) {
-        toast({
-          title: 'Error',
-          description: 'Failed to process image',
-          variant: 'destructive',
-        });
+       
       }
     }
   };
@@ -127,11 +118,7 @@ const EditProfilePage = () => {
       const response = await fetch('/api/user-profile/edit/verify');
       const { canEdit } = await response.json();
       if (!canEdit) {
-        toast({
-          title: 'Error',
-          description: 'You can only edit your profile twice in 15 days',
-          variant: 'destructive',
-        });
+        
         return;
       }
 
@@ -163,17 +150,10 @@ const EditProfilePage = () => {
 
       if (!updateRes.ok) throw new Error('Failed to update profile');
 
-      toast({
-        title: 'Success',
-        description: 'Profile updated successfully',
-      });
+   
       router.push(`/${profile.username}`);
     } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to update profile',
-        variant: 'destructive',
-      });
+      
     } finally {
       setLoading(false);
     }

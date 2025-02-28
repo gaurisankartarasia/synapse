@@ -58,3 +58,5 @@ const suggestionsSlice = createSlice({
 export const { resetSuggestions } = suggestionsSlice.actions;
 export default suggestionsSlice.reducer;
 
+
+

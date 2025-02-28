@@ -4,7 +4,6 @@ import { Loader2 } from 'lucide-react';
 import { StoryCircle } from './circle';
 import { StoryViewer } from './view';
 import { Story } from '@/types/story';
-import { toast } from '@/hooks/use-toast';
 import { Spinner } from '../ui/spinner';
 
 export default function StoriesContainer() {
@@ -33,11 +32,7 @@ export default function StoriesContainer() {
       setStories(formattedStories);
     } catch (error) {
       console.error('Error fetching stories:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load stories",
-        variant: "destructive",
-      });
+     
     } finally {
       setIsLoading(false);
     }

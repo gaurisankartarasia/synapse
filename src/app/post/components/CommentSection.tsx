@@ -1,5 +1,5 @@
 
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useCallback} from 'react';
 import { useAuth } from "@/hooks/useAuth";
 import { CommentItem } from "./commentItem"
 import { CommentForm } from './commentForm';
@@ -16,7 +16,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
   const [loading, setLoading] = useState(true);
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback( async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/post/comments?postId=${postId}`);
@@ -29,13 +29,13 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
     } finally {
       setLoading(false);
     }
-  };
+  },[postId])
 
   useEffect(() => {
     if (postId) {
       fetchComments();
     }
-  }, [postId]);
+  }, [postId, fetchComments]);
   
   // const handleAddComment = async (content: string) => {
   //   if (!user) return;
