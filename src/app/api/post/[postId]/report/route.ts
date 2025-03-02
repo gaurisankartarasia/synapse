@@ -1,11 +1,13 @@
-// // src/app/api/post/[id]/delete/route.ts
+// // src/app/api/post/[id]/report/route.ts
 // import { db } from "@/lib/firebaseAdmin";
 // import { NextRequest, NextResponse } from "next/server";
 // import { cookies } from "next/headers";
 // import { verifyJWT } from "@/lib/jwt";
 // import { CustomJWTPayload } from "@/types/auth";
 
-// export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+
+
+// export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
 //   try {
 //     const { id } = params;
 //     if (!id) {
@@ -24,27 +26,30 @@
 //       return NextResponse.json({ error: "Invalid token payload" }, { status: 401 });
 //     }
 
-//     const postRef = db.collection("posts").doc(id);
-//     const postDoc = await postRef.get();
-
-//     if (!postDoc.exists) {
-//       return NextResponse.json({ error: "Post not found" }, { status: 404 });
+//     const { reason } = await request.json();
+//     if (!reason) {
+//       return NextResponse.json({ error: "Report reason is required" }, { status: 400 });
 //     }
 
-//     const postData = postDoc.data();
+//     const reportRef = db.collection("reports").doc();
+//     await reportRef.set({
+//       postId: id,
+//       reportedBy: payload.uid,
+//       reason,
+//       reportedAt: new Date().toISOString(),
+//       report_type: "post"
+//     });
 
-//     if (postData?.uid !== payload.uid) {
-//       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-//     }
-
-//     await postRef.delete();
-
-//     return NextResponse.json({ message: "Post deleted successfully" });
+//     return NextResponse.json({ message: "Post reported successfully" });
 //   } catch (error) {
-//     console.error("Error deleting post:", error);
-//     return NextResponse.json({ error: "Failed to delete post." }, { status: 500 });
+//     console.error("Error reporting post:", error);
+//     return NextResponse.json({ error: "Failed to report post." }, { status: 500 });
 //   }
 // }
+
+
+
+
 
 
 
@@ -55,15 +60,15 @@ import { cookies } from "next/headers";
 import { verifyJWT } from "@/lib/jwt";
 import { CustomJWTPayload } from "@/types/auth";
 
-export async function DELETE(
+export async function POST(
   request: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ postId: string }> }
 ) {
   try {
     // Await the params promise
-    const { id } = await context.params;
+    const { postId } = await context.params;
 
-    if (!id) {
+    if (!postId) {
       return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
     }
 
@@ -79,24 +84,23 @@ export async function DELETE(
       return NextResponse.json({ error: "Invalid token payload" }, { status: 401 });
     }
 
-    const postRef = db.collection("posts").doc(id);
-    const postDoc = await postRef.get();
-
-    if (!postDoc.exists) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    const { reason } = await request.json();
+    if (!reason) {
+      return NextResponse.json({ error: "Report reason is required" }, { status: 400 });
     }
 
-    const postData = postDoc.data();
+    const reportRef = db.collection("reports").doc();
+    await reportRef.set({
+      postId: postId,
+      reportedBy: payload.uid,
+      reason,
+      reportedAt: new Date().toISOString(),
+      report_type: "post"
+    });
 
-    if (postData?.uid !== payload.uid) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
-
-    await postRef.delete();
-
-    return NextResponse.json({ message: "Post deleted successfully" });
+    return NextResponse.json({ message: "Post reported successfully" });
   } catch (error) {
-    console.error("Error deleting post:", error);
-    return NextResponse.json({ error: "Failed to delete post." }, { status: 500 });
+    console.error("Error reporting post:", error);
+    return NextResponse.json({ error: "Failed to report post." }, { status: 500 });
   }
 }

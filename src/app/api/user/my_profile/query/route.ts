@@ -41,6 +41,7 @@ export async function GET() {
     const userData = userDoc.data();
 
     const user ={
+      uid: payload.uid,
 profilePhotoURL:   userData?.profilePhotoURL,
 username:userData?.username,
 displayName:userData?.displayName,

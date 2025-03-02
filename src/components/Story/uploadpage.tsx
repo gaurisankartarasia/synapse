@@ -83,8 +83,8 @@ export default function UploadPage() {
             <AvatarFallback>{profile?.username.slice(0, 1)}</AvatarFallback>
           </Avatar>
         </Card>
-        <div className="absolute bottom-0 right-0 p-1 bg-white/90 rounded-full shadow"> {/* Positioned plus button */}
-          <Plus className="w-4 h-4 text-gray-700" />
+        <div className="absolute bottom-0 right-0 p-1 bg-white/90 rounded-full shadow border-2 border-[#fff] "> {/* Positioned plus button */}
+          <Plus className="w-4 h-4 text-gray-700 border-2  " />
         </div>
       </div>
       <p><small className="text-center">Add story</small></p>

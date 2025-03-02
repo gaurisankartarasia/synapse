@@ -37,12 +37,18 @@ import StoriesContainer from '@/components/Story/container'
 import UploadPage from "@/components/Story/uploadpage";
 import { Profile } from "@/components/profile-card";
 
+
 export default function Home() {
 
- 
+
+
+
+
+
 
   return (
     <div className="flex flex-col lg:flex-row gap-4 px-4 lg:gap-8">
+    
       {/* Main Feed Container */}
       <div className="flex-1 max-w-3xl lg:max-w-none">
         {/* Stories Section */}

@@ -6,8 +6,9 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInWithGoogle } from '@/redux/features/authSlice';
 import type { AppDispatch, RootState } from '@/redux/store';
-import {Spinner} from "@/components/ui/spinner"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from '@/components/ui/button';
+import { toast } from "sonner"
 
 
 export default function GoogleSignInButton() {
@@ -19,15 +20,33 @@ export default function GoogleSignInButton() {
     try {
       const resultAction = await dispatch(signInWithGoogle());
       if (signInWithGoogle.fulfilled.match(resultAction)) {
-       router.push('/')
+        toast.success("Sign in successful", {
+
+          cancel: {
+            label: "Ok",
+            onClick: () => console.log("Ok"),
+          },
+        })
+        router.push('/')
       }
+
+      else {
+        toast.error("Faild to sign in with Google", {
+
+          cancel: {
+            label: "Ok",
+            onClick: () => console.log("Ok"),
+          },
+        })
+      }
+
     } catch (err) {
       console.error('Google sign in failed:', err);
     }
   };
 
 
- 
+
 
   return (
     <div className="space-y-2">
@@ -38,12 +57,12 @@ export default function GoogleSignInButton() {
       >
         {loading ? (
           <span className="flex items-center gap-2">
-            
-            <Spinner size={20}/>
+
+            <Spinner size={25} color='white' />
           </span>
         ) : (
           <>
-           
+
             Continue with Google
           </>
         )}

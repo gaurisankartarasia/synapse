@@ -4,12 +4,12 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useAuth } from '@/hooks/useAuth';
 import { PostSkeleton } from '@/components/Skeleton-loaders/feed-post';
-import { usePosts } from '@/hooks/usePosts';
-import { usePostActions } from '@/hooks/usePostActions';
-import { PostHeader } from './components/PostHeader';
-import { PostActions } from './components/PostActions';
-import LikesModal from './components/LikedByModal';
-import ImageGallery from "./components/ImageGallery";
+import { usePosts } from '@/hooks/post/feed/usePosts';
+import { usePostActions } from '@/hooks/post/feed/usePostActions';
+import { PostHeader } from './lagacy_components/PostHeader';
+import { PostActions } from './lagacy_components/PostActions';
+import LikesModal from './lagacy_components/LikedByModal';
+import ImageGallery from "./lagacy_components/ImageGallery";
 import Link from "next/link";
 
 // Helper function to parse and render text with @mentions as links
@@ -146,16 +146,16 @@ const PostPage = () => {
   return (
     <div className="">
       {loading && <PostSkeleton />}
-      <div className="">
+      <div >
         {posts.length > 0 ? (
           posts.map((post, index) => (
-            <div key={post.id} ref={index === posts.length - 1 ? lastPostElementRef : null}>
+            <div key={post.postId} ref={index === posts.length - 1 ? lastPostElementRef : null}>
               <div className="p-4 border-b">
                 <PostHeader
                   post={post}
                   user={user}
-                  onSave={() => handleSave(post.id, user)}
-                  saveDisabled={saveStates[post.id]?.loading}
+                  onSave={() => handleSave(post.postId, user)}
+                  saveDisabled={saveStates[post.postId]?.loading}
                 />
 
                 <div className="mt-2 ">
@@ -169,11 +169,11 @@ const PostPage = () => {
                 <PostActions
                   post={post}
                   user={user}
-                  likeCount={likeStates[post.id]?.count || 0}
-                  isLiked={likeStates[post.id]?.isLiked || false}
-                  onLike={() => handleLike(post.id, user)}
-                  likeDisabled={likeStates[post.id]?.loading}
-                  onLikesClick={() => setSelectedPostId(post.id)}
+                  likeCount={likeStates[post.postId]?.count || 0}
+                  isLiked={likeStates[post.postId]?.isLiked || false}
+                  onLike={() => handleLike(post.postId, user)}
+                  likeDisabled={likeStates[post.postId]?.loading}
+                  onLikesClick={() => setSelectedPostId(post.postId)}
                 />
               </div>
             </div>
@@ -196,3 +196,10 @@ const PostPage = () => {
 };
 
 export default PostPage;
+
+
+
+
+
+
+

@@ -541,6 +541,9 @@ const PostPage = () => {
         }}
       />
 
+
+
+
       <div className="flex items-center mb-4">
         <div className="flex items-center space-x-2">
           <Label htmlFor="allow-commenting">Allow Commenting</Label>  

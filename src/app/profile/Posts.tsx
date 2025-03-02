@@ -293,7 +293,7 @@ export default function UserPosts({ uid, currentUserUid }: UserPostsProps) {
   const PostGrid = ({ posts }: { posts: Post[] }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {posts.map((post) => (
-        <Link href={`/post/${post.id}`} key={post.id} className="overflow-hidden">
+        <Link href={`/post/${post.postId}`} key={post.postId} className="overflow-hidden">
           <div className="relative group">
             {post.imageURLs && post.imageURLs.length > 0 && (
               <div className="relative aspect-square overflow-hidden">

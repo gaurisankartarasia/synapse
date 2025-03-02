@@ -1,6 +1,6 @@
 
 export type Post = {
-  id: string;
+  postId: string;
   uid: string;
   title: string;
   imageURLs: string[];
@@ -37,7 +37,7 @@ export type ProfileData = {
 };
 
 export type Author = {
-    id: string;
+  postId: string;
     username: string;
     profileImage: string;
   };

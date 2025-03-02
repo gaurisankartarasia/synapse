@@ -20,7 +20,7 @@ export const usePostActions = (setPosts: React.Dispatch<React.SetStateAction<Pos
   const initializeLikeStates = (posts: Post[]) => {
     const newLikeStates: Record<string, LikeState> = {};
     posts.forEach((post: Post) => {
-      newLikeStates[post.id] = {
+      newLikeStates[post.postId] = {
         isLiked: post.isLiked || false,
         count: post.likeCount || 0,
         loading: false
@@ -83,7 +83,7 @@ export const usePostActions = (setPosts: React.Dispatch<React.SetStateAction<Pos
 
     setPosts((prevPosts: Post[]) =>
       prevPosts.map((post: Post) =>
-        post.id === postId
+        post.postId === postId
           ? { ...post, isSaved: !post.isSaved }
           : post
       )
@@ -109,7 +109,7 @@ export const usePostActions = (setPosts: React.Dispatch<React.SetStateAction<Pos
       console.error('Error toggling save status:', error);
       setPosts((prevPosts: Post[]) =>
         prevPosts.map((post: Post) =>
-          post.id === postId
+          post.postId === postId
             ? { ...post, isSaved: !post.isSaved }
             : post
         )

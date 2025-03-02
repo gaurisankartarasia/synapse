@@ -156,7 +156,15 @@ import GoogleSignInButton from "./GoogleSignInButton";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardTitle, CardHeader, CardFooter, CardDescription } from "@/components/ui/card";
+import {  CardContent, CardTitle, CardHeader, CardFooter, CardDescription } from "@/components/ui/card";
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import { toast } from "sonner"
+
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert"
 
 export default function SignIn() {
   const router = useRouter();
@@ -171,22 +179,42 @@ export default function SignIn() {
     try {
       const resultAction = await dispatch(signInWithEmail({ email, password }));
       if (signInWithEmail.fulfilled.match(resultAction)) {
-        const { hasUsername } = resultAction.payload;
         
-       
+     
 
-        // Redirect user
-        router.push( hasUsername ? "/" : "/username")
-        // window.location.href = hasUsername ? "/" : "/username";
+
+      toast.success("Sign in successful", {
+        
+        cancel: {
+          label: "Ok",
+          onClick: () => console.log("Ok"),
+        },
+      })
+      
+      router.push('/')
       }
+
+else{
+  toast.error("Incorrect email or password", {
+        
+        cancel: {
+          label: "Ok",
+          onClick: () => console.log("Ok"),
+        },
+      })
+}
+
     } catch (err) {
+
+
+      
       console.error("Sign in failed:", err);
     }
   };
 
   return (
     <main>
-      <div className="min-h-screen flex items-center justify-center">
+      <div className=" flex items-center justify-center">
       
         <div className="max-w-md w-full space-y-8">
           <CardHeader>
@@ -194,10 +222,18 @@ export default function SignIn() {
           </CardHeader>
           <CardContent>
             {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                {error}
-              </div>
+             
+
+<Alert className="mb-4" >
+      <ErrorOutlineOutlinedIcon  />
+      <AlertTitle>Error</AlertTitle>
+      <AlertDescription>
+      {error}
+      </AlertDescription>
+    </Alert>
             )}
+
+
             <div className="space-y-6">
               <GoogleSignInButton />
               <div className="relative">
@@ -237,7 +273,7 @@ export default function SignIn() {
                 />
               </div>
               <Button type="submit" disabled={loading} className="w-full flex justify-center py-2 px-4">
-                {loading ? <Spinner size={25} /> : "Sign In"}
+                {loading ? <Spinner size={25} color="white" /> : "Sign In"}
               </Button>
             </form>
             <Link href="/forgot-password" className="underline float-end m-3">
@@ -251,6 +287,9 @@ export default function SignIn() {
           </CardFooter>
         </div>
       </div>
+
+
+
     </main>
   );
 }

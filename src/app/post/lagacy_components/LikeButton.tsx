@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { onSnapshot, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebaseClient';
 import { useAuth } from '@/hooks/useAuth'; 
-import LikesModal from '../components/LikedByModal'
+import LikesModal from './LikedByModal'
 import {Heart,ChevronRight } from 'lucide-react';
 
 interface LikebuttonProps {

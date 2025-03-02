@@ -422,6 +422,7 @@ export const CommentItem = ({
       </div>
 
       <ReportModal
+      type="comment"
         isOpen={isReportModalOpen}
         onClose={() => {
           setIsReportModalOpen(false);

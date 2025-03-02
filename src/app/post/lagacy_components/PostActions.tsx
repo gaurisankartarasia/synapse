@@ -50,7 +50,7 @@ export const PostActions = ({
     </div>
 
     {post.allowCommenting && (
-      <Link href={`/post/${post.id}`} className="flex items-center gap-1">
+      <Link href={`/post/${post.postId}`} className="flex items-center gap-1">
         <MessageSquare size={20} />
         <p>{post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}</p>
         <ChevronRight size={20} />

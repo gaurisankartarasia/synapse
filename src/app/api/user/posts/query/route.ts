@@ -80,7 +80,7 @@ export async function GET(request: Request) {
       .get();
 
     const posts = snapshot.docs.map(doc => ({
-      id: doc.id,
+      postId: doc.id,
       ...doc.data(),
     }));
 

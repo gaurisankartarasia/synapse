@@ -8,7 +8,7 @@ import { formatRelativeTime } from "@/utils/date";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import { MessageSquare, ChevronRight } from 'lucide-react';
-import Likebutton from "@/app/post/components/LikeButton";
+import Likebutton from "@/app/post/lagacy_components/LikeButton";
 import { Post } from "@/types/post";
 
 const POSTS_PER_PAGE = 5;
@@ -134,11 +134,11 @@ const HashtagPage = () => {
         <div className="space-y-6">
           {posts.map((post, index) => (
             <div 
-              key={post.id} 
+              key={post.postId} 
               ref={index === posts.length - 1 ? lastPostElementRef : null}
               className="bg-white shadow-md rounded-md p-6"
             >
-              <Link href={`/post/${post.id}`} className="block">
+              <Link href={`/post/${post.postId}`} className="block">
                    <Image src={post.profilePhotoURL}
                         height={30}
                         width={30}
@@ -170,9 +170,9 @@ const HashtagPage = () => {
               </Link>
 
               <div className="flex items-center t600">
-                <Likebutton postId={post.id} />
+                <Likebutton postId={post.postId} />
                 <Link 
-                  href={`/post/${post.id}`} 
+                  href={`/post/${post.postId}`} 
                   className="flex items-center space-x-2 hover:text-blue-600"
                 >
                   <MessageSquare />

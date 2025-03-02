@@ -222,7 +222,7 @@ export async function GET(request: NextRequest) {
 
     // Process posts
     const posts = snapshot.docs.map((doc) => ({
-      id: doc.id,
+      postId: doc.id,
       ...(doc.data() as FirestorePost),
     }));
 
@@ -258,12 +258,12 @@ export async function GET(request: NextRequest) {
       db.collection('users')
         .doc(payload.uid)
         .collection('saved_posts')
-        .where('postId', 'in', posts.map(post => post.id))
+        .where('postId', 'in', posts.map(post => post.postId))
         .get(),
       Promise.all(
         posts.map(post =>
           db.collection('posts')
-            .doc(post.id)
+            .doc(post.postId)
             .collection('likes')
             .doc(payload.uid)
             .get()
@@ -274,7 +274,7 @@ export async function GET(request: NextRequest) {
     // Create sets and maps for O(1) lookups
     const savedPostIds = new Set(savedPosts.docs.map(doc => doc.data().postId));
     const likedPosts = new Map(
-      posts.map((post, index) => [post.id, likePromises[index].exists])
+      posts.map((post, index) => [post.postId, likePromises[index].exists])
     );
 
     // Transform posts with user data and interaction states
@@ -293,8 +293,8 @@ export async function GET(request: NextRequest) {
         profilePhotoURL: userData.profilePhotoURL,
         isVerified: userData.isVerified,
         createdAt: post.createdAt,
-        isSaved: savedPostIds.has(post.id),
-        isLiked: likedPosts.get(post.id) || false,
+        isSaved: savedPostIds.has(post.postId),
+        isLiked: likedPosts.get(post.postId) || false,
         allowCommenting: post.allowCommenting ?? true, // Default to true if not specified
         hashtags: post.hashtags || [],
       };
