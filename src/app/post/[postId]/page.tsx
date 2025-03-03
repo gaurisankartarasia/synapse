@@ -6,12 +6,12 @@
 // import { useState, useEffect } from "react";
 // import { useParams } from "next/navigation";
 // import Link from "next/link";
-// import { CommentSection } from "../components/CommentSection";
-// import ImageGallery from "../components/ImageGallery";
+// import { CommentSection } from "../lagacy_components/CommentSection";
+// import ImageGallery from "../lagacy_components/ImageGallery";
 // import { formatRelativeTime } from "@/utils/date";
 // import { Post } from "@/types/post";
 // import { useAuth } from '@/hooks/useAuth';
-// import LikesModal from '../components/LikedByModal';
+// import LikesModal from '../lagacy_components/LikedByModal';
 // import { ReportModal } from "@/components/ReportModal";
 // import { ChevronRight } from 'lucide-react';
 // import { FaRegHeart, FaHeart, FaBookmark, FaRegBookmark } from "react-icons/fa";
@@ -28,7 +28,7 @@
 
 // const PostPage = () => {
 //   const params = useParams();
-//   const id = params?.id as string;
+//   const postId = params?.postId as string;
 //   const [post, setPost] = useState<Post | null>(null);
 //   const [loading, setLoading] = useState(true);
 //   const { user } = useAuth();
@@ -41,11 +41,11 @@
 
 
 //   useEffect(() => {
-//     if (!id) return;
+//     if (!postId) return;
 
 //     const fetchPostData = async () => {
 //       try {
-//         const response = await fetch(`/api/post/${id}/query`, {
+//         const response = await fetch(`/api/post/${postId}/query`, {
 //           method: 'POST',
 //           headers: {
 //             "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
@@ -70,13 +70,13 @@
 //     };
 
 //     fetchPostData();
-//   }, [id]);
+//   }, [postId]);
 
  
   
 
 //   const handleLike = async () => {
-//     if (!user || isLikeLoading || !id) return;
+//     if (!user || isLikeLoading || !postId) return;
 
 //     setIsLikeLoading(true);
 //     const prevLiked = isLiked;
@@ -93,7 +93,7 @@
 //           'Content-Type': 'application/json',
 //           credentials: 'include',
 //         },
-//         body: JSON.stringify({ postId: id }),
+//         body: JSON.stringify({ postId }),
 //       });
 
 //       if (!response.ok) {
@@ -110,7 +110,7 @@
 //   };
 
 //   const handleSave = async () => {
-//     if (!user || isSaveLoading || !id || !post) return;
+//     if (!user || isSaveLoading || !postId || !post) return;
 
 //     setIsSaveLoading(true);
 //     const prevSaved = post.isSaved;
@@ -125,7 +125,7 @@
 //           'Content-Type': 'application/json',
 //           credentials: 'include',
 //         },
-//         body: JSON.stringify({ postId: id }),
+//         body: JSON.stringify({ postId }),
 //       });
 
 //       if (!response.ok) {
@@ -141,13 +141,13 @@
 //   };
 
 //   const handleDelete = async () => {
-//     if (!user || post?.uid !== user.uid) return;
+//     if (!user || post?.creator_uid !== user.uid) return;
 
 //     const confirmed = confirm("Are you sure you want to delete this post?");
 //     if (!confirmed) return;
 
 //     try {
-//       const response = await fetch(`/api/post/${id}/delete`, {
+//       const response = await fetch(`/api/post/${postId}/delete`, {
 //         method: "DELETE",
 //         headers: { "Content-Type": "application/json" },
 //       });
@@ -168,7 +168,7 @@
 //     if (!user || !post) return;
 
 //     try {
-//       const response = await fetch(`/api/post/${post.id}/report`, {
+//       const response = await fetch(`/api/post/${post.postId}/report`, {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -241,7 +241,7 @@
 //               {post.isSaved ? <FaBookmark size={15}  /> : <FaRegBookmark size={15}  />}
 //             </button>
 
-//         {user?.uid === post?.uid && (
+//         {user?.uid === post?.creator_uid && (
 //           <button onClick={handleDelete} className="text-red-500">
 //             Delete Post
 //           </button>
@@ -293,7 +293,7 @@
 
 //       <div className="mt-6">
 //         {post.allowCommenting ? (
-//           <CommentSection postId={post.id} />
+//           <CommentSection postId={post.postId} />
 //         ) : (
 //           <p className="text-center">Comments are turned off for this post.</p>
 //         )}
@@ -302,7 +302,7 @@
 //       <LikesModal
 //         isOpen={isModalOpen}
 //         onClose={() => setIsModalOpen(false)}
-//         postId={post.id}
+//         postId={post.postId}
 //       />
 //       <ReportModal
 //       type="post"
@@ -335,6 +335,7 @@ import { PostContent } from "./components/PostContent";
 import { PostActions } from "./components/PostActions";
 import { CommentSection } from "../lagacy_components/CommentSection";
 import  {usePost}  from "@/hooks/post/individual/usePost";
+import { HashtagDisplay } from "../lagacy_components/Hashtag";
 
 const PostPage = () => {
   const params = useParams();
@@ -388,6 +389,7 @@ const PostPage = () => {
       />
 
       <PostContent post={post} />
+      <HashtagDisplay hashtags={post.hashtags} />
 
       <PostActions 
         post={post} 

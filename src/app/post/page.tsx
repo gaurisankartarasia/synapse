@@ -83,7 +83,6 @@ const PostPage = () => {
 
   const {
     likeStates,
-    setLikeStates,
     saveStates,
     handleLike,
     handleSave,

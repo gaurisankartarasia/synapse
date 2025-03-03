@@ -29,9 +29,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const uid = payload.uid;
+    const creator_uid = payload.uid;
 
-    const userDoc = await db.collection("users").doc(uid).get();
+    const userDoc = await db.collection("users").doc(creator_uid).get();
     if (!userDoc.exists) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
 
     // Update post document to include title, hashtags, and username
     batch.set(newPostRef, {
-      uid,
+      creator_uid,
       content,
       username: username,
       createdAt,

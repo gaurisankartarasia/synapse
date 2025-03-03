@@ -132,12 +132,22 @@ const HashtagPage = () => {
         </div>
       ) : (
         <div className="space-y-6">
-          {posts.map((post, index) => (
+
+          {/* {posts.map((post, index) => (
             <div 
               key={post.postId} 
               ref={index === posts.length - 1 ? lastPostElementRef : null}
               className="bg-white shadow-md rounded-md p-6"
-            >
+            > */}
+
+{posts.map((post, index) => (
+  <div 
+    key={`${post.postId}-${index}`} 
+    ref={index === posts.length - 1 ? lastPostElementRef : null}
+    className="bg-white shadow-md rounded-md p-6"
+  >
+
+
               <Link href={`/post/${post.postId}`} className="block">
                    <Image src={post.profilePhotoURL}
                         height={30}

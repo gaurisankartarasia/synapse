@@ -1,7 +1,7 @@
 
 export type Post = {
   postId: string;
-  uid: string;
+  creator_uid: string;
   title: string;
   imageURLs: string[];
   profilePhotoURL:string;

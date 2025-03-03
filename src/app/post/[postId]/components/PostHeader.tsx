@@ -99,7 +99,7 @@ export const PostHeader = ({
   currentUserId,
   onReportClick
 }: PostHeaderProps) => {
-  const isPostOwner = currentUserId === post.uid;
+  const isPostOwner = currentUserId === post.creator_uid;
 
   return (
     <div className="flex items-center gap-3">

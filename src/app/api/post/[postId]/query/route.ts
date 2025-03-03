@@ -145,7 +145,7 @@ import { verifyJWT } from '@/lib/jwt';
 import { CustomJWTPayload } from '@/types/auth';
 
 interface FirestorePost {
-  uid: string;
+  creator_uid: string;
   title: string;
   content: string;
   imageURLs: string[];
@@ -153,6 +153,8 @@ interface FirestorePost {
   likeCount: number;
   allowCommenting: boolean;
   commentCount: number;
+  hashtags?: string[];
+
 }
 
 interface FirestoreUser {
@@ -216,7 +218,7 @@ export async function GET(
     }
 
     // Fetch user document
-    const userDoc = await db.collection('users').doc(postData.uid).get();
+    const userDoc = await db.collection('users').doc(postData.creator_uid).get();
     const userData = userDoc.data() as FirestoreUser | undefined;
 
     // Check if post is saved and liked by the current user
@@ -244,14 +246,15 @@ export async function GET(
 
     // Format response data
     const responseData = {
-      uid: postData.uid,
-      id: postId,
+      creator_uid: postData.creator_uid,
+      postId: postId,
       profilePhotoURL: userData?.profilePhotoURL,
       displayName: userData?.displayName,
       content: postData.content,
       username: userData?.username,
       createdAt: postData.createdAt,
       imageURLs: postData.imageURLs || [],
+      hashtags: postData.hashtags || [],
       allowCommenting: postData.allowCommenting,
       likeCount: postData.likeCount || 0,
       commentCount: postData.commentCount || 0,

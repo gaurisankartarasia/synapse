@@ -476,7 +476,7 @@ export const usePost = (postId: string) => {
   };
 
   const handleDelete = async () => {
-    if (!user || post?.uid !== user.uid) return;
+    if (!user || post?.creator_uid !== user.uid) return;
 
     const confirmed = window.confirm("Are you sure you want to delete this post?");
     if (!confirmed) return;

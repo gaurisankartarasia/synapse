@@ -247,13 +247,13 @@ const UserAvatar = ({ src, username }: { src: string | null | undefined, usernam
   const defaultAvatar = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2NjYyI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgM2MyLjI0IDAgNCAxLjc2IDQgNHMtMS43NiA0LTQgNC00LTEuNzYtNC00IDEuNzYtNCA0LTR6bTAgMTQuMjVjLTIuOTUgMC01LjU2LTEuNDQtNy4yLTMuNjUuMDMtMi4zOCA0LjgtMy42OCA3LjItMy42OHM3LjE3IDEuMyA3LjIgMy42OGMtMS42NCAyLjIxLTQuMjUgMy42NS03LjIgMy42NXoiLz48L3N2Zz4=';
 
   return (
-    <div className="relative w-8 h-8">
+    <div className="relative">
       <Image
         src={src || defaultAvatar}
         alt={username || "User"}
         width={30}
         height={30}
-        className="rounded-md"
+        className="rounded-full object-cover"
         // Unset onError to prevent loops
       />
     </div>

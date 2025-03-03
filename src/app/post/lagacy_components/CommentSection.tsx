@@ -19,7 +19,9 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
   const fetchComments = useCallback( async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/post/comments?postId=${postId}`);
+      const response = await fetch(`/api/post/comments?postId=${postId}`, {
+        method: 'GET'
+      });
       if (!response.ok) throw new Error("Failed to fetch comments");
 
       const data = await response.json();
@@ -36,44 +38,6 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
       fetchComments();
     }
   }, [postId, fetchComments]);
-  
-  // const handleAddComment = async (content: string) => {
-  //   if (!user) return;
-    
-  //   try {
-  //     const response = await fetch("/api/post/comments", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ postId, content }),
-  //     });
-
-  //     if (!response.ok) throw new Error("Failed to post comment");
-      
-  //     const newComment = await response.json();
-      
-  //     // Add the user information to the new comment
-  //     const commentWithUser = {
-  //       ...newComment,
-  //       user: {
-  //         uid: user.uid,
-  //         username: user.username,
-  //         profilePhotoURL: user.profilePhotoURL,
-  //         displayName: user.displayName,
-  //         isVerified: user.isVerified,
-  //         isPrivate: user.isPrivate,
-  //       },
-  //       replies: [],
-  //     };
-      
-  //     // Update local state with the new comment
-  //     setComments(prevComments => [commentWithUser, ...prevComments]);
-  //   } catch (error) {
-  //     console.error(error);
-  //     alert("Error adding comment");
-  //   }
-  // };
 
   // Rest of the component remains the same...
   const handleAddComment = async (content: string) => {
@@ -273,3 +237,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
     </div>
   );
 };
+
+
+
+

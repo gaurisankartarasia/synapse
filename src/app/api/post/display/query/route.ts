@@ -157,7 +157,7 @@ import { verifyJWT } from '@/lib/jwt';
 import { CustomJWTPayload } from '@/types/auth';
 
 interface FirestorePost {
-  uid: string;
+  creator_uid: string;
   title: string;
   content: string;
   imageURLs: string[];
@@ -227,7 +227,7 @@ export async function GET(request: NextRequest) {
     }));
 
     // Get unique UIDs from posts
-    const uids = [...new Set(posts.map(post => post.uid))];
+    const uids = [...new Set(posts.map(post => post.creator_uid))];
     
     // Batch fetch user data
     const userRefs = uids.map(uid => db.collection('users').doc(uid));
@@ -279,7 +279,7 @@ export async function GET(request: NextRequest) {
 
     // Transform posts with user data and interaction states
     const formattedPosts = posts.map(post => {
-      const userData = uidToUserData.get(post.uid) || { 
+      const userData = uidToUserData.get(post.creator_uid) || { 
         username: 'Unknown', 
         displayName: '', 
         profilePhotoURL: '',
