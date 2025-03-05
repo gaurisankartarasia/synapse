@@ -1,5 +1,3 @@
-
-
 //src/app/[username]/page.tsx
 
 "use client";

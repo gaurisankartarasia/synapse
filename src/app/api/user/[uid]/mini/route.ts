@@ -158,7 +158,7 @@ export async function GET(
             username: userData.username || null,
             profilePhotoURL: userData.profilePhotoURL || "/profile-default-photo.svg",
             displayName: userData.displayName || null,
-            verified: userData.isVerified || false
+            isVerified: userData.isVerified || false
         });
         
     } catch (error) {

@@ -5,7 +5,10 @@ export interface Message {
   id: string;
   content: string;
   senderId: string;
-  timestamp: number;
+  timestamp: {
+    _seconds: number;
+    _nanoseconds: number;
+  };
   time: string;
   date: string;
   read: boolean;

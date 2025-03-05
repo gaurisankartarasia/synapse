@@ -33,7 +33,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
     
       <div className=" mb-4">
-        <Avatar className="h-32 w-32">
+        <Avatar className="h-24 w-24">
           <AvatarImage
             src={`/api/proxy?url=${encodeURIComponent(profilePhotoURL)}`}
             alt="user"

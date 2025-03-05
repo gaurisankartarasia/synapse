@@ -1,5 +1,3 @@
-
-
 // // src/app/(auth)/signin/page.tsx
 // 'use client';
 
@@ -17,21 +15,19 @@
 // import { Card, CardContent, CardTitle, CardHeader, CardFooter, CardDescription } from '@/components/ui/card';
 // import { useToast } from "@/hooks/use-toast";
 
-
 // export default function SignIn() {
 //   const router = useRouter();
 //   const { toast } = useToast();
 
 //   const dispatch = useDispatch<AppDispatch>();
 //   const { loading, error } = useSelector((state: RootState) => state.auth);
-  
+
 //   const [email, setEmail] = useState('');
 //   const [password, setPassword] = useState('');
 
-
 //   const handleSubmit = async (e: React.FormEvent) => {
 //   e.preventDefault();
-  
+
 //   try {
 //     const resultAction = await dispatch(signInWithEmail({ email, password }));
 //     if (signInWithEmail.fulfilled.match(resultAction)) {
@@ -40,7 +36,7 @@
 //         description: "Signed in successfully!",
 //       });
 //       router.push(hasUsername ? '/' : '/username');
-      
+
 //       // window.location.href = hasUsername ? '/' : '/username';
 //     }
 //   } catch (err) {
@@ -48,13 +44,11 @@
 //   }
 // };
 
-
-
-//   return ( 
+//   return (
 //     <main>
-  
+
 //     <div className="min-h-screen flex items-center justify-center ">
-   
+
 //       <Card className="max-w-md w-full space-y-8 ">
 //         <CardHeader>
 //         <CardTitle>Sign In</CardTitle>
@@ -67,7 +61,7 @@
 //         )}
 
 //         <div className="space-y-6">
-         
+
 //             <GoogleSignInButton />
 
 //           <div className="relative">
@@ -134,16 +128,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-
 "use client";
 
 import { useState } from "react";
@@ -156,21 +140,24 @@ import GoogleSignInButton from "./GoogleSignInButton";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {  CardContent, CardTitle, CardHeader, CardFooter, CardDescription } from "@/components/ui/card";
-import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
-import { toast } from "sonner"
-
 import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/ui/alert"
+  CardContent,
+  CardTitle,
+  CardHeader,
+  CardFooter,
+  CardDescription,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator"
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import { toast } from "sonner";
+import Image from "next/image";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function SignIn() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.auth);
-  
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -179,60 +166,48 @@ export default function SignIn() {
     try {
       const resultAction = await dispatch(signInWithEmail({ email, password }));
       if (signInWithEmail.fulfilled.match(resultAction)) {
-        
-     
+        toast.success("Sign in successful", {
+          cancel: {
+            label: "Ok",
+            onClick: () => console.log("Ok"),
+          },
+        });
 
-
-      toast.success("Sign in successful", {
-        
-        cancel: {
-          label: "Ok",
-          onClick: () => console.log("Ok"),
-        },
-      })
-      
-      router.push('/')
+        router.push("/");
+      } else {
+        toast.error("Incorrect email or password", {
+          cancel: {
+            label: "Ok",
+            onClick: () => console.log("Ok"),
+          },
+        });
       }
-
-else{
-  toast.error("Incorrect email or password", {
-        
-        cancel: {
-          label: "Ok",
-          onClick: () => console.log("Ok"),
-        },
-      })
-}
-
     } catch (err) {
-
-
-      
       console.error("Sign in failed:", err);
     }
   };
 
   return (
     <main>
-      <div className=" flex items-center justify-center">
-      
+      <div className=" ">
+        <Image
+        src='/vercel.svg'     
+        width={100}
+        height={100}
+        alt="signin"
+        />
         <div className="max-w-md w-full space-y-8">
           <CardHeader>
             <CardTitle>Sign In</CardTitle>
           </CardHeader>
           <CardContent>
             {error && (
-             
-
-<Alert className="mb-4" >
-      <ErrorOutlineOutlinedIcon  />
-      <AlertTitle>Error</AlertTitle>
-      <AlertDescription>
-      {error}
-      </AlertDescription>
-    </Alert>
+              <Alert className="mb-4">
+                <ErrorOutlineOutlinedIcon />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
             )}
-
 
             <div className="space-y-6">
               <GoogleSignInButton />
@@ -240,9 +215,8 @@ else{
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t" />
                 </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2">Or continue with</span>
-                </div>
+                  {/* <span className="px-2">Or continue with</span> */}
+                  <Separator title="OR"/>
               </div>
             </div>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -272,7 +246,11 @@ else{
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <Button type="submit" disabled={loading} className="w-full flex justify-center py-2 px-4">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full flex justify-center py-2 px-4"
+              >
                 {loading ? <Spinner size={25} color="white" /> : "Sign In"}
               </Button>
             </form>
@@ -282,18 +260,14 @@ else{
           </CardContent>
           <CardFooter>
             <CardDescription>
-              Don't have an account? <Link href="/signup" className="underline">Sign up</Link>
+              Don't have an account?{" "}
+              <Link href="/signup" className="underline">
+                Sign up
+              </Link>
             </CardDescription>
           </CardFooter>
         </div>
       </div>
-
-
-
     </main>
   );
 }
-
-
-
-

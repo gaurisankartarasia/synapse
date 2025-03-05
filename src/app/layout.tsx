@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import ThemeProviderWrapper from './ThemeProviderWrapper';
 import { ProgressBar } from '@/components/ProgressBar'; // Adjust the import path as necessary
 import { Toaster } from "@/components/ui/sonner"
-
+import { LoadingProvider } from "@/components/LoadingProvider";
 
 export const metadata: Metadata = {
   title: "Synapse",
@@ -23,7 +23,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
         <ThemeProviderWrapper>
+
           <ReduxProvider>
+            <LoadingProvider>
             <ProgressBar >
             <Navbar />
             <main className="md:ml-16 lg:ml-64 pb-16 md:pb-0 pt-14" >
@@ -33,7 +35,7 @@ export default function RootLayout({
             </main>
             </ProgressBar> 
                     <Toaster />
-
+                    </LoadingProvider>
           </ReduxProvider>
         </ThemeProviderWrapper>
       </body>

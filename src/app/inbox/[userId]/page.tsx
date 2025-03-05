@@ -1,8 +1,7 @@
-
+//src/app/inbox/[userId]/page.tsx
 "use client";
 import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import ChatMessages from './ChatMessages';
 import ChatInput from './ChatInput';
 import { useRouter } from 'next/navigation';
@@ -10,7 +9,20 @@ import { Message } from '@/types/chat';
 import { CustomJWTPayload } from '@/types/auth';
 import { Spinner } from '@/components/ui/spinner';
 import { VscVerifiedFilled } from "react-icons/vsc";
-
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+import { ReportModal } from '@/components/ReportModal';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator
+} from "@/components/ui/dropdown-menu";
+import {EllipsisVertical} from 'lucide-react'
 
 export default function ChatPage({ params }: { params: Promise<{ userId: string }> }) {
   const router = useRouter();
@@ -26,6 +38,8 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
     displayName: string, 
     isVerified: string 
   } | null>(null);
+
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   // Check authentication status
   useEffect(() => {
@@ -74,6 +88,30 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
     }
   }, [targetUserId]);
 
+  const handleReport = async (reason: string) => {
+    try {
+      const response = await fetch(`/api/report/user_profile`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          reportedUserId: targetUserId,
+          reason,
+          report_type: "profile"
+        })
+      });
+
+      if (response.ok) {
+        alert("Profile reported successfully");
+        setIsReportModalOpen(false);
+      } else {
+        console.error("Failed to report profile");
+      }
+    } catch (error) {
+      console.error("Error reporting profile:", error);
+    }
+  };
+
   const handleReply = (message: Message) => {
     setEditingMessage(null);
     setReplyingTo(message);
@@ -96,21 +134,37 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
   return (
     <>
       <header className="p-4 ">
+      <section className='flex justify-between'> 
         {userInfo && (
-          <Link href={`/${userInfo.username}`} className='flex items-center'>
-            <Image 
-              src={userInfo.profilePhotoURL} 
-              alt={`${userInfo.username}'s avatar`} 
-              height={30} 
-              width={30} 
-              className="rounded-full object-cover mr-4" 
-            />
+        
+          <Link href={`/${userInfo.username}`} className='flex items-center gap-2'>
+              <Avatar>
+      <AvatarImage  src={userInfo.profilePhotoURL}  alt={`${userInfo.username}'s avatar`} className='object-cover'/>
+      <AvatarFallback>{userInfo.username.slice(0,1)}</AvatarFallback>
+    </Avatar>
             <h1 className="text-lg font-semibold">{userInfo.username}</h1>
             {userInfo.isVerified && (
-              <VscVerifiedFilled/>
+              <VscVerifiedFilled size={20}/>
             )}
           </Link>
         )}
+        
+        <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button > <EllipsisVertical size={15} /> </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent> 
+        <DropdownMenuItem onClick={() => setIsReportModalOpen(true)}>
+Report
+        </DropdownMenuItem>
+        <DropdownMenuSeparator/>
+        <DropdownMenuItem>
+          Block
+        </DropdownMenuItem>
+        </DropdownMenuContent>
+     
+      </DropdownMenu>
+      </section>
       </header>
   
       <div className="flex justify-center w-full">
@@ -131,6 +185,12 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
               editingMessage={editingMessage}
               onCancelAction={handleCancelAction}
             />
+             <ReportModal
+        type="profile"
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        onSubmit={handleReport}
+      />
           </>
         )}
       </div>

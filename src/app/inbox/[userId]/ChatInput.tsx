@@ -108,13 +108,14 @@ export default function ChatInput({
   };
 
   return (
-    <div className="fixed bottom-0 w-full  p-4 border-t">
+    <div className="fixed bottom-14  p-4 border-t bg-background">
       {(replyingTo || editingMessage) && (
         <div className="flex items-center justify-between  p-2  mb-2">
           <p className="text-sm ">
             {editingMessage ? 'Editing message' : `Replying to: ${replyingTo?.content}`}
           </p>
           <Button 
+          variant='outline'   
             onClick={onCancelAction}
             color="inherit"
           >

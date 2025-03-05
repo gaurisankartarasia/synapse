@@ -476,7 +476,6 @@ import {
   DropdownMenuSubContent,
   DropdownMenuPortal,
   DropdownMenuSubTrigger,
-  DropdownMenuLabel
 } from "@/components/ui/dropdown-menu";
 
 
@@ -508,11 +507,11 @@ export default function SideNavigation() {
             <Image
               src="/favicon.ico"
               alt="Logo"
-              width={40}
-              height={40}
+              width={30}
+              height={30}
               className="rounded-full"
             />
-            <span className="text-2xl font-bold hidden lg:block">Synapse</span>
+            <span className="text-2xl font-semibold hidden lg:block">Synapse</span>
           </Link>
 
           {/* Navigation Links */}
@@ -525,7 +524,7 @@ export default function SideNavigation() {
                   key={href}
                   href={href}
                   className={cn(
-                    'flex items-center justify-center lg:justify-start gap-4 py-4 lg:py-3 px-3 hover:bg-accent/50 rounded-md transition-all duration-200',
+                    'flex items-center justify-center lg:justify-start gap-4 py-4 lg:py-3 px-3 hover:bg-accent/50 rounded-full transition-all duration-200',
                     isActive ? ' font-bold text-primary' : 'font-normal'
                   )}
                 >

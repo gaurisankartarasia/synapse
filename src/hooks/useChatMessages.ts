@@ -15,7 +15,7 @@ import {
 } from 'firebase/firestore';
 import { Message } from '../types/chat';
 
-const BATCH_SIZE = 12;
+const BATCH_SIZE = 10;
 
 export const useChatMessages = (userId: string, currentUserId: string) => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -49,12 +49,28 @@ export const useChatMessages = (userId: string, currentUserId: string) => {
             setLastVisible(lastVisibleDoc);
             setHasMore(msgSnapshot.docs.length === BATCH_SIZE);
 
-            const msgs = msgSnapshot.docs.map(doc => ({
-              id: doc.id,
-              roomId: roomId,
-              ...doc.data(),
-              deletedFor: doc.data().deletedFor || []
-            } as Message));
+            // const msgs = msgSnapshot.docs.map(doc => ({
+            //   id: doc.id,
+            //   roomId: roomId,
+            //   ...doc.data(),
+            //   deletedFor: doc.data().deletedFor || []
+            // } as Message));
+
+// useChatMessages.ts
+const msgs = msgSnapshot.docs.map(doc => {
+  const data = doc.data();
+  const timestamp = data.timestamp; // Firestore Timestamp object
+  return {
+    id: doc.id,
+    roomId: roomId,
+    ...data,
+    timestamp: {
+      _seconds: timestamp.seconds,
+      _nanoseconds: timestamp.nanoseconds,
+    },
+    deletedFor: data.deletedFor || []
+  } as Message;
+});
 
             setMessages(msgs.reverse());
             setLoading(false);
@@ -120,12 +136,15 @@ export const useChatMessages = (userId: string, currentUserId: string) => {
 
     const moreMessages = await Promise.all(nextSnapshot.docs.map(async (doc) => {
       const messageData = doc.data();
+      
+
       return {
         id: doc.id,
         roomId: roomId,
         ...messageData,
         deletedFor: messageData.deletedFor || []
       } as Message;
+      
     }));
 
     setMessages(prevMessages => [...moreMessages.reverse(), ...prevMessages]);
