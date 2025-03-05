@@ -2,7 +2,7 @@
 
 // src/app/post/components/PostHeader.tsx
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { VscVerifiedFilled } from "react-icons/vsc";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import { UserHoverCard } from "@/components/user-profile-hover-card";
 import Link from "next/link";
@@ -27,7 +27,7 @@ export const PostHeader = ({ post, user, onSave, saveDisabled }: PostHeaderProps
         {post.username}
       </Link>
     </UserHoverCard>
-    {post.isVerified && <RiVerifiedBadgeFill />}
+    {post.isVerified && <VscVerifiedFilled />}
     <span className="t600 text-sm">{formatRelativeTime(post.createdAt)}</span>
     <div className="float-end">
       {user && (

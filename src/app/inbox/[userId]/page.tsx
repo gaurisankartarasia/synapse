@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { Message } from '@/types/chat';
 import { CustomJWTPayload } from '@/types/auth';
 import { Spinner } from '@/components/ui/spinner';
-import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { VscVerifiedFilled } from "react-icons/vsc";
 
 
 export default function ChatPage({ params }: { params: Promise<{ userId: string }> }) {
@@ -107,7 +107,7 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
             />
             <h1 className="text-lg font-semibold">{userInfo.username}</h1>
             {userInfo.isVerified && (
-              <RiVerifiedBadgeFill/>
+              <VscVerifiedFilled/>
             )}
           </Link>
         )}

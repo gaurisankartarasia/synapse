@@ -10,35 +10,20 @@ export const HashtagInput = ({ onChange }: HashtagInputProps) => {
 
  const [hashtags, setHashtags] = useState<string[]>([]);
 
-  // const handleHashtagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const hashtagInput = e.target.value;
-  //   const newHashtags = hashtagInput
-  //     .split(',')
-  //     .map(tag => tag.trim().replace(/^#/, ''))
-  //     .filter(tag => tag !== '');
-  //   onChange(newHashtags);
-  // };
-
 
   const handleHashtagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const hashtagInput = e.target.value;
-    // Split by comma, trim whitespace, remove empty strings, and remove # if added
     const newHashtags = hashtagInput
       .split(',')
       .map(tag => tag.trim().replace(/^#/, ''))
       .filter(tag => tag !== '');
-    
+  
     setHashtags(newHashtags);
+    onChange(newHashtags); // Ensure hashtags are passed back to PostPage
   };
+  
 
   return (
-    // <div className="mb-4">
-    //   <Input
-    //     type="text"
-    //     placeholder="Add hashtags (comma-separated, e.g., tech, programming)"
-    //     onChange={handleHashtagChange}
-    //   />
-    // </div>
     <div className="mb-4">
     <Input
       type="text"

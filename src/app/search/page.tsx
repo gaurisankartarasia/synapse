@@ -6,7 +6,7 @@
 // import { useRouter, useSearchParams } from "next/navigation";
 // import { Spinner } from "@/components/ui/spinner";
 // import {Input} from '@/components/ui/input'
-// import {RiVerifiedBadgeFill} from 'react-icons/ri';
+// import {VscVerifiedFilled} from 'react-icons/ri';
 // import UserSuggestions from "@/components/UserSuggestions/UserSuggestions";
 // import Link from "next/link";
 // import {
@@ -127,7 +127,7 @@
 //                   <div className="">
 //                     <div className="flex items-center gap-1">
 //                        <h1 className="font-medium">{user.username}</h1>
-//                     {user.isVerified && <RiVerifiedBadgeFill/>}
+//                     {user.isVerified && <VscVerifiedFilled/>}
 
 //                     </div>
                    
@@ -175,7 +175,7 @@ import React, { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
 import {Input} from '@/components/ui/input'
-import {RiVerifiedBadgeFill} from 'react-icons/ri';
+import {VscVerifiedFilled} from 'react-icons/vsc';
 import UserSuggestions from "@/components/UserSuggestions/UserSuggestions";
 import Link from "next/link";
 import {
@@ -305,7 +305,7 @@ const SearchPageContent: React.FC = () => {
                     <div className="">
                       <div className="flex items-center gap-1">
                         <h1 className="font-medium">{user.username}</h1>
-                        {user.isVerified && <RiVerifiedBadgeFill/>}
+                        {user.isVerified && <VscVerifiedFilled/>}
                       </div>
                       
                       <p className="opacity-70">

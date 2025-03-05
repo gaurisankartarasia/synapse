@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, CardContent } from "@/components/ui/card";
-import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { VscVerifiedFilled } from "react-icons/vsc";
 import Link from 'next/link';
 import { FollowButton } from '../../app/[username]/FollowButton';
 import { AppDispatch, RootState } from '@/redux/store';
@@ -92,7 +92,7 @@ export default function UserSuggestions() {
                     <UserHoverCard username={user.username} >
                     <Link href={`/${user.username}`} className="font-medium text-sm">{user.username}</Link>
 </UserHoverCard>
-                    {user.isVerified && <RiVerifiedBadgeFill size={15} />}
+                    {user.isVerified && <VscVerifiedFilled size={15} />}
                   </div>
                   <p className="t500 text-xs">{user.displayName}</p>
                 </div>

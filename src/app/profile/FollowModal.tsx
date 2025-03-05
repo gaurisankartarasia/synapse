@@ -4,7 +4,7 @@
 // import React, { useState, useEffect, useCallback, useRef } from "react";
 // import Modal from "@/components/Modal";
 // import Image from "next/image";
-// import { RiVerifiedBadgeFill } from "react-icons/ri";
+// import { VscVerifiedFilled } from "react-icons/vsc";
 
 // import { auth } from "@/lib/firebaseClient";
 // import { useRouter } from "next/navigation";
@@ -147,7 +147,7 @@
 //                       >
 //                         {user.username}
 //                       </span>
-//                       {user.verified && <RiVerifiedBadgeFill className="w-4 h-4 text-blue-500" />}
+//                       {user.verified && <VscVerifiedFilled className="w-4 h-4 text-blue-500" />}
 //                     </div>
 //                     <p className="text-sm t500">{user.displayName}</p>
 //                   </div>
@@ -184,7 +184,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import Modal from "@/components/Modal";
 import Link from "next/link";
 import {  UserMinus } from 'lucide-react';
-import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { VscVerifiedFilled } from "react-icons/vsc";
 import { auth } from "@/lib/firebaseClient";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
@@ -350,7 +350,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, type }) => {
                         {user.username}
                       </span>
                       </Link>
-                      {user.isVerified && <RiVerifiedBadgeFill className="w-4 h-4 text-blue-500" />}
+                      {user.isVerified && <VscVerifiedFilled className="w-4 h-4 text-blue-500" />}
                     </div>
                     <p className="text-sm t500">{user.displayName}</p>
                   </div>

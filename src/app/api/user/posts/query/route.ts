@@ -75,7 +75,7 @@ export async function GET(request: Request) {
     // Fetch posts if authorized
     const postsRef = db.collection('posts');
     const snapshot = await postsRef
-      .where('uid', '==', targetUid)
+      .where('creator_uid', '==', targetUid)
       // .orderBy('createdAt', 'desc') // Uncomment if you have the proper index
       .get();
 

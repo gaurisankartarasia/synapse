@@ -27,6 +27,7 @@ export const ChatButton: React.FC<ChatButtonProps> = ({ targetUserId }) => {
       <Tooltip>
         <TooltipTrigger asChild>
         <Button
+        className='w-24'
       onClick={startChat}
       variant="outline"
     >

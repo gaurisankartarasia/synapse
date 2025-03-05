@@ -7,7 +7,7 @@
 // import { ReportModal } from "@/components/ReportModal";
 // import {Button} from '@/components/ui/'
 // import { formatRelativeTime } from "@/utils/date";
-// import RiVerifiedBadgeFill from 'lucide-react';
+// import VscVerifiedFilled from 'lucide-react';
 
 // type CommentItemProps = {
 //   comment: Comment;
@@ -90,7 +90,7 @@
 //     width={30}
 //     />
 //     <strong>{comment.user.username}</strong>
-//     <span>{comment.user.isVerified && (<RiVerifiedBadgeFill fontSize="small"/>)}</span>
+//     <span>{comment.user.isVerified && (<VscVerifiedFilled fontSize="small"/>)}</span>
 // </div>
 
 //           <p className="mt-1">{comment.content}</p>
@@ -134,7 +134,7 @@
 //     width={30}
 //     />
 //     <strong>{reply.user.username}</strong>
-//     <span>{reply.user.isVerified && (<RiVerifiedBadgeFill fontSize="small"/>)}</span>
+//     <span>{reply.user.isVerified && (<VscVerifiedFilled fontSize="small"/>)}</span>
 // </div>
 
 //                   <p className="mt-1">{reply.content}</p>
@@ -226,7 +226,7 @@ import Image from "next/image";
 import { ReportModal } from "@/components/ReportModal";
 import { Button } from '@/components/ui/button';
 import { formatRelativeTime } from "@/utils/date";
-import {RiVerifiedBadgeFill} from 'react-icons/ri';
+import {VscVerifiedFilled} from 'react-icons/ri';
 import { UserHoverCard } from "@/components/user-profile-hover-card";
 
 type CommentItemProps = {
@@ -315,7 +315,7 @@ export const CommentItem = ({
             <UserHoverCard username={comment.user.username} >
             <strong className="cursor-pointer hover:opacity-70">{comment.user.username || "User"}</strong>
 </UserHoverCard>
-            <span>{comment.user.isVerified && (<RiVerifiedBadgeFill fontSize="small"/>)}</span>
+            <span>{comment.user.isVerified && (<VscVerifiedFilled fontSize="small"/>)}</span>
           </div>
 
           <p className="mt-1">{comment.content}</p>
@@ -354,7 +354,7 @@ export const CommentItem = ({
                       username={reply.user.username}
                     />
                     <strong>{reply.user.username || "User"}</strong>
-                    <span>{reply.user.isVerified && (<RiVerifiedBadgeFill fontSize="small"/>)}</span>
+                    <span>{reply.user.isVerified && (<VscVerifiedFilled fontSize="small"/>)}</span>
                   </div>
 
                   <p className="mt-1">{reply.content}</p>

@@ -2,7 +2,7 @@
 // import Link from "next/link";
 // import { Post } from "@/types/post";
 // import { UserHoverCard } from "@/components/user-profile-hover-card";
-// import { RiVerifiedBadgeFill } from "react-icons/ri";
+// import { VscVerifiedFilled } from "react-icons/vsc";
 // import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 // import { formatRelativeTime } from "@/utils/date";
 // import {
@@ -41,7 +41,7 @@
 //         </Link>
 //       </UserHoverCard>
       
-//       {post.isVerified && <RiVerifiedBadgeFill />}
+//       {post.isVerified && <VscVerifiedFilled />}
 
 //       <small className="t600">
 //         {formatRelativeTime(post.createdAt)}
@@ -75,7 +75,7 @@
 import Link from "next/link";
 import { Post } from "@/types/post";
 import { UserHoverCard } from "@/components/user-profile-hover-card";
-import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { VscVerifiedFilled } from "react-icons/vsc";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import { formatRelativeTime } from "@/utils/date";
 import {
@@ -108,13 +108,13 @@ export const PostHeader = ({
         <AvatarFallback>{post.username.slice(0, 2)}</AvatarFallback>
       </Avatar>
       
-      <UserHoverCard username={post.username}>
+      <UserHoverCard username={post.username} >
         <Link href={`/${post.username}`} className="hover:opacity-60 cursor-pointer font-semibold">
           {post.username}
         </Link>
       </UserHoverCard>
       
-      {post.isVerified && <RiVerifiedBadgeFill />}
+      {post.isVerified && <VscVerifiedFilled />}
 
       <small className="t600">
         {formatRelativeTime(post.createdAt)}

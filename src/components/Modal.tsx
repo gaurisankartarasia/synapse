@@ -31,8 +31,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
   }, [isOpen]);
 
   return (
-    <Dialog open={isVisible} onOpenChange={onClose}>
-      <DialogContent>
+    <Dialog open={isVisible} onOpenChange={onClose} >
+      <DialogContent className="container">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>

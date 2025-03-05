@@ -200,6 +200,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
+import { div } from '@tensorflow/tfjs';
 
 interface UserPostsProps {
   uid: string;
@@ -291,9 +292,13 @@ export default function UserPosts({ uid, currentUserUid }: UserPostsProps) {
   }
 
   const PostGrid = ({ posts }: { posts: Post[] }) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"  >
       {posts.map((post) => (
-        <Link href={`/post/${post.postId}`} key={post.postId} className="overflow-hidden">
+        
+<div key={post.postId} >
+
+
+        <Link href={`/post/${post.postId}`} className="overflow-hidden">
           <div className="relative group">
             {post.imageURLs && post.imageURLs.length > 0 && (
               <div className="relative aspect-square overflow-hidden">
@@ -321,6 +326,7 @@ export default function UserPosts({ uid, currentUserUid }: UserPostsProps) {
             )}
           </div>
         </Link>
+        </div>
       ))}
     </div>
   );

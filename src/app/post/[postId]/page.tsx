@@ -15,7 +15,7 @@
 // import { ReportModal } from "@/components/ReportModal";
 // import { ChevronRight } from 'lucide-react';
 // import { FaRegHeart, FaHeart, FaBookmark, FaRegBookmark } from "react-icons/fa";
-// import { RiVerifiedBadgeFill } from "react-icons/ri";
+// import { VscVerifiedFilled } from "react-icons/vsc";
 // import {
 //   Avatar,
 //   AvatarFallback,
@@ -227,7 +227,7 @@
 // </UserHoverCard>
         
 
-//         {post.isVerified && <RiVerifiedBadgeFill />}
+//         {post.isVerified && <VscVerifiedFilled />}
 
 //         <small className="t600">
 //           {formatRelativeTime(post.createdAt)}
@@ -389,6 +389,7 @@ const PostPage = () => {
       />
 
       <PostContent post={post} />
+      
       <HashtagDisplay hashtags={post.hashtags} />
 
       <PostActions 

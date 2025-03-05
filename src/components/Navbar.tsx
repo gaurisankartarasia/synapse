@@ -501,12 +501,12 @@ export default function SideNavigation() {
   return (
     <>
       {/* Desktop & Tablet Navigation */}
-      <aside className="hidden md:block fixed left-0 top-0 h-screen w-20 lg:w-64 border-r bg-background/95  transition-all duration-300 z-10 shadow-sm">
+      <aside className="hidden md:block fixed left-0 top-0 h-screen w-20 lg:w-64 border-r bg-background/95  transition-all duration-300 shadow-sm">
         <div className="flex flex-col h-full p-4">
           {/* Logo */}
           <Link href="/" className="py-6 flex items-center justify-center lg:justify-start gap-3 mb-6">
             <Image
-              src="https://firebasestorage.googleapis.com/v0/b/quixxle.appspot.com/o/assets%2Fsynapse_logo_c.jpg?alt=media&token=53517ee9-01a4-4e3c-87dc-f34de9a88193"
+              src="/favicon.ico"
               alt="Logo"
               width={40}
               height={40}
@@ -616,7 +616,7 @@ export default function SideNavigation() {
         <div className="flex items-center justify-between px-4 h-full">
           <Link href="/" className="flex items-center gap-2">
             <Image
-              src="https://firebasestorage.googleapis.com/v0/b/quixxle.appspot.com/o/assets%2Fsynapse_logo_c.jpg?alt=media&token=53517ee9-01a4-4e3c-87dc-f34de9a88193"
+              src="/favicon.ico"
               alt="Logo"
               width={32}
               height={32}
