@@ -226,7 +226,7 @@ import Image from "next/image";
 import { ReportModal } from "@/components/ReportModal";
 import { Button } from '@/components/ui/button';
 import { formatRelativeTime } from "@/utils/date";
-import {VscVerifiedFilled} from 'react-icons/ri';
+import {VscVerifiedFilled} from 'react-icons/vsc';
 import { UserHoverCard } from "@/components/user-profile-hover-card";
 
 type CommentItemProps = {
