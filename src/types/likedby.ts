@@ -17,5 +17,8 @@ export interface LikeUserResponse {
   uid: string;
   username: string;
   profilePic: string;
-  timestamp: string; // ISO string from the API
+  timestamp: {
+    _seconds:number;
+    _nanoseconds:number
+  };
 }

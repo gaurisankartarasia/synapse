@@ -124,6 +124,7 @@ import Image from 'next/image';
 import Modal from '@/components/Modal';
 import { LikesModalProps, LikeUserResponse } from '@/types/likedby';
 import { Spinner } from "@/components/ui/spinner";
+import { formatRelativeTime } from '@/utils/date';
 
 const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
   const [users, setUsers] = useState<LikeUserResponse[]>([]);
@@ -201,7 +202,7 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
                 </div>
                 <div className="flex-grow">
                   <h3 className="font-medium t900">{user.username}</h3>
-                  <p className="text-sm t500">{formatDate(user.timestamp)}</p>
+                  <p className="text-sm t500">{formatRelativeTime(user.timestamp)}</p>
                 </div>
               </div>
             ))}

@@ -158,9 +158,7 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
 Report
         </DropdownMenuItem>
         <DropdownMenuSeparator/>
-        <DropdownMenuItem>
-          Block
-        </DropdownMenuItem>
+    
         </DropdownMenuContent>
      
       </DropdownMenu>
