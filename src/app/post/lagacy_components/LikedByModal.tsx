@@ -1,12 +1,11 @@
 
 
 // import { useState, useEffect, useCallback } from 'react';
-// import axios from 'axios';
 // import Image from 'next/image';
 // import Modal from '@/components/Modal';
 // import { LikesModalProps, LikeUserResponse } from '@/types/likedby';
-// import { Spinner } from "@/components/ui/";
-
+// import { Spinner } from "@/components/ui/spinner";
+// import { formatRelativeTime } from '@/utils/date';
 
 // const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
 //   const [users, setUsers] = useState<LikeUserResponse[]>([]);
@@ -14,15 +13,17 @@
 
 //   const fetchUsers = useCallback(async () => {
 //     if (!isOpen || !postId) return;
-    
+
 //     try {
 //       setLoading(true);
-//       const response = await axios.get(`/api/post/like/likedby`, {
-//         params: { postId },
-//         withCredentials: true 
+//       const response = await fetch(`/api/post/like/likedby?postId=${postId}`, {
+//         credentials: 'include',
 //       });
-      
-//       setUsers(response.data.users || []);
+
+//       if (!response.ok) throw new Error("Failed to fetch users");
+
+//       const data = await response.json();
+//       setUsers(data.users || []);
 //     } catch (error) {
 //       console.error("Error fetching users:", error);
 //       setUsers([]);
@@ -32,74 +33,37 @@
 //   }, [postId, isOpen]);
 
 //   useEffect(() => {
-//     let isMounted = true;
-
 //     if (isOpen && postId) {
 //       fetchUsers();
 //     }
-
-//     return () => {
-//       isMounted = false;
-//     };
-//   }, [isOpen, postId]); // Remove fetchUsers from dependency array
-
-//   const formatDate = (dateString: string) => {
-//     const date = new Date(dateString);
-//     const now = new Date();
-//     const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-//     if (diffInSeconds < 60) {
-//       return 'just now';
-//     } else if (diffInSeconds < 3600) {
-//       const minutes = Math.floor(diffInSeconds / 60);
-//       return `${minutes}m ago`;
-//     } else if (diffInSeconds < 86400) {
-//       const hours = Math.floor(diffInSeconds / 3600);
-//       return `${hours}h ago`;
-//     } else if (diffInSeconds < 604800) {
-//       const days = Math.floor(diffInSeconds / 86400);
-//       return `${days}d ago`;
-//     } else {
-//       return date.toLocaleDateString();
-//     }
-//   };
-
-//   // Reset users when modal closes
-//   useEffect(() => {
-//     if (!isOpen) {
-//       setUsers([]);
-//       setLoading(false);
-//     }
-//   }, [isOpen]);
+//   }, [isOpen, postId, fetchUsers]);
 
 //   return (
 //     <Modal isOpen={isOpen} onClose={onClose} title="Liked by">
 //       <div className="max-h-[70vh] overflow-y-auto">
 //         {loading ? (
-//           <Spinner/>
-//         ) : users.length === 0 ? (
-//           <div className="text-center p-4 t500">No likes yet</div>
+//           <Spinner />
+//         ) : users.length === 0 && isOpen ? ( //add isOpen condition here
+//           <div className="text-center p-4 ">No likes yet</div>
 //         ) : (
-//           <div className="divide-y divide-gray-200">
+//           <div >
 //             {users.map((user) => (
 //               <div
 //                 key={user.uid}
-//                 className="flex items-center gap-3 p-4 hover:bg-gray-50 transition-colors"
+//                 className="flex items-center gap-3 p-4"
 //               >
 //                 <div className="relative h-10 w-10 flex-shrink-0">
 //                   <Image
-//                     src={`/api/proxy?url=${encodeURIComponent(user.profilePic)}`}
+//                     src={`/api/proxy?url=${encodeURIComponent(user.profilePhotoURL)}`}
 //                     alt={user.username}
-//                     className="rounded-md object-cover"
+//                     className="rounded-full object-cover"
 //                     height={50}
 //                     width={50}
 //                   />
 //                 </div>
 //                 <div className="flex-grow">
-//                   <h3 className="font-medium t900">{user.username}</h3>
-//                   <p className="text-sm t500">
-//                     {formatDate(user.timestamp)}
-//                   </p>
+//                   <h3 className="font-medium ">{user.username}</h3>
+//                   <p className="text-sm ">{formatRelativeTime(user.timestamp)}</p>
 //                 </div>
 //               </div>
 //             ))}
@@ -114,33 +78,33 @@
 
 
 
-
-
-
-
-
-import { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
-import Modal from '@/components/Modal';
-import { LikesModalProps, LikeUserResponse } from '@/types/likedby';
+import { useState, useEffect, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Image from "next/image";
+import Modal from "@/components/Modal";
+import { LikesModalProps, LikeUserResponse } from "@/types/likedby";
 import { Spinner } from "@/components/ui/spinner";
-import { formatRelativeTime } from '@/utils/date';
+import { formatRelativeTime } from "@/utils/date";
+import { FollowButton } from "@/app/[username]/FollowButton";
+import { AppDispatch, RootState } from '@/redux/store';
+import { toggleFollow } from "@/redux/features/followSlice";
 
 const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
   const [users, setUsers] = useState<LikeUserResponse[]>([]);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const fetchUsers = useCallback(async () => {
     if (!isOpen || !postId) return;
-    
+
     try {
       setLoading(true);
       const response = await fetch(`/api/post/like/likedby?postId=${postId}`, {
-        credentials: 'include',
+        credentials: "include",
       });
-      
+
       if (!response.ok) throw new Error("Failed to fetch users");
-      
+
       const data = await response.json();
       setUsers(data.users || []);
     } catch (error) {
@@ -157,55 +121,70 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
     }
   }, [isOpen, postId, fetchUsers]);
 
-  useEffect(() => {
-    if (!isOpen) {
-      setUsers([]);
-      setLoading(false);
-    }
-  }, [isOpen]);
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (diffInSeconds < 60) return 'just now';
-    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-    
-    return date.toLocaleDateString();
-  };
+  const followStatusMap = useSelector((state: RootState) => {
+    return users.reduce((acc, user) => {
+      acc[user.username] =
+        state.follow.followStatus[user.username] ?? {
+          isFollowing: false,
+          isRequested: false,
+          isFollowingWithoutFollowback: false,
+          loading: false, // Ensure a boolean value
+        };
+      return acc;
+    }, {} as Record<string, any>);
+  });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Liked by">
       <div className="max-h-[70vh] overflow-y-auto">
         {loading ? (
-          <Spinner/>
-        ) : users.length === 0 ? (
-          <div className="text-center p-4 t500">No likes yet</div>
+          <Spinner />
+        ) : users.length === 0 && isOpen ? (
+          <div className="text-center p-4">No likes yet</div>
         ) : (
-          <div className="divide-y divide-gray-200">
-            {users.map((user) => (
-              <div
-                key={user.uid}
-                className="flex items-center gap-3 p-4 hover:bg-gray-50 transition-colors"
-              >
-                <div className="relative h-10 w-10 flex-shrink-0">
-                  <Image
-                    src={`/api/proxy?url=${encodeURIComponent(user.profilePic)}`}
-                    alt={user.username}
-                    className="rounded-md object-cover"
-                    height={50}
-                    width={50}
+          <div>
+            {users.map((user) => {
+              const followStatus = followStatusMap[user.username];
+
+              const handleFollow = () => {
+                if (!followStatus.loading) {
+                  dispatch(toggleFollow(user.username));
+                }
+              };
+
+              return (
+                <div key={user.uid} className="flex items-center justify-between p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="relative h-10 w-10 flex-shrink-0">
+                      <Image
+                        src={`/api/proxy?url=${encodeURIComponent(user.profilePhotoURL)}`}
+                        alt={user.username}
+                        className="rounded-full object-cover"
+                        height={50}
+                        width={50}
+                      />
+                    </div>
+                    <div>
+                      <h3 className="font-medium">{user.username}</h3>
+                      <p className="text-sm">{formatRelativeTime(user.timestamp)}</p>
+                    </div>
+                  </div>
+                  <FollowButton
+                    isUpdating={!!followStatus.loading} // ✅ Ensure it's always a boolean
+                    followStatus={
+                      followStatus.isFollowing
+                        ? "following"
+                        : followStatus.isRequested
+                        ? "requested"
+                        : followStatus.isFollowingWithoutFollowback
+                        ? "followBack"
+                        : "none"
+                    }
+                    onFollowClick={handleFollow}
                   />
                 </div>
-                <div className="flex-grow">
-                  <h3 className="font-medium t900">{user.username}</h3>
-                  <p className="text-sm t500">{formatRelativeTime(user.timestamp)}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

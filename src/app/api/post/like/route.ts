@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
         // Like: Add like document and increment like count
         transaction.set(likesRef, {
           uid: payload.uid,
-          createdAt: FieldValue.serverTimestamp(),
+          timestamp: FieldValue.serverTimestamp(),
         });
         transaction.update(postRef, { likeCount: FieldValue.increment(1) });
 

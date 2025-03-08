@@ -3,9 +3,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, CardContent } from "@/components/ui/card";
 import { VscVerifiedFilled } from "react-icons/vsc";
 import Link from 'next/link';
 import { FollowButton } from '../../app/[username]/FollowButton';
@@ -22,7 +20,6 @@ import {
 
 export default function UserSuggestions() {
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
   const { users: suggestions, loading, error } = useSelector((state: RootState) => state.suggestions);
   const followState = useSelector((state: RootState) => state.follow);
 

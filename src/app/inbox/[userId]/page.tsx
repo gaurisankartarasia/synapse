@@ -95,7 +95,7 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
-          reportedUserId: targetUserId,
+          reported_uid: targetUserId,
           reason,
           report_type: "profile"
         })

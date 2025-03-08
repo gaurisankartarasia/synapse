@@ -1,10 +1,12 @@
-import { Timestamp } from 'firebase-admin/firestore';
 
 export interface LikeUser {
   uid: string;
   username: string;
-  profilePic: string;
-  timestamp: Timestamp;
+  profilePhotoURL: string;
+   timestamp: {
+    _seconds:number;
+    _nanoseconds:number
+  };
 }
 
 export interface LikesModalProps {
@@ -16,9 +18,24 @@ export interface LikesModalProps {
 export interface LikeUserResponse {
   uid: string;
   username: string;
-  profilePic: string;
+  profilePhotoURL: string;
   timestamp: {
     _seconds:number;
     _nanoseconds:number
   };
 }
+
+
+// export interface LikeUserResponse {
+//   uid: string;
+//   username: string;
+//   profilePhotoURL: string;
+//   timestamp: {
+//     _seconds: number;
+//     _nanoseconds: number;
+//   };
+//   isFollowing: boolean;
+//   isRequested: boolean;
+//   isFollowingWithoutFollowback: boolean;
+//   followerCount: number;
+// }

@@ -299,6 +299,8 @@ import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import DevicesOutlinedIcon from '@mui/icons-material/DevicesOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -341,7 +343,10 @@ export default function SideNavigation() {
     { name: 'Home', href: '/', icon: HomeOutlinedIcon, FilledIcon : HomeIcon  },
     { name: 'Create', href: '/post/create', icon: AddCircleOutlineIcon, FilledIcon : AddCircleIcon  },
     { name: 'Search', href: '/search', icon: SearchIcon, FilledIcon : IoSearch  },
+    { name: 'Messages', href: '/inbox', icon: ChatBubbleOutlineIcon, FilledIcon : ChatBubbleIcon  },
     { name: 'Notifications', href: '/notifications', icon: NotificationsNoneIcon, FilledIcon : NotificationsIcon  },
+    // { name: 'AI', href: '/ai/chat', icon: SearchIcon, FilledIcon : IoSearch  },
+
  
   ];
 

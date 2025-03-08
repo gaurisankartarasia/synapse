@@ -1,33 +1,3 @@
-// "use client";
-
-// import PostPage from "./post/page";
-// import UserSuggestions from "@/components/UserSuggestions/UserSuggestions";
-// import StoriesContainer from '@/components/Story/container'
-// import UploadPage from "@/components/Story/uploadpage";
-
-
-// export default function Home() {
-
-//   return (
-//    <> 
-//    <section className="flex items-center gap-2"> 
-
-
-//        <UploadPage/>
-//     <StoriesContainer/>
-//     </section>
-
-
-//     <PostPage/>
-//       <UserSuggestions />
-    
-
-// </>
-//   );
-// }
-
-
-
 
 "use client";
 
@@ -39,12 +9,6 @@ import { Profile } from "@/components/profile-card";
 
 
 export default function Home() {
-
-
-
-
-
-
 
   return (
     <div className="flex flex-col lg:flex-row gap-4 px-4 lg:gap-8">
