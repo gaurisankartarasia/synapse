@@ -60,7 +60,7 @@ export default function SignIn() {
   };
 
   return (
-    <main>
+    <section>
       <div className=" lg:ml-64  ">
         
 
@@ -136,7 +136,7 @@ export default function SignIn() {
           </CardFooter>
         </div>
       </div>
-    </main>
+    </section>
   );
 }
 

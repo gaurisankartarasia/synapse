@@ -356,7 +356,7 @@
 
 "use client";
 import { useEffect } from "react";
-import { useChatMessages } from "@/hooks/useChatMessages";
+import { useChatMessages } from "@/hooks/inbox/useChatMessages";
 import { Message } from "@/types/chat";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";

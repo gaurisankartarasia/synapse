@@ -24,7 +24,7 @@
 // export { admin, auth, db, adminStorage, FieldValue, serverTimestamp, Timestamp };
 
 
-
+//src/lib/firebaseAdmin.ts
 import * as admin from "firebase-admin";
 import { getApps, initializeApp } from "firebase-admin/app";
 import { FieldValue, Timestamp } from "firebase-admin/firestore";

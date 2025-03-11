@@ -13,7 +13,7 @@ import {
   DocumentData,
   getDocs
 } from 'firebase/firestore';
-import { Message } from '../types/chat';
+import { Message } from '@/types/chat';
 
 const BATCH_SIZE = 10;
 

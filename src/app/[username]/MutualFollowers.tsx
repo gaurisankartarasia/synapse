@@ -1,8 +1,8 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
-// import { auth } from "@/lib/firebaseClient";
 import {useAuth} from '@/hooks/useAuth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Link from 'next/link';
 
 interface MutualFollower {
   uid: string;
@@ -27,9 +27,7 @@ const MutualFollowers: React.FC<MutualFollowersProps> = ({ username, onUserClick
     try {
       setLoading(true);
       setError(null);
-      
-      // const token = await auth.currentUser?.getIdToken();
-      
+            
       if (!user) {
         setError('Authentication required');
         return;
@@ -61,18 +59,17 @@ const MutualFollowers: React.FC<MutualFollowersProps> = ({ username, onUserClick
   }
 
   return (
-    <div className="w-full flex justify-center">
+    <div className=" flex justify-center text-xs">
       <div>
         {loading ? (
           null
         ) : mutualFollowers.length > 0 ? (
-          <div className="flex items-center">
+          <div className="flex items-center text-xs">
             <p>Followed by</p>
             {mutualFollowers.slice(0, 2).map((follower) => (
               <div
                 key={follower.uid}
                 className="flex items-center space-x-1 p-2 rounded-md"
-                onClick={() => onUserClick?.(follower.username)}
               >              
                 <Avatar className='h-6 w-6 cursor-pointer'>
                   <AvatarImage src={follower.profilePhotoURL} className='object-cover' />
@@ -80,9 +77,9 @@ const MutualFollowers: React.FC<MutualFollowersProps> = ({ username, onUserClick
                     {follower.username.slice(0,2)}
                   </AvatarFallback>
                 </Avatar>
-                <p className="text-sm font-semibold truncate cursor-pointer hover:underline">
+                <Link href={`/${follower.username}`} className="text-xs font-semibold truncate">
                   {follower.username}
-                </p>
+                </Link>
               </div>
             ))}
            
@@ -99,7 +96,4 @@ const MutualFollowers: React.FC<MutualFollowersProps> = ({ username, onUserClick
 };
 
 export default MutualFollowers;
-
-
-
 

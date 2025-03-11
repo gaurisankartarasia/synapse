@@ -382,7 +382,7 @@ export default function SideNavigation() {
                   )}
                 >
                   {
-                    isActive ? <FilledIcon className="h-6 w-6" /> : <Icon className="h-6 w-6" />
+                    isActive ? <FilledIcon  /> : <Icon  />
                   }
                   <span className="hidden lg:block">{name}</span>
                 </Link>

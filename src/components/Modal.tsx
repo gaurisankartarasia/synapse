@@ -2,13 +2,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
 
 interface ModalProps {
@@ -37,11 +35,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
         <div className="py-4">{children}</div>
-        {/* <DialogFooter>
-          <Button onClick={onClose} variant="outline" title="Close">
-            Close
-          </Button>
-        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   );
