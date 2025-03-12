@@ -23,7 +23,7 @@ export default function InboxList() {
             : "";
 
           return (
-            <li key={inbox.id} className="border-b p-2 w-full hover:bg-gray-100 active:bg-gray-200">
+            <li key={inbox.id} className="border-b p-2 w-full hover:bg-accent">
               {otherParticipantProfile ? (
                 <Link href={`/inbox/${otherParticipantProfile.uid}`}  >
                  <div className="flex items-center gap-2" >

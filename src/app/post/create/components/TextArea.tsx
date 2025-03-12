@@ -514,7 +514,7 @@ import { User } from 'lucide-react';
 import { debounce } from 'lodash';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
-import { EmojiPicker, EmojiPickerButton } from '@/components/EmojiPicker'; // Import our new components
+import { EmojiPicker, EmojiPickerButton } from '@/components/EmojiPicker'; 
 
 interface UserMention {
   uid: string;

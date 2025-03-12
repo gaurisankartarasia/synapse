@@ -88,6 +88,7 @@ import { formatRelativeTime } from "@/utils/date";
 import { FollowButton } from "@/app/[username]/FollowButton";
 import { AppDispatch, RootState } from '@/redux/store';
 import { toggleFollow } from "@/redux/features/followSlice";
+import { div } from "@tensorflow/tfjs";
 
 const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
   const [users, setUsers] = useState<LikeUserResponse[]>([]);
@@ -128,7 +129,7 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
           isFollowing: false,
           isRequested: false,
           isFollowingWithoutFollowback: false,
-          loading: false, // Ensure a boolean value
+          loading: false, 
         };
       return acc;
     }, {} as Record<string, any>);
@@ -136,9 +137,9 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Liked by">
-      <div className="max-h-[70vh] overflow-y-auto">
+      <div className="max-h-[70vh] ">
         {loading ? (
-          <Spinner />
+          <div className="flex justify-center"><Spinner /></div>
         ) : users.length === 0 && isOpen ? (
           <div className="text-center p-4">No likes yet</div>
         ) : (

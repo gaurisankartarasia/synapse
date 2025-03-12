@@ -1,8 +1,6 @@
 
 'use client';
-
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { VscVerifiedFilled } from "react-icons/vsc";
 import Link from 'next/link';

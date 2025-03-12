@@ -180,7 +180,6 @@ export function UserHoverCard({ username, children }: UserHoverCardProps) {
                   </Button>
                 ) : (
                   <FollowButton
-                    className="w-full"
                     isUpdating={followStatus.loading ?? false}
                     followStatus={currentFollowState}
                     onFollowClick={handleFollow}
