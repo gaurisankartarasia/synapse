@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
       if (!postDoc.exists) return null;
       
       return {
-        id: postDoc.id,
+        postId: postDoc.id,
         ...postDoc.data()
       };
     });

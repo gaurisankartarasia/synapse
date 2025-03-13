@@ -4,36 +4,36 @@
 // import { verifyJWT } from '@/lib/jwt';
 // import { db } from '@/lib/firebaseAdmin';
 // import { CustomJWTPayload } from '@/types/auth';
-//
+
 // export async function GET(request: NextRequest) {
 //   try {
 //     // Verify authentication
 //     const cookieStore = await cookies();
 //     const token = cookieStore.get('token');
-//
+
 //     if (!token?.value) {
 //       return NextResponse.json(
 //         { error: 'Unauthorized' },
 //         { status: 401 }
 //       );
 //     }
-//
+
 //     const payload = await verifyJWT(token.value) as CustomJWTPayload;
-//
+
 //     if (!payload.uid) {
 //       return NextResponse.json(
 //         { error: 'Invalid token payload' },
 //         { status: 401 }
 //       );
 //     }
-//
+
 //     // Fetch all stories
 //     const storiesSnapshot = await db.collection('user_stories')
 //       .doc(payload.uid)
 //       .collection('stories')
 //       .orderBy('createdAt', 'desc')
 //       .get();
-//
+
 //     const stories = storiesSnapshot.docs.map(doc => {
 //       const data = doc.data();
 //       return {
@@ -42,9 +42,9 @@
 //         updatedAt: data.updatedAt?.toDate?.() || null,
 //       };
 //     });
-//
+
 //     return NextResponse.json({ stories });
-//
+
 //   } catch (error) {
 //     console.error('Fetch stories error:', error);
 //     return NextResponse.json(

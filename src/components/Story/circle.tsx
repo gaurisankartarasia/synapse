@@ -16,7 +16,7 @@ export function StoryCircle({ story, onClick }: StoryCircleProps) {
       onClick={onClick}
     >
       <div className="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-yellow-400 to-pink-500">
-        <Card className="w-full h-full rounded-full p-[2px] bg-white">
+        <Card className="w-full h-full rounded-full p-[2px]">
           <div className="relative w-full h-full rounded-full overflow-hidden">
             <Image
               src={story.imageUrl}
@@ -27,7 +27,7 @@ export function StoryCircle({ story, onClick }: StoryCircleProps) {
           </div>
         </Card>
       </div>
-      <span className="text-xs text-gray-700 truncate max-w-[70px] text-center">
+      <span className="text-xs  truncate max-w-[70px] text-center">
         {story.username}
       </span>
     </div>

@@ -58,7 +58,7 @@ export default function GoogleSignInButton() {
         {loading ? (
           <span className="flex items-center gap-2">
 
-            <Spinner size={25} color='white' />
+            <Spinner size={25} />
           </span>
         ) : (
           <>

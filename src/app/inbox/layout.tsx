@@ -7,7 +7,7 @@ import InboxList from './List';
 export default function InboxLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex h-screen">
-      <div className="w-1/3 border-r">
+      <div className="w-1/4 border-r">
         <InboxList />
       </div>
       <div className="w-2/3">

@@ -22,7 +22,6 @@ import {
 import { Separator } from "@/components/ui/separator"
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import { toast } from "sonner";
-import Image from "next/image";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function SignIn() {
@@ -61,7 +60,7 @@ export default function SignIn() {
 
   return (
     <section>
-      <div className=" lg:ml-64  ">
+      <div className=" flex justify-center lg:mr-64">
         
 
         <div className="max-w-md w-full space-y-8">
@@ -119,7 +118,7 @@ export default function SignIn() {
                 disabled={loading}
                 className="w-full flex justify-center py-2 px-4"
               >
-                {loading ? <Spinner size={25} color="white" /> : "Sign In"}
+                {loading ? <Spinner size={25}/> : "Sign In"}
               </Button>
             </form>
             <Link href="/forgot-password" className="underline float-end m-3">

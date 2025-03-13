@@ -1,6 +1,5 @@
 // src/components/StoriesContainer.tsx
 import React, { useState, useEffect, useMemo } from 'react';
-import { Loader2 } from 'lucide-react';
 import { StoryCircle } from './circle';
 import { StoryViewer } from './view';
 import { Story } from '@/types/story';
