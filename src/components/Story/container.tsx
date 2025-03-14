@@ -3,7 +3,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { StoryCircle } from './circle';
 import { StoryViewer } from './view';
 import { Story } from '@/types/story';
-import { Spinner } from '../ui/spinner';
+
+import  { Spinner } from '@/components/ui/spinner';  
 
 export default function StoriesContainer() {
   const [stories, setStories] = useState<Story[]>([]);

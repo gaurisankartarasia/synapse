@@ -4,8 +4,7 @@
 // import Image from 'next/image';
 // import { Post } from '@/types/post';
 // import Link from 'next/link';
-// import { Spinner } from "@/components/ui/spinner";
-// import { Heart, MessageSquareText } from 'lucide-react';
+// import {Spinner} from "@/components/ui/spinner"// import { Heart, MessageSquareText } from 'lucide-react';
 // import {
 //   Tabs,
 //   TabsContent,
@@ -192,7 +191,7 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Post } from '@/types/post';
 import Link from 'next/link';
-import { Spinner } from "@/components/ui/spinner";
+import {Spinner} from "@/components/ui/spinner"
 import { Heart, MessageSquareText } from 'lucide-react';
 import {
   Tabs,
@@ -200,6 +199,8 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
+import ImageIcon from '@mui/icons-material/Image';
+
 
 interface UserPostsProps {
   uid: string;
@@ -309,6 +310,11 @@ export default function UserPosts({ uid, currentUserUid }: UserPostsProps) {
                   loading="eager" 
                   priority 
                 />
+                 {post.media_type === "image" && (
+                    <div className="absolute top-2 right-2 text-white">
+                        <ImageIcon  />
+                    </div>
+                )}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="text-white text-lg font-semibold bg-black bg-opacity-50 p-2 rounded">
                     <div className="flex items-center space-x-1">
@@ -332,7 +338,7 @@ export default function UserPosts({ uid, currentUserUid }: UserPostsProps) {
 
   return (
     <div className="space-y-4 mt-12">
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="max-w-2xl">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="posts">Posts</TabsTrigger>
           {currentUserUid === uid && (

@@ -5,8 +5,7 @@
 // import { useRouter } from "next/navigation";
 // import { auth } from "@/lib/firebaseClient";
 // import { onAuthStateChanged, getIdToken } from "firebase/auth";
-// import { Spinner } from "@/components/ui/spinner";
-// import { Switch } from "@/components/ui/switch"
+// import {Spinner} from "@/components/ui/spinner"// import { Switch } from "@/components/ui/switch"
 // import { Label } from "@/components/ui/label"
 // import { Input } from "@/components/ui/input"
 // import {Textarea} from '@/components/ui/textarea'
@@ -422,7 +421,7 @@ import { createPost, setDirty, resetPostState } from '@/redux/features/postSlice
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import {Spinner} from "@/components/ui/spinner"
 import { ImageUploader } from './components/ImageUploader';
 import { HashtagInput } from './components/HashtagInput';
 import { MentionTextarea } from './components/TextArea';

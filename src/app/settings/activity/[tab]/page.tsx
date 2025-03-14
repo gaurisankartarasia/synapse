@@ -83,10 +83,13 @@ import { useRouter, useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import LikedPostsPage from '../components/Liked'
 import SavedPostsGrid from '../components/Saved'
+import UserComments from '../components/Comments'
+import { useAuth } from "@/hooks/useAuth"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function TabsDemo() {
+  const {user} = useAuth()
   const router = useRouter()
   const params = useParams() // Get the tab from the URL
 
@@ -122,7 +125,7 @@ export default function TabsDemo() {
       </TabsContent>
 
       <TabsContent value="comments">
-        {/* <SavedPostsGrid/> */}
+        <UserComments  />
       </TabsContent>
     </Tabs>
   )

@@ -29,6 +29,7 @@ export const PostHeader = ({ post, user, onSave, saveDisabled }: PostHeaderProps
     </UserHoverCard>
     {post.isVerified && <VscVerifiedFilled />}
     <span className="t600 text-sm">{formatRelativeTime(post.createdAt)}</span>
+
     <div className="float-end">
       {user && (
         <button

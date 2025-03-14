@@ -1,8 +1,7 @@
 
 // //./FollowButton.tsx
 // import { Button } from "@/components/ui/button";
-// import { Spinner } from "@/components/ui/spinner";
-// import { FollowStatus } from "@/types/profile";
+// import {Spinner} from "@/components/ui/spinner"// import { FollowStatus } from "@/types/profile";
 
 // interface FollowButtonProps {
 //   isUpdating: boolean;
@@ -43,7 +42,7 @@
 
 // FollowButton.tsx
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import {Spinner} from "@/components/ui/spinner"
 import { FollowStatus } from "@/types/profile";
 
 interface FollowButtonProps {

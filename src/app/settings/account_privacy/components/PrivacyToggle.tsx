@@ -13,7 +13,7 @@ export default function PrivacyToggle() {
       try {
         const res = await fetch('/api/user/privacy/account_privacy');
         const data = await res.json();
-        setEnabled(data.isPrivate);
+        setEnabled(data.status);
       } catch (error) {
         console.error('Failed to fetch privacy status:', error);
       } finally {
@@ -32,7 +32,7 @@ export default function PrivacyToggle() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ isPrivate: newValue }),
+        body: JSON.stringify({ status: newValue }),
       });
     } catch (error) {
       console.error('Failed to update privacy status:', error);

@@ -8,8 +8,7 @@
 
 // import { auth } from "@/lib/firebaseClient";
 // import { useRouter } from "next/navigation";
-// import { Spinner } from "@/components/ui/spinner";
-// import { useDispatch, useSelector } from 'react-redux';
+// import {Spinner} from "@/components/ui/spinner"// import { useDispatch, useSelector } from 'react-redux';
 // import { AppDispatch, RootState } from '@/redux/store';
 // import { setFollowStatus, toggleFollow } from '@/redux/features/followSlice';
 // import { FollowButton } from "../[username]/FollowButton";
@@ -187,7 +186,7 @@ import {  UserMinus } from 'lucide-react';
 import { VscVerifiedFilled } from "react-icons/vsc";
 import { auth } from "@/lib/firebaseClient";
 import { useRouter } from "next/navigation";
-import { Spinner } from "@/components/ui/spinner";
+import {Spinner} from "@/components/ui/spinner"
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setFollowStatus, toggleFollow } from '@/redux/features/followSlice';

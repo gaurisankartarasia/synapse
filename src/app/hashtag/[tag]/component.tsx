@@ -5,8 +5,7 @@
 // import Image from "next/image";
 // import { useParams } from "next/navigation";
 // import { formatRelativeTime } from "@/utils/date";
-// import { Spinner } from "@/components/ui/spinner";
-// import { Button } from "@/components/ui/button";
+// import {Spinner} from "@/components/ui/spinner"// import { Button } from "@/components/ui/button";
 // import { MessageSquare, ChevronRight } from 'lucide-react';
 // import Likebutton from "@/app/post/lagacy_components/LikeButton";
 // import { Post } from "@/types/post";
@@ -227,7 +226,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { formatRelativeTime } from "@/utils/date";
-import { Spinner } from "@/components/ui/spinner";
+import {Spinner} from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button";
 import { MessageSquare, ChevronRight } from 'lucide-react';
 import { TestPost } from "@/types/post";

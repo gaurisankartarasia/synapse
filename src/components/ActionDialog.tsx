@@ -33,7 +33,7 @@ const ActionDialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-50 grid w-80 max-w-lg translate-x-[-50%] translate-y-[-50%] gap-0 border bg-background shadow-lg sm:rounded-3xl",
+        "fixed left-[50%] top-[50%] z-50 grid w-80 max-w-lg translate-x-[-50%] translate-y-[-50%] gap-0 border bg-background shadow-lg sm:rounded-xl",
         className
       )}
       {...props}
@@ -54,7 +54,7 @@ const DialogActionItem = React.forwardRef<
   <button
     ref={ref}
     className={cn(
-      "w-full text-center px-6 py-4 text-sm focus:outline-none rounded-2xl",
+      "w-full text-center px-6 py-4 text-sm focus:outline-none hover:bg-accent",
       className
     )}
     {...props}

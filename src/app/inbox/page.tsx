@@ -8,7 +8,7 @@ import { div } from "@tensorflow/tfjs";
 // import Image from 'next/image';
 // import { format } from 'date-fns';
 // import Link from 'next/link';
-// import { Spinner } from '@/components/ui/spinner';
+// import { Spinner } from '@/components/ui/Spinner';
 
 // export default function InboxList() {
 //   const { inboxes, userProfiles, getOtherParticipant } = useInbox();

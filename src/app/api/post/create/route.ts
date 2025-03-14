@@ -48,6 +48,10 @@ export async function POST(request: NextRequest) {
     
     const batch = db.batch();
     const newPostRef = db.collection("posts").doc();
+    let media_type = "null" ;
+    if (imageURLs){
+      media_type = "image"
+    }      
 
     // Update post document to include title, hashtags, and username
     batch.set(newPostRef, {
@@ -55,6 +59,7 @@ export async function POST(request: NextRequest) {
       content,
       username: username,
       createdAt,
+      media_type,
       imageURLs: imageURLs || [],
       hashtags: hashtags || [],
       allowCommenting: allowCommenting ?? true,

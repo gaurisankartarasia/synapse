@@ -7,7 +7,7 @@ import ChatInput from "./ChatInput";
 import { useRouter } from "next/navigation";
 import { Message } from "@/types/chat";
 import { CustomJWTPayload } from "@/types/auth";
-import { Spinner } from "@/components/ui/spinner";
+import {Spinner} from "@/components/ui/spinner"
 import { VscVerifiedFilled } from "react-icons/vsc";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ReportModal } from "@/components/ReportModal";
@@ -16,7 +16,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { EllipsisVertical } from "lucide-react";
 

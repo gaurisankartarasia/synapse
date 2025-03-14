@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInWithGoogle } from '@/redux/features/authSlice';
 import type { AppDispatch, RootState } from '@/redux/store';
-import { Spinner } from "@/components/ui/spinner"
+import  {Spinner}  from  "@/components/ui/spinner"
 import { Button } from '@/components/ui/button';
 import { toast } from "sonner"
 

@@ -3,7 +3,7 @@
 import { useInbox } from "@/hooks/inbox/useInboxList";
 import { format } from "date-fns";
 import Link from "next/link";
-import { Spinner } from "@/components/ui/spinner";
+import {Spinner} from "@/components/ui/spinner"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { VscVerifiedFilled } from "react-icons/vsc";
 

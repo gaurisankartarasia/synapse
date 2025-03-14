@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { FollowRequest } from './components/FollowRequest';
-import { Spinner } from '@/components/ui/spinner';
+import  { Spinner } from '@/components/ui/spinner';  
 
 interface NotificationData {
   id: string;

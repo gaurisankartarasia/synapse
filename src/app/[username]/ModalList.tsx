@@ -4,8 +4,7 @@
 // import Link from "next/link";
 // import { UserMinus } from "lucide-react";
 // import { VscVerifiedFilled } from "react-icons/vsc";
-// import { Spinner } from "@/components/ui/spinner";
-// import { useDispatch, useSelector } from "react-redux";
+// import {Spinner} from "@/components/ui/spinner"// import { useDispatch, useSelector } from "react-redux";
 // import { AppDispatch, RootState } from "@/redux/store";
 // import { toggleFollow } from "@/redux/features/followSlice";
 // import { FollowButton } from "./FollowButton";
@@ -172,7 +171,7 @@ import Modal from "@/components/Modal";
 import Link from "next/link";
 import { UserMinus } from "lucide-react";
 import { VscVerifiedFilled } from "react-icons/vsc";
-import { Spinner } from "@/components/ui/spinner";
+import {Spinner} from "@/components/ui/spinner"
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { toggleFollow } from "@/redux/features/followSlice";

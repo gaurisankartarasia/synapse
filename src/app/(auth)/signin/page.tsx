@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { signInWithEmail } from "@/redux/features/authSlice";
 import GoogleSignInButton from "./GoogleSignInButton";
-import { Spinner } from "@/components/ui/spinner";
+import {Spinner} from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

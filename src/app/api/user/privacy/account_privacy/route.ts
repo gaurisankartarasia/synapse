@@ -29,7 +29,7 @@ export async function GET() {
     const userDoc = await userRef.get();
     
     return NextResponse.json({
-      isPrivate: userDoc.data()?.isPrivate || false
+      status: userDoc.data()?.isPrivate || false
     });
     
   } catch (error) {

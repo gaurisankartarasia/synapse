@@ -364,6 +364,7 @@ export async function POST(request: NextRequest) {
     const commentId = newCommentRef.id;
 
     const newComment = {
+      postId,
       id: commentId,
       uid: payload.uid,
       content,

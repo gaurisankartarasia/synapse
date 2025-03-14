@@ -3,6 +3,7 @@ export type Post = {
   postId: string;
   creator_uid: string;
   title: string;
+  media_type?: string;
   imageURLs: string[];
   profilePhotoURL:string;
   displayName:string;

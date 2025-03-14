@@ -28,6 +28,7 @@ export interface ProfileData {
   username: string;
   displayName: string;
   profilePhotoURL: string;
+  account_type: string;
   createdAt: {
     _seconds: number;
     _nanoseconds: number;

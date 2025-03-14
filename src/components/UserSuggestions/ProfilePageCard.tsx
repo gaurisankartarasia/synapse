@@ -12,7 +12,7 @@ import { FollowButton } from '../../app/[username]/FollowButton';
 import { AppDispatch, RootState } from '@/redux/store';
 import { setFollowStatus, toggleFollow } from '@/redux/features/followSlice';
 import { fetchSuggestedUsers } from '@/redux/features/suggestionSlice';
-import { Spinner } from '../ui/spinner';
+import { Spinner } from '@/components/ui/spinner';
 import { UserHoverCard } from '../user-profile-hover-card';
 
 export default function UserSuggestions() {

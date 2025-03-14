@@ -4,8 +4,7 @@
 // import Image from 'next/image';
 // import Modal from '@/components/Modal';
 // import { LikesModalProps, LikeUserResponse } from '@/types/likedby';
-// import { Spinner } from "@/components/ui/spinner";
-// import { formatRelativeTime } from '@/utils/date';
+// import {Spinner} from "@/components/ui/spinner"// import { formatRelativeTime } from '@/utils/date';
 
 // const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
 //   const [users, setUsers] = useState<LikeUserResponse[]>([]);
@@ -83,7 +82,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import Modal from "@/components/Modal";
 import { LikesModalProps, LikeUserResponse } from "@/types/likedby";
-import { Spinner } from "@/components/ui/spinner";
+import {Spinner} from "@/components/ui/spinner"
 import { formatRelativeTime } from "@/utils/date";
 import { FollowButton } from "@/app/[username]/FollowButton";
 import { AppDispatch, RootState } from '@/redux/store';

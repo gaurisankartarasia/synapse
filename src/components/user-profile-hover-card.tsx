@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setFollowStatus, toggleFollow } from "@/redux/features/followSlice";
 import { useAuth } from "@/hooks/useAuth";
-import { Spinner } from "@/components/ui/spinner";
+import {Spinner} from "@/components/ui/spinner"
 import { Button } from "./ui/button";
 import { ChatButton } from "@/app/[username]/ChatButton";
 import { VscVerifiedFilled } from "react-icons/vsc";
