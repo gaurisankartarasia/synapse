@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -16,10 +14,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setFollowStatus, toggleFollow } from "@/redux/features/followSlice";
 import { useAuth } from "@/hooks/useAuth";
-import {Spinner} from "@/components/ui/spinner"
+import { Spinner } from "@/components/ui/spinner";
 import { Button } from "./ui/button";
 import { ChatButton } from "@/app/[username]/ChatButton";
 import { VscVerifiedFilled } from "react-icons/vsc";
+import Link from "next/link";
 
 interface UserHoverCardProps {
   username: string;
@@ -120,7 +119,7 @@ export function UserHoverCard({ username, children }: UserHoverCardProps) {
     : "none";
 
   return (
-    <HoverCard open={open} onOpenChange={setOpen} >
+    <HoverCard open={open} onOpenChange={setOpen}>
       <HoverCardTrigger asChild>{children}</HoverCardTrigger>
       <HoverCardContent className="w-[350px]">
         {isLoading ? (
@@ -140,10 +139,8 @@ export function UserHoverCard({ username, children }: UserHoverCardProps) {
 
             <div className="space-y-1.5">
               <div className="flex items-center gap-2">
-                <h4 className="text-sm font-semibold">{profile.username}</h4>
-                {profile.isVerified && (
-                  <VscVerifiedFilled/>
-                )}
+                <Link href={`/${profile.username}`} className="text-sm font-semibold">{profile.username}</Link>
+                {profile.isVerified && <VscVerifiedFilled />}
               </div>
 
               <p className="text-sm text-muted-foreground">
@@ -175,9 +172,10 @@ export function UserHoverCard({ username, children }: UserHoverCardProps) {
               </div>
               <div className="flex items-center gap-2 container">
                 {authUser && authUser.uid === profile.uid ? (
+               <Link href={"/settings/profile/edit"}>
                   <Button variant="secondary" className="w-full">
                     Edit Profile
-                  </Button>
+                  </Button></Link>
                 ) : (
                   <FollowButton
                     isUpdating={followStatus.loading ?? false}
@@ -187,7 +185,8 @@ export function UserHoverCard({ username, children }: UserHoverCardProps) {
                 )}
 
                 {profile.uid === authUser?.uid ? (
-                  <Button variant="outline">Settings</Button>
+                  <Link href={"/settings"} >
+                  <Button variant="outline">Settings</Button></Link>
                 ) : (
                   <ChatButton targetUserId={profile.uid} />
                 )}
@@ -199,5 +198,3 @@ export function UserHoverCard({ username, children }: UserHoverCardProps) {
     </HoverCard>
   );
 }
-
-

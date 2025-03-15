@@ -82,10 +82,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   HttpsOutlined as PrivacyIcon,
-  TimelineOutlined as ActivityIcon,
   Block as BlockIcon,
   AccountCircleOutlined as ProfileIcon,
 } from "@mui/icons-material";
+import AutoGraphOutlinedIcon from '@mui/icons-material/AutoGraphOutlined';
+import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
 
 interface SettingsLayoutProps {
   children: React.ReactNode;
@@ -94,8 +95,8 @@ interface SettingsLayoutProps {
 const navItems = [
   { href: "/settings/profile/edit", label: "Edit profile", icon: <ProfileIcon /> },
   { href: "/settings/account_privacy", label: "Account Privacy", icon: <PrivacyIcon /> },
-  { href: "/settings/account/account_type", label: "Account type", icon: <BlockIcon /> },
-  { href: "/settings/activity/liked", label: "Your activity", icon: <ActivityIcon /> },
+  { href: "/settings/account/account_type", label: "Account type", icon: <AutoGraphOutlinedIcon /> },
+  { href: "/settings/activity/liked", label: "Your activity", icon: <InsertChartOutlinedIcon /> },
   { href: "/settings/blocked", label: "Blocked", icon: <BlockIcon /> },
 ];
 

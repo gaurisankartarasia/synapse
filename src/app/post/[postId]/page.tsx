@@ -46,7 +46,7 @@
 //     const fetchPostData = async () => {
 //       try {
 //         const response = await fetch(`/api/post/${postId}/query`, {
-//           method: 'POST',
+//           method: 'GET',
 //           headers: {
 //             "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
 //             "Content-Type": "application/json",
@@ -157,7 +157,7 @@
 //       }
 
 //       alert("Post deleted successfully!");
-//       window.location.href = "/";
+//       // window.location.href = "/";
 //     } catch (error) {
 //       console.error("Error deleting post:", error);
 //       alert("Failed to delete post.");
@@ -322,7 +322,7 @@
 
 
 
-// src/app/post/[id]/page.tsx
+// src/app/post/[postId]/page.tsx
 "use client";
 import { useState } from "react";
 import { useParams } from "next/navigation";

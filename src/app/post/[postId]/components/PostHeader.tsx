@@ -26,7 +26,7 @@
 //   currentUserId,
 //   onReportClick
 // }: PostHeaderProps) => {
-//   const isPostOwner = currentUserId === post.uid;
+//   const isPostOwner = currentUserId === post.creator_uid;
 
 //   return (
 //     <div className="flex items-center gap-3">
@@ -69,6 +69,8 @@
 //     </div>
 //   );
 // };
+
+
 
 // src/app/post/components/PostHeader.tsx
 import Link from "next/link";
@@ -134,7 +136,6 @@ export const PostHeader = ({
       >
         {post.isSaved ? <FaBookmark size={15} /> : <FaRegBookmark size={15} />}
       </button>
-
       <Dialog>
         <DialogTrigger asChild>
           <button>...</button>

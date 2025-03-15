@@ -1,4 +1,3 @@
-
 // "use client";
 
 // import { useEffect, useState } from "react";
@@ -8,7 +7,6 @@
 // import Link from "next/link";
 // import FavoriteIcon from '@mui/icons-material/Favorite';
 // import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
-
 
 // export default function LikedPostsPage() {
 //   const [posts, setPosts] = useState<Post[]>([]);
@@ -50,7 +48,7 @@
 //               <div key={post.postId} className="border p-4 rounded shadow-sm">
 //                 <Link href={`/post/${post.postId}`}>
 //                 <p className="font-semibold">{post.username}</p>
-                
+
 //                 {imageUrl && (
 //                   <Image
 //                     src={imageUrl}
@@ -74,20 +72,16 @@
 //   );
 // }
 
-
-
-
-
 "use client";
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Post } from "@/types/post";
 import Link from "next/link";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
-import ImageIcon from '@mui/icons-material/Image';
-import  {Spinner} from '@/components/ui/spinner';  
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
+import ImageIcon from "@mui/icons-material/Image";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function LikedPostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -112,49 +106,54 @@ export default function LikedPostsPage() {
     fetchLikedPosts();
   }, []);
 
-
-  if (loading) return <div className="flex justify-center"><Spinner/></div>;
+  if (loading)
+    return (
+      <div className="flex justify-center">
+        <Spinner />
+      </div>
+    );
   if (error) return <div className="p-4 text-red-500">{error}</div>;
-  if (posts.length === 0) return <p className="text-center">No liked posts yet.</p>;
+  if (posts.length === 0)
+    return <p className="text-center">No liked posts yet.</p>;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-      {posts.map(post => (
+      {posts.map((post) => (
         <div key={post.postId} className="shadow-md rounded-lg overflow-hidden">
           <Link href={`/post/${post.postId}`} className="overflow-hidden">
-          <div className="relative group">
-            {post.imageURLs && post.imageURLs.length > 0 && (
-              <div className="relative aspect-square overflow-hidden">
-                <Image 
-                  src={post.imageURLs[0]} 
-                  alt={`Post image`} 
-                  fill 
-                  className="object-cover rounded transition-opacity duration-300 group-hover:opacity-50" 
-                  loading="eager" 
-                  priority 
-                />
-                   {post.media_type === "image" && (
+            <div className="relative group">
+              {post.imageURLs && post.imageURLs.length > 0 && (
+                <div className="relative aspect-square overflow-hidden">
+                  <Image
+                    src={post.imageURLs[0]}
+                    alt={`Post image`}
+                    fill
+                    className="object-cover rounded transition-opacity duration-300 group-hover:opacity-50"
+                    loading="eager"
+                    priority
+                  />
+                  {post.media_type === "image" && (
                     <div className="absolute top-2 right-2 text-white">
-                        <ImageIcon  />
+                      <ImageIcon />
                     </div>
-                )}
-              
-                <div className="absolute inset-0 flex items-center bg-black bg-opacity-30 justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="text-white text-lg font-semibold  p-2 rounded flex items-center gap-3">
-                    <div className="flex items-center space-x-1">
-                      <FavoriteIcon fontSize='small' />
-                      <span>{post.likeCount}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <CommentOutlinedIcon fontSize='small'/>
-                      <span>{post.commentCount}</span>
+                  )}
+
+                  <div className="absolute inset-0 flex items-center bg-black bg-opacity-30 justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="text-white text-lg font-semibold  p-2 rounded flex items-center gap-3">
+                      <div className="flex items-center space-x-1">
+                        <FavoriteIcon fontSize="small" />
+                        <span>{post.likeCount}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <CommentOutlinedIcon fontSize="small" />
+                        <span>{post.commentCount}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
-        </Link>
+              )}
+            </div>
+          </Link>
         </div>
       ))}
     </div>

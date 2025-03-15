@@ -228,6 +228,7 @@ import { Button } from '@/components/ui/button';
 import { formatRelativeTime } from "@/utils/date";
 import {VscVerifiedFilled} from 'react-icons/vsc';
 import { UserHoverCard } from "@/components/user-profile-hover-card";
+import Link from "next/link";
 
 type CommentItemProps = {
   comment: Comment;
@@ -313,7 +314,7 @@ export const CommentItem = ({
               username={comment.user.username}
             />
             <UserHoverCard username={comment.user.username} >
-            <strong className="cursor-pointer hover:opacity-70">{comment.user.username || "User"}</strong>
+            <Link href={`/${comment.user.username}`} className="cursor-pointer hover:opacity-70">{comment.user.username || "User"}</Link>
 </UserHoverCard>
             <span>{comment.user.isVerified && (<VscVerifiedFilled fontSize="small"/>)}</span>
           </div>

@@ -11,10 +11,10 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import { User, Settings } from 'lucide-react';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
 import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { NavItem, DropdownItem } from './types';
+import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
 
 
 export const navLinks: NavItem[] = [
@@ -35,7 +35,7 @@ export const createDropdownItems = (profile: any, setTheme: (theme: string) => v
   {
     name: 'Your activity',
     href: '/settings/activity/liked',
-    icon: TimelineOutlinedIcon
+    icon: InsertChartOutlinedIcon
   },
   {
     name: 'Saved',

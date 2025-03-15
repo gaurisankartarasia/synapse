@@ -288,7 +288,7 @@ export default function UserPosts({ uid, currentUserUid }: UserPostsProps) {
   }
 
   if (error) {
-    return <div className="flex items-center justify-center p-8 text-red-600">{error}</div>;
+    return <div className="flex items-center justify-center p-8">{error}</div>;
   }
 
   const PostGrid = ({ posts }: { posts: Post[] }) => (
@@ -315,8 +315,8 @@ export default function UserPosts({ uid, currentUserUid }: UserPostsProps) {
                         <ImageIcon  />
                     </div>
                 )}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="text-white text-lg font-semibold bg-black bg-opacity-50 p-2 rounded">
+                <div className="absolute inset-0 flex items-center bg-black bg-opacity-50  justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex  gap-3 text-white text-lg font-semibold p-2 rounded">
                     <div className="flex items-center space-x-1">
                       <Heart className="w-4 h-4" />
                       <span>{post.likeCount}</span>
@@ -337,7 +337,7 @@ export default function UserPosts({ uid, currentUserUid }: UserPostsProps) {
   );
 
   return (
-    <div className="space-y-4 mt-12">
+    <div className="mt-12">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="max-w-2xl">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="posts">Posts</TabsTrigger>

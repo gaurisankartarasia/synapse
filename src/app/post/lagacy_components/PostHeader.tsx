@@ -43,6 +43,10 @@ export const PostHeader = ({ post, user, onSave, saveDisabled }: PostHeaderProps
           {post.isSaved ? <FaBookmark size={15} /> : <FaRegBookmark size={15} />}
         </button>
       )}
+
+
     </div>
+    <Link href={`/post/${post.postId}`} className="text-blue-500 hover:underline" >Go to the post</Link>
+
   </div>
 );

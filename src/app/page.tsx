@@ -22,7 +22,8 @@ export default function Home() {
         </section>
         
         {/* Posts Feed */}
-        <PostPage />
+        <section className="max-w-3xl"> <PostPage /></section>
+       
       </div>
 
       {/* Right Sidebar - User Suggestions */}
@@ -33,4 +34,7 @@ export default function Home() {
     </div>
   );
 }
+
+
+
 

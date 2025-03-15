@@ -54,7 +54,7 @@ const DialogActionItem = React.forwardRef<
   <button
     ref={ref}
     className={cn(
-      "w-full text-center px-6 py-4 text-sm focus:outline-none hover:bg-accent",
+      "w-full text-center px-6 py-4 text-sm focus:outline-none rounded-xl active:bg-accent",
       className
     )}
     {...props}

@@ -14,7 +14,7 @@ export async function GET(request: Request) {
 
     if (!token?.value) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Please signin to view posts' },
         { status: 401 }
       );
     }
