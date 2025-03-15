@@ -129,7 +129,7 @@ export const usePost = (postId: string) => {
     if (!confirmation) return;
 
     try {
-      const response = await fetch(`/api/${postId}/delete`, {
+      const response = await fetch(`/api/post/${postId}/delete`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         credentials: 'include',
