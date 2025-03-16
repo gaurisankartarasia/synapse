@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,7 +27,7 @@ const UserComments = () => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const fetchUserComments = async (paginate = false) => {
+  const fetchUserComments = useCallback(async (paginate = false) => {
     if (!user) return;
 
     setLoading(true);
@@ -56,11 +56,11 @@ const UserComments = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, lastTimestamp])
 
   useEffect(() => {
     fetchUserComments();
-  }, [user]);
+  }, [user, fetchUserComments]);
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -110,3 +110,6 @@ const UserComments = () => {
 };
 
 export default UserComments;
+
+
+

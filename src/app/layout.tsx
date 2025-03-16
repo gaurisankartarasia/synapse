@@ -3,7 +3,6 @@
 import type { Metadata } from "next";
 import { ReduxProvider } from './ReduxProvider'
 import "./globals.css";
-import Navbar from "@/_dep/Navbar_dep";
 import ThemeProviderWrapper from './ThemeProviderWrapper';
 import { ProgressBar } from '@/components/ProgressBar';
 import { Toaster } from "@/components/ui/sonner"
