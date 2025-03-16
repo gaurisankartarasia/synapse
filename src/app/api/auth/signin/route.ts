@@ -83,7 +83,7 @@ export async function POST(request: Request) {
 
     // Set cookie with token using the cookies API
     const cookieStore = await cookies();
-    await cookieStore.set({
+     cookieStore.set({
       name: 'token',
       value: token,
       httpOnly: true,

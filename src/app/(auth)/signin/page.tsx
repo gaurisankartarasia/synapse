@@ -23,6 +23,7 @@ import { Separator } from "@/components/ui/separator"
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import { toast } from "sonner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import CookieConsent from "@/components/CookiesDialog";
 
 export default function SignIn() {
   const router = useRouter();
@@ -57,6 +58,7 @@ export default function SignIn() {
       console.error("Sign in failed:", err);
     }
   };
+
 
   return (
     <section>
