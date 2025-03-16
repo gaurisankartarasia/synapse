@@ -308,7 +308,7 @@ import { FollowStats } from "./FollowStats";
 import { FollowButton } from "./FollowButton";
 import EnhancedModalList from "./ModalList";
 import { ChatButton } from "./ChatButton";
-import UserPosts from "../profile/Posts";
+import UserPosts from "./Posts";
 import { ProfileData } from "@/types/profile";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";

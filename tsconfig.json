@@ -54,6 +54,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "server/**/*.ts", "src/app/test-tab/[tab]/page.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "server/**/*.ts", "src/_dep/test-tab/[tab]/page.tsx"],
   "exclude": ["node_modules"]
 }
