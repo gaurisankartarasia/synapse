@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     const { prompt, model = 'gemini-2.0-flash' } = await request.json();
     
     // Validate model parameter
-    const validModels = ['gemini-2.0-flash-lite', 'gemini-1.5', 'gemini-1.5-pro'];
+    const validModels = ['gemini-2.0-flash','gemini-2.0-flash-lite', 'gemini-1.5', 'gemini-1.5-pro'];
     const selectedModel = validModels.includes(model) ? model : 'gemini-2.0-flash';
     
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");

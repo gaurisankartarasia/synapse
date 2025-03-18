@@ -35,7 +35,7 @@ const ProgressBar = ({ children }: { children: React.ReactNode }) => {
       minimum: 0.99, // Jump to 60% immediately
       maximum: 1,
       showSpinner: false, // Hide spinner
-      speed: 300, // Fast transition
+      speed: 200, // Fast transition
       trickle: false, // No slow trickling
     });
   }, []);
