@@ -1,29 +1,20 @@
 // config.ts
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import HomeIcon from '@mui/icons-material/Home';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { IoSearch } from "react-icons/io5";
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import SearchIcon from '@mui/icons-material/Search';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import { User, Settings } from 'lucide-react';
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+
+
+import { User, Settings, House, Search, MessageCircle, Bell, Bot, Activity, Bookmark, Code2, LogOut, PenLine } from 'lucide-react';
+
 import { NavItem, DropdownItem } from './types';
-import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
 
 
 export const navLinks: NavItem[] = [
   
-  { name: 'Home', href: '/', icon: HomeOutlinedIcon, FilledIcon: HomeIcon },
-  { name: 'Create', href: '/post/create', icon: AddCircleOutlineIcon, FilledIcon: AddCircleIcon },
-  { name: 'Search', href: '/search', icon: SearchIcon, FilledIcon: IoSearch },
-  { name: 'Messages', href: '/inbox', icon: ChatBubbleOutlineIcon, FilledIcon: ChatBubbleIcon },
-  { name: 'Notifications', href: '/notifications', icon: NotificationsNoneIcon, FilledIcon: NotificationsIcon },
+  { name: 'Home', href: '/', icon: House },
+  { name: 'Create', href: '/post/create', icon: PenLine},
+  { name: 'Search', href: '/search', icon: Search },
+  { name: 'Messages', href: '/inbox', icon: MessageCircle},
+  { name: 'Notifications', href: '/notifications', icon: Bell},
+  { name: 'AI', href: '/ai/message', icon: Bot},
+
 ];
 
 export const createDropdownItems = (profile: any, setTheme: (theme: string) => void): DropdownItem[] => [
@@ -35,12 +26,12 @@ export const createDropdownItems = (profile: any, setTheme: (theme: string) => v
   {
     name: 'Your activity',
     href: '/settings/activity/liked',
-    icon: InsertChartOutlinedIcon
+    icon: Activity
   },
   {
     name: 'Saved',
     href: '/settings/activity/saved',
-    icon: BookmarkAddedOutlinedIcon
+    icon: Bookmark
   },
   {
     name: 'Settings',
@@ -50,11 +41,11 @@ export const createDropdownItems = (profile: any, setTheme: (theme: string) => v
   {
     name: 'Developers',
     href: '/developers',
-    icon: PersonOutlinedIcon
+    icon: Code2
   },
   {
     name: 'Logout',
     href: '/signout',
-    icon: LogoutOutlinedIcon
+    icon: LogOut
   }
 ];

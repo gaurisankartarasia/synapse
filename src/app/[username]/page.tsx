@@ -518,10 +518,11 @@ const PublicProfilePage: React.FC = () => {
 
 
   return (
-    <main className="">
+    <div>
       <ProfileHeader
-        account_type={profileData.account_type}        uid={profileData.uid}
-        profilePhotoURL={profileData.profilePhotoURL || "/default.webp"}
+        account_type={profileData.account_type}     
+           uid={profileData.uid}
+        profilePhotoURL={profileData.profilePhotoURL}
         username={profileData.username}
         displayName={profileData.displayName || profileData.username}
         isVerified={profileData.isVerified}
@@ -591,7 +592,7 @@ const PublicProfilePage: React.FC = () => {
       <div >
         <UserPosts uid={profileData.uid} currentUserUid={authUser?.uid} />
       </div>
-    </main>
+    </div>
   );
 };
 

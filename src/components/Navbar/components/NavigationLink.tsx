@@ -10,7 +10,7 @@ interface NavigationLinkProps {
 }
 
 export const NavigationLink = ({ item, isActive, isMobile = false }: NavigationLinkProps) => {
-  const Icon = isActive ? item.FilledIcon : item.icon;
+  const Icon =  item.icon;
   
   if (isMobile) {
     return (
@@ -18,7 +18,7 @@ export const NavigationLink = ({ item, isActive, isMobile = false }: NavigationL
         href={item.href}
         className={cn(
           'flex flex-col items-center justify-center gap-1 p-2',
-          isActive ? 'text-primary font-bold' : 'text-muted-foreground'
+          isActive ? 'text-primary bg-accent font-bold' : 'text-muted-foreground'
         )}
       >
         <Icon className="h-6 w-6" />
@@ -32,12 +32,12 @@ export const NavigationLink = ({ item, isActive, isMobile = false }: NavigationL
       prefetch
       href={item.href}
       className={cn(
-        'flex items-center justify-center lg:justify-start gap-4 py-4 lg:py-3 px-3 hover:bg-accent',
-        isActive ? 'font-bold text-primary' : 'font-normal'
+        'flex items-center justify-center lg:justify-start gap-4 py-4 lg:py-3 px-3 hover:bg-accent active:scale-95 rounded-xl',
+        isActive ? 'font-bold bg-accent text-primary' : 'font-normal'
       )}
     >
-      <Icon />
-      <span className="hidden lg:block">{item.name}</span>
+      <Icon className="h-6 w-6"/>
+      <span className="hidden lg:block text-lg">{item.name}</span>
     </Link>
   );
 };

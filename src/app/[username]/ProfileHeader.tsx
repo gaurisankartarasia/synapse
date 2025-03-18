@@ -13,7 +13,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import QRCodeGenerator from "@/components/Qrcode";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface ProfileHeaderProps {
   uid: string;
@@ -72,7 +75,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       <div className="flex flex-col items-center">
         <div className="flex items-center gap-8">
           <div className=" mb-4">
-            <Avatar className="h-24 w-24">
+            <Avatar className="lg:h-24 lg:w-24 sm:h-14 sm:w-14">
               <AvatarImage
                 src={`/api/proxy?url=${encodeURIComponent(profilePhotoURL)}`}
                 alt="user"
@@ -91,6 +94,15 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
             <h1 className=" mb-2">{displayName}</h1>
           </div>
+          <Button variant="outline">
+            {uid === user?.uid && (
+              <QRCodeGenerator
+                text={`https://${window.location.hostname}/${username}`}
+                buttonText="QR Code"
+              />
+            )}
+          </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button>
@@ -98,28 +110,31 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-
-            {user?.uid !== uid &&    
-            <>
-            <DropdownMenuItem>
-            
-                <BlockButton target_uid={uid}
-                 />
-                
-              </DropdownMenuItem> 
-              <DropdownMenuItem onClick={() => setIsReportModalOpen(true)}>
-                Report
-              </DropdownMenuItem> 
-              </>
-              }
-
+              {uid === user?.uid && (
+                <Link href={"/settings/profile/edit"}>
+                  <DropdownMenuItem>Settings & privacy</DropdownMenuItem>
+                </Link>
+              )}
+              {user?.uid !== uid && (
+                <>
+                  <DropdownMenuItem>
+                    <BlockButton target_uid={uid} />
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setIsReportModalOpen(true)}>
+                    Report
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
 
-{account_type === "digital_creator" && <p className="opacity-70">Digital creator</p> }
-{account_type === "business" && <p className="opacity-70">Business account</p>  }
-
+        {account_type === "digital_creator" && (
+          <p className="opacity-70">Digital creator</p>
+        )}
+        {account_type === "business" && (
+          <p className="opacity-70">Business account</p>
+        )}
 
         {bio && <p className="t600 text-center mb-4 ">{bio}</p>}
         <div className="flex items-center text-muted-foreground text-sm">

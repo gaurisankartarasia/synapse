@@ -7,7 +7,6 @@ export interface NavItem {
   name: string;
   href: string;
   icon: SvgIconComponent | IconType;
-  FilledIcon: SvgIconComponent | IconType;
 }
 
 export interface DropdownItem {

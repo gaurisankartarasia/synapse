@@ -28,7 +28,7 @@ export default function RootLayout({
             {/* <LoadingProvider> */}
             <ProgressBar >
             <SideNavigation />
-            <main className="md:ml-16 lg:ml-64 pb-16 md:pb-0 pt-14" >
+            <main className="md:ml-16 lg:ml-80 pb-16 md:pb-0 pt-20" >
                 {children}
             </main>
             </ProgressBar> 

@@ -15,7 +15,7 @@ interface User {
   profilePhotoURL: string;
   displayName: string;
   isVerified:boolean;
-  isPrivate:boolean
+  isPrivate?:boolean
 }
 
 interface FollowRequestProps {

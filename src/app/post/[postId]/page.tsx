@@ -328,7 +328,6 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from '@/hooks/useAuth';
-import { PostSkeleton } from '@/components/Skeleton-loaders/feed-post';
 import { Button } from "@/components/ui/button";
 import { PostHeader } from "./components/PostHeader";
 import { PostContent } from "./components/PostContent";
@@ -336,6 +335,7 @@ import { PostActions } from "./components/PostActions";
 import { CommentSection } from "../lagacy_components/CommentSection";
 import  {usePost}  from "@/hooks/post/individual/usePost";
 import { HashtagDisplay } from "../lagacy_components/Hashtag";
+import { Spinner } from "@/components/ui/spinner";
 
 const PostPage = () => {
   const params = useParams();
@@ -357,7 +357,7 @@ const PostPage = () => {
   } = usePost(postId);
 
   if (loading) {
-    return <PostSkeleton />;
+    return <div className="flex justify-center "><Spinner /></div> ;
   }
 
   if (!post) {
@@ -372,12 +372,12 @@ const PostPage = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6">
+    <div className="max-w-4xl mx-auto">
       <Link
         href="/"
-        className="inline-flex items-center text-blue-500 hover:underline mb-6"
       >
-        ← Back to Feed
+        <Button variant={`ghost`} >
+        ← Back to Feed</Button>
       </Link>
 
       <PostHeader 

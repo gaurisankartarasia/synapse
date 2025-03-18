@@ -179,6 +179,7 @@ import { FollowButton } from "./FollowButton";
 import { ChatButton } from "./ChatButton";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserHoverCard } from "@/components/user-profile-hover-card";
 
 interface User {
   uid: string;
@@ -281,11 +282,14 @@ const EnhancedModalList: React.FC<EnhancedModalListProps> = ({
                   </Link>
                   <div>
                     <div className="flex items-center space-x-1">
+                     <UserHoverCard username={user.username} >
                       <Link href={`/${user.username}`}>
-                        <span className="font-medium cursor-pointer hover:underline">
+                        <span className="font-medium hover:opacity-70">
                           {user.username}
                         </span>
                       </Link>
+                      </UserHoverCard>
+
                       {user.isVerified && (
                         <VscVerifiedFilled className="w-4 h-4 text-blue-500" />
                       )}

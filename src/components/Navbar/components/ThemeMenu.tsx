@@ -1,8 +1,6 @@
 // components/ThemeMenu.tsx
-import { Sun, Moon } from 'lucide-react';
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
-import DevicesOutlinedIcon from '@mui/icons-material/DevicesOutlined';
+import {Sun, Moon , MonitorSmartphone } from "lucide-react";
+
 import {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
@@ -21,21 +19,21 @@ export const ThemeMenu = ({ theme, setTheme }: ThemeMenuProps) => (
   <DropdownMenuSub>
     <DropdownMenuSubTrigger className="flex items-center gap-2">
       {theme === 'light' ? <Sun /> : <Moon />}
-      <span>Theme</span>
+      <span>Switch appearance</span>
     </DropdownMenuSubTrigger>
     <DropdownMenuPortal>
       <DropdownMenuSubContent>
         <DropdownMenuItem onClick={() => setTheme('light')} className="flex items-center gap-2">
-          <LightModeOutlinedIcon className="h-4 w-4" />
+          <Sun className="h-4 w-4" />
           <span>Light Mode</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dark')} className="flex items-center gap-2">
-          <DarkModeOutlinedIcon className="h-4 w-4" />
+          <Moon className="h-4 w-4" />
           <span>Dark Mode</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator/>
         <DropdownMenuItem onClick={() => setTheme('system')} className="flex items-center gap-2">
-          <DevicesOutlinedIcon className="h-4 w-4" />
+          <MonitorSmartphone className="h-4 w-4" />
           <span>System Theme</span>
         </DropdownMenuItem>
       </DropdownMenuSubContent>

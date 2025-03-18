@@ -121,7 +121,7 @@ export function UserHoverCard({ username, children }: UserHoverCardProps) {
   return (
     <HoverCard open={open} onOpenChange={setOpen}>
       <HoverCardTrigger asChild>{children}</HoverCardTrigger>
-      <HoverCardContent className="w-[350px]">
+      <HoverCardContent className="w-[350px] h-48">
         {isLoading ? (
           <div className="flex justify-center items-center ">
             <Spinner />
