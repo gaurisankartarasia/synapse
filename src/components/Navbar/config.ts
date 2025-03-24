@@ -1,7 +1,7 @@
 // config.ts
 
 
-import { User, Settings, House, Search, MessageCircle, Bell, Bot, Activity, Bookmark, Code2, LogOut, PenLine } from 'lucide-react';
+import { User, Settings, House, Search, MessageCircle, Bell, Bot,BriefcaseBusiness,ShoppingBag, Activity, Bookmark, Code2, LogOut, PenLine } from 'lucide-react';
 
 import { NavItem, DropdownItem } from './types';
 
@@ -14,6 +14,8 @@ export const navLinks: NavItem[] = [
   { name: 'Messages', href: '/inbox', icon: MessageCircle},
   { name: 'Notifications', href: '/notifications', icon: Bell},
   { name: 'AI', href: '/ai/message', icon: Bot},
+  { name: 'Jobs', href: '/jobs', icon: BriefcaseBusiness},
+  { name: 'Store', href: '/store', icon: ShoppingBag},
 
 ];
 

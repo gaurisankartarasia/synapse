@@ -71,9 +71,9 @@ export const FollowStats: React.FC<FollowStatsProps> = ({
   onFollowingClick,
   profileUid,
 }) => {
-  const { user: authUser } = useAuth(); // Get logged-in user
+  const { user } = useAuth(); // Get logged-in user
 
-  const isOwnProfile = authUser?.uid === profileUid; // Check if viewing own profile
+  const isOwnProfile = user?.uid === profileUid; // Check if viewing own profile
 
   return (
     <div className="flex justify-center space-x-4 my-6">

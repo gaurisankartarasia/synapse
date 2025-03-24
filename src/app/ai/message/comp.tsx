@@ -130,7 +130,7 @@ const GeminiChat: React.FC = () => {
       {/* Header */}
       <div className="bg-white border-b border-gray-200 p-4 shadow-sm">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-gray-800">Gemini Chat</h1>
+          <h1 className="text-xl font-semibold text-gray-800">AI</h1>
           <div className="flex items-center space-x-2">
             <label htmlFor="model-select" className="text-sm font-medium text-gray-600">
               Model:

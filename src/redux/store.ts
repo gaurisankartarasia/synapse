@@ -8,6 +8,8 @@ import followReducer from './features/followSlice';
 import postReducer from './features/postSlice';
 import suggestionsReducer from './features/suggestionSlice';
 import geminiReducer from './features/gemini/geminiSlice'
+import jobReducer from './features/jobSlice';
+import cartReducer from "./features/cartSlice";
 
 
 export const store = configureStore({
@@ -18,7 +20,8 @@ export const store = configureStore({
     post: postReducer, 
     suggestions: suggestionsReducer,
     gemini:geminiReducer,
-
+    job: jobReducer,
+    cart: cartReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

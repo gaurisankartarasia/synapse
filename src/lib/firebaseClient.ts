@@ -2,6 +2,7 @@
 import { initializeApp, getApp, getApps } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, sendPasswordResetEmail,fetchSignInMethodsForEmail, signOut } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -17,5 +18,6 @@ const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
+const storage = getStorage(app); 
 
-export {  auth, googleProvider, db, sendPasswordResetEmail , fetchSignInMethodsForEmail, signOut};
+export {  auth, googleProvider, db,storage, sendPasswordResetEmail , fetchSignInMethodsForEmail, signOut};
