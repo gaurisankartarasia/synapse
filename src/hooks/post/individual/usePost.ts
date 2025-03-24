@@ -174,7 +174,7 @@ export const usePost = (postId: string) => {
         throw new Error(errorData || 'Failed to delete post');
       }
 
-      // window.location.href = "/";
+      window.location.href = "/";
     } catch (error) {
       console.error("Error deleting post:", error);
     }
