@@ -53,13 +53,13 @@ export async function POST(request: NextRequest) {
       media_type = "image"
     }      
 
-    // Update post document to include title, hashtags, and username
     batch.set(newPostRef, {
       creator_uid,
       content,
       username: username,
       createdAt,
       media_type,
+      isArchived: false,
       imageURLs: imageURLs || [],
       hashtags: hashtags || [],
       allowCommenting: allowCommenting ?? true,

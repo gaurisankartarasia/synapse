@@ -44,7 +44,7 @@ export default function ChatPage({
   useEffect(() => {
     async function checkAuth() {
       try {
-        const response = await fetch("/api/auth/verify", {
+        const response = await fetch("/api/auth/verify_user", {
           credentials: "include",
         });
 

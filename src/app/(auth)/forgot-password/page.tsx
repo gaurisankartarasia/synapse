@@ -40,8 +40,8 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <Card className="max-w-md w-full space-y-8">
+    <div className="lg:mr-64 flex items-center justify-center">
+      <div className="max-w-md w-full space-y-8">
         <CardHeader>
           <CardTitle>Reset Password</CardTitle>
         </CardHeader>
@@ -83,7 +83,7 @@ export default function ForgotPassword() {
             </Link>
           </CardDescription>
         </CardFooter>
-      </Card>
+      </div>
     </div>
   );
 }

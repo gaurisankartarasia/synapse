@@ -25,31 +25,30 @@
 import { AppProgressProvider as ProgressProvider } from "@bprogress/next";
 import { BProgress } from "@bprogress/core";
 import { useEffect, useState } from "react";
-import { useTheme } from "next-themes"; // Detect dark/light mode
+import { useTheme } from "next-themes"; 
 
 const ProgressBar = ({ children }: { children: React.ReactNode }) => {
-  const { theme, systemTheme } = useTheme(); // Get the current theme
-  const [mounted, setMounted] = useState(false); // Track if component is mounted
+  const { theme, systemTheme } = useTheme(); 
+  const [mounted, setMounted] = useState(false); 
 
   useEffect(() => {
-    setMounted(true); // Set mounted to true after client-side rendering
+    setMounted(true); 
     BProgress.configure({
-      minimum: 0.99, // Jump to 60% immediately
+      minimum: 0.99,
       maximum: 1,
-      showSpinner: false, // Hide spinner
-      speed: 200, // Fast transition
-      trickle: false, // No slow trickling
+      showSpinner: false, 
+      speed: 200, 
+      trickle: false, 
     });
   }, []);
 
-  // Get the correct theme after mounting (avoids hydration error)
   const currentTheme = theme === "system" ? systemTheme : theme;
-  const progressColor = currentTheme === "dark" ? "#fff" : "#000"; // White for dark mode, black for light mode
+  const progressColor = currentTheme === "dark" ? "#fff" : "#000"; 
 
   return (
     <ProgressProvider
       height="4px"
-      color={mounted ? progressColor : "transparent"} // Avoid SSR mismatch
+      color={mounted ? progressColor : "transparent"} 
       options={{ showSpinner: false }}
       shallowRouting
     >

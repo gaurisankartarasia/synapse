@@ -514,7 +514,7 @@ import { User } from 'lucide-react';
 import { debounce } from 'lodash';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
-// import { EmojiPicker, EmojiPickerButton } from '@/components/EmojiPicker'; 
+import { EmojiPicker, EmojiPickerButton } from '@/components/EmojiPicker'; 
 
 interface UserMention {
   uid: string;
@@ -734,12 +734,12 @@ export const MentionTextarea: React.FC<MentionTextareaProps> = ({
           className={`w-full ${className}`}
         />
         
-        {/* <div className="flex items-center mt-2">
+        <div className="flex items-center mt-2">
           <EmojiPickerButton 
             onClick={toggleEmojiPicker} 
             isActive={showEmojiPicker} 
           />
-        </div> */}
+        </div>
       </div>
 
       {/* Mention dropdown */}
@@ -782,7 +782,7 @@ export const MentionTextarea: React.FC<MentionTextareaProps> = ({
       )}
       
       {/* Emoji picker */}
-      {/* {showEmojiPicker && (
+      {showEmojiPicker && (
         <div className="absolute z-20 bottom-full mb-2">
           <EmojiPicker
             onEmojiSelect={handleEmojiSelect}
@@ -791,7 +791,7 @@ export const MentionTextarea: React.FC<MentionTextareaProps> = ({
             theme="auto"
           />
         </div>
-      )} */}
+      )}
     </div>
   );
 };

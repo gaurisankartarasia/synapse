@@ -20,6 +20,7 @@ export type Post = {
   hashtags?: string[];
   isSaved: boolean;
   isLiked:boolean;
+  isArchived:boolean;
 };
 
 

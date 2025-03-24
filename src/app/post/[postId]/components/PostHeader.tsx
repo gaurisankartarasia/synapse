@@ -92,6 +92,7 @@ import {
 interface PostHeaderProps {
   post: Post;
   onSave: () => Promise<void>;
+  onArchive: () => Promise<void>;
   onDelete: () => Promise<void>;
   currentUserId?: string;
   onReportClick: () => void;
@@ -100,6 +101,7 @@ interface PostHeaderProps {
 export const PostHeader = ({
   post,
   onSave,
+  onArchive,
   onDelete,
   currentUserId,
   onReportClick,
@@ -145,6 +147,12 @@ export const PostHeader = ({
             {post.isSaved ? "Unsave post" : "Save post"}
           </DialogItem>
           <DialogSeparator />
+          {isPostOwner && (
+            <DialogItem onClick={onArchive}>
+              {post.isArchived ? "Unarchive post" : "Archive post"}
+              </DialogItem>
+          )}
+            <DialogSeparator />
           {isPostOwner && (
             <DialogItem onClick={onDelete}>Delete Post</DialogItem>
           )}

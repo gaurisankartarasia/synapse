@@ -349,6 +349,7 @@ const PostPage = () => {
     isLiked,
     likeCount,
     handleLike,
+    handleArchive,
     handleSave,
     handleDelete,
     handleReport,
@@ -383,6 +384,7 @@ const PostPage = () => {
       <PostHeader 
         post={post} 
         onSave={handleSave} 
+        onArchive={handleArchive}
         onDelete={handleDelete} 
         currentUserId={user?.uid} 
         onReportClick={() => setIsReportModalOpen(true)} 

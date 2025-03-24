@@ -544,11 +544,11 @@ const PublicProfilePage: React.FC = () => {
           This user follows you but you don't.
         </p>
       )}
-
-      <MutualFollowers
+{profileData.uid !== authUser?.uid &&  <MutualFollowers
         username={username}
         onUserClick={(username) => router.push(`/${username}`)}
-      />
+      />}
+     
 
       <div className="flex justify-center gap-2">
         {profileData.uid === authUser?.uid ? (

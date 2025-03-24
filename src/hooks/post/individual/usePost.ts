@@ -12,6 +12,7 @@ export const usePost = (postId: string) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [isLikeLoading, setIsLikeLoading] = useState(false);
+  const [isArchiveLoading, setIsArchiveLoading] = useState(false);
   const [isSaveLoading, setIsSaveLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -90,6 +91,38 @@ export const usePost = (postId: string) => {
     }
   };
 
+  const handleArchive = async () => {
+    if (!user || isArchiveLoading || !postId || !post) return;
+
+    setIsArchiveLoading(true);
+    const prevArchived = post.isArchived;
+
+    // Optimistic update
+    setPost(prev => prev ? { ...prev, isArchived: !prev.isArchived } : null);
+
+    try {
+      const response = await fetch('/api/post/archive', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ postId }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to toggle archive status');
+      }
+    } catch (error) {
+      console.error('Error toggling archive status:', error);
+      // Revert optimistic update on error
+      setPost(prev => prev ? { ...prev, isArchived: prevArchived } : null);
+    } finally {
+      setIsArchiveLoading(false);
+    }
+  };
+
   const handleSave = async () => {
     if (!user || isSaveLoading || !postId || !post) return;
 
@@ -121,6 +154,7 @@ export const usePost = (postId: string) => {
       setIsSaveLoading(false);
     }
   };
+
 
   const handleDelete = async () => {
     if (!user || post?.creator_uid !== user.uid) return;
@@ -178,6 +212,7 @@ export const usePost = (postId: string) => {
     isLiked,
     likeCount,
     handleLike,
+    handleArchive,
     handleSave,
     handleDelete,
     handleReport,

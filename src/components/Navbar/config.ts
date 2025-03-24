@@ -38,11 +38,11 @@ export const createDropdownItems = (profile: any, setTheme: (theme: string) => v
     href: '/settings',
     icon: Settings
   },
-  {
-    name: 'Developers',
-    href: '/developers',
-    icon: Code2
-  },
+  // {
+  //   name: 'Developers',
+  //   href: '/developers',
+  //   icon: Code2
+  // },
   {
     name: 'Logout',
     href: '/signout',

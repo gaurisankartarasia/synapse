@@ -120,7 +120,7 @@ export async function POST(request: Request) {
             fromUid: currentUid,
             fromUsername: currentUserData?.username,
             fromdisplayName: currentUserData?.displayName,
-            fromprofilePhotoURL: currentUserData?.profilePhotoURL,
+            fromprofilePhotoURL: currentUserData?.profilePhotoURL || "default_profilePhotoURL.webp",
             timestamp: admin.firestore.FieldValue.serverTimestamp(),
             read: false
           });
@@ -169,7 +169,7 @@ export async function POST(request: Request) {
           fromUid: currentUid,
           fromUsername: currentUserData?.username,
           fromdisplayName: currentUserData?.displayName,
-          fromprofilePhotoURL: currentUserData?.profilePhotoURL,
+          fromprofilePhotoURL: currentUserData?.profilePhotoURL || "default_profilePhotoURL.webp",
           timestamp: admin.firestore.FieldValue.serverTimestamp(),
           read: false
         });

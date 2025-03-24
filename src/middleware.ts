@@ -1,81 +1,139 @@
- // src/middleware.ts
+//  // src/middleware.ts
 
+// import { NextResponse } from 'next/server';
+// import type { NextRequest } from 'next/server';
+// import { verifyJWT } from '@/lib/jwt';
+
+// export async function middleware(request: NextRequest) {
+//   // Get the pathname of the request
+//   const path = request.nextUrl.pathname;
+
+//   // Public paths that don't require authentication
+//   const publicPaths = ['/signin', '/signup', '/forgot-password','/verify','/verify/*' ,'/sitemap.xml', '/googlec70c2e840b8f053a.html', '/test'  ];
+  
+//   // Check if the current path is public
+//   const isPublicPath = publicPaths.includes(path);
+  
+//   // Get token from cookie
+//   const token = request.cookies.get('token')?.value;
+
+//   // Create URL objects once
+//   const signInUrl = new URL('/signin', request.url);
+//   const homeUrl = new URL('/', request.url);
+  
+//   // Add original pathname as redirect parameter for better UX
+//   if (!isPublicPath) {
+//     signInUrl.searchParams.set('redirect', path);
+//   }
+
+//   // Case 1: No token and trying to access protected route
+//   if (!token && !isPublicPath) {
+//     return NextResponse.redirect(signInUrl);
+//   }
+
+//   // Case 2: Has token and trying to access public path
+//   if (token && isPublicPath) {
+//     try {
+//       // Verify token before redirecting to home
+//       await verifyJWT(token);
+//       return NextResponse.redirect(homeUrl);
+//     } catch (error) {
+//       // If token is invalid, clear it and continue to public path
+//       const response = NextResponse.next();
+//       response.cookies.delete('token');
+//       return response;
+//     }
+//   }
+
+//   // Case 3: Has token and accessing protected route
+//   if (token) {
+//     try {
+//       // Verify token and add user info to headers
+//       const verified = await verifyJWT(token);
+//       const requestHeaders = new Headers(request.headers);
+//       requestHeaders.set('user', JSON.stringify(verified));
+      
+//       return NextResponse.next({
+//         request: {
+//           headers: requestHeaders,
+//         },
+//       });
+//     } catch (error) {
+//       // If token is invalid, clear it and redirect to signin
+//       const response = NextResponse.redirect(signInUrl);
+//       response.cookies.delete('token');
+//       return response;
+//     }
+//   }
+
+//   // Default case: allow request to proceed
+//   return NextResponse.next();
+// }
+
+// export const config = {
+//   matcher: [
+//     '/((?!api|_next/static|_next/image|favicon.ico|public).*)',
+//   ],
+// };
+
+
+
+
+// src/middleware.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { verifyJWT } from '@/lib/jwt';
 
 export async function middleware(request: NextRequest) {
-  // Get the pathname of the request
   const path = request.nextUrl.pathname;
 
-  // Public paths that don't require authentication
-  const publicPaths = ['/signin', '/signup', '/forgot-password', '/sitemap.xml', '/googlec70c2e840b8f053a.html', '/test'  ];
-  
-  // Check if the current path is public
-  const isPublicPath = publicPaths.includes(path);
-  
-  // Get token from cookie
-  const token = request.cookies.get('token')?.value;
+  const publicPaths = [
+    '/signin', '/signup', '/forgot-password', '/verify', '/sitemap.xml', 
+    '/googlec70c2e840b8f053a.html', '/test', '/verify/*'
+  ];
 
-  // Create URL objects once
+  // Proper wildcard matching
+  const isPublicPath = publicPaths.some((publicPath) => 
+    publicPath.endsWith('*') ? path.startsWith(publicPath.slice(0, -1)) : path === publicPath
+  );
+
+  const token = request.cookies.get('token')?.value ?? null;
   const signInUrl = new URL('/signin', request.url);
   const homeUrl = new URL('/', request.url);
-  
-  // Add original pathname as redirect parameter for better UX
+
   if (!isPublicPath) {
     signInUrl.searchParams.set('redirect', path);
   }
 
-  // Case 1: No token and trying to access protected route
-  if (!token && !isPublicPath) {
-    return NextResponse.redirect(signInUrl);
-  }
-
-  // Case 2: Has token and trying to access public path
-  if (token && isPublicPath) {
-    try {
-      // Verify token before redirecting to home
-      await verifyJWT(token);
-      return NextResponse.redirect(homeUrl);
-    } catch (error) {
-      // If token is invalid, clear it and continue to public path
-      const response = NextResponse.next();
-      response.cookies.delete('token');
-      return response;
+  try {
+    if (!token && !isPublicPath) {
+      return NextResponse.redirect(signInUrl);
     }
-  }
 
-  // Case 3: Has token and accessing protected route
-  if (token) {
-    try {
-      // Verify token and add user info to headers
+    if (token) {
       const verified = await verifyJWT(token);
+
+      if (isPublicPath) {
+        return NextResponse.redirect(homeUrl);
+      }
+
       const requestHeaders = new Headers(request.headers);
       requestHeaders.set('user', JSON.stringify(verified));
-      
+
       return NextResponse.next({
-        request: {
-          headers: requestHeaders,
-        },
+        request: { headers: requestHeaders },
       });
-    } catch (error) {
-      // If token is invalid, clear it and redirect to signin
-      const response = NextResponse.redirect(signInUrl);
-      response.cookies.delete('token');
-      return response;
     }
+  } catch (error) {
+    // If token is invalid, delete and redirect to sign-in
+    const response = isPublicPath ? NextResponse.next() : NextResponse.redirect(signInUrl);
+    response.cookies.set('token', '', { expires: new Date(0) });
+    return response;
   }
 
-  // Default case: allow request to proceed
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|public).*)',
-  ],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|public).*)'],
 };
-
-
-
-

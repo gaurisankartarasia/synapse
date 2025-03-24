@@ -7,6 +7,7 @@ import userReducer from './features/userSlice';
 import followReducer from './features/followSlice';
 import postReducer from './features/postSlice';
 import suggestionsReducer from './features/suggestionSlice';
+import geminiReducer from './features/gemini/geminiSlice'
 
 
 export const store = configureStore({
@@ -16,6 +17,7 @@ export const store = configureStore({
     follow: followReducer,
     post: postReducer, 
     suggestions: suggestionsReducer,
+    gemini:geminiReducer,
 
   },
   middleware: (getDefaultMiddleware) =>
