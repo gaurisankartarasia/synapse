@@ -9,6 +9,7 @@ import type { AppDispatch, RootState } from '@/redux/store';
 import  {Spinner}  from  "@/components/ui/spinner"
 import { Button } from '@/components/ui/button';
 import { toast } from "sonner"
+import Image from 'next/image';
 
 
 export default function GoogleSignInButton() {
@@ -62,6 +63,12 @@ export default function GoogleSignInButton() {
           </span>
         ) : (
           <>
+          <Image
+          src="https://firebasestorage.googleapis.com/v0/b/quixxle.appspot.com/o/assets%2FgoogleIcon.png?alt=media&token=627be043-9734-4414-986f-1a6c1bf25698"
+          height={15}
+          width={15}
+          alt='google'
+          />
 
             Continue with Google
           </>

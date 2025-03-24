@@ -80,13 +80,8 @@ export default function SignIn() {
 
             <div className="space-y-6">
               <GoogleSignInButton />
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t" />
-                </div>
-                  {/* <span className="px-2">Or continue with</span> */}
-                  <Separator title="OR"/>
-              </div>
+                <p className="px-2 text-center m-6">Or continue with</p>
+
             </div>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
