@@ -89,7 +89,7 @@ import { Spinner } from '@/components/ui/spinner';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
-import { CheckCircle, UserPlus, User } from 'lucide-react';
+import {  UserPlus, User } from 'lucide-react';
 
 interface UserData {
   uid: string;
@@ -146,7 +146,7 @@ const Notification = ({ notification, onMarkAsRead }: {
       <Link href={`/${notification.fromUsername}`}>
         <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
           <Image 
-            src={notification.fromProfilePhotoURL || '/default-avatar.png'} 
+            src={notification.fromProfilePhotoURL} 
             alt={notification.fromUsername} 
             width={48} 
             height={48} 
@@ -288,7 +288,6 @@ export default function NotificationsPage() {
   
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="p-4 text-2xl font-bold">Notifications</h1>
       
       <Tabs 
         activeTab={activeTab} 

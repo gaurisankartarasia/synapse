@@ -40,7 +40,7 @@ export const PostActions = ({
       )}
       <button
         onClick={onLikesClick}
-        className="hover:bg-gray-300 focus:outline-none"
+        className=" ocus:outline-none"
       >
         <div className="flex items-center">
           {likeCount} {likeCount === 1 ? 'Like' : 'Likes'}

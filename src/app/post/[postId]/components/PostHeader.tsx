@@ -171,7 +171,7 @@ export const PostHeader = ({
 
       <Dialog>
         <DialogTrigger asChild>
-          <button><Ellipsis/></button>
+          <button><Ellipsis size={22}/></button>
         </DialogTrigger>
         <DialogContent>
           <DialogItem onClick={onSave}>

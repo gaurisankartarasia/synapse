@@ -6,7 +6,7 @@ import "./globals.css";
 import ThemeProviderWrapper from './ThemeProviderWrapper';
 import { ProgressBar } from '@/components/ProgressBar';
 import { Toaster } from "@/components/ui/sonner"
-// import { LoadingProvider } from "@/components/LoadingProvider";
+import { LoadingProvider } from "@/components/LoadingProvider";
 import SideNavigation from '../components/Navbar/Navbar'
 
 export const metadata: Metadata = {
@@ -25,15 +25,15 @@ export default function RootLayout({
        <ThemeProviderWrapper>
 
           <ReduxProvider>
-            {/* <LoadingProvider> */}
+            <LoadingProvider>
             <ProgressBar >
             <SideNavigation />
-            <main className="md:ml-16 lg:ml-80 pb-16 md:pb-0 pt-20" >
+            <main className="md:ml-16 lg:ml-80 p-3 md:pb-0 " >
                 {children}
             </main>
             </ProgressBar> 
                     <Toaster />
-                    {/* </LoadingProvider> */}
+                    </LoadingProvider>
           </ReduxProvider>
         </ThemeProviderWrapper>
       </body>

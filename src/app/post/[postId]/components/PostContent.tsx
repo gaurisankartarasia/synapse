@@ -9,7 +9,6 @@ interface PostContentProps {
 export const PostContent = ({ post }: PostContentProps) => {
   return (
     <>
-      <div className="prose prose-lg max-w-none mt-6">{post.content}</div>
       
       {post.imageURLs && post.imageURLs.length > 0 && (
         <ImageGallery images={post.imageURLs} />

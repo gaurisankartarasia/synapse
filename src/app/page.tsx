@@ -6,6 +6,7 @@ import UserSuggestions from "@/components/UserSuggestions/UserSuggestions";
 import StoriesContainer from '@/components/Story/container'
 import UploadPage from "@/components/Story/uploadpage";
 import { Profile } from "@/components/profile-card";
+import Footer from "@/components/Footer";
 
 
 export default function Home() {
@@ -30,6 +31,7 @@ export default function Home() {
       <div className="lg:w-96 lg:sticky lg:top-16 lg:h-[calc(100vh-1rem)] lg:overflow-y-auto">
         <Profile/>
         <UserSuggestions />
+        <Footer/>
       </div>
     </div>
   );

@@ -84,6 +84,7 @@ import { useEffect, useState } from "react"
 import LikedPostsPage from '../components/Liked'
 import SavedPostsGrid from '../components/Saved'
 import UserComments from '../components/Comments'
+import ArchivedPostsGrid from '../components/Archived'
 import { useAuth } from "@/hooks/useAuth"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -110,10 +111,11 @@ export default function TabsDemo() {
 
   return (
     <Tabs value={selectedTab} onValueChange={handleTabChange} className="w-full">
-      <TabsList className="grid w-full grid-cols-3">
+      <TabsList className="grid w-full grid-cols-4">
         <TabsTrigger value="liked">Liked</TabsTrigger>
         <TabsTrigger value="saved">Saved</TabsTrigger>
         <TabsTrigger value="comments">Comments</TabsTrigger>
+        <TabsTrigger value="archived">Archived</TabsTrigger>
       </TabsList>
 
       <TabsContent value="liked">
@@ -126,6 +128,9 @@ export default function TabsDemo() {
 
       <TabsContent value="comments">
         <UserComments  />
+      </TabsContent>
+      <TabsContent value="archived">
+        <ArchivedPostsGrid  />
       </TabsContent>
     </Tabs>
   )

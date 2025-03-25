@@ -540,7 +540,7 @@ const PublicProfilePage: React.FC = () => {
       />
 
       {followStatus.isFollowingWithoutFollowback && (
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-foreground/70 text-center">
           This user follows you but you don't.
         </p>
       )}

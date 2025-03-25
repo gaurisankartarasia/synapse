@@ -19,11 +19,9 @@ import {
   CardFooter,
   CardDescription,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator"
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import { toast } from "sonner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import CookieConsent from "@/components/CookiesDialog";
 
 export default function SignIn() {
   const router = useRouter();
@@ -45,7 +43,7 @@ export default function SignIn() {
           },
         });
 
-        router.push("/");
+        router.replace("/")
       } else {
         toast.error("Incorrect email or password", {
           cancel: {

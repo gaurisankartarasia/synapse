@@ -9,7 +9,7 @@ export const HashtagDisplay = ({ hashtags }: { hashtags?: string[] }) => {
           <Link
             key={index}
             href={`/hashtag/${tag.toLowerCase()}`}
-            className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-sm hover:underline"
+            className="px-2 py-1 text-sm hover:underline"
           >
             #{tag}
           </Link>

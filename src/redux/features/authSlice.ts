@@ -78,7 +78,6 @@ export const signInWithEmail = createAsyncThunk(
   ) => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
-      const idToken = await result.user.getIdToken();
 
       const response = await fetch('/api/auth/signin', {
         method: 'POST',

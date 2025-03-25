@@ -94,14 +94,16 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
             <h1 className=" mb-2">{displayName}</h1>
           </div>
-          <Button variant="outline">
-            {uid === user?.uid && (
+        
+            {uid === user?.uid && ( 
+               <Button variant="outline">
               <QRCodeGenerator
                 text={`https://${window.location.hostname}/${username}`}
                 buttonText="QR Code"
               />
+              </Button>
             )}
-          </Button>
+          
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

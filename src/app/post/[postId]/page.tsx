@@ -336,6 +336,8 @@ import { CommentSection } from "../lagacy_components/CommentSection";
 import  {usePost}  from "@/hooks/post/individual/usePost";
 import { HashtagDisplay } from "../lagacy_components/Hashtag";
 import { Spinner } from "@/components/ui/spinner";
+import TextContent from "../lagacy_components/TextContent"; // Import the new component
+
 
 const PostPage = () => {
   const params = useParams();
@@ -389,7 +391,9 @@ const PostPage = () => {
         currentUserId={user?.uid} 
         onReportClick={() => setIsReportModalOpen(true)} 
       />
-
+ <div className="m-5 ">
+                  <TextContent content={post.content} />
+                </div>
       <PostContent post={post} />
       
       <HashtagDisplay hashtags={post.hashtags} />

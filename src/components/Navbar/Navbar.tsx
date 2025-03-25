@@ -169,7 +169,7 @@ import {
 import { NavigationLink } from './components/NavigationLink';
 import { ThemeMenu } from './components/ThemeMenu';
 import { navLinks, createDropdownItems } from './config';
-import { Menu } from 'lucide-react';
+import { Menu, Component } from 'lucide-react';
 
 export default function SideNavigation() {
   const { profile } = useProfile();
@@ -249,7 +249,7 @@ export default function SideNavigation() {
       <aside className="hidden md:block fixed left-0 top-0 h-screen w-20 lg:w-80 border-r bg-background/95 transition-all duration-300 shadow-sm">
         <div className="flex flex-col h-full p-4">
           <Link href="/" className="py-6 flex items-center justify-center lg:justify-start gap-3 mb-6">
-            <Image src="/favicon.ico" alt="Logo" width={30} height={30} className="rounded-full" />
+            <Component/>
             <span className="text-2xl font-semibold hidden lg:block">Synapse</span>
           </Link>
 
@@ -280,7 +280,7 @@ export default function SideNavigation() {
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 border-b bg-background/95 backdrop-blur z-50 shadow-sm">
         <div className="flex items-center justify-between px-4 h-full">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/favicon.ico" alt="Logo" width={32} height={32} className="rounded-full" />
+            <Component />
             <span className="text-lg font-bold">Synapse</span>
           </Link>
           <UserDropdown isMobile />
