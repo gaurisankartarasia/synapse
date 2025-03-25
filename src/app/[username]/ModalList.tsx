@@ -317,12 +317,12 @@ const EnhancedModalList: React.FC<EnhancedModalListProps> = ({
                       )}
                     </Button>
                   )}
- {isOwnProfile ? null : <FollowButton
+ <FollowButton
                     isUpdating={currentFollowStatus.loading || false}
                     followStatus={followStatus}
                     onFollowClick={() => handleFollow(user.username)}
                     className="w-24"
-                  />}
+                  />
                   
 
                   {currentFollowStatus.isFollowing && (
