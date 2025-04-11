@@ -2,7 +2,7 @@
 "use client";
 
 import { ReactNode } from 'react';
-import InboxList from './List';
+import InboxList from '../../components/inbox/List';
 
 export default function InboxLayout({ children }: { children: ReactNode }) {
   return (

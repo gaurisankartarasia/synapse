@@ -4,7 +4,9 @@ import { StoryCircle } from './circle';
 import { StoryViewer } from './view';
 import { Story } from '@/types/story';
 
-import  { Spinner } from '@/components/ui/spinner';  
+import  {CircularProgress} from '@mui/material';
+
+
 
 export default function StoriesContainer() {
   const [stories, setStories] = useState<Story[]>([]);
@@ -67,7 +69,7 @@ export default function StoriesContainer() {
   
   if (isLoading) {
     return (
-      <Spinner/>
+      <CircularProgress/>
     );
   }
   

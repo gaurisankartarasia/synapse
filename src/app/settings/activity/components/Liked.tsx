@@ -78,10 +78,10 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Post } from "@/types/post";
 import Link from "next/link";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
-import ImageIcon from "@mui/icons-material/Image";
-import { Spinner } from "@/components/ui/spinner";
+import { Favorite, ChatBubbleOutline, Image as ImageIcon } from '@mui/icons-material';
+
+
+import { CircularProgress } from "@mui/material";
 
 export default function LikedPostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -109,7 +109,7 @@ export default function LikedPostsPage() {
   if (loading)
     return (
       <div className="flex justify-center">
-        <Spinner />
+        <CircularProgress />
       </div>
     );
   if (error) return <div className="p-4 text-red-500">{error}</div>;
@@ -141,11 +141,11 @@ export default function LikedPostsPage() {
                   <div className="absolute inset-0 flex items-center bg-black bg-opacity-30 justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="text-white text-lg font-semibold  p-2 rounded flex items-center gap-3">
                       <div className="flex items-center space-x-1">
-                        <FavoriteIcon fontSize="small" />
+                        <Favorite  />
                         <span>{post.likeCount}</span>
                       </div>
                       <div className="flex items-center space-x-1">
-                        <CommentOutlinedIcon fontSize="small" />
+                        <ChatBubbleOutline  />
                         <span>{post.commentCount}</span>
                       </div>
                     </div>

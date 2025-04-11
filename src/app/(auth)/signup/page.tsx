@@ -1,4 +1,5 @@
 
+
 // src/app/(auth)/signup/page.tsx
 'use client';
 
@@ -9,10 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { signUpWithEmail } from '@/redux/features/authSlice';
 import GoogleSignInButton from '../signin/GoogleSignInButton';
-import { Spinner } from '@/components/ui/spinner';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import {  CardContent, CardTitle, CardHeader, CardFooter, CardDescription } from '@/components/ui/card';
+import { Button, Card, CardHeader, CardContent, TextField, Box, Divider, Alert, Typography, CardActions, CircularProgress} from '@mui/material'
 
 export default function SignUp() {
   const router = useRouter();
@@ -51,110 +49,98 @@ export default function SignUp() {
   };
 
   return (
-    <div className="flex items-center justify-center lg:mr-64">
-      <div className="max-w-md w-full space-y-8 ">
-        <CardHeader>
-   <CardTitle>Sign Up</CardTitle>   
-    </CardHeader>
-     <CardContent>
-       
+    <Box display="flex" justifyContent="center" alignItems="center" mt={6}>
+  <Card sx={{ maxWidth: 420, width: '100%' }}>
+    <CardHeader title="Sign Up" />
 
-        {(error || formError) && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-            {error || formError}
-          </div>
-        )}
+    <CardContent>
+      {(error || formError) && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error || formError}
+        </Alert>
+      )}
 
-        <div className="space-y-6">
-          <GoogleSignInButton />
+      <Box mb={4}>
+        <GoogleSignInButton />
+        <Box display="flex" alignItems="center" mt={3}>
+          <Divider sx={{ flexGrow: 1 }} />
+          <Typography variant="body2" sx={{ mx: 2 }}>
+            Or sign up with email
+          </Typography>
+          <Divider sx={{ flexGrow: 1 }} />
+        </Box>
+      </Box>
 
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2">Or sign up with email</span>
-            </div>
-          </div>
-        </div>
+      <form onSubmit={handleSubmit}>
+        <TextField
+          id="username"
+          label="Username"
+          fullWidth
+          required
+          margin="normal"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <TextField
+          id="email"
+          label="Email"
+          type="email"
+          fullWidth
+          required
+          margin="normal"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          id="password"
+          label="Password"
+          type="password"
+          fullWidth
+          required
+          margin="normal"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <TextField
+          id="confirmPassword"
+          label="Confirm Password"
+          type="password"
+          fullWidth
+          required
+          margin="normal"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="username" className="block text-sm font-medium ">
-              Username
-            </label>
-            <Input
-              id="username"
-              type="text"
-              required
-              className="mt-1 block w-full p-2"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
+        <Button
+          fullWidth
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={loading}
+          sx={{ mt: 2, py: 1.5 }}
+        >
+          {loading ? <CircularProgress size={24} color="inherit" /> : 'Sign Up'}
+        </Button>
+      </form>
+    </CardContent>
 
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium ">
-              Email
-            </label>
-            <Input
-              id="email"
-              type="email"
-              required
-              className="mt-1 block w-full p-2"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium ">
-              Password
-            </label>
-            <Input
-              id="password"
-              type="password"
-              required
-              className="mt-1 block w-full p-2"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium ">
-              Confirm Password
-            </label>
-            <Input
-              id="confirmPassword"
-              type="password"
-              required
-              className="mt-1 block w-full p-2"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </div>
-
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full flex justify-center py-2 px-4"
+    <CardActions sx={{ justifyContent: 'center', mt: 2 }}>
+      <Typography variant="body2">
+        Already have an account?{' '}
+        <Link href="/signin" passHref>
+          <Typography
+            component="span"
+            sx={{ textDecoration: 'underline', fontWeight: 500, cursor: 'pointer' }}
           >
-            {loading ? <Spinner  size={25} /> : 'Sign Up'}
-          </Button>
-        </form> 
-        </CardContent>
-<CardFooter className='mt-3'>
-        <CardDescription>
-          Already have an account?{' '}
-          <Link href="/signin" className="underline">
             Sign in
-          </Link>
-        </CardDescription>
-        </CardFooter>
-       
-      </div>
-    </div>
+          </Typography>
+        </Link>
+      </Typography>
+    </CardActions>
+  </Card>
+</Box>
+
   );
 }
 

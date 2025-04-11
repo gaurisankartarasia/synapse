@@ -106,9 +106,9 @@ export default function ProductPage() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
-      <Image src={product.imageUrl} height={400} width={400} alt={product.name} className=" object-cover rounded" />
+      <Image priority src={product.imageUrl} height={400} width={400} alt={product.name} className=" object-cover rounded" />
       <h1 className="text-2xl font-bold mt-4">{product.name}</h1>
-      <p className="text-gray-500 mt-2">${product.price}</p>
+      <p className="text-gray-500 mt-2">₹{product.price}</p>
       <p className="mt-4">{product.description}</p>
       <button
         onClick={() => dispatch(addToCart({ ...product, quantity: 1 }))}

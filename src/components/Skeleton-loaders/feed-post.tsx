@@ -1,25 +1,29 @@
-import { Skeleton } from "@/components/ui/skeleton";
+
+
+
+import { Skeleton } from '@mui/material';
+import { Box } from '@mui/material'; 
 
 export function PostSkeleton() {
   return (
-    <div className="p-4 rounded-md space-y-4 w-full ">
+    <Box sx={{ p: 4, borderRadius: '4px', display: 'flex', flexDirection: 'column', gap: 2 }}>
       {/* User Info */}
-      <div className="flex items-center space-x-4">
-        <Skeleton className="h-10 w-10 rounded-md" />
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-40 " />
-          <Skeleton className="h-3 w-20" />
-        </div>
-      </div>
-      
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Skeleton variant="circular" width={40} height={40} />
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Skeleton width={160} height={16} />
+          <Skeleton width={80} height={12} />
+        </Box>
+      </Box>
+
       {/* Post Image */}
-      <Skeleton className="h-96 w-full rounded-md" />
-      
+      <Skeleton variant="rectangular" width="100%" height={384} sx={{ borderRadius: '4px' }} /> {/* 96 * 4 = 384 */}
+
       {/* Engagement */}
-      <div className="flex space-x-4">
-        <Skeleton className="h-5 w-12" />
-        <Skeleton className="h-5 w-12" />
-      </div>
-    </div>
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        <Skeleton width={48} height={20} />
+        <Skeleton width={48} height={20} />
+      </Box>
+    </Box>
   );
 }

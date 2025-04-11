@@ -4,10 +4,11 @@
 import React, { useEffect, useState } from "react";
 import {
   Dialog,
-  DialogContent,
-  DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+  DialogContent,
+  IconButton,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface ModalProps {
   isOpen: boolean;
@@ -23,19 +24,20 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
     if (isOpen) {
       setIsVisible(true);
     } else {
-      const timer = setTimeout(() => setIsVisible(false), 300); 
+      const timer = setTimeout(() => setIsVisible(false), 300); // Smooth close animation
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
 
   return (
-    <Dialog open={isVisible} onOpenChange={onClose} >
-      <DialogContent className="container">
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-        </DialogHeader>
-        <div className="py-4">{children}</div>
-      </DialogContent>
+    <Dialog open={isVisible} onClose={onClose} fullWidth maxWidth="sm"  >
+      <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        {title}
+        <IconButton onClick={onClose} sx={{ ml: 2 }}>
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent>{children}</DialogContent>
     </Dialog>
   );
 };

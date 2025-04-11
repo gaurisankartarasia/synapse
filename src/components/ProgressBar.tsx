@@ -1,23 +1,3 @@
-// 'use client';
- 
-// import { AppProgressProvider as ProgressProvider } from '@bprogress/next';
- 
-// const ProgressBar = ({ children }: { children: React.ReactNode }) => {
-
-//   return (
-//     <ProgressProvider 
-//       height="4px"
-//       color="#29d"
-//       options={{ showSpinner: false }}
-//       shallowRouting
-//     >
-//       {children}
-//     </ProgressProvider>
-//   );
-// };
- 
-// export  {ProgressBar};
-
 
 
 "use client";
@@ -43,12 +23,11 @@ const ProgressBar = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const currentTheme = theme === "system" ? systemTheme : theme;
-  const progressColor = currentTheme === "dark" ? "#fff" : "#000"; 
 
   return (
     <ProgressProvider
       height="4px"
-      color={mounted ? progressColor : "transparent"} 
+      color="#29d"
       options={{ showSpinner: false }}
       shallowRouting
     >
@@ -58,3 +37,10 @@ const ProgressBar = ({ children }: { children: React.ReactNode }) => {
 };
 
 export  {ProgressBar};
+
+
+
+
+
+
+

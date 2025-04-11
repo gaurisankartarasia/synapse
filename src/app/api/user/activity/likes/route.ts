@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch liked posts
-    let likesQuery = db.collectionGroup('likes')
+    const likesQuery = db.collectionGroup('likes')
       .where('uid', '==', uid)
       .orderBy('timestamp', 'desc')
       .limit(10);

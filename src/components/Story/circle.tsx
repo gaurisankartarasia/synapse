@@ -2,7 +2,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { Story } from '@/types/story';
-import { Card } from '../ui/card';
+
+import { Card } from '@mui/material';
 
 interface StoryCircleProps {
   story: Story;
@@ -16,7 +17,7 @@ export function StoryCircle({ story, onClick }: StoryCircleProps) {
       onClick={onClick}
     >
       <div className="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-yellow-400 to-pink-500">
-        <Card className="w-full h-full rounded-full p-[2px]">
+        <Card className="w-full h-full p-[2px]" sx={{ borderRadius: '50%' }} >
           <div className="relative w-full h-full rounded-full overflow-hidden">
             <Image
               src={story.imageUrl}
@@ -33,3 +34,4 @@ export function StoryCircle({ story, onClick }: StoryCircleProps) {
     </div>
   );
 }
+

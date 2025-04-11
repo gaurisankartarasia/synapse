@@ -1,12 +1,10 @@
 // src/components/StoryUpload.tsx
 import React, { useState, useCallback } from 'react';
-import { Upload, X, Loader2 } from 'lucide-react';
+import { Close, Upload } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import {  CardContent, CardFooter } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+
 
 interface ImageUploadProps {
   onUploadComplete?: (storyId: string) => void;
@@ -82,7 +80,7 @@ export default function ImageUpload({ onUploadComplete }: ImageUploadProps) {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <CardContent className="p-4 space-y-4">
+      <div className="p-4 space-y-4">
         <div
           {...getRootProps()}
           className={`border-2 border-dashed rounded-md p-6 text-center cursor-pointer transition-colors
@@ -108,7 +106,7 @@ export default function ImageUpload({ onUploadComplete }: ImageUploadProps) {
                   }}
                   className="absolute top-2 right-2 p-1 bg-red-500 rounded-md text-white hover:bg-red-600"
                 >
-                  <X size={16} />
+                  <Close />
                 </button>
               )}
             </div>
@@ -128,13 +126,13 @@ export default function ImageUpload({ onUploadComplete }: ImageUploadProps) {
         </div>
 
         <div className="space-y-3">
-          <Input
+          <input
             placeholder="Story title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             disabled={isUploading}
           />
-          <Textarea
+          <textarea
             placeholder="Story description (optional)"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -142,24 +140,24 @@ export default function ImageUpload({ onUploadComplete }: ImageUploadProps) {
             rows={3}
           />
         </div>
-      </CardContent>
+      </div>
       
-      <CardFooter className="px-4 pb-4">
-        <Button
+      <div className="px-4 pb-4">
+        <button
           className="w-full"
           onClick={handleSubmit}
           disabled={!selectedFile || !title.trim() || isUploading}
         >
           {isUploading ? (
             <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <CircularProgress  />
               Uploading...
             </>
           ) : (
             'Upload Story'
           )}
-        </Button>
-      </CardFooter>
+        </button>
+      </div>
     </div>
   );
 }

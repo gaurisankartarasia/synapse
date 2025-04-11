@@ -1,9 +1,8 @@
 // components/LoadingScreen.tsx
 'use client';
 
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { Component } from 'lucide-react';
+import Image from 'next/image';
 
 interface LoadingScreenProps {
   isLoading: boolean;
@@ -30,9 +29,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading }) => {
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background transition-all duration-300">
       <div className="flex flex-col items-center">
         <div className="relative h-16 w-16 animate-pulse">
-          <Component
-          size={60}
-          />
+        <Image src="/synapse_logo.svg" alt="logo" height={32} width={32} />
         </div>
         <b>Synapse</b>
         <div className='flex space-x-2 justify-center dark:invert m-3'>

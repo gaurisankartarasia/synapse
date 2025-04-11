@@ -1,4 +1,4 @@
-// src/app/api/user/my_profile/route.ts
+// src/app/api/user/my_profile/query/route.ts
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { verifyJWT } from '@/lib/jwt';
@@ -7,7 +7,7 @@ import { CustomJWTPayload } from '@/types/auth';
 
 export async function GET() {
   try {
-    // Get token from cookies - fix the await
+    // Get token from cookies 
     const cookieStore = await cookies();
     const token = cookieStore.get('token');
 

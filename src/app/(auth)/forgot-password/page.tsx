@@ -1,10 +1,10 @@
+
+
 'use client';
 
 import { useState } from 'react';
 import { auth, sendPasswordResetEmail, fetchSignInMethodsForEmail } from '@/lib/firebaseClient';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardTitle, CardHeader, CardFooter, CardDescription } from '@/components/ui/card';
+import { Button, Card, CardHeader, CardContent, TextField, Box,  Alert, Typography, CardActions} from '@mui/material'
 import Link from 'next/link';
 
 
@@ -40,50 +40,63 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="lg:mr-64 flex items-center justify-center">
-      <div className="max-w-md w-full space-y-8">
-        <CardHeader>
-          <CardTitle>Reset Password</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {message && (
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-              {message}
-            </div>
-          )}
-          {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-              {error}
-            </div>
-          )}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium">
-                Email
-              </label>
-              <Input
-                id="email"
-                type="email"
-                required
-                className="mt-1 block w-full p-2"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <Button type="submit" className="w-full flex justify-center py-2 px-4" disabled={loading}>
-              {loading ? 'Processing...' : 'Send Reset Link'}
-            </Button>
-          </form>
-        </CardContent>
-        <CardFooter>
-          <CardDescription>
-            Remembered your password?{' '}
-            <Link href="/signin" className="underline">
+    <Box display="flex" justifyContent="center" alignItems="center" mt={6}>
+    <Card sx={{ maxWidth: 420, width: '100%' }}>
+      <CardHeader title="Reset Password" />
+  
+      <CardContent>
+        {message && (
+          <Alert severity="success" sx={{ mb: 2 }}>
+            {message}
+          </Alert>
+        )}
+  
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+  
+        <form onSubmit={handleSubmit}>
+          <TextField
+            id="email"
+            label="Email"
+            type="email"
+            fullWidth
+            required
+            margin="normal"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+  
+          <Button
+            fullWidth
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={loading}
+            sx={{ mt: 2, py: 1.5 }}
+          >
+            {loading ? 'Processing...' : 'Send Reset Link'}
+          </Button>
+        </form>
+      </CardContent>
+  
+      <CardActions sx={{ justifyContent: 'center' }}>
+        <Typography variant="body2">
+          Remembered your password?{' '}
+          <Link href="/signin" passHref>
+            <Typography
+              component="span"
+              sx={{ textDecoration: 'underline', fontWeight: 500, cursor: 'pointer' }}
+            >
               Sign in
-            </Link>
-          </CardDescription>
-        </CardFooter>
-      </div>
-    </div>
+            </Typography>
+          </Link>
+        </Typography>
+      </CardActions>
+    </Card>
+  </Box>
+  
   );
 }

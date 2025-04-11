@@ -3,11 +3,11 @@
 // components/FollowRequest.tsx
 import { useState } from 'react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar'
-import { VscVerifiedFilled } from 'react-icons/vsc';
-import { UserHoverCard } from '@/components/user-profile-hover-card';
 
+import { Verified } from '@mui/icons-material';
+import { UserHoverCard } from '@/components/hover-card/user-profile-hover-card';
+
+import {Avatar, Button} from '@mui/material'
 
 interface User {
   uid: string;
@@ -60,10 +60,7 @@ export const FollowRequest = ({ user, onActionComplete }: FollowRequestProps) =>
       <div >
       <div className="flex items-center space-x-4">
        
-         <Avatar>
-      <AvatarImage src={user.profilePhotoURL || '/profile-default-photo.svg'} alt={user.username} className='object-cover'/>
-      <AvatarFallback>{user.username}</AvatarFallback>
-    </Avatar>
+         <Avatar src={user.profilePhotoURL} alt={user.username}>{user.username}</Avatar> 
         <div>
           <div className='flex items-center gap-1'>
           <UserHoverCard username={user.username} >
@@ -71,7 +68,7 @@ export const FollowRequest = ({ user, onActionComplete }: FollowRequestProps) =>
               <p className="font-semibold hover:opacity-70">{user.username}</p>
               </Link>
          </UserHoverCard>
-          <div>  {user.isVerified && <VscVerifiedFilled size={17}/> }</div>
+          <div>  {user.isVerified && <Verified fontSize='small'/> }</div>
           </div>
         
         
@@ -89,7 +86,7 @@ export const FollowRequest = ({ user, onActionComplete }: FollowRequestProps) =>
         <Button
           onClick={() => handleAction('reject')}
           disabled={isLoading}
-          variant="outline"
+          variant="outlined"
         >
           Reject
         </Button>

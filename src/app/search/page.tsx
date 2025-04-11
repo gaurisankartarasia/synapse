@@ -1,20 +1,24 @@
-
 // // src/app/search/page.tsx
 
 "use client";
 
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import {Spinner} from "@/components/ui/spinner"
-import {Input} from '@/components/ui/input'
-import {VscVerifiedFilled} from 'react-icons/vsc';
+
+import {
+  CircularProgress,
+  TextField,
+  Card,
+  CardActionArea,
+  CardContent,
+  Typography,
+  Avatar
+} from "@mui/material";
+
+import { Verified } from "@mui/icons-material";
+
 import UserSuggestions from "@/components/UserSuggestions/UserSuggestions";
 import Link from "next/link";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
 
 interface SearchResult {
   uid: string;
@@ -59,14 +63,14 @@ const SearchPageContent: React.FC = () => {
       const response = await fetch(
         `/api/v1/search?q=${encodeURIComponent(query)}`,
         {
-          credentials: 'include' // equivalent to withCredentials: true
+          credentials: "include", // equivalent to withCredentials: true
         }
       );
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      
+
       const data = await response.json();
       setSearchResults(data.users);
     } catch (err) {
@@ -101,84 +105,85 @@ const SearchPageContent: React.FC = () => {
 
   return (
     <>
-    <main className="flex justify-between">
-      <div className="w-full lg:w-2/3 p-3">
-        <h2 className="font-semibold m-3">Search</h2>
-        <form className="" onSubmit={(e) => e.preventDefault()}>
-          <Input
-            className=""
-            type="text"
-            placeholder="Search by username or display name"
-            value={searchTerm}
-            onChange={(e) => handleSearchInputChange(e.target.value)}
-          />
-        </form>
-        
-        <div className="flex justify-center p-5">
-          {loading && <Spinner />}
+      <main className="flex justify-between">
+        <div className="w-full lg:w-2/3 p-3">
+          <h2 className="font-semibold m-3">Search</h2>
+          <form className="" onSubmit={(e) => e.preventDefault()}>
+            <TextField
+              type="text"
+              placeholder="Search by username or display name"
+              value={searchTerm}
+              onChange={(e) => handleSearchInputChange(e.target.value)}
+              sx={{ width: "100%" }}
+            />
+          </form>
+
+          <div className="flex justify-center p-5">
+            {loading && <CircularProgress />}
+          </div>
+
+          {error && <div className="text-red-500 text-center">{error}</div>}
+
+          {searchResults.length > 0 && (
+            <ul className="search_list">
+              {searchResults.map((user) => (
+                <Card key={user.uid} className="m-5 my-2">
+                  {" "}
+                  <CardActionArea>
+                    <Link href={user.username}>
+                      <CardContent className="flex gap-3 p-3">
+                       
+         <Avatar src={user.profilePhotoURL} alt={user.username}>{user.username}</Avatar> 
+
+                        <div className="">
+                          <div className="flex items-center gap-1">
+                            <Typography variant="body1" className="font-medium">{user.username}</Typography>
+                            {user.isVerified && <Verified />}
+                          </div>
+
+                          <Typography variant="body1" className="opacity-70">
+                            {user.displayName || user.username}
+                          </Typography>
+                        </div>
+                      </CardContent>
+                    </Link>
+                  </CardActionArea>
+                </Card>
+              ))}
+            </ul>
+          )}
+
+          {searchResults.length === 0 && !loading && !error && hasSearched && (
+            <div className="text-center p-4">
+              <small>No results found</small>
+            </div>
+          )}
+
+          {!hasSearched && !loading && searchTerm.trim() === "" && (
+            <div className="text-center p-4 text-gray-500">
+              <p>Search for users by their username or display name</p>
+            </div>
+          )}
         </div>
-        
-        {error && <div className="text-red-500 text-center">{error}</div>}
 
-        {searchResults.length > 0 && (
-          <ul className="search_list">
-            {searchResults.map((user) => (
-              <div
-                key={user.uid}
-                className="cursor-pointer m-2 my-2 hover:bg-accent rounded-xl"
-              >
-                <Link href={user.username} >
-                  <div className="flex gap-3 p-3 ">
-                    <Avatar>
-                      <AvatarImage src={user.profilePhotoURL} alt={user.username} />
-                      <AvatarFallback>{user.username.slice(0,1)}</AvatarFallback>
-                    </Avatar>
-
-                    <div className="">
-                      <div className="flex items-center gap-1">
-                        <h1 className="font-medium">{user.username}</h1>
-                        {user.isVerified && <VscVerifiedFilled/>}
-                      </div>
-                      
-                      <p className="opacity-70">
-                        {user.displayName || user.username}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-            ))}
-          </ul>
-        )}
-
-        {searchResults.length === 0 && !loading && !error && hasSearched && (
-          <div className="text-center p-4">
-            <small>No results found</small>
-          </div>
-        )}
-
-        {!hasSearched && !loading && searchTerm.trim() === "" && (
-          <div className="text-center p-4 text-gray-500">
-            <p>Search for users by their username or display name</p>
-          </div>
-        )}
-        
-      </div>
-
-      <div className="hidden lg:block lg:w-1/3">
-        <UserSuggestions />
-      </div>
-    </main>
-    
+        <div className="hidden lg:block lg:w-1/3">
+          <UserSuggestions />
+        </div>
+      </main>
     </>
   );
 };
 
 const SearchPage: React.FC = () => (
-  <Suspense fallback={<div className="flex justify-center p-8"><Spinner/></div>}>
+  <Suspense
+    fallback={
+      <div className="flex justify-center p-8">
+        <CircularProgress />
+      </div>
+    }
+  >
     <SearchPageContent />
   </Suspense>
 );
 
 export default SearchPage;
-

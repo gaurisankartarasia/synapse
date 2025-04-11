@@ -60,12 +60,12 @@
 //                 <div className="absolute inset-0 flex items-center bg-black bg-opacity-30 justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
 //                   <div className="text-white text-lg font-semibold  p-2 rounded flex items-center gap-3">
 //                     <div className="flex items-center space-x-1">
-//                       <FavoriteIcon fontSize='small' />
+//                       <FavoriteIcon  />
 //                       <span>{post.likeCount}</span>
 //                     </div>
                     
 //                     <div className="flex items-center space-x-1">
-//                       <CommentOutlinedIcon fontSize='small'/>
+//                       <CommentOutlinedIcon />
 //                       <span>{post.commentCount}</span>
 //                     </div>
 //                   </div>
@@ -89,10 +89,8 @@ import Image from 'next/image';
 import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 import { Post } from '@/types/post';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
-import ImageIcon from '@mui/icons-material/Image';
-import  {Spinner} from '@/components/ui/spinner';  
+import { Favorite, ChatBubbleOutline, Image as ImageIcon } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
 
 export default function SavedPostsGrid() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -120,7 +118,7 @@ export default function SavedPostsGrid() {
     fetchPosts();
   }, [user]);
 
-  if (loading) return <div className="flex justify-center"><Spinner/></div>;
+  if (loading) return <div className="flex justify-center"><CircularProgress/></div>;
   if (error) return <p className="text-center text-red-500">Error: {error}</p>;
   if (posts.length === 0) return <p className="text-center">No saved posts yet.</p>;
 
@@ -150,12 +148,12 @@ export default function SavedPostsGrid() {
                 <div className="absolute inset-0 flex items-center bg-black bg-opacity-30 justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="text-white text-lg font-semibold  p-2 rounded flex items-center gap-3">
                     <div className="flex items-center space-x-1">
-                      <FavoriteIcon fontSize='small' />
+                      <Favorite  />
                       <span>{post.likeCount}</span>
                     </div>
                     
                     <div className="flex items-center space-x-1">
-                      <CommentOutlinedIcon fontSize='small'/>
+                      <ChatBubbleOutline fontSize='small' />
                       <span>{post.commentCount}</span>
                     </div>
                   </div>

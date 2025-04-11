@@ -1,15 +1,15 @@
 "use client";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { VscVerifiedFilled } from "react-icons/vsc";
+import { Verified } from "@mui/icons-material";
 import Link from "next/link";
-import { FollowButton } from "../../app/[username]/FollowButton";
+import { FollowButton } from "../Username/FollowButton";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setFollowStatus, toggleFollow } from "@/redux/features/followSlice";
 import { fetchSuggestedUsers } from "@/redux/features/suggestionSlice";
-import { Spinner } from "@/components/ui/spinner";
-import { UserHoverCard } from "../user-profile-hover-card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserHoverCard } from "../hover-card/user-profile-hover-card";
+import { CircularProgress, Avatar , Card , CardContent} from "@mui/material";
+
 
 export default function UserSuggestions() {
   const dispatch = useDispatch<AppDispatch>();
@@ -50,7 +50,7 @@ export default function UserSuggestions() {
   if (loading) {
     return (
       <div className="flex justify-center">
-        <Spinner />
+        <CircularProgress />
       </div>
     );
   }
@@ -63,7 +63,16 @@ export default function UserSuggestions() {
     <div className="w-full max-w-sm">
       <h3 className="font-semibold mb-4">Suggested for you</h3>
 
-      <div className="space-y-4">
+      <Card  >
+        <CardContent sx={{
+    display: 'flex',
+    flexDirection: 'column',
+    padding: 2, // Example of adding padding using theme units
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+    '& > *': { // Targeting direct children
+      marginBottom: 2, // Another way to add vertical spacing
+    },
+  }}>
         {suggestions.map((user) => {
           const currentFollowStatus = followState.followStatus[
             user.username
@@ -82,13 +91,10 @@ export default function UserSuggestions() {
           return (
             <div key={user.uid} className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <Avatar>
-                  <AvatarImage
-                    src={user.profilePhotoURL}
-                    alt={user.username}
-                    className="object-cover"
-                  />
-                  <AvatarFallback>{user.username.slice(0, 1)}</AvatarFallback>
+                <Avatar  src={user.profilePhotoURL}
+                    alt={user.username}>
+                 
+                  {user.username.slice(0, 1)}
                 </Avatar>
                 <div>
                   <div className="flex">
@@ -100,7 +106,7 @@ export default function UserSuggestions() {
                         {user.username}
                       </Link>
                     </UserHoverCard>
-                    {user.isVerified && <VscVerifiedFilled size={15} />}
+                    {user.isVerified && <Verified size={15} />}
                   </div>
                   <p className="t500 text-xs">{user.displayName}</p>
                 </div>
@@ -113,7 +119,8 @@ export default function UserSuggestions() {
             </div>
           );
         })}
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

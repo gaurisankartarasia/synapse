@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import GeminiComponent from './comp'; // Adjust the path
+import GeminiComponent from '../../../components/Ai/Message/comp'; // Adjust the path
 
 const MyPage: React.FC = () => {
   return (

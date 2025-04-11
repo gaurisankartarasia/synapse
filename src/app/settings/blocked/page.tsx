@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import VerifiedIcon from '@mui/icons-material/Verified';
+import Button from "@mui/material/Button";
+import { CircularProgress, Avatar } from "@mui/material";
+import { Verified } from "@mui/icons-material";
 
 interface BlockedUser {
   uid: string;
@@ -60,7 +59,7 @@ const BlockedUsers = () => {
       <h2 className="text-xl font-bold mb-4">Blocked Users</h2>
 
       {loading ? (
-        <div className="flex justify-center"> <Spinner/> </div>
+        <div className="flex justify-center"> <CircularProgress/> </div>
       ) : blockedUsers.length === 0 ? (
         <p>No blocked users.</p>
       ) : (
@@ -68,11 +67,10 @@ const BlockedUsers = () => {
           {blockedUsers.map((user) => (
             <li key={user.uid} className="flex items-center justify-between p-3">
               <div className="flex items-center space-x-3">
-                <Avatar>
-                    <AvatarImage src={user.profilePhotoURL}></AvatarImage>
-                    </Avatar> 
+                
+         <Avatar src={user.profilePhotoURL} alt={user.username}>{user.username}</Avatar> 
                 <div>
-                  <p className="font-medium">{user.username} <span>{user.isVerified && <VerifiedIcon fontSize="small" /> }</span> </p>
+                  <p className="font-medium">{user.username} <span>{user.isVerified && <Verified fontSize="small" /> }</span> </p>
 
                   <p className="text-sm opacity-70">{user.displayName}</p>
                 </div>
@@ -91,3 +89,7 @@ const BlockedUsers = () => {
 };
 
 export default BlockedUsers;
+
+
+
+

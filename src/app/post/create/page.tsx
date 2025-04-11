@@ -1,262 +1,17 @@
-// //src/app/post/create/page.tsx
-// "use client";
-// import { useState, useEffect } from "react";
-// import Image from 'next/image';
-// import { useRouter } from "next/navigation";
-// import { auth } from "@/lib/firebaseClient";
-// import { onAuthStateChanged, getIdToken } from "firebase/auth";
-// import {Spinner} from "@/components/ui/spinner"// import { Switch } from "@/components/ui/switch"
-// import { Label } from "@/components/ui/label"
-// import { Input } from "@/components/ui/input"
-// import {Textarea} from '@/components/ui/textarea'
-// import { Button } from "@/components/ui/button";
-// import { Progress } from "@/components/ui/progress";
 
-
-// const PostPage = () => {
-//   const router = useRouter();
-//   const [content, setContent] = useState("");
-//   const [hashtags, setHashtags] = useState<string[]>([]);
-//   const [userToken, setUserToken] = useState<string | null>(null);
-//   const [images, setImages] = useState<File[]>([]);
-//   const [imageURLs, setimageURLs] = useState<string[]>([]);
-//   const [loading, setLoading] = useState(false);
-//   const [allowCommenting, setallowCommenting] = useState<boolean>(true);
-
-
-//   useEffect(() => {
-//     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-//       if (currentUser) {
-//         const token = await getIdToken(currentUser);
-//         setUserToken(token);
-//       } else {
-//         router.push("/signin");
-//       }
-//     });
-//     return () => unsubscribe();
-//   }, [router]);
-
-//   useEffect(() => {
-//     // Create preview URLs for selected images
-//     const newimageURLs = images.map(file => URL.createObjectURL(file));
-//     setimageURLs(newimageURLs);
-
-//     // Cleanup function to revoke object URLs
-//     return () => {
-//       newimageURLs.forEach(url => URL.revokeObjectURL(url));
-//     };
-//   }, [images]);
-
-//   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const selectedFiles = Array.from(e.target.files || []);
-//     if (selectedFiles.length > 0) {
-//       if (images.length + selectedFiles.length > 4) {
-//         alert("Maximum 4 images allowed");
-//         return;
-//       }
-//       setImages(prevImages => [...prevImages, ...selectedFiles]);
-//     }
-//   };
-
-//   const removeImage = (index: number) => {
-//     setImages(prevImages => prevImages.filter((_, i) => i !== index));
-//     setimageURLs(prevUrls => prevUrls.filter((_, i) => i !== index));
-//   };
-
-
-//   const handleHashtagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const hashtagInput = e.target.value;
-//     // Split by comma, trim whitespace, remove empty strings, and remove # if added
-//     const newHashtags = hashtagInput
-//       .split(',')
-//       .map(tag => tag.trim().replace(/^#/, ''))
-//       .filter(tag => tag !== '');
-    
-//     setHashtags(newHashtags);
-//   };
-
-
-//   const handleCommentingToggle = (checked: boolean) => {
-//     setallowCommenting(checked);
-//   };
-  
-  
-//   const handleSubmit = async () => {
-//     setLoading(true);
-//     try {
-//       const uploadedimageURLs = [];
-
-//       // Upload each image
-//       for (const image of images) {
-//         const formData = new FormData();
-//         formData.append("image", image);
-
-//         const imageResponse = await fetch("/api/post/upload_post_img", {
-//           method: "POST",
-//           headers: {
-//             Authorization: `Bearer ${userToken}`,
-//           },
-//           body: formData,
-//         });
-
-//         if (!imageResponse.ok) {
-//           throw new Error("Image upload failed");
-//         }
-
-//         const imageData = await imageResponse.json();
-//         uploadedimageURLs.push(imageData.imageURL);
-//       }
-
-//       // Submit the post with all image URLs and hashtags
-//       const response = await fetch("/api/post/create", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${userToken}`,
-//         },
-//         body: JSON.stringify({
-//           content,
-//           imageURLs: uploadedimageURLs,
-//           hashtags: hashtags,
-//           allowCommenting,
-//         }),
-//       });
-
-//       if (response.ok) {
-//         router.push("/");
-//       } else {
-//         const errorData = await response.json();
-//         alert(`Error: ${errorData.error}`);
-//       }
-//     } catch (error) {
-//       console.error("Error posting:", error);
-//       alert("Failed to post.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-
-//   return (
-//     <div className="p-4 max-w-2xl mx-auto">
-//       <h1 className="text-2xl font-bold mb-4">Write a post</h1>
-//       {loading && <Progress />}
-      
-      
-   
-
-//       <div className="mb-4">
-//         <Input
-//           type="file"
-//           accept="image/*"
-//           onChange={handleImageChange}
-//           multiple
-//           className="mb-2"
-//         />
-//         <div className="flex gap-4 flex-wrap">
-//           {imageURLs.map((url, index) => (
-//             <div key={index} className="relative">
-//               <Image
-//                 src={url}
-//                 width={100}
-//                 height={100}
-//                 alt={`Preview ${index + 1}`}
-//                 className="object-cover rounded"
-//               />
-
-
-//               <button
-//                 onClick={() => removeImage(index)}
-//                 className="absolute -top-2 -right-2 bg-red-500 text-white rounded-md w-6 h-6 flex items-center justify-center"
-//               >
-//                 ×
-//               </button>
-//             </div>
-//           ))}
-//         </div>
-//         <p className="text-sm t500 mt-1">
-//           {images.length}/4 images selected
-//         </p>
-//       </div>
-   
-//    <Textarea
-//         value={content}
-//         onChange={(e) => setContent(e.target.value)}
-//         placeholder="Write your content here..."
-//         className="w-full p-2 mb-4   min-h-[200px]"
-//       />
-//  <div className="mb-4">
-//         <Input
-//           type="text"
-//           placeholder="Add hashtags (comma-separated, e.g., tech, programming)"
-//           onChange={handleHashtagChange}
-//         />
-//         {hashtags.length > 0 && (
-//           <div className="flex gap-2 mb-2">
-//             {hashtags.map((tag, index) => (
-//               <span 
-//                 key={index} 
-//                 className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-sm"
-//               >
-//                 #{tag}
-//               </span>
-//             ))}
-//           </div>
-//         )}
-//       </div>
-
-//       <div className="flex items-center mb-4">
-    
-//           <div className="flex items-center space-x-2">
-//   <Label htmlFor="allow-commenting">Allow Commenting</Label>  
-//     <Switch
-//     id="allow-commenting"
-//           checked={allowCommenting}
-//           onCheckedChange={handleCommentingToggle}
-//         /> 
-//     </div>
-//       </div>
-
-//       <div className="flex gap-4">
-//         <Button
-//           onClick={handleSubmit}
-//           disabled={loading}
-//         >
-//           Upload
-//         </Button>
-//         <Button
-//           onClick={() => router.push("/")}
-//           disabled={loading}
-//           variant="outline"        >
-//           Cancel
-//         </Button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default PostPage;
-
-
-
-
-
-
-
-// // src/app/post/create/page.tsx
 // "use client";
 // import { useState, useEffect } from "react";
 // import { useRouter } from "next/navigation";
 // import { useDispatch, useSelector } from 'react-redux';
 // import { AppDispatch, RootState } from '@/redux/store';
 // import { createPost, setDirty, resetPostState } from '@/redux/features/postSlice';
-// import { Switch } from "@/components/ui/switch";
-// import { Label } from "@/components/ui/label";
-// import { Textarea } from '@/components/ui/textarea';
-// import { Button } from "@/components/ui/button";
-// import { Progress } from "@/components/ui/progress";
-// import { ImageUploader } from './components/ImageUploader';
-// import { HashtagInput } from './components/HashtagInput';
+
+// import { CircularProgress, MD3Switch , Button} from "@mui/material";
+
+
+// import { ImageUploader } from '../../../components/Post/Create/ImageUploader';
+// import { HashtagInput } from '../../../components/Post/Create/HashtagInput';
+// import { MentionTextarea } from '../../../components/Post/Create/TextArea';
 // import { uploadImages } from '@/utils/imageUpload';
 // import { useAuth } from '@/hooks/useAuth';
 
@@ -336,9 +91,7 @@
 
 //   if (authLoading) {
 //     return (
-//       <div className="flex justify-center items-center min-h-screen">
-//         <Progress />
-//       </div>
+//      null
 //     );
 //   }
 
@@ -348,8 +101,8 @@
 
 //   return (
 //     <div className="p-4 max-w-2xl mx-auto">
-//       <h1 className="text-2xl font-bold mb-4">Create a post</h1>
-//       {isLoading && <Progress />}
+//       <b className="text-2xl mb-4">Create a post</b>
+//       {isLoading && <CircularProgress />}
 //       {error && <div className="text-red-500 mb-4">{error}</div>}
 
 //       <ImageUploader 
@@ -357,10 +110,10 @@
 //         maxImages={4}
 //       />
 
-//       <Textarea
+//       <MentionTextarea
 //         value={content}
-//         onChange={(e) => {
-//           setContent(e.target.value);
+//         onChange={(newContent) => {
+//           setContent(newContent);
 //           dispatch(setDirty(true));
 //         }}
 //         placeholder="Write your content here..."
@@ -374,13 +127,16 @@
 //         }}
 //       />
 
+
+
+
 //       <div className="flex items-center mb-4">
 //         <div className="flex items-center space-x-2">
-//           <Label htmlFor="allow-commenting">Allow Commenting</Label>  
-//           <Switch
+//           <p >Allow Commenting</p>  
+//           <MD3Switch
 //             id="allow-commenting"
 //             checked={allowCommenting}
-//             onCheckedChange={(checked) => {
+//             onChange={(checked) => {
 //               setAllowCommenting(checked);
 //               dispatch(setDirty(true));
 //             }}
@@ -392,13 +148,14 @@
 //         <Button
 //           onClick={handleSubmit}
 //           disabled={isLoading}
+//           variant="contained"
 //         >
 //           Upload
 //         </Button>
 //         <Button
 //           onClick={() => router.push("/")}
 //           disabled={isLoading}
-//           variant="outline"
+//           variant="outlined"
 //         >
 //           Cancel
 //         </Button>
@@ -412,19 +169,22 @@
 
 
 
+
+
+
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react"; // Import ChangeEvent
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { createPost, setDirty, resetPostState } from '@/redux/features/postSlice';
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import {Spinner} from "@/components/ui/spinner"
-import { ImageUploader } from './components/ImageUploader';
-import { HashtagInput } from './components/HashtagInput';
-import { MentionTextarea } from './components/TextArea';
+
+import { CircularProgress,  Button } from "@mui/material";
+import MD3Switch from '@/components/Switch'
+
+import { ImageUploader } from '../../../components/Post/Create/ImageUploader';
+import { HashtagInput } from '../../../components/Post/Create/HashtagInput';
+import { MentionTextarea } from '../../../components/Post/Create/TextArea';
 import { uploadImages } from '@/utils/imageUpload';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -433,7 +193,7 @@ const PostPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading: postLoading, error: postError } = useSelector((state: RootState) => state.post);
   const { user, loading: authLoading, error: authError, isAuthenticated } = useAuth();
-  
+
   const [content, setContent] = useState("");
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [images, setImages] = useState<File[]>([]);
@@ -447,79 +207,140 @@ const PostPage = () => {
     }
   }, [authLoading, isAuthenticated, router]);
 
+  // Handle unsaved changes before leaving the page
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (content || images.length > 0) {
+      // Check Redux state for dirty flag or check local state directly
+      // Using local state might be simpler if Redux state isn't strictly needed for this check
+      if (content || images.length > 0 || hashtags.length > 0) {
+        // Optionally set Redux dirty flag if needed elsewhere
         dispatch(setDirty(true));
-        e.preventDefault();
-        e.returnValue = '';
+        e.preventDefault(); // Standard way to trigger the confirmation dialog
+        e.returnValue = ''; // Required for Chrome
       }
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
 
+    // Cleanup function
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
+      // Reset Redux post state only when component unmounts naturally,
+      // not necessarily on every navigation away if using beforeunload.
+      // Consider if this reset logic is exactly what you need.
+      // dispatch(resetPostState()); // Might reset state even if user cancels navigation
+    };
+  }, [content, images, hashtags, dispatch]); // Add hashtags to dependency array
+
+  // Reset Redux state when component unmounts (e.g., successful post or cancellation)
+  useEffect(() => {
+    return () => {
       dispatch(resetPostState());
     };
-  }, [content, images, dispatch]);
+  }, [dispatch]);
 
   const handleSubmit = async () => {
     if (!isAuthenticated || !user) {
+      // Optionally show a message or redirect
+      console.error("User not authenticated");
+      router.push("/signin");
       return;
     }
 
+    // Prevent submission if content is empty and no images are selected
+    if (!content.trim() && images.length === 0) {
+      alert("Please add content or images to your post."); // Or use a more sophisticated notification
+      return;
+    }
+
+    setUploadLoading(true);
+    dispatch(setDirty(false)); // Mark as not dirty since we are submitting
+
     try {
-      setUploadLoading(true);
-      
-      // Get fresh authentication state by making API request
-      const authResponse = await fetch('/api/auth/verify_jwt', {
-        credentials: 'include'
-      });
-      
-      if (!authResponse.ok) {
-        throw new Error('Authentication failed. Please log in again.');
-      }
+      // Removed the redundant auth check as useAuth handles it
+      // and protects the page/component access.
 
       const uploadedImageURLs = await uploadImages(images);
-      
+
       await dispatch(createPost({
         content,
         imageURLs: uploadedImageURLs,
         hashtags,
         allowCommenting,
-        uid: user.id
-      })).unwrap();
-      
-      router.push("/");
-    } catch (error) {
+        uid: user.id // Assuming user object has an 'id' property
+      })).unwrap(); // unwrap allows catching rejected promises
+
+      // Reset local state after successful post
+      setContent("");
+      setHashtags([]);
+      setImages([]);
+      setAllowCommenting(true);
+
+      router.push("/"); // Navigate after successful post
+    } catch (error: any) { // Catch specific errors if possible
       console.error("Error posting:", error);
+      // Display error to the user using a snackbar or alert
+      alert(`Failed to create post: ${error.message || 'Unknown error'}`);
+      dispatch(setDirty(true)); // Re-mark as dirty if submission failed
     } finally {
       setUploadLoading(false);
     }
   };
 
-  const isLoading = postLoading || authLoading || uploadLoading;
-  const error = postError || authError;
+  const handleCancel = () => {
+    // Check if there are unsaved changes
+    if (content || images.length > 0 || hashtags.length > 0) {
+      if (window.confirm("You have unsaved changes. Are you sure you want to cancel?")) {
+        dispatch(setDirty(false)); // Mark as not dirty because user confirmed cancellation
+        router.push("/");
+      }
+      // If user clicks 'Cancel' in the confirmation, do nothing.
+    } else {
+      // No unsaved changes, navigate directly
+      router.push("/");
+    }
+  };
 
+
+  const isLoading = postLoading || authLoading || uploadLoading;
+  // Combine errors - choose a display strategy (show first, show all, etc.)
+  const displayError = postError || authError;
+
+  // Render loading indicator centrally if auth is loading
   if (authLoading) {
     return (
-     null
+      <div className="flex justify-center items-center h-screen">
+        <CircularProgress />
+      </div>
     );
   }
 
+  // If authentication check finished and user is not authenticated,
+  // this return null prevents rendering the form before redirection occurs.
   if (!isAuthenticated) {
-    return null; // Redirect will happen in useEffect
+    return null;
   }
 
+  // Main component render
   return (
     <div className="p-4 max-w-2xl mx-auto">
-      <b className="text-2xl mb-4">Create a post</b>
-      {isLoading && <Spinner />}
-      {error && <div className="text-red-500 mb-4">{error}</div>}
+      <h1 className="text-2xl font-bold mb-6">Create a Post</h1> {/* Use h1 for semantic heading */}
 
-      <ImageUploader 
-        onImagesChange={setImages}
+      {/* Display loading indicator during post submission */}
+      {isLoading && (
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+              <CircularProgress />
+          </div>
+      )}
+
+      {/* Display errors */}
+      {displayError && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">{displayError}</div>}
+
+      <ImageUploader
+        onImagesChange={(newImages) => {
+            setImages(newImages);
+            dispatch(setDirty(true));
+        }}
         maxImages={4}
       />
 
@@ -529,8 +350,8 @@ const PostPage = () => {
           setContent(newContent);
           dispatch(setDirty(true));
         }}
-        placeholder="Write your content here..."
-        className="w-full p-2 mb-4 min-h-[200px]"
+        placeholder="What's on your mind?"
+        className="w-full p-2 mb-4 min-h-[150px] border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" // Added basic styling
       />
 
       <HashtagInput
@@ -540,34 +361,36 @@ const PostPage = () => {
         }}
       />
 
+      <div className="flex items-center justify-between mb-6 mt-4"> {/* Added mt-4 for spacing */}
+        <label htmlFor="allow-commenting" className="flex items-center space-x-2 cursor-pointer"> {/* Use label */}
+          <span>Allow Commenting</span>
+           <MD3Switch
 
-
-
-      <div className="flex items-center mb-4">
-        <div className="flex items-center space-x-2">
-          <Label htmlFor="allow-commenting">Allow Commenting</Label>  
-          <Switch
             id="allow-commenting"
             checked={allowCommenting}
-            onCheckedChange={(checked) => {
-              setAllowCommenting(checked);
+            // Corrected onChange handler:
+            onChange={(event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
+              setAllowCommenting(checked); // Use the second argument (the boolean value)
               dispatch(setDirty(true));
             }}
-          /> 
-        </div>
+            inputProps={{ 'aria-label': 'Allow commenting toggle' }} // Accessibility
+          />
+        </label>
       </div>
 
       <div className="flex gap-4">
         <Button
           onClick={handleSubmit}
-          disabled={isLoading}
+          disabled={isLoading || (!content.trim() && images.length === 0)} // Disable if loading or no content/images
+          variant="contained"
+          color="primary" // Use theme colors
         >
-          Upload
+          {isLoading ? 'Posting...' : 'Upload'}
         </Button>
         <Button
-          onClick={() => router.push("/")}
-          disabled={isLoading}
-          variant="outline"
+          onClick={handleCancel} // Use the new cancel handler
+          disabled={isLoading} // Disable only if loading an operation
+          variant="outlined"
         >
           Cancel
         </Button>

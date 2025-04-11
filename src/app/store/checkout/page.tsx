@@ -53,7 +53,7 @@ export default function CheckoutPage() {
             <div key={item.id} className="flex justify-between items-center p-4 border-b">
               <div>
                 <h2 className="text-lg">{item.name}</h2>
-                <p>${item.price} × {item.quantity}</p>
+                <p>₹{item.price} × {item.quantity}</p>
               </div>
             </div>
           ))}

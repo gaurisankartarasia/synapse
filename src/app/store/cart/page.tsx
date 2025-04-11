@@ -20,7 +20,7 @@ export default function CartPage() {
           <div key={item.id} className="flex justify-between items-center p-4 border-b">
             <div>
               <h2 className="text-lg">{item.name}</h2>
-              <p>${item.price} × {item.quantity}</p>
+              <p>₹{item.price} × {item.quantity}</p>
             </div>
             <button
               onClick={() => dispatch(removeFromCart(item.id))}

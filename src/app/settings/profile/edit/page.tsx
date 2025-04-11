@@ -4,10 +4,9 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import {  CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+
+
+import { Button, TextField } from '@mui/material';
 
 interface ProfileData {
   username: string;
@@ -161,10 +160,10 @@ const EditProfilePage = () => {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle>Edit Profile</CardTitle>
-      </CardHeader>
-      <CardContent>
+      <div>
+        <h4>Edit Profile</h4>
+      </div>
+      <div>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex flex-col items-center space-y-4">
             <div className="relative w-32 h-32">
@@ -177,7 +176,7 @@ const EditProfilePage = () => {
                 className="rounded-full object-cover"
               />
             </div>
-            <Input
+            <input
               type="file"
               accept="image/*"
               onChange={handleImageChange}
@@ -190,13 +189,18 @@ const EditProfilePage = () => {
               <label className="block text-sm font-medium mb-1" htmlFor="displayName">
                 Display Name
               </label>
-              <Input
+              <TextField
                 id="displayName"
                 value={profile.displayName}
+                slotProps={{
+                
+                  htmlInput: {
+                    maxLength: 30,
+                  },
+                }}
                 onChange={(e) =>
                   setProfile({ ...profile, displayName: e.target.value })
                 }
-                maxLength={50}
                 required
               />
             </div>
@@ -205,13 +209,18 @@ const EditProfilePage = () => {
               <label className="block text-sm font-medium mb-1" htmlFor="username">
                 Username
               </label>
-              <Input
+              <TextField
                 id="username"
                 value={profile.username}
                 onChange={(e) =>
                   setProfile({ ...profile, username: e.target.value })
                 }
-                maxLength={30}
+                slotProps={{
+                
+                  htmlInput: {
+                    maxLength: 30,
+                  },
+                }}
                 required
               />
             </div>
@@ -220,13 +229,18 @@ const EditProfilePage = () => {
               <label className="block text-sm font-medium mb-1" htmlFor="bio">
                 Bio
               </label>
-              <Textarea
+              <TextField
                 id="bio"
                 value={profile.bio}
                 onChange={(e) =>
                   setProfile({ ...profile, bio: e.target.value })
                 }
-                maxLength={160}
+                slotProps={{
+                
+                  htmlInput: {
+                    maxLength: 150,
+                  },
+                }}
               />
             </div>
           </div>
@@ -235,7 +249,7 @@ const EditProfilePage = () => {
             {loading ? 'Updating...' : 'Save Changes'}
           </Button>
         </form>
-      </CardContent>
+      </div>
     </div>
   );
 };

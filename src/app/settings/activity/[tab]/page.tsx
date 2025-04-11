@@ -1,137 +1,136 @@
 
-// "use client";
+"use client";
 
-// import { useEffect, useState } from "react";
-// import Image from "next/image";
-// import { Post } from "@/types/post";
-// import { formatRelativeTime } from "@/utils/date";
-// import Link from "next/link";
-// import FavoriteIcon from '@mui/icons-material/Favorite';
-// import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
+import { useRouter, useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import LikedPostsPage from "../components/Liked";
+import SavedPostsGrid from "../components/Saved";
+import UserComments from "../components/Comments";
+import ArchivedPostsGrid from "../components/Archived";
 
+import * as React from "react";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
 
-// export default function LikedPostsPage() {
-//   const [posts, setPosts] = useState<Post[]>([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState<string | null>(null);
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
 
-//   useEffect(() => {
-//     const fetchLikedPosts = async () => {
-//       try {
-//         const res = await fetch("/api/user/activity/likes");
-//         if (!res.ok) throw new Error("Failed to fetch liked posts");
-
-//         const data = await res.json();
-//         setPosts(data.posts);
-//       } catch (err) {
-//         setError("Error loading liked posts.");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchLikedPosts();
-//   }, []);
-
-//   if (loading) return <div className="p-4">Loading...</div>;
-//   if (error) return <div className="p-4 text-red-500">{error}</div>;
-
-//   return (
-//     <div className="p-4">
-//       <h1 className="text-2xl font-bold mb-4 text-center">Your Liked Posts</h1>
-//       {posts.length === 0 ? (
-//         <p className="text-center">You haven&apos;t liked any posts yet.</p>
-//       ) : (
-//         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-//           {posts.map((post) => {
-//             const imageUrl = post.imageURLs?.length ? post.imageURLs[0] : null;
-
-//             return (
-//               <div key={post.postId} className="border p-4 rounded shadow-sm">
-//                 <Link href={`/post/${post.postId}`}>
-//                 <p className="font-semibold">{post.username}</p>
-                
-//                 {imageUrl && (
-//                   <Image
-//                     src={imageUrl}
-//                     width={500}
-//                     height={500}
-//                     alt="Post Image"
-//                     className="object-cover rounded mt-2"
-//                   />
-//                 )}
-
-//                 <p className=" mt-2">{post.content}</p>
-//                 <p className="text-sm mt-2">
-//                   <FavoriteIcon fontSize="small" /> {post.likeCount} | <AccessTimeOutlinedIcon  fontSize="small"/> {formatRelativeTime(post.createdAt)}
-//                 </p></Link>
-//               </div>
-//             );
-//           })}
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-
-
-
-"use client"
-
-import { useRouter, useParams } from "next/navigation"
-import { useEffect, useState } from "react"
-import LikedPostsPage from '../components/Liked'
-import SavedPostsGrid from '../components/Saved'
-import UserComments from '../components/Comments'
-import ArchivedPostsGrid from '../components/Archived'
-import { useAuth } from "@/hooks/useAuth"
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
-export default function TabsDemo() {
-  const {user} = useAuth()
-  const router = useRouter()
-  const params = useParams() // Get the tab from the URL
-
-  const tabFromUrl = params.tab as string || "liked"
-
-  // State for managing selected tab
-  const [selectedTab, setSelectedTab] = useState(tabFromUrl)
-
-  useEffect(() => {
-    setSelectedTab(tabFromUrl) // Update selected tab when URL changes
-  }, [tabFromUrl])
-
-  // Update URL on tab change
-  const handleTabChange = (value: string) => {
-    setSelectedTab(value)
-    router.push(`/settings/activity/${value}`, { scroll: false }) // Update the URL
-  }
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
 
   return (
-    <Tabs value={selectedTab} onValueChange={handleTabChange} className="w-full">
-      <TabsList className="grid w-full grid-cols-4">
-        <TabsTrigger value="liked">Liked</TabsTrigger>
-        <TabsTrigger value="saved">Saved</TabsTrigger>
-        <TabsTrigger value="comments">Comments</TabsTrigger>
-        <TabsTrigger value="archived">Archived</TabsTrigger>
-      </TabsList>
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
 
-      <TabsContent value="liked">
-       <LikedPostsPage/>
-      </TabsContent>
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 
-      <TabsContent value="saved">
-        <SavedPostsGrid/>
-      </TabsContent>
+export default function MuiTabsDemo() {
+  const router = useRouter();
+  const params = useParams(); // Get the tab from the URL
 
-      <TabsContent value="comments">
-        <UserComments  />
-      </TabsContent>
-      <TabsContent value="archived">
-        <ArchivedPostsGrid  />
-      </TabsContent>
-    </Tabs>
-  )
+  const tabFromUrl = (params.tab as string) || "liked";
+
+  // State for managing selected tab index (MUI Tabs uses index)
+  const [value, setValue] = useState<number>(() => {
+    switch (tabFromUrl) {
+      case "liked":
+        return 0;
+      case "saved":
+        return 1;
+      case "comments":
+        return 2;
+      case "archived":
+        return 3;
+      default:
+        return 0;
+    }
+  });
+
+  useEffect(() => {
+    let newValue = 0;
+    switch (tabFromUrl) {
+      case "liked":
+        newValue = 0;
+        break;
+      case "saved":
+        newValue = 1;
+        break;
+      case "comments":
+        newValue = 2;
+        break;
+      case "archived":
+        newValue = 3;
+        break;
+      default:
+        newValue = 0;
+    }
+    setValue(newValue);
+  }, [tabFromUrl]);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+    let newTabRoute = "liked";
+    switch (newValue) {
+      case 0:
+        newTabRoute = "liked";
+        break;
+      case 1:
+        newTabRoute = "saved";
+        break;
+      case 2:
+        newTabRoute = "comments";
+        break;
+      case 3:
+        newTabRoute = "archived";
+        break;
+    }
+    router.push(`/settings/activity/${newTabRoute}`, { scroll: false }); // Update the URL
+  };
+
+  return (
+    <Box sx={{ width: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="activity tabs"
+        >
+          <Tab label="Liked" {...a11yProps(0)} />
+          <Tab label="Saved" {...a11yProps(1)} />
+          <Tab label="Comments" {...a11yProps(2)} />
+          <Tab label="Archived" {...a11yProps(3)} />
+        </Tabs>
+      </Box>
+      <CustomTabPanel value={value} index={0}>
+        <LikedPostsPage />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <SavedPostsGrid />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <UserComments />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={3}>
+        <ArchivedPostsGrid />
+      </CustomTabPanel>
+    </Box>
+  );
 }

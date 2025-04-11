@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import Image from "next/image";
 import Link from "next/link";
-import {Spinner} from "@/components/ui/spinner"
+import { CircularProgress } from "@mui/material";
 interface Comment {
   id: string;
   postId: string;
@@ -100,7 +100,7 @@ const UserComments = () => {
             disabled={loading}
           >
             <span className="flex justify-center">
-              {loading ? <Spinner /> : "Load more..."}
+              {loading ? <CircularProgress /> : "Load more..."}
             </span>
           </button>
         )}
