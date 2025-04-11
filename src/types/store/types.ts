@@ -11,6 +11,7 @@ export interface Category {
   productCount?: number;
   createdAt?: Timestamp; // Keep Timestamp type for consistency if needed client-side
   updatedAt?: Timestamp;
+  iconUrl?:string
 }
 
 export interface Product {
