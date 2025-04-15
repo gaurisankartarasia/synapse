@@ -106,7 +106,7 @@ export default function UserSuggestions() {
                         {user.username}
                       </Link>
                     </UserHoverCard>
-                    {user.isVerified && <Verified size={15} />}
+                    {user.isVerified && <Verified fontSize="small" />}
                   </div>
                   <p className="t500 text-xs">{user.displayName}</p>
                 </div>

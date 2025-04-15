@@ -7,15 +7,8 @@ import Link from 'next/link';
 // import { NavItem } from '../types';
 import { Box, Typography, Button, useTheme } from '@mui/material';
 import React from 'react'; // Import React for types like SvgIconComponent
-import { SvgIconComponent,  } from '@mui/icons-material'; // Example import for icon type
+import { NavItem } from '../types';
 
-// Define or import your NavItem type
-interface NavItem {
-  name: string;
-  href: string;
-  icon: SvgIconComponent; // Or React.ElementType, adjust based on your icon source
-  // Add other properties if your NavItem has them
-}
 
 interface NavigationLinkProps {
   item: NavItem;

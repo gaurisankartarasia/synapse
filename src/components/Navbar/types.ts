@@ -1,11 +1,12 @@
 // types.ts
 
 import { SvgIconComponent } from '@mui/icons-material';
+import React from 'react';
 
 export interface NavItem {
   name: string;
   href: string;
-  icon:  SvgIconComponent  ;
+  icon:  React.ElementType  ;
 }
 
 export interface DropdownItem {

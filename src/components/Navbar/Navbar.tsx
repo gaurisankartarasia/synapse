@@ -23,14 +23,19 @@ export default function SideNavigation() {
   if (!profile) return null;
 
   // Create a profile nav item for use in the NavigationLink component
+
+const profileImage = ()=>{
+return (
+  <Avatar src={profile.profilePhotoURL} alt={profile.username}  sx={{width:"25px", height:"25px"}}  >
+  {profile.username.slice(0, 1).toUpperCase()}
+</Avatar>
+)
+}
+
   const profileNavItem = {
     name: "Profile",
     href: `/${profile.username}`,
-    icon: () => (
-      <Avatar src={profile.profilePhotoURL} alt={profile.username}  sx={{width:"25px", height:"25px"}}  >
-        {profile.username.slice(0, 1).toUpperCase()}
-      </Avatar>
-    )
+    icon: profileImage
   };
 
   const dropdownItems = createDropdownItems(profile, setTheme);
@@ -62,5 +67,4 @@ export default function SideNavigation() {
     </>
   );
 }
-
 

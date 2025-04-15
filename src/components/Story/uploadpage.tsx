@@ -25,12 +25,12 @@ export default function UploadPage() {
           sx={{ borderRadius: '50%' }}
           
         >
-          <Avatar src={profile?.profilePhotoURL} alt={profile?.username} >
+          <Avatar src={profile?.profilePhotoURL} alt={profile?.username} sx={{width:'60px', height:'60px'}} >
             {profile?.username.slice(0, 1)}
           </Avatar>
         </Card>
         <div className="absolute bottom-0 right-0 p-1 bg-white/90 rounded-full shadow"> {/* Positioned plus button */}
-          <Add className="w-2 h-2 text-gray-700   " />
+          <Add fontSize="small" className="cursor-pointer " />
         </div>
       </div>
       <p><small className="text-center">Add story</small></p>

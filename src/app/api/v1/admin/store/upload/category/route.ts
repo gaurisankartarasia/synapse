@@ -3,7 +3,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
 import { FieldValue } from "firebase-admin/firestore";
-import type { Category } from "@/types/store/types"; // Import shared type
+import type { Category } from "@/types/store/types"; 
 
 interface CategoryPayload {
     name: string;
