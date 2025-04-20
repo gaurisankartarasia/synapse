@@ -58,7 +58,7 @@ export default function UserDropdown({
            
         }}
         >
-          <span>More</span>
+          <span className='hidden lg:block'  >More</span>
         </Button>
       )}
       <Menu
@@ -67,6 +67,8 @@ export default function UserDropdown({
         onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+
+        sx={{boxShadow:1}}
       >
         {dropdownItems.map((item) => (
           <MenuItem

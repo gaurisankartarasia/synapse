@@ -66,22 +66,25 @@ export const NavigationLink = ({ item, isActive, isMobile = false }: NavigationL
         startIcon={<Icon style={{ width: 24, height: 24 }} />}
         sx={{
           justifyContent: {
-            xs: 'center', // Should not apply if !isMobile, but kept for structure
-            lg: 'flex-start', // Justify content to the start on large screens
+            xs: 'center',
+            lg: 'flex-start',
           },
-          py: { xs: 2, lg: 1.5 }, // Padding vertical
-          px: 2, // Padding horizontal
-          borderRadius: 20, // Consistent border radius
-          
+          py: { xs: 2, lg: 1.5 },
+          px: 2,
+          // --- MODIFICATION HERE ---
+          // Apply rounding only to the right corners
+          // Format: top-left top-right bottom-right bottom-left
+          borderRadius: '0 50px 50px 0', // Changed from: borderRadius: 20,
+          // --- END MODIFICATION ---
           bgcolor: isActive ? theme.palette.action.selected : 'transparent',
           color: isActive
           ? theme.palette.primary.main
           : theme.palette.mode === 'dark'
-            ? '#a2a9b0' // Replace with your desired dark mode text color
-            : '#575b5f', 
-          width: '100%', // Button takes full width of its container
-          '&:hover': { // Hover styles
-            boxShadow: 'none', // Remove potential default hover shadow
+            ? '#a2a9b0'
+            : '#575b5f',
+          width: '100%',
+          '&:hover': {
+            boxShadow: 'none',
             bgcolor: isActive ? theme.palette.action.selected : theme.palette.action.hover,
           }
         }}

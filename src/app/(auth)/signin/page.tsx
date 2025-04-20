@@ -80,8 +80,9 @@ export default function SignIn() {
       justifyContent="center"
       alignItems="center"
       mt={6}
+      mr={40}
     >
-      <Card sx={{ maxWidth: 420, width: '100%' }}>
+      <Card sx={{ maxWidth: 520, width: '100%', p:3 }}>
         <CardHeader title="Sign In" />
         <CardContent>
           {error && (

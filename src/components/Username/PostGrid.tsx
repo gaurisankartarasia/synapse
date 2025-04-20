@@ -33,7 +33,7 @@ const PostGrid: React.FC<PostGridProps> = ({ posts }) => {
                       <ImageIcon />
                     </div>
                   )}
-                  <div className="absolute inset-0 flex items-center bg-black bg-opacity-50  justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute inset-0 flex items-center bg-black/50 bg-opacity-50  justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="flex  gap-3 text-white text-lg font-semibold p-2 rounded">
                       <div className="flex items-center space-x-1">
                         <Favorite className="w-4 h-4" />

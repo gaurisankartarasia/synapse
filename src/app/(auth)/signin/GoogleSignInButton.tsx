@@ -70,6 +70,7 @@ export default function GoogleSignInButton() {
         <Button
           onClick={handleGoogleSignIn}
           disabled={loading}
+          variant='outlined'
           fullWidth
           startIcon={
             !loading && (
