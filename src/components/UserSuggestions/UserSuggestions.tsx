@@ -8,8 +8,12 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { setFollowStatus, toggleFollow } from "@/redux/features/followSlice";
 import { fetchSuggestedUsers } from "@/redux/features/suggestionSlice";
 import { UserHoverCard } from "../hover-card/user-profile-hover-card";
-import { CircularProgress, Avatar , Card , CardContent} from "@mui/material";
-
+import {
+  CircularProgress,
+  Avatar,
+  Card,
+  CardContent,
+} from "@mui/material";
 
 export default function UserSuggestions() {
   const dispatch = useDispatch<AppDispatch>();
@@ -63,64 +67,69 @@ export default function UserSuggestions() {
     <div className="w-full max-w-sm">
       <h3 className="font-semibold mb-4">Suggested for you</h3>
 
-      <Card  >
-        <CardContent sx={{
-    display: 'flex',
-    flexDirection: 'column',
-    padding: 2, // Example of adding padding using theme units
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-    '& > *': { // Targeting direct children
-      marginBottom: 2, // Another way to add vertical spacing
-    },
-  }}>
-        {suggestions.map((user) => {
-          const currentFollowStatus = followState.followStatus[
-            user.username
-          ] || {
-            isFollowing: user.isFollowing,
-            isRequested: user.isRequested || false,
-            loading: false,
-          };
+      <div>
+        <CardContent
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            "& > *": {
+              // Targeting direct children
+              marginBottom: 1, // Another way to add vertical spacing
+            },
+          }}
+        >
+          {suggestions.map((user) => {
+            const currentFollowStatus = followState.followStatus[
+              user.username
+            ] || {
+              isFollowing: user.isFollowing,
+              isRequested: user.isRequested || false,
+              loading: false,
+            };
 
-          const followStatus = currentFollowStatus.isFollowing
-            ? "following"
-            : currentFollowStatus.isRequested
-            ? "requested"
-            : "none";
+            const followStatus = currentFollowStatus.isFollowing
+              ? "following"
+              : currentFollowStatus.isRequested
+              ? "requested"
+              : "none";
 
-          return (
-            <div key={user.uid} className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <Avatar  src={user.profilePhotoURL}
-                    alt={user.username}>
-                 
-                  {user.username.slice(0, 1)}
-                </Avatar>
-                <div>
-                  <div className="flex">
-                    <UserHoverCard username={user.username}>
-                      <Link
-                        href={`/${user.username}`}
-                        className="font-medium text-sm"
-                      >
-                        {user.username}
-                      </Link>
-                    </UserHoverCard>
-                    {user.isVerified && <Verified fontSize="small" />}
-                  </div>
-                  <p className="t500 text-xs">{user.displayName}</p>
-                </div>
-              </div>
-              <FollowButton
-                isUpdating={currentFollowStatus.loading || false}
-                followStatus={followStatus}
-                onFollowClick={() => handleFollow(user.username)}
-              />
-            </div>
-          );
-        })}
+            return (
+              <Card
+                key={user.uid}
+                
+              >
+                
+                  <CardContent className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <Avatar src={user.profilePhotoURL} alt={user.username}>
+                        {user.username.slice(0, 1)}
+                      </Avatar>
+                      <div>
+                        <div className="flex items-center gap-1">
+                          <UserHoverCard username={user.username}>
+                            <Link
+                              href={`/${user.username}`}
+                              className="font-medium "
+                            >
+                              {user.username}
+                            </Link>
+                          </UserHoverCard>
+                          {user.isVerified && <Verified sx={{fontSize:'16px'}} />}
+                        </div>
+                        <p className="t500 text-xs">{user.displayName}</p>
+                      </div>
+                    </div>
+                    <FollowButton
+                      isUpdating={currentFollowStatus.loading || false}
+                      followStatus={followStatus}
+                      onFollowClick={() => handleFollow(user.username)}
+                    />
+                  </CardContent>{" "}
+              </Card>
+            );
+          })}
         </CardContent>
-      </Card>
+      </div>
     </div>
   );
 }

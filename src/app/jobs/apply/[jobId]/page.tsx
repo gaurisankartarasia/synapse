@@ -105,7 +105,7 @@ export default function ApplyPage() {
     }
 
     return (
-        <div className="container mx-auto p-4 w-full">
+        <div className="container p-4 w-full">
             <Link href="/jobs" className="text-blue-500 hover:underline mb-4 inline-block">
                 Back to Jobs
             </Link>

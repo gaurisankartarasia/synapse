@@ -4,7 +4,7 @@
 
 import { useState } from 'react';
 import { auth, sendPasswordResetEmail, fetchSignInMethodsForEmail } from '@/lib/firebaseClient';
-import { Button, Card, CardHeader, CardContent, TextField, Box,  Alert, Typography, CardActions} from '@mui/material'
+import { Button, Card, CardHeader, CardContent, TextField, Box,  Alert, Typography, CardActions, useMediaQuery, useTheme} from '@mui/material'
 import Link from 'next/link';
 
 
@@ -13,6 +13,9 @@ export default function ForgotPassword() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+   const theme = useTheme();
+    const isDesktop = useMediaQuery(theme.breakpoints.up('md')); 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +43,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" mt={6} mr={40} >
+    <Box display="flex" justifyContent="center" alignItems="center" mt={6} mr={isDesktop ? 40 : 0} >
     <Card sx={{ maxWidth: 520, width: '100%', p:3  }}>
       <CardHeader title="Reset Password" />
   

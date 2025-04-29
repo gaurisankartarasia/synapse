@@ -1,93 +1,4 @@
 
-// // components/DesktopSidebar.tsx
-// 'use client';
-// import Image from 'next/image';
-// import Link from 'next/link';
-// import { Box, Divider,  Drawer, Stack } from '@mui/material';
-// import { NavigationLink } from './NavigationLink';
-// import { useTheme } from '@mui/material';
-
-// interface DesktopSidebarProps {
-//   navLinks: any[];
-//   pathname: string;
-//   profileNavItem: any;
-//   UserDropdown: React.ReactNode;
-// }
-
-// export function DesktopSidebar({
-//   navLinks,
-//   pathname,
-//   profileNavItem,
-//   UserDropdown,
-// }: DesktopSidebarProps) {
-
-// const theme = useTheme();
-
-//   return (
-//     <Drawer
-//       variant="permanent"
-//       sx={{
-//         display: { xs: 'none', md: 'block' },
-//         width: { lg: 320, md: 80 },
-//         flexShrink: 0,
-//         [`& .MuiDrawer-paper`]: {
-//           width: { lg: 320, md: 80 },
-//           boxSizing: 'border-box',
-//           border:'none'
-//         },
-//       }}
-//     >
-//       <Box
-//         sx={{
-//           height: '100%',
-//           p: 2,
-//           display: 'flex',
-//           flexDirection: 'column',
-//         }}
-//       >
-//         <Link href="/" passHref className='my-5' >
-//           <Box
-//             component="div"
-//             sx={{
-//               display: 'flex',
-//               alignItems: 'center',
-//               justifyContent: { xs: 'center', lg: 'flex-start' },
-//             }}
-//           >
-//            {
-//              theme.palette.mode === 'dark' ? (
-//               <Image src="/assets/synapse_dark.png" alt="logo" height={130} width={130}  />
-//             ) : (
-//              <Image src="/assets/synapse_light.png" alt="logo" height={130} width={130}  />
-//             )
-//            }
-//           </Box>
-//         </Link>
-
-//         {/* Nav Items */}
-//         <Stack spacing={1} flex={1}>
-//           {navLinks.map((item) => (
-//             <NavigationLink key={item.href} item={item} isActive={pathname === item.href} />
-//           ))}
-//           <NavigationLink
-//             key={profileNavItem.href}
-//             item={profileNavItem}
-//             isActive={pathname === profileNavItem.href}
-//           />
-//         </Stack>
-
-//         {/* Footer / Dropdown */}
-//         <Divider sx={{ mt: 2 }} />
-//         <Box sx={{ mt: 'auto', pt: 2 }}>
-//           {UserDropdown}
-//         </Box>
-//       </Box>
-//     </Drawer>
-//   );
-// }
-
-
-
 // components/DesktopSidebar.tsx
 'use client';
 import Image from 'next/image';
@@ -132,7 +43,7 @@ export function DesktopSidebar({
         width: { lg: 320, md: 80 },
         flexShrink: 0,
         [`& .MuiDrawer-paper`]: {
-          width: { lg: 320, md: 80 },
+          width: { lg: 270, md: 80 },
           boxSizing: 'border-box',
           border: 'none',
         },
@@ -146,7 +57,7 @@ export function DesktopSidebar({
           flexDirection: 'column',
         }}
       >
-        <Link href="/" passHref className='my-5'>
+        <Link href="/" passHref className='my-4'>
           <Box
             component="div"
             sx={{
@@ -156,9 +67,9 @@ export function DesktopSidebar({
             }}
           >
             {theme.palette.mode === 'dark' ? (
-              <Image src="/assets/synapse_dark.png" alt="logo" height={130} width={130} />
+              <Image src="/assets/synapse_dark.png" alt="logo" height={100} width={100} />
             ) : (
-              <Image src="/assets/synapse_light.png" alt="logo" height={130} width={130} />
+              <Image src="/assets/synapse_light.png" alt="logo" height={100} width={100} />
             )}
           </Box>
         </Link>

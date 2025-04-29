@@ -22,6 +22,7 @@ import {
   Snackbar,
   Alert,
   CircularProgress,
+  useMediaQuery, useTheme
 } from '@mui/material';
 
 export default function SignIn() {
@@ -40,6 +41,9 @@ export default function SignIn() {
     message: '',
     severity: 'success',
   });
+
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md')); 
 
   const handleCloseSnackbar = () => {
     setSnackbar((prev) => ({ ...prev, open: false }));
@@ -80,7 +84,7 @@ export default function SignIn() {
       justifyContent="center"
       alignItems="center"
       mt={6}
-      mr={40}
+      mr={isDesktop ? 40 : 0}
     >
       <Card sx={{ maxWidth: 520, width: '100%', p:3 }}>
         <CardHeader title="Sign In" />

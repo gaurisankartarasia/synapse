@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { signUpWithEmail } from '@/redux/features/authSlice';
 import GoogleSignInButton from '../signin/GoogleSignInButton';
-import { Button, Card, CardHeader, CardContent, TextField, Box, Divider, Alert, Typography, CardActions, CircularProgress} from '@mui/material'
+import { Button, Card, CardHeader, CardContent, TextField, Box, Divider, Alert, Typography, CardActions, CircularProgress, useMediaQuery, useTheme} from '@mui/material'
 
 export default function SignUp() {
   const router = useRouter();
@@ -23,6 +23,9 @@ export default function SignUp() {
 
   const [confirmPassword, setConfirmPassword] = useState('');
   const [formError, setFormError] = useState('');
+
+   const theme = useTheme();
+    const isDesktop = useMediaQuery(theme.breakpoints.up('md')); 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +52,7 @@ export default function SignUp() {
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" mt={6}   mr={40}>
+    <Box display="flex" justifyContent="center" alignItems="center" mt={6}   mr={isDesktop ? 40 : 0} >
   <Card sx={{maxWidth: 520, width: '100%', p:3  }}>
     <CardHeader title="Sign Up" />
 

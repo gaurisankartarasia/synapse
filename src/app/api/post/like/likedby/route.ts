@@ -78,7 +78,7 @@
 // }
 
 
-
+//src/app/api/post/like/likedby/route.ts
 import { db } from "@/lib/firebaseAdmin";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";

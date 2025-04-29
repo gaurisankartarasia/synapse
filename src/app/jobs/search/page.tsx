@@ -3,12 +3,14 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Job {
     id: string;
     title: string;
     description: string;
     company: string;
+    companyLogoUrl:string;
 }
 
 export default function JobSearchPage() {
@@ -55,6 +57,8 @@ export default function JobSearchPage() {
                 {jobs.map(job => (
                     <li key={job.id} className="border p-4 rounded-lg mb-2">
                 <Link href={`/jobs/apply/${job.id}`}>
+
+                <Image src={job.companyLogoUrl} alt='logo' width={60} height={60} />
                         <h2 className="text-lg font-bold">{job.title}</h2>
                         <p className="text-gray-700">{job.description}</p>
                         <p className="text-sm text-gray-500">{job.company}</p>
@@ -65,3 +69,7 @@ export default function JobSearchPage() {
         </div>
     );
 }
+
+
+
+

@@ -328,7 +328,7 @@ const PostPage = () => {
 
       {/* Display loading indicator during post submission */}
       {isLoading && (
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="fixed inset-0 bg-gray-200/50 bg-opacity-50 flex justify-center items-center z-50">
               <CircularProgress />
           </div>
       )}

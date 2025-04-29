@@ -47,7 +47,6 @@ export const PostActions = ({
             </IconButton>
           )}
    {likeCount} 
-   {/* {likeCount === 1 ? 'Like' : 'Likes'} */}
           <IconButton onClick={onOpenLikesModal} className="flex items-center">
            
               <ChevronRight />

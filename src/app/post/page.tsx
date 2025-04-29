@@ -1,5 +1,5 @@
 
-
+//src/app/post/page.tsx
 "use client";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useAuth } from '@/hooks/useAuth';
@@ -137,3 +137,6 @@ const PostPage = () => {
 };
 
 export default PostPage;
+
+
+

@@ -52,7 +52,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
       variant={buttonVariant}
       className={`${className || ""} ${buttonClassName}`}
     >
-      {isUpdating ? <CircularProgress /> : buttonText}
+      {isUpdating ? <CircularProgress size={20} /> : buttonText}
     </Button>
   );
 };

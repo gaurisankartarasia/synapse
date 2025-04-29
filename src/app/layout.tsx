@@ -37,7 +37,7 @@
 //               <ReduxProvider>
 //                 {/* <LoadingProvider> */}
 //                 <ProgressBar>
-                  
+
 //                   <SideNavigation />
 //                   <main className="md:ml-16 lg:ml-80 p-3 md:pb-0 ">
 //                     {children}
@@ -53,11 +53,6 @@
 //   );
 // }
 
-
-
-
-
-
 // src/app/layout.tsx
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Roboto } from "next/font/google";
@@ -71,7 +66,7 @@ import { ReduxProvider } from "./ReduxProvider";
 import "./globals.css";
 
 // Import the next-themes Provider
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 // Import your wrapper
 import ThemeProviderWrapper from "./ThemeProviderWrapper"; // Adjust path if needed
 
@@ -112,12 +107,14 @@ export default function RootLayout({
             <ThemeProviderWrapper>
               {/* ReduxProvider and other global providers */}
               <ReduxProvider>
-                  <ProgressBar>
-                    <SideNavigation />
+                <ProgressBar>
+                  <SideNavigation />
+                  <>
                     <main className="md:ml-16 lg:ml-80 p-3 md:pb-0 ">
                       {children}
                     </main>
-                  </ProgressBar>
+                  </>
+                </ProgressBar>
               </ReduxProvider>
             </ThemeProviderWrapper>
           </NextThemesProvider>

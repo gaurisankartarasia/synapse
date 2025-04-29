@@ -23,6 +23,7 @@ const navItems = [
 ];
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
+
   const pathname = usePathname();
 
   return (

@@ -10,8 +10,8 @@ export const commonThemeOptions: ThemeOptions = {
     MuiTouchRipple: {
       styleOverrides: {
         root: {
-          '& .MuiTouchRipple-rippleVisible': {
-            animationDuration: '150ms',
+          '&& .MuiTouchRipple-rippleVisible': {
+            animationDuration: '200ms',
           },
         },
       },

@@ -282,7 +282,7 @@ export function UserHoverCard({ username, children }: UserHoverCardProps) {
                 <CardContent>
                   {isLoading ? (
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                      <CircularProgress />
+                      <CircularProgress size={30} />
                     </div>
                   ) : error ? (
                     <div style={{ textAlign: 'center', fontSize: '0.875rem' }}>{error}</div>

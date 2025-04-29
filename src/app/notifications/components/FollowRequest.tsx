@@ -78,6 +78,7 @@ export const FollowRequest = ({ user, onActionComplete }: FollowRequestProps) =>
       </div>
       <div className="flex space-x-2">
         <Button
+        variant='contained'
           onClick={() => handleAction('accept')}
           disabled={isLoading}
         >

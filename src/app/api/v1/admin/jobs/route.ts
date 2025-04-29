@@ -1,73 +1,141 @@
-// src/app/api/admin/jobs/route.ts
+
+// src/app/api/v1/admin/jobs/route.ts
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { v4 as uuidv4 } from 'uuid'; // For generating unique filenames
 import { verifyJWT } from '@/lib/jwt';
-import { db, FieldValue } from '@/lib/firebaseAdmin';
+import { db, FieldValue, adminStorage } from '@/lib/firebaseAdmin'; // Import adminStorage
 import { CustomJWTPayload } from '@/types/auth';
+
+// Helper function to get file extension
+const getFileExtension = (filename: string): string => {
+   return filename.substring(filename.lastIndexOf('.'));
+}
 
 export async function POST(request: Request) {
     try {
-        // 1. Verify Admin User
+        // 1. Verify Admin User (same as before)
         const cookieStore = await cookies();
         const token = cookieStore.get('token');
-
         if (!token?.value) {
-            return NextResponse.json(
-                { error: 'Unauthorized' },
-                { status: 401 }
-            );
+            return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
-
         const payload = await verifyJWT(token.value) as CustomJWTPayload;
-
         if (!payload.uid) {
-            return NextResponse.json(
-                { error: 'Invalid token payload' },
-                { status: 401 }
-            );
+            return NextResponse.json({ message: 'Invalid token payload' }, { status: 401 });
         }
-
-        // **IMPORTANT**: You'll need to implement a proper admin check here.
-        // For example, you might have a custom claim on the user's JWT
-        // or a field in the user document in Firestore.
-        // This is a placeholder!
-        const isAdmin = true; // Replace with your actual admin check
-
+        // --- !! IMPORTANT !! ---
+        // Replace this with your actual, secure admin check logic!
+        const isAdmin = true; // <<< Placeholder - Implement real check!
+        // --- !! IMPORTANT !! ---
         if (!isAdmin) {
-            return NextResponse.json(
-                { error: 'Unauthorized: Admin access required' },
-                { status: 403 }
-            );
+            return NextResponse.json({ message: 'Forbidden: Admin access required' }, { status: 403 });
         }
 
-        // 2. Process Form Data
-        const jobData = await request.json();
-        const { title, description, company, location, salary, jobType, requirements, deadline } = jobData;
+        // 2. Process FormData
+        const formData = await request.formData();
 
-        // 3. Create Firestore Document
-        const newJobRef = db.collection('jobs').doc(); // Firestore auto-generates ID
+        const title = formData.get('title') as string | null;
+        const description = formData.get('description') as string | null;
+        const company = formData.get('company') as string | null;
+        const location = formData.get('location') as string | null;
+        const salary = formData.get('salary') as string | null;
+        const jobType = formData.get('jobType') as string | null;
+        const requirementsString = formData.get('requirements') as string | null; // Get as string
+        const deadlineString = formData.get('deadline') as string | null; // Get as string
+        const companyLogoFile = formData.get('companyLogoFile') as File | null; // Get the file
+
+        // Basic validation for required text fields received from FormData
+        if (!title || !description || !company || !location || !salary || !jobType || !requirementsString) {
+             return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
+        }
+
+        // 3. Handle File Upload to Firebase Storage (if present)
+        let companyLogoUrl: string | null = null;
+        if (companyLogoFile) {
+            try {
+                // Generate a unique path/filename for the logo
+                const fileExtension = getFileExtension(companyLogoFile.name);
+                const uniqueFilename = `${uuidv4()}${fileExtension}`;
+                const filePath = `company-logos/${uniqueFilename}`; // Store in a dedicated folder
+
+                const bucket = adminStorage.bucket(); // Get default bucket
+                const fileRef = bucket.file(filePath);
+
+                // Convert File to Buffer
+                const buffer = Buffer.from(await companyLogoFile.arrayBuffer());
+
+                // Upload the file
+                await fileRef.save(buffer, {
+                    metadata: {
+                        contentType: companyLogoFile.type, // Set content type
+                        // Optional: Add custom metadata if needed
+                        // metadata: { uploadedBy: payload.uid }
+                    },
+                    public: true, // Make the file publicly readable
+                });
+
+                // Get the public URL
+                // Note: Ensure your bucket's permissions allow public reads
+                // Alternatively, generate a signed URL if needed, but public is simpler for logos
+                companyLogoUrl = fileRef.publicUrl();
+                console.log(`Logo uploaded successfully: ${companyLogoUrl}`);
+
+            } catch (uploadError) {
+                console.error('Error uploading company logo:', uploadError);
+                // Decide if you want to fail the whole request or just proceed without the logo
+                return NextResponse.json({ message: 'Failed to upload company logo', error: (uploadError as Error).message }, { status: 500 });
+            }
+        }
+
+
+        // 4. Prepare Data for Firestore
+        const requirementsArray = requirementsString.split(',').map(item => item.trim()).filter(item => item);
 
         let deadlineTimestamp = null;
-        if (deadline) {
-            deadlineTimestamp = FieldValue.serverTimestamp(); // Convert JS Date to Firestore Timestamp
+        if (deadlineString) {
+            try {
+                // Convert the date string to a Firestore Timestamp
+                // Use Date.parse for flexibility, handles YYYY-MM-DD
+                const deadlineDate = new Date(deadlineString);
+                if (!isNaN(deadlineDate.getTime())) { // Check if date is valid
+                   deadlineTimestamp = FieldValue.serverTimestamp(); // Use serverTimestamp for consistency
+                   // Or directly use the date: deadlineTimestamp = Timestamp.fromDate(deadlineDate);
+                } else {
+                    console.warn(`Invalid deadline date string received: ${deadlineString}`);
+                    // Optionally return an error or just proceed without deadline
+                }
+            } catch (dateError) {
+                console.error('Error parsing deadline date:', dateError);
+                // Handle error as needed
+            }
         }
 
-        await newJobRef.set({
+        const jobDataToSave = {
             title,
             description,
             company,
             location,
             salary,
             jobType,
-            requirements,
+            requirements: requirementsArray, // Save the parsed array
             postedDate: FieldValue.serverTimestamp(),
-            deadline: deadlineTimestamp,
-            creatorId: payload.uid, // Add the creator's ID
-        });
+            deadline: deadlineTimestamp, // Save the timestamp or null
+            creatorId: payload.uid,
+            ...(companyLogoUrl && { companyLogoUrl }), // Conditionally add logo URL if it exists
+        };
 
-        return NextResponse.json({ message: 'Job posted successfully', jobId: newJobRef.id }, { status: 201 });
+
+        // 5. Create Firestore Document
+        const newJobRef = db.collection('jobs').doc();
+        await newJobRef.set(jobDataToSave);
+
+        return NextResponse.json({ message: 'Job posted successfully', jobId: newJobRef.id, companyLogoUrl }, { status: 201 });
+
     } catch (error) {
         console.error('Error creating job:', error);
-        return NextResponse.json({ error: 'Failed to create job' }, { status: 500 });
+        // Check if it's a known error type or provide a generic message
+        const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+        return NextResponse.json({ message: 'Failed to create job', error: errorMessage }, { status: 500 });
     }
 }

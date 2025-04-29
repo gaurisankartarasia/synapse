@@ -131,7 +131,6 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                 // Original: lg:h-24 lg:w-24 sm:h-14 sm:w-14
                 width: { xs: 56, sm: 56, lg: 96 }, // 14*4 = 56, 24*4 = 96
                 height: { xs: 56, sm: 56, lg: 96 },
-                bgcolor: "primary.main", // Fallback BG
               }}
             >
               {username ? username.slice(0, 1).toUpperCase() : ""}

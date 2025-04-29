@@ -53,7 +53,7 @@ export const PostHeader = ({
           </Link>
         </UserHoverCard>
 
-        {post.isVerified && <Verified />}
+        {post.isVerified && <Verified fontSize="small" />}
 
         <small className="t600">{formatRelativeTime(post.createdAt)}</small>
 
