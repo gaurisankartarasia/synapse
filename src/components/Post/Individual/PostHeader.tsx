@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Post } from "@/types/post";
 import { UserHoverCard } from "@/components/hover-card/user-profile-hover-card";
 import { Verified } from "@mui/icons-material";
-import { Bookmark, BookmarkBorder} from "@mui/icons-material";
+import { Bookmark, BookmarkBorder } from "@mui/icons-material";
 import { formatRelativeTime } from "@/utils/date";
 import {
   Dialog,
@@ -23,7 +23,7 @@ interface PostHeaderProps {
   onSave: () => Promise<void>;
   onArchive: () => Promise<void>;
   onDelete: () => Promise<void>;
-  currentUserId?: string;
+  currentUserId: string | undefined;
   onReportClick: () => void;
 }
 
@@ -59,7 +59,7 @@ export const PostHeader = ({
 
         <IconButton
           onClick={onSave}
-          className="flex items-center p-1 text-3xl font-medium active:scale-150 disabled:opacity-50"
+          className="flex items-center p-1 text-3xl font-medium disabled:opacity-50"
         >
           {post.isSaved ? (
             <Bookmark fontSize="small" />
@@ -79,13 +79,16 @@ export const PostHeader = ({
           <DialogItem onClick={onSave}>
             {post.isSaved ? "Unsave post" : "Save post"}
           </DialogItem>
-          <DialogSeparator />
+         
           {isPostOwner && (
-            <DialogItem onClick={onArchive}>
-              {post.isArchived ? "Unarchive post" : "Archive post"}
-            </DialogItem>
+            <> <DialogSeparator />
+              <DialogItem onClick={onArchive}>
+                {post.isArchived ? "Unarchive post" : "Archive post"}
+              </DialogItem>
+             
+            </>
           )}
-          <DialogSeparator />
+ <DialogSeparator /> 
           {isPostOwner && (
             <DialogItem onClick={onDelete}>Delete Post</DialogItem>
           )}

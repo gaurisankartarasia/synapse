@@ -1,7 +1,7 @@
 
 // CommentForm.tsx
 import { useState } from "react";
-import Button from "@mui/material/Button";
+import {IconButton} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 
@@ -19,7 +19,7 @@ export const CommentForm = ({ onSubmit }: CommentFormProps) => {
   };
 
   return (
-    <div className="mt-4 flex">
+    <div className="mt-4 flex gap-3 items-center">
       <TextField
         value={content}
         onChange={(e) => setContent(e.target.value)}
@@ -27,13 +27,13 @@ export const CommentForm = ({ onSubmit }: CommentFormProps) => {
         className="w-full p-2 border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
         rows={3}
       />
-      <Button
+      <IconButton
         onClick={handleSubmit}
         disabled={!content.trim()}
-        variant="contained"
+        size="large"
       >
         <SendOutlinedIcon/>
-      </Button>
+      </IconButton>
     </div>
   );
 };

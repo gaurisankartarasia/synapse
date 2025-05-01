@@ -154,7 +154,7 @@ interface FirestorePost {
   allowCommenting: boolean;
   commentCount: number;
   hashtags?: string[];
-
+  media_type?: string;
 }
 
 interface FirestoreUser {
@@ -260,7 +260,8 @@ export async function GET(
       commentCount: postData.commentCount || 0,
       isSaved,
       isLiked,
-      isVerified: userData?.isVerified
+      isVerified: userData?.isVerified,
+      media_type: postData.media_type || null,
     };
 
     return NextResponse.json(responseData, { headers });

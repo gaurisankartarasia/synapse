@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
 
   const publicPaths = [
     '/signin', '/signup', '/forgot-password', '/verify', '/sitemap.xml', 
-    '/googlec70c2e840b8f053a.html', '/test', '/verify/*'
+    '/googlec70c2e840b8f053a.html', '/verify/*'
   ];
 
   // Proper wildcard matching
@@ -57,3 +57,8 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico|public).*)'],
 };
+
+
+
+
+

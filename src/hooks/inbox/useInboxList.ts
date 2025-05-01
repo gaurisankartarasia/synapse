@@ -272,7 +272,7 @@ import {
   DocumentSnapshot, // Explicitly import DocumentSnapshot
   Timestamp, // Import Timestamp for better type safety if possible
 } from 'firebase/firestore';
-import { useAuth } from '@/hooks/useAuth'; // Assuming this path is correct
+import { useAuth } from '@/hooks/useAuth'; 
 
 // Interfaces
 interface ChatRoom {

@@ -69,8 +69,3 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
 
 export default ImageGallery;
 
-
-
-
-
-

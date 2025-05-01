@@ -97,7 +97,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import {
-  Button,
   Card,
   CardHeader,
   CardContent,
@@ -145,10 +144,11 @@ interface JobCardProps {
 
 const JobCard: React.FC<JobCardProps> = ({ job }) => {
   const router = useRouter();
+  const jobId = job.id
 
   return (
     <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-      <CardActionArea onClick={() => router.push(`/jobs/apply/${job.id}`)}>
+      <CardActionArea onClick={() => router.push(`/jobs/${jobId}`)}>
         <CardHeader
           avatar={
             <Avatar
@@ -222,21 +222,11 @@ interface JobListItemProps {
 }
 
 const JobListItem: React.FC<JobListItemProps> = ({ job }) => {
-  const router = useRouter();
 
   return (
     <ListItem
       alignItems="flex-start"
-      secondaryAction={
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={() => router.push(`/jobs/apply/${job.id}`)}
-          sx={{ ml: 2 }} // Margin left
-        >
-          Apply Now
-        </Button>
-      }
+   
       sx={{ py: 2 }} // Padding top/bottom
     >
       <ListItemAvatar>
@@ -317,31 +307,11 @@ const JobsPage: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto p-4 md:p-6">
-      {/* Navigation Links */}
-      <Box sx={{ mb: 3, borderBottom: 1, borderColor: "divider", pb: 2 }}>
-        <Link
-          href="/jobs/admin"
-          className="text-blue-600 hover:underline mr-4 text-sm"
-        >
-          Post a Job
-        </Link>
-        <Link
-          href="/jobs/applied"
-          className="text-blue-600 hover:underline mr-4 text-sm"
-        >
-          Applied Jobs
-        </Link>
-        <Link
-          href="/jobs/search"
-          className="text-blue-600 hover:underline text-sm"
-        >
-          Search Jobs
-        </Link>
-      </Box>
+    <div className="container mx-auto">
+     
 
       <Typography
-        variant="h4"
+        variant="h6"
         component="h1"
         gutterBottom
         fontWeight="bold"
@@ -372,7 +342,7 @@ const JobsPage: React.FC = () => {
                   {jobsInList.map((job, index) => (
                     <React.Fragment key={job.id}>
                       <CardActionArea
-                        onClick={() => router.push(`/jobs/apply/${job.id}`)}
+                        onClick={() => router.push(`/jobs/${job.id}`)}
                       >  <JobListItem job={job} />
                     
                         </CardActionArea>{" "}

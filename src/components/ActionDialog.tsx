@@ -243,7 +243,7 @@ export const DialogContent: React.FC<{ children: ReactNode }> = ({ children }) =
       fullWidth
       PaperProps={{
         sx: {
-          borderRadius: 2,
+          borderRadius: 7,
           overflow: 'hidden',
           p: 0,
           m: 2,
@@ -283,7 +283,8 @@ export const DialogItem: React.FC<DialogItemProps> = ({
         sx={{ 
           py: 1.5,
             textAlign:'center',
-          color: className?.includes('text-red-500') ? 'error.main' : 'inherit'
+          color: className?.includes('text-red-500') ? 'error.main' : "inherit"
+
         }}
       >
         <ListItemText primary={children} />
