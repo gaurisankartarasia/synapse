@@ -126,6 +126,7 @@ export default function SignIn() {
               />
             </Box>
             <Button
+            disableRipple
               fullWidth
               variant="contained"
               type="submit"

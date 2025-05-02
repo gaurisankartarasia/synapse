@@ -19,6 +19,7 @@ import { Verified } from "@mui/icons-material";
 
 import UserSuggestions from "@/components/UserSuggestions/UserSuggestions";
 import Link from "next/link";
+import Image from "next/image";
 
 interface SearchResult {
   uid: string;
@@ -153,11 +154,18 @@ const SearchPageContent: React.FC = () => {
             </ul>
           )}
 
-          {searchResults.length === 0 && !loading && !error && hasSearched && (
-            <div className="text-center p-4">
-              <small>No results found</small>
-            </div>
-          )}
+{searchResults.length === 0 && !loading && !error && hasSearched && (
+  <div className="text-center p-4 flex flex-col items-center justify-center">
+    <small className="mb-2">No results found</small>
+    <Image
+      src="/assets/no_results.svg"
+      alt="No results found"
+      width={400}
+      height={400}
+      className="mb-4"
+    />
+  </div>
+)}
 
           {!hasSearched && !loading && searchTerm.trim() === "" && (
             <div className="text-center p-4 text-gray-500">

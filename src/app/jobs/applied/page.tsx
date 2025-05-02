@@ -80,7 +80,6 @@ import {
   Pagination,
   Stack,
   Alert,
-  Paper,
   Skeleton,
   useTheme,
   useMediaQuery
@@ -94,6 +93,7 @@ import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import JobProfileCard from '@/components/Jobs/profile/card/card';
 
 // Interface for job application data
 interface AppliedJob {
@@ -269,12 +269,11 @@ export default function AppliedJobsPage() {
       )}
 
       {!loading && !error && appliedJobs.length === 0 && (
-        <Paper 
+        <Box 
           sx={{ 
             p: 4, 
             textAlign: 'center',
-            backgroundColor: theme.palette.grey[50],
-            borderRadius: 2
+            boxShadow:'none'
           }}
         >
           <HourglassEmptyIcon sx={{ fontSize: 60, color: theme.palette.grey[400], mb: 2 }} />
@@ -291,17 +290,18 @@ export default function AppliedJobsPage() {
           >
             Browse Open Positions
           </Button>
-        </Paper>
+        </Box>
       )}
 
       {!loading && !error && appliedJobs.length > 0 && (
         <>
           <Grid container spacing={3}>
+            <Grid size={9} sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2 }}>
             {appliedJobs.map((job) => (
               <Grid size={{xs:4}} key={job.applicationId}>
                 <JobCard     sx={{ 
                     '&&:hover': { 
-                      boxShadow: 3,
+                      boxShadow: 1,
                     }
                   }}>
                     <CardActionArea LinkComponent={Link} href={`/jobs/${job.id}`} >
@@ -375,6 +375,9 @@ export default function AppliedJobsPage() {
                 </JobCard>
               </Grid>
             ))}
+            </Grid>
+            <Grid size={3} >
+            <JobProfileCard/></Grid>
           </Grid>
 
           {pagination.totalPages > 1 && (

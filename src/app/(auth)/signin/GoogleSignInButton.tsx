@@ -68,6 +68,7 @@ export default function GoogleSignInButton() {
     <>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
         <Button
+        disableRipple
           onClick={handleGoogleSignIn}
           disabled={loading}
           variant='outlined'

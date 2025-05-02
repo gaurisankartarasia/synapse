@@ -119,25 +119,8 @@
 
 // src/store/slices/jobSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-// Remove direct Firebase client imports
-// import { db } from '@/lib/firebaseClient';
-// import { collection, getDocs, addDoc, doc, getDoc, DocumentData } from 'firebase/firestore';
+import { Job } from '@/types/Job/job';
 
-// Keep the Job interface - it's useful on the client too
-export interface Job {
-  id: string; // ID is now mandatory as it comes from the server fetch/create
-  title: string;
-  description: string;
-  company: string;
-  location: string;
-  salary: string;
-  jobType: string;
-  requirements: string[];
-  postedDate: string; // Keep as ISO string for serialization
-  deadline?: string; // Keep as ISO string
-  creatorId: string;
-  companyLogoUrl: string;
-}
 
 interface JobState {
   jobs: Job[];

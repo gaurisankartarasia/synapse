@@ -6,12 +6,23 @@ export interface Job {
   title: string;
   description: string;
   company: string;
+  companyLogoUrl?: string | null;
+  companyWebsite?: string;
+  companyDescription?: string;
+  companyLocation?: string;
+  companyType?: string;
   location: string;
   salary: string;
   jobType: string;
   requirements: string | string[];
   postedDate: string;
   deadline?: string;
+
+  creator:{
+    uid: string;
+    username?: string;
+  }
+
   creatorId: string;
 }
 

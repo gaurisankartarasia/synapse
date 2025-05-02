@@ -24,14 +24,7 @@ export async function POST(request: Request) {
         if (!payload.uid) {
             return NextResponse.json({ message: 'Invalid token payload' }, { status: 401 });
         }
-        // --- !! IMPORTANT !! ---
-        // Replace this with your actual, secure admin check logic!
-        const isAdmin = true; // <<< Placeholder - Implement real check!
-        // --- !! IMPORTANT !! ---
-        if (!isAdmin) {
-            return NextResponse.json({ message: 'Forbidden: Admin access required' }, { status: 403 });
-        }
-
+       
         // 2. Process FormData
         const formData = await request.formData();
 

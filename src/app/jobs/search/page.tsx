@@ -89,9 +89,11 @@ import {
   CircularProgress, // For loading indicator
   Alert, // For displaying errors
   Stack, // For layout, especially the list
-  Container, // MUI Container for consistent padding/margins
+  Container, 
+  Grid
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
+import JobProfileCard from "@/components/Jobs/profile/card/card";
 
 interface Job {
   id: string;
@@ -153,9 +155,9 @@ export default function JobSearchPage() {
   };
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      {" "}
-      {/* Use MUI Container */}
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      <Grid container spacing={2} >
+       <Grid size={9} >
       <Box sx={{ display: "flex", mb: 4, gap: 1 }}>
         {" "}
         {/* Use Box for layout */}
@@ -263,6 +265,10 @@ export default function JobSearchPage() {
           ))}
         </Stack>
       )}
+      </Grid>
+      <Grid  size={3} >
+      <JobProfileCard/></Grid>
+      </Grid>
     </Container>
   );
 }

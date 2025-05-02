@@ -120,11 +120,11 @@ export default function Navbar() {
 
   // Define navigation items in an array for easier mapping (DRY principle)
   const navItems = [
-    { href: '/jobs', label: 'Home', icon: <Home /> },
+    { href: '/jobs', label: 'Home', icon: <Home /> }, { href: '/jobs/search', label: 'Search', icon: <SearchIcon /> },
     { href: '/jobs/create_new', label: 'Post', icon: <AddCircleOutlineIcon /> },
     { href: '/jobs/applied', label: 'Applied', icon: <AssignmentTurnedInIcon /> },
     { href: '/jobs/posted', label: 'Posted', icon: <WorkOutlineIcon /> },
-    { href: '/jobs/search', label: 'Search', icon: <SearchIcon /> },
+   
     { href: '/jobs/profile', label: 'Profile', icon: <PersonOutlineIcon /> },
     { href: '/jobs/saved', label: 'Saved', icon: <BookmarkBorderIcon /> },
   ];
