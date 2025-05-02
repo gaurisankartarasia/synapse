@@ -112,6 +112,8 @@ export default async function SavedJobsPage() {
          fetchError = error.message || "An unexpected error occurred while loading saved jobs.";
     }
 
+    
+
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Typography variant="h6" component="h1" gutterBottom>

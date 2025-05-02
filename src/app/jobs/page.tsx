@@ -148,7 +148,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
 
   return (
     <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-      <CardActionArea onClick={() => router.push(`/jobs/${jobId}`)}>
+      <CardActionArea LinkComponent={Link} href={`/jobs/${jobId}`}>
         <CardHeader
           avatar={
             <Avatar
@@ -342,7 +342,7 @@ const JobsPage: React.FC = () => {
                   {jobsInList.map((job, index) => (
                     <React.Fragment key={job.id}>
                       <CardActionArea
-                        onClick={() => router.push(`/jobs/${job.id}`)}
+                        LinkComponent={Link} href={`/jobs/${job.id}`}
                       >  <JobListItem job={job} />
                     
                         </CardActionArea>{" "}

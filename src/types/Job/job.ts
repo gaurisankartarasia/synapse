@@ -56,7 +56,7 @@ export interface JobApiResponse {
     creatorId: string; // Keep creatorId? Decide if needed on the frontend
     companyLogoUrl?: string | null;
     isSavedByUser: boolean;
-
+    isApplied:boolean;
     viewer: {
         uid: string | null; 
     }

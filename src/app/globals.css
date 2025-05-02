@@ -8,9 +8,8 @@
 body{
   font-family: "Roboto", sans-serif !important;
 }
-.jdhsf{
-  color: #c2dcfe78;
-}
+
+/* You might not need much custom CSS here if the ProgressProvider handles the visual */
 
 @theme inline {
   --color-background: var(--background);

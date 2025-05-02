@@ -1,6 +1,6 @@
 import { ThemeOptions } from "@mui/material/styles";
 import { deepmerge } from '@mui/utils'; 
-import { commonThemeOptions } from "./common";
+import { commonThemeOptions } from ".";
 
 // Dark theme specific options
 export const darkThemeOptions: ThemeOptions = deepmerge(commonThemeOptions, {

@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import SaveJobButton from "@/components/Jobs/SaveButton";
 import { JobApiResponse } from "@/types/Job/job";
 import { Box, Typography, IconButton, Tooltip } from "@mui/material";
@@ -54,14 +55,15 @@ const JobDetailsHeader: React.FC<JobDetailsHeaderProps> = ({ job }) => {
         </Box>
       </Box>
       <Box sx={{ flexShrink: 0, mt: 1, display: "flex", alignItems: "center" }}>
-        <SaveJobButton jobId={job.id} initialIsSaved={job.isSavedByUser} />
         {job.creatorId === job.viewer.uid && (
             <Tooltip title="Edit details" >
-          <IconButton>
+          <IconButton  LinkComponent={Link} href={`/jobs/${job.id}/edit`} >
             <Edit />
           </IconButton>
         </Tooltip>
-        )}
+        )}     
+           <SaveJobButton jobId={job.id} initialIsSaved={job.isSavedByUser} />
+
       </Box>
     </Box>
   );

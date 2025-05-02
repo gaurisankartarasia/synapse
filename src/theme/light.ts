@@ -2,7 +2,7 @@
 
 import { ThemeOptions } from "@mui/material/styles";
 import { deepmerge } from '@mui/utils'; 
-import { commonThemeOptions } from "./common";
+import { commonThemeOptions } from ".";
 
 export const lightThemeOptions: ThemeOptions = deepmerge(commonThemeOptions, {
   palette: {

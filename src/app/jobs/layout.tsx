@@ -7,6 +7,9 @@ export default function JobsPagesLayout({ children }: { children: React.ReactNod
         <div>
           <div className="flex justify-center mt-4">
           <Navbar  />
+
+
+
           </div>
             {children}
         </div>

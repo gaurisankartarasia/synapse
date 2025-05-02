@@ -16,7 +16,9 @@ import {
   Avatar,
   Grid,
   IconButton,
+  Button,
 } from "@mui/material";
+import { Description } from "@mui/icons-material";
 import Link from "next/link";
 import {
   JobProfile,
@@ -26,7 +28,6 @@ import {
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import SchoolIcon from "@mui/icons-material/School";
 import LinkIcon from "@mui/icons-material/Link";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LabelIcon from "@mui/icons-material/Label";
 import EditIcon from "@mui/icons-material/Edit";
@@ -34,7 +35,7 @@ import EditIcon from "@mui/icons-material/Edit";
 interface ProfileDisplayProps {
   profile: JobProfile | null;
   // Optional: Pass basic user info if needed (e.g., photo, name)
-  currentProfile?: { displayName?: string; profilePhotoURL?: string  };
+  currentProfile?: { displayName?: string; profilePhotoURL?: string };
 }
 
 const formatDate = (dateString: string | undefined | null): string => {
@@ -65,7 +66,7 @@ const ProfileSection: React.FC<{
   <Box mb={4}>
     <Stack direction="row" spacing={1} alignItems="center" mb={2}>
       {icon}
-      <Typography variant="h5" component="h2">
+      <Typography  component="h5">
         {title}
       </Typography>
     </Stack>
@@ -144,25 +145,51 @@ const ProfileDisplay: React.FC<ProfileDisplayProps> = ({
       <Grid container spacing={2}>
         {/* Basic Info - Could potentially come from a separate user object */}
         <Box
-        //   size={{ xs: 12, md: 3 }}
-          sx={{ display:'flex', alignItems:'center', gap:2, bgcolor:"#dddddd6e", p:2, borderRadius:7, width:'100%'}}
+          //   size={{ xs: 12, md: 3 }}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            bgcolor: "#dddddd6e",
+            p: 2,
+            borderRadius: 7,
+            width: "100%",
+          }}
         >
           <Avatar
             sx={{ width: 120, height: 120, mb: 2, mx: { xs: "auto", md: 0 } }}
             src={currentProfile?.profilePhotoURL}
           />
-          <Typography variant="h5">{currentProfile?.displayName}</Typography>
-          <IconButton LinkComponent={Link} href="/settings/profile/edit">
-            <EditIcon />
-          </IconButton>
+          <div>
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              {currentProfile?.displayName}{" "}
+              <IconButton LinkComponent={Link} href="/settings/profile/edit"  >
+                <EditIcon sx={{fontSize:'0.9rem'}} />
+              </IconButton>
+            </Typography>
+            <Typography>{profile?.email}</Typography>
+          </div>
         </Box>
 
         {/* <Grid item xs={12} md={9}> */}
-        <Grid size={12}>
-          {" "}
+        <Grid size={12}  >
+          {profile.resumeUrl && (
+            <Button
+              variant="outlined" // Or "text" or "contained"
+              size="small"
+              href={profile.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer" // Important for security/new tabs
+              startIcon={<Description />}
+              // Optionally add download attribute if the server sets appropriate headers
+              // download="User_Resume"
+            >
+              View Resume
+            </Button>
+          )}{" "}
           {/* Make full width if not showing basic info here */}
           {profile.headline && (
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h6" gutterBottom>
               {profile.headline}
             </Typography>
           )}
@@ -244,17 +271,7 @@ const ProfileDisplay: React.FC<ProfileDisplayProps> = ({
                     Website/Portfolio
                   </MuiLink>
                 )}
-                {profile.linkedinUrl && (
-                  <MuiLink
-                    href={profile.linkedinUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    display="flex"
-                    alignItems="center"
-                  >
-                    <LinkedInIcon sx={{ mr: 0.5 }} fontSize="small" /> LinkedIn
-                  </MuiLink>
-                )}
+                
                 {profile.githubUrl && (
                   <MuiLink
                     href={profile.githubUrl}
@@ -276,12 +293,3 @@ const ProfileDisplay: React.FC<ProfileDisplayProps> = ({
 };
 
 export default ProfileDisplay;
-
-
-
-
-
-
-
-
-

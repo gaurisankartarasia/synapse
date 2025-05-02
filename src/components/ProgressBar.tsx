@@ -5,14 +5,9 @@
 import { AppProgressProvider as ProgressProvider } from "@bprogress/next";
 import { BProgress } from "@bprogress/core";
 import { useEffect, useState } from "react";
-import { useTheme } from "next-themes"; 
 
 const ProgressBar = ({ children }: { children: React.ReactNode }) => {
-  const { theme, systemTheme } = useTheme(); 
-  const [mounted, setMounted] = useState(false); 
-
   useEffect(() => {
-    setMounted(true); 
     BProgress.configure({
       minimum: 0.99,
       maximum: 1,
@@ -22,7 +17,6 @@ const ProgressBar = ({ children }: { children: React.ReactNode }) => {
     });
   }, []);
 
-  const currentTheme = theme === "system" ? systemTheme : theme;
 
   return (
     <ProgressProvider
@@ -37,7 +31,6 @@ const ProgressBar = ({ children }: { children: React.ReactNode }) => {
 };
 
 export  {ProgressBar};
-
 
 
 

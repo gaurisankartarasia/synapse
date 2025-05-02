@@ -1,4 +1,3 @@
-
 // src/app/layout.tsx
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Roboto } from "next/font/google";
@@ -56,12 +55,9 @@ export default function RootLayout({
                 <ProgressBar>
                   <SideNavigation />
                   <>
-                    {/* <main className="md:ml-16 lg:ml-80 p-3 md:pb-0 sm:pt-20 md:pt-7 lg:pt-0">
-                      {children}
-                    </main> */}
                     <main className="md:ml-16 lg:ml-80 px-3 pb-3 pt-20 md:pt-7 lg:pt-0">
-  {children}
-</main>
+                      {children}
+                    </main>
                   </>
                 </ProgressBar>
               </ReduxProvider>

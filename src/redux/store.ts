@@ -1,5 +1,46 @@
 
 
+// // src/redux/store.ts
+// import { configureStore } from '@reduxjs/toolkit';
+// import authReducer from './features/authSlice';
+// import userReducer from './features/userSlice';
+// import followReducer from './features/followSlice';
+// import postReducer from './features/postSlice';
+// import suggestionsReducer from './features/suggestionSlice';
+// import geminiReducer from './features/gemini/geminiSlice'
+// import jobReducer from './features/jobSlice';
+// import cartReducer from "./features/cartSlice";
+
+
+// export const store = configureStore({
+//   reducer: {
+//     auth: authReducer,
+//     user: userReducer,
+//     follow: followReducer,
+//     post: postReducer, 
+//     suggestions: suggestionsReducer,
+//     gemini:geminiReducer,
+//     job: jobReducer,
+//     cart: cartReducer,
+//   },
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware({
+//       serializableCheck: {
+//         ignoredActions: ['auth/setUser'],
+//         ignoredActionPaths: ['payload'],
+//         ignoredPaths: [],
+//       },
+//     }),
+// });
+
+// export type RootState = ReturnType<typeof store.getState>;
+// export type AppDispatch = typeof store.dispatch;  
+
+
+
+
+
+
 // src/redux/store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './features/authSlice';
@@ -7,37 +48,30 @@ import userReducer from './features/userSlice';
 import followReducer from './features/followSlice';
 import postReducer from './features/postSlice';
 import suggestionsReducer from './features/suggestionSlice';
-import geminiReducer from './features/gemini/geminiSlice'
+import geminiReducer from './features/gemini/geminiSlice';
 import jobReducer from './features/jobSlice';
 import cartReducer from "./features/cartSlice";
 
-
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
+    auth: authReducer, // original login auth
     user: userReducer,
     follow: followReducer,
-    post: postReducer, 
+    post: postReducer,
     suggestions: suggestionsReducer,
-    gemini:geminiReducer,
+    gemini: geminiReducer,
     job: jobReducer,
     cart: cartReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ['auth/setUser'],
+        ignoredActions: ['auth/setUser', 'jwtAuth/initializeAuth'],
         ignoredActionPaths: ['payload'],
-        ignoredPaths: [],
+        ignoredPaths: ['jwtAuth.user'],
       },
     }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;  
-
-
-
-
-
-
+export type AppDispatch = typeof store.dispatch;

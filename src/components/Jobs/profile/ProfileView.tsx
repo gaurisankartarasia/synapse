@@ -18,7 +18,7 @@ import EditIcon from '@mui/icons-material/Edit';
 // Make sure the path @/types/Job/JobProfile is correct
 import { JobProfile } from '@/types/Job/JobProfile';
 // Import the type expected by the onSubmit prop of ProfileForm
-import { JobProfileApiPayload } from '@/components/Jobs/profile/ProfileForm'; // Adjust path if needed, usually types are separate
+import { JobProfileApiPayload } from '@/types/Job/JobProfile'; // Adjust path if needed, usually types are separate
 import ProfileDisplay from '@/components/Jobs/profile/ProfileDisplay';
 
 import { useProfile } from "@/hooks/useProfile";
@@ -99,7 +99,7 @@ const ProfileView = () => {
     };
 
     // --- Toggle Edit Mode ---
-    const handleEditToggle = () => {
+  const handleEditToggle = () => {
         setIsEditing((prev) => !prev);
         setError(null);
     }
@@ -144,12 +144,10 @@ const ProfileView = () => {
 
     return (
         <Box sx={{ my: 3 }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
-                <Typography variant="h6" component="h1">
-                     Job Profile
-                </Typography>
+            <Stack direction="row" justifyContent="end" alignItems="center" mb={2}>
+               
                 {!isLoading && !isEditing && profile && Object.keys(profile).length > 0 && (
-                    <Button variant="outlined" onClick={handleEditToggle} startIcon={<EditIcon />}>
+                    <Button  onClick={handleEditToggle} startIcon={<EditIcon fontSize='small' />}>
                         Edit Profile
                     </Button>
                 )}
