@@ -19,8 +19,8 @@ interface JobDetailsPageProps {
 
 // Function to fetch job details from the API route
 async function getJobDetails(jobId: string): Promise<JobApiResponse | null> {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const url = `${baseUrl}/api/v1/jobs/${jobId}`;
+    const url = `/api/v1/jobs/${jobId}`;
+
     console.log("Fetching job details from:", url);
 
     const requestHeaders: HeadersInit = {
