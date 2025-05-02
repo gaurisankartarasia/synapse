@@ -42,7 +42,7 @@ interface JobDetails {
 // It needs access to cookies for authentication propagation
 async function fetchSavedJobsFromApi(cookieHeader: string | undefined): Promise<SavedJobDisplayData[]> {
     // Construct the absolute URL for fetch within server components
-    const apiUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/user/jobs/saved`; // Ensure you have NEXT_PUBLIC_APP_URL in your .env
+    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/user/jobs/saved`; // Ensure you have NEXT_PUBLIC_APP_URL in your .env
 
     const headers: HeadersInit = {};
     if (cookieHeader) {

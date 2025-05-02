@@ -14,7 +14,7 @@ import { Container, Grid, Typography, CircularProgress, Alert, Paper } from '@mu
 
 // Define props type
 interface JobDetailsPageProps {
-    params: Promise<{ jobId: string }>; // Updated to handle Promise
+    params: Promise<{ jobId: string }>; 
 }
 
 // Function to fetch job details from the API route
