@@ -53,7 +53,7 @@ export default function ImageUpload({ onUploadComplete }: ImageUploadProps) {
       formData.append('title', title);
       formData.append('description', description);
 
-      const response = await fetch('/api/stories/upload', {
+      const response = await fetch('/api/v1/stories/upload', {
         method: 'POST',
         body: formData,
       });

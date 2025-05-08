@@ -33,7 +33,7 @@ const MutualFollowers: React.FC<MutualFollowersProps> = ({ username, onUserClick
         return;
       }
 
-      const response = await fetch(`/api/mutual-followers?username=${username}`, {
+      const response = await fetch(`/api/v1/mutual-followers?username=${username}`, {
        credentials:"include"
       });
 

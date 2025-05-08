@@ -58,7 +58,7 @@ export function useAuth() {
 
   const fetchUser = useCallback(async () => {
     try {
-      const res = await fetch('/api/auth/verify_jwt', {
+      const res = await fetch('/api/v1/auth/verify_jwt', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

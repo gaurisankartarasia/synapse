@@ -22,7 +22,7 @@ const AccountTypePage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch('/api/user/my_profile/query');
+        const response = await fetch('/api/v1/user/my_profile/query');
         if (!response.ok) {
           throw new Error('Failed to fetch user data');
         }
@@ -42,7 +42,7 @@ const AccountTypePage = () => {
     if (!user?.uid) return;
 
     try {
-      const response = await fetch(`/api/user/account/account_type`, {
+      const response = await fetch(`/api/v1/user/account/account_type`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -14,7 +14,7 @@ import { ChatButton } from "../../components/Username/ChatButton";
 import UserPosts from "../../components/Username/Posts";
 import { ProfileData } from "@/types/profile";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import {
   toggleFollow,
   setFollowStatus,
@@ -61,7 +61,7 @@ const PublicProfilePage: React.FC = () => {
       }
 
       const response = await fetch(
-        `/api/user-profile/query?username=${username}`,
+        `/api/v1/user-profile/query?username=${username}`,
         {
           credentials: "include",
         }
@@ -101,8 +101,8 @@ const PublicProfilePage: React.FC = () => {
       try {
         const endpoint =
           type === "followers"
-            ? `/api/followers_list/query?username=${username}`
-            : `/api/followings_list/query?username=${username}`;
+            ? `/api/v1/followers_list/query?username=${username}`
+            : `/api/v1/followings_list/query?username=${username}`;
 
         const response = await fetch(endpoint, {
           credentials: "include",
@@ -171,7 +171,7 @@ const PublicProfilePage: React.FC = () => {
 
   const handleRemoveFollower = async (followerUid: string) => {
     try {
-      const response = await fetch("/api/remove-follower", {
+      const response = await fetch("/api/v1/remove-follower", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -223,13 +223,14 @@ const PublicProfilePage: React.FC = () => {
     <div>
       <ProfileHeader
         account_type={profileData.account_type}     
-           uid={profileData.uid}
+        uid={profileData.uid}
         profilePhotoURL={profileData.profilePhotoURL}
         username={profileData.username}
         displayName={profileData.displayName || profileData.username}
         isVerified={profileData.isVerified}
         createdAt={profileData.createdAt}
         bio={profileData.bio}
+        viewerUid={profileData.viewer.uid}
       />
 
       <FollowStats
@@ -259,6 +260,7 @@ const PublicProfilePage: React.FC = () => {
           </Button>
         ) : (
           <FollowButton
+          isOwnProfile={profileData?.uid === profileData.viewer?.uid}
             isUpdating={followStatus.loading ?? false}
             followStatus={currentFollowState}
             onFollowClick={handleFollow}
@@ -280,7 +282,7 @@ const PublicProfilePage: React.FC = () => {
         title="Followers"
         loading={loadingModal}
         items={followersList}
-        isOwnProfile={profileData?.uid === authUser?.uid}
+        isOwnProfile={profileData?.uid === profileData.viewer?.uid}
         onRemoveFollower={handleRemoveFollower}
       />
       <EnhancedModalList

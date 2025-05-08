@@ -15,7 +15,7 @@ export const useUserProfile = (username: string, open: boolean) => {
       const fetchProfile = async () => {
         try {
           setIsLoading(true);
-          const response = await fetch(`/api/user-profile/query?username=${username}`, {
+          const response = await fetch(`/api/v1/user-profile/query?username=${username}`, {
             credentials: "include",
           });
 

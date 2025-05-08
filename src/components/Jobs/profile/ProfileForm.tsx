@@ -578,7 +578,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
             resumeFormData.append('resume', selectedResumeFile);
 
             try {
-                const response = await fetch('/api/user-profile/job/resume', {
+                const response = await fetch('/api/v1/user-profile/job/resume', {
                     method: 'POST',
                     body: resumeFormData,
                     // No 'Content-Type' header - browser sets it correctly for FormData

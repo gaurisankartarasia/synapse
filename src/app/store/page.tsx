@@ -1,82 +1,151 @@
-// src/app/page.tsx (Or your desired homepage route)
-"use client";
 
+
+// // src/app/store/page.tsx
+
+// import Container from "@mui/material/Container";
+// import Grid from "@mui/material/Grid";
+// import Banner from "@/components/Store/FrontBannerSection";
+// import RecommendedProductsCarousel from "@/components/Store/RecommendedProductsCarousel";
+// import ProductCard from "@/components/Store/catalog/ProductCard";
+// import { getCatalogData } from "@/hooks/store/getCatalogData";
+// import { Product } from "@/types/store/types";
+
+// export default async function StorePage() {
+//   const catalogData = await getCatalogData();
+
+//   if (!catalogData) {
+//     return (
+//       <main className="container mx-auto px-4 py-8">
+//         <h1 className="text-3xl font-bold mb-6 text-center text-red-600">Store Unavailable</h1>
+//         <p className="text-center text-gray-600">
+//           We couldn't load the store data right now. Please try again later.
+//         </p>
+//       </main>
+//     );
+//   }
+
+//   const { categoriesWithProducts } = catalogData;
+
+//   if (!categoriesWithProducts || categoriesWithProducts.length === 0) {
+//     return (
+//       <main className="container mx-auto px-4 py-8">
+//         <h1 className="text-3xl font-bold mb-6 text-center">Our Store</h1>
+//         <p className="text-center text-gray-600">
+//           No products found at the moment. Check back soon!
+//         </p>
+//       </main>
+//     );
+//   }
+
+//   return (
+//     <Container maxWidth="xl" className="px-4 py-8">
+//       <Banner />
+//       <RecommendedProductsCarousel />
+//       {categoriesWithProducts.map((category) => (
+//         <section key={category.id} className="mb-12">
+//           <h2 className="text-xl font-semibold mb-2 pb-1">{category.name}</h2>
+//           {category.products && category.products.length > 0 ? (
+//             <Grid container spacing={2}>
+//               {category.products.map((product: Product) => (
+//                 <ProductCard key={product.id} product={product} />
+//               ))}
+//             </Grid>
+//           ) : (
+//             <p className="text-gray-500 italic">
+//               No products found in this category currently.
+//             </p>
+//           )}
+//         </section>
+//       ))}
+//     </Container>
+//   );
+// }
+
+
+
+// src/app/store/page.tsx
+'use client';
+
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Banner from "@/components/Store/FrontBannerSection";
+import RecommendedProductsCarousel from "@/components/Store/RecommendedProductsCarousel";
+import ProductCard from "@/components/Store/catalog/ProductCard";
+import { getCatalogData } from "@/hooks/store/getCatalogData";
+import { Product } from "@/types/store/types";
 import { useState, useEffect } from 'react';
-import { CategoryNavBar } from '@/components/Store/CategoryNavBar';
-import { ProductSection } from '@/components/Store/ProductSection';
-import type { Category, Product } from '@/types/store/types';
+import { StoreLoader } from "@/components/loaders/store/main";
 
-interface HomePageData {
-    topLevelCategories: Category[];
-    featuredSections: Array<{
-        title: string;
-        categoryId: string;
-        products: Product[];
-    }>;
-}
+export default function StorePage() {
+  const [catalogData, setCatalogData] = useState<{ categoriesWithProducts: { id: string; name: string; products: Product[] }[] } | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-export default function HomePage() {
-    const [homepageData, setHomepageData] = useState<HomePageData | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
-            setError(null);
-            try {
-                // Fetch data from our API endpoint
-                const response = await fetch('/api/v1/store/homepage-sections');
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || `API Error: ${response.statusText}`);
-                }
-                const data: HomePageData = await response.json();
-                setHomepageData(data);
-            } catch (err: any) {
-                console.error("Failed to fetch homepage data:", err);
-                setError(err.message || "Could not load homepage data.");
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []); // Fetch data once on component mount
-
-    if (isLoading) {
-        return <div className="flex justify-center items-center h-screen"><p>Loading Store...</p></div>; // Add a spinner here
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getCatalogData();
+        setCatalogData(data);
+      } catch (e: any) {
+        setError("We couldn't load the store data right now. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
     }
 
-    if (error) {
-        return <div className="text-center text-red-600 p-10">Error: {error}</div>;
-    }
+    fetchData();
+  }, []);
 
-    if (!homepageData) {
-        return <div className="text-center text-gray-500 p-10">Could not load store data.</div>;
-    }
-
+  if (loading) {
     return (
-        <main className="bg-gray-100 min-h-screen">
-            {/* Render Category Navigation Bar */}
-            <CategoryNavBar categories={homepageData.topLevelCategories} />
-
-            <div className="container mx-auto p-4">
-                {/* Optional: Promotional Banner Section could go here */}
-                {/* <div className="bg-blue-500 text-white p-10 rounded-lg mb-6 text-center">
-                    Promotional Banner Here!
-                </div> */}
-
-                {/* Render Product Sections */}
-                {homepageData.featuredSections.map((section) => (
-                    <ProductSection
-                        key={section.categoryId} // Use categoryId or title as key
-                        title={section.title}
-                        products={section.products}
-                        categoryId={section.categoryId}
-                    />
-                ))}
-            </div>
-        </main>
+      <main className="flex justify-center items-center min-h-96  ">
+       <StoreLoader/>
+      </main>
     );
+  }
+
+  if (error) {
+    return (
+      <main className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-6 text-center text-red-600">Store Unavailable</h1>
+        <p className="text-center text-gray-600">{error}</p>
+      </main>
+    );
+  }
+
+  if (!catalogData || !catalogData.categoriesWithProducts || catalogData.categoriesWithProducts.length === 0) {
+    return (
+      <main className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-6 text-center">Our Store</h1>
+        <p className="text-center text-gray-600">
+          No products found at the moment. Check back soon!
+        </p>
+      </main>
+    );
+  }
+
+  const { categoriesWithProducts } = catalogData;
+
+  return (
+    <Container maxWidth="xl" className="px-4 py-8">
+      <Banner />
+      <RecommendedProductsCarousel />
+      {categoriesWithProducts.map((category) => (
+        <section key={category.id} className="mb-12">
+          <h2 className="text-xl font-semibold mb-2 pb-1">{category.name}</h2>
+          {category.products && category.products.length > 0 ? (
+            <Grid container spacing={2}>
+              {category.products.map((product: Product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </Grid>
+          ) : (
+            <p className="text-gray-500 italic">
+              No products found in this category currently.
+            </p>
+          )}
+        </section>
+      ))}
+    </Container>
+  );
 }

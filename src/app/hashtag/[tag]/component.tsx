@@ -32,7 +32,7 @@ const HashtagPage: React.FC<HashtagPageProps> = ({ tag }) => {
       setError(null);
 
       const encodedTag = encodeURIComponent(tag);
-      const url = `/api/hashtag/${encodedTag}${lastId ? `?lastPostId=${lastId}` : ""}`;
+      const url = `/api/v1/hashtag/${encodedTag}${lastId ? `?lastPostId=${lastId}` : ""}`;
       
       const response = await fetch(url);
       
@@ -87,7 +87,7 @@ const HashtagPage: React.FC<HashtagPageProps> = ({ tag }) => {
       {images.map((url, index) => (
         <div key={index} className="relative aspect-square">
           <Image
-            src={`/api/proxy?url=${encodeURIComponent(url)}`}
+            src={`/api/v1/proxy?url=${encodeURIComponent(url)}`}
             fill
             sizes="(max-width: 468px) 50vw, (max-width: 600px) 50vw, 33vw"
             className="object-cover rounded-md"

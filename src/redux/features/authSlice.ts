@@ -46,7 +46,7 @@
 //     { rejectWithValue }
 //   ) => {
 //     try {
-//       const response = await fetch('/api/auth/signup', {
+//       const response = await fetch('/api/v1/auth/signup', {
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
 //         body: JSON.stringify({ email, password, username }),
@@ -79,7 +79,7 @@
 //     try {
 //       const result = await signInWithEmailAndPassword(auth, email, password);
 
-//       const response = await fetch('/api/auth/signin', {
+//       const response = await fetch('/api/v1/auth/signin', {
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
 //         body: JSON.stringify({ email, password }),
@@ -113,7 +113,7 @@
 //       const result = await signInWithPopup(auth, googleProvider);
 //       const idToken = await result.user.getIdToken();
 
-//       const response = await fetch('/api/auth/google', {
+//       const response = await fetch('/api/v1/auth/google', {
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
 //         body: JSON.stringify({
@@ -155,7 +155,7 @@
 //   async (_, { rejectWithValue }) => {
 //     try {
 //       await signOut(auth);
-//       await fetch('/api/auth/signout', {
+//       await fetch('/api/v1/auth/signout', {
 //         method: 'POST',
 //         credentials: 'include',
 //       });
@@ -286,7 +286,7 @@ export const signUpWithEmail = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await fetch('/api/auth/signup', {
+      const response = await fetch('/api/v1/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, username }),
@@ -319,7 +319,7 @@ export const signInWithEmail = createAsyncThunk(
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
 
-      const response = await fetch('/api/auth/signin', {
+      const response = await fetch('/api/v1/auth/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -353,7 +353,7 @@ export const signInWithGoogle = createAsyncThunk(
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
 
-      const response = await fetch('/api/auth/google', {
+      const response = await fetch('/api/v1/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -395,7 +395,7 @@ export const signOutUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await signOut(auth);
-      await fetch('/api/auth/signout', {
+      await fetch('/api/v1/auth/signout', {
         method: 'POST',
         credentials: 'include',
       });

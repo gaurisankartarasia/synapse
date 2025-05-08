@@ -16,7 +16,7 @@
 //   useEffect(() => {
 //     const fetchLikedPosts = async () => {
 //       try {
-//         const res = await fetch("/api/user/activity/likes");
+//         const res = await fetch("/api/v1/user/activity/likes");
 //         if (!res.ok) throw new Error("Failed to fetch liked posts");
 
 //         const data = await res.json();
@@ -91,7 +91,7 @@ export default function LikedPostsPage() {
   useEffect(() => {
     const fetchLikedPosts = async () => {
       try {
-        const res = await fetch("/api/user/activity/likes");
+        const res = await fetch("/api/v1/user/activity/likes");
         if (!res.ok) throw new Error("Failed to fetch liked posts");
 
         const data = await res.json();

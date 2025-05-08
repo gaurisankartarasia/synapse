@@ -23,7 +23,7 @@ export const fetchProfile = createAsyncThunk(
   'job/fetchProfile',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('/api/user-profile/job/card');
+      const response = await fetch('/api/v1/user-profile/job/card');
       
       if (!response.ok) {
         const errorData = await response.json();

@@ -25,7 +25,7 @@ export const usePost = (postId: string) => {
       setError(null);
       
       try {
-        const response = await fetch(`/api/post/${postId}/query`, {
+        const response = await fetch(`/api/v1/post/${postId}/query`, {
           method: 'GET',
           headers: {
             "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export const usePost = (postId: string) => {
     setLikeCount(prevLiked ? prevLikes - 1 : prevLikes + 1);
 
     try {
-      const response = await fetch('/api/post/like', {
+      const response = await fetch('/api/v1/post/like', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ export const usePost = (postId: string) => {
     setPost(prev => prev ? { ...prev, isArchived: !prev.isArchived } : null);
 
     try {
-      const response = await fetch('/api/post/archive', {
+      const response = await fetch('/api/v1/post/archive', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ export const usePost = (postId: string) => {
     setPost(prev => prev ? { ...prev, isSaved: !prev.isSaved } : null);
 
     try {
-      const response = await fetch('/api/post/save', {
+      const response = await fetch('/api/v1/post/save', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -163,7 +163,7 @@ export const usePost = (postId: string) => {
     if (!confirmation) return;
 
     try {
-      const response = await fetch(`/api/post/${postId}/delete`, {
+      const response = await fetch(`/api/v1/post/${postId}/delete`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         credentials: 'include',
@@ -184,7 +184,7 @@ export const usePost = (postId: string) => {
     if (!user || !post) return;
 
     try {
-      const response = await fetch(`/api/post/${post.postId}/report`, {
+      const response = await fetch(`/api/v1/post/${post.postId}/report`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -22,7 +22,11 @@ export interface Product {
   sku?: string;
   imageUrl: string;
   stockQuantity: number;
+  tags?: string[];           
+  searchKeywords?: string[];
   isActive: boolean;
+  isWishlisted?: boolean; 
+  isInCart?: boolean;
   categoryIds: string[];
   allCategoryIds: string[];
   categoryNames?: string[]; // Optional denormalized field
@@ -35,10 +39,19 @@ export interface ProductPayload {
   name: string;
   description: string;
   price: number;
+  tags?: string[];           
+  searchKeywords?: string[];
   imageUrl: string;
   categoryIds: string[];
-  // Add other optional fields like sku, stockQuantity, isActive if set on client
   sku?: string;
   stockQuantity?: number;
   isActive?: boolean;
+}
+
+
+export interface Suggestion {
+  id: string;
+  name: string; // Product name
+  type: 'product';
+  imageUrl?: string;
 }

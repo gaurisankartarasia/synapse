@@ -100,7 +100,7 @@ const EnhancedModalList: React.FC<EnhancedModalListProps> = ({
                   <Link href={`/${user.username}`}>
                     <Avatar
                       className="cursor-pointer"
-                      src={`/api/proxy?url=${encodeURIComponent(
+                      src={`/api/v1/proxy?url=${encodeURIComponent(
                         user.profilePhotoURL
                       )}`}
                       alt={user.username}

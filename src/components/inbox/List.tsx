@@ -83,7 +83,7 @@ if(!user) return
                 <CardActionArea component={Link} href={`/inbox/${otherParticipantProfile.uid}`}>
                   <CardContent>
                     <div className="flex items-center space-x-3 mb-1"> {/* Use space-x */}
-                      <Avatar src={otherParticipantProfile.photoURL.startsWith('http') ? `/api/proxy?url=${encodeURIComponent(otherParticipantProfile.photoURL)}` : otherParticipantProfile.photoURL}
+                      <Avatar src={otherParticipantProfile.photoURL.startsWith('http') ? `/api/v1/proxy?url=${encodeURIComponent(otherParticipantProfile.photoURL)}` : otherParticipantProfile.photoURL}
                       alt={otherParticipantProfile.username}
                       > 
                      

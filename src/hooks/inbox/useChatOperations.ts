@@ -12,7 +12,7 @@ export function useChatOperations() {
     setError(null);
     
     try {
-      const response = await fetch("/api/chat/markAsRead", {
+      const response = await fetch("/api/v1/chat/markAsRead", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +46,7 @@ export function useChatOperations() {
     setError(null);
     
     try {
-      const response = await fetch("/api/chat/delete", {
+      const response = await fetch("/api/v1/chat/delete", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

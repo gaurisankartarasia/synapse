@@ -62,7 +62,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
   const jobId = job.id
 
   return (
-    <Card sx={{ height: "100%", display: "flex", flexDirection: "column",  '&&:hover': { 
+    <Card sx={{ height: "100%", display: "flex", flexDirection: "column",   '&&:hover': { 
                       boxShadow: 1,
                     } }}>
       <CardActionArea LinkComponent={Link} href={`/jobs/${jobId}`}>
@@ -127,7 +127,6 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
             <AccessTimeIcon fontSize="inherit" /> Posted:{" "}
             {formatPostedDate(job.postedDate)}
           </Typography>
-          <Typography color="text.secondary" sx={{fontSize:'0.8rem'}} >Posted by {job.creator.username}   </Typography>
         </CardContent>
       </CardActionArea>
     </Card>
@@ -145,7 +144,7 @@ const JobListItem: React.FC<JobListItemProps> = ({ job }) => {
     <ListItem
       alignItems="flex-start"
    
-      sx={{ py: 2 }} // Padding top/bottom
+      sx={{ py: 2 }} 
     >
       <ListItemAvatar>
         <Avatar
@@ -177,7 +176,6 @@ const JobListItem: React.FC<JobListItemProps> = ({ job }) => {
             >
               {job.company || "N/A"} - {job.location || "N/A"}
             </Typography>
-            <Typography color="text.secondary" sx={{fontSize:'0.8rem'}} >Posted by {job.creator.username}   </Typography>
 
             <Typography
               sx={{ display: "block", mt: 0.5 }}

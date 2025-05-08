@@ -20,7 +20,7 @@
 
 //     const fetchPosts = async () => {
 //       try {
-//         const res = await fetch(`/api/user-profile/post/saved?uid=${encodeURIComponent(user.uid)}`);
+//         const res = await fetch(`/api/v1/user-profile/post/saved?uid=${encodeURIComponent(user.uid)}`);
 //         if (!res.ok) throw new Error('Failed to fetch posts');
 
 //         const data = await res.json();
@@ -103,7 +103,7 @@ export default function SavedPostsGrid() {
 
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`/api/user-profile/post/saved?uid=${encodeURIComponent(user.uid)}`);
+        const res = await fetch(`/api/v1/user-profile/post/saved?uid=${encodeURIComponent(user.uid)}`);
         if (!res.ok) throw new Error('Failed to fetch posts');
 
         const data = await res.json();

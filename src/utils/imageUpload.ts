@@ -6,7 +6,7 @@ export const uploadImages = async (images: File[]): Promise<string[]> => {
       const formData = new FormData();
       formData.append("image", image);
   
-      const imageResponse = await fetch("/api/post/upload_post_img", {
+      const imageResponse = await fetch("/api/v1/post/upload_post_img", {
         method: "POST",
         credentials: 'include', // Include credentials for authentication
         body: formData,

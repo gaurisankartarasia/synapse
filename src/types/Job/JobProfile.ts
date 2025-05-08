@@ -94,7 +94,7 @@ export interface JobProfile {
 // This type should automatically include the new fields
 export type JobProfileFormData = Omit<JobProfile, 'uid' | 'createdAt' | 'updatedAt'>;
 
-// Type for the data sent TO the profile save API (POST /api/user/job-profile)
+// Type for the data sent TO the profile save API (POST /api/v1/user/job-profile)
 // Needs to include the new fields as well
 export type JobProfileApiPayload = Omit<JobProfileFormState, 'experience' | 'education' | 'id'> & { // Ensure 'id' isn't accidentally included
   experience?: Omit<JobExperience, 'id'>[];

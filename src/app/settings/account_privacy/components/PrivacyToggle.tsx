@@ -11,7 +11,7 @@
 //   useEffect(() => {
 //     const fetchPrivacy = async () => {
 //       try {
-//         const res = await fetch('/api/user/privacy/account_privacy');
+//         const res = await fetch('/api/v1/user/privacy/account_privacy');
 //         const data = await res.json();
 //         setEnabled(data.status);
 //       } catch (error) {
@@ -27,7 +27,7 @@
 //   const handleToggle = async (newValue: boolean) => { // Directly accept boolean
 //     try {
 //       setEnabled(newValue);
-//       await fetch('/api/user/privacy/account_privacy', {
+//       await fetch('/api/v1/user/privacy/account_privacy', {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ export default function PrivacyToggle() {
     const fetchPrivacy = async () => {
       setLoading(true); // Start loading
       try {
-        const res = await fetch('/api/user/privacy/account_privacy'); // Ensure this path matches your API file structure
+        const res = await fetch('/api/v1/user/privacy/account_privacy'); // Ensure this path matches your API file structure
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
@@ -119,7 +119,7 @@ export default function PrivacyToggle() {
     setIsUpdating(true); // Indicate update is in progress
 
     try {
-      const res = await fetch('/api/user/privacy/account_privacy', { // Ensure this path matches your API file structure
+      const res = await fetch('/api/v1/user/privacy/account_privacy', { // Ensure this path matches your API file structure
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -24,7 +24,7 @@ export const useBlockUser = (targetUserId: string, options?: UseBlockUserOptions
 
     setLoading(true);
     try {
-      const response = await fetch(`/api/user/block/${targetUserId}`, {
+      const response = await fetch(`/api/v1/user/block/${targetUserId}`, {
         method: "POST",
         // You might want to add headers if needed, e.g., for authentication
         // headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }

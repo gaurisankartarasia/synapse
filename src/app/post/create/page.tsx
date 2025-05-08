@@ -60,7 +60,7 @@
 //       setUploadLoading(true);
       
 //       // Get fresh authentication state by making API request
-//       const authResponse = await fetch('/api/auth/verify_jwt', {
+//       const authResponse = await fetch('/api/v1/auth/verify_jwt', {
 //         credentials: 'include'
 //       });
       

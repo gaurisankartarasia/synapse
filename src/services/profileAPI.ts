@@ -6,7 +6,7 @@ interface UserProfile {
   }
 
 export async function fetchUserProfile(): Promise<UserProfile> {
-  const response = await fetch('/api/user/my_profile/query');
+  const response = await fetch('/api/v1/user/my_profile/query');
   
   if (!response.ok) {
     const error = await response.json();

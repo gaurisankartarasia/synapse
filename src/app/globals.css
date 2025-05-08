@@ -129,11 +129,3 @@ body{
   }
 }
 
-
-input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 100px #f0f0f0 inset !important; /* Example: Light gray background */
-  -webkit-text-fill-color: #333 !important; /* Example: Dark gray text */
-  caret-color: #333 !important;
-}
-
-

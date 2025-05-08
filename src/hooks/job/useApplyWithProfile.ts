@@ -33,7 +33,7 @@ export const useApplyWithProfile = (): ApplyWithProfileResult => {
 
         try {
             // Step 1: Fetch the user's Job Profile
-            const profileResponse = await fetch('/api/user-profile/job'); // Uses cookie implicitly
+            const profileResponse = await fetch('/api/v1/user-profile/job'); // Uses cookie implicitly
 
             if (!profileResponse.ok) {
                 const errorData = await profileResponse.json();

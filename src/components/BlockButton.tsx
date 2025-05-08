@@ -18,7 +18,7 @@ const BlockButton: React.FC<BlockButtonProps> = ({ targetUserId }) => {
     if (window.confirm("Are you sure you want to block this user?")) {
       setLoading(true);
       try {
-        const response = await fetch(`/api/user/block/${targetUserId}`, {
+        const response = await fetch(`/api/v1/user/block/${targetUserId}`, {
           method: "POST",
         });
 

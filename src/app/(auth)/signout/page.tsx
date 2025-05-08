@@ -13,7 +13,7 @@ const SignOutPage = () => {
     const signout = async () => {
       try {
         await signOut(auth);
-        const res = await fetch("/api/auth/signout", {
+        const res = await fetch("/api/v1/auth/signout", {
           method: "POST",
         });
 

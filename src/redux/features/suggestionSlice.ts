@@ -19,7 +19,7 @@ export const fetchSuggestedUsers = createAsyncThunk(
   'suggestions/fetchSuggestedUsers',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('/api/user/suggested');
+      const response = await fetch('/api/v1/user/suggested');
       if (!response.ok) throw new Error('Failed to fetch suggestions');
       return await response.json();
     } catch (error) {

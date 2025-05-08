@@ -5,6 +5,24 @@ import { db } from "@/lib/firebaseAdmin"; // Use Admin SDK Firestore instance
 import { FieldValue } from "firebase-admin/firestore"; // Use Admin SDK FieldValue
 import type { ProductPayload, Category } from "@/types/store/types"; // Import shared types
 
+
+
+// Helper to generate keywords
+function generateKeywords(name: string, description?: string, tags?: string[]): string[] {
+  const nameWords = name.toLowerCase().split(/\s+/); // Split name by space
+  const descWords = description ? description.toLowerCase().split(/\s+/).slice(0, 15) : []; // Limit description words
+  const tagWords = tags ? tags.map(tag => tag.toLowerCase()) : [];
+
+  // Combine, remove duplicates, filter out very short words (optional) and punctuation
+  const combined = [...nameWords, ...descWords, ...tagWords];
+  const uniqueKeywords = [...new Set(combined)]
+                         .map(word => word.replace(/[.,!?;:]/g, '')) // Remove basic punctuation
+                         .filter(word => word.length > 1); // Filter out single letters/empty strings
+
+  return uniqueKeywords;
+}
+
+
 // Helper function to get all ancestor IDs for selected categories
 async function getAllCategoryIds(directCategoryIds: string[]): Promise<string[]> {
   if (!directCategoryIds || directCategoryIds.length === 0) {
@@ -53,6 +71,7 @@ export async function POST(req: Request) {
 
     // Calculate allCategoryIds based on the direct categoryIds provided
     const calculatedAllCategoryIds = await getAllCategoryIds(payload.categoryIds);
+    const keywords = generateKeywords(payload.name, payload.description, payload.tags);
 
     // Prepare the document data for Firestore
     const newProductData = {
@@ -65,6 +84,8 @@ export async function POST(req: Request) {
       isActive: payload.isActive !== undefined ? payload.isActive : true, // Default active state
       categoryIds: payload.categoryIds, // Direct IDs from client
       allCategoryIds: calculatedAllCategoryIds, // Calculated ancestor + direct IDs
+      tags: payload.tags || [], 
+      searchKeywords: keywords, 
       // Optional: Fetch category names here if you want to denormalize them
       // categoryNames: await getCategoryNames(payload.categoryIds),
       createdAt: FieldValue.serverTimestamp(), // Use Admin SDK server timestamp
@@ -86,3 +107,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: `Server error: ${errorMessage}` }, { status: 500 });
   }
 }
+

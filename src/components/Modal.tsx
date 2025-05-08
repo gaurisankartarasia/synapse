@@ -24,8 +24,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
     if (isOpen) {
       setIsVisible(true);
     } else {
-      const timer = setTimeout(() => setIsVisible(false), 300); // Smooth close animation
-      return () => clearTimeout(timer);
+      setIsVisible(false); 
     }
   }, [isOpen]);
 
@@ -33,8 +32,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
     <Dialog open={isVisible} onClose={onClose} fullWidth maxWidth="sm"  >
       <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         {title}
-        <IconButton onClick={onClose} sx={{ ml: 2 }}>
-          <CloseIcon />
+        <IconButton onClick={onClose} title="Close" sx={{ ml: 2 }}>
+          <CloseIcon  />
         </IconButton>
       </DialogTitle>
       <DialogContent>{children}</DialogContent>

@@ -1,4 +1,4 @@
-// src/app/api/user/my-jobs/route.ts
+// src/app/api/v1/user/my-jobs/route.ts
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { verifyJWT } from '@/lib/jwt'; // Assuming this path is correct

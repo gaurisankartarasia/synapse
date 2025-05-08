@@ -19,7 +19,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
   const fetchComments = useCallback( async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/post/comments?postId=${postId}`, {
+      const response = await fetch(`/api/v1/post/comments?postId=${postId}`, {
         method: 'GET'
       });
       if (!response.ok) throw new Error("Failed to fetch comments");
@@ -44,7 +44,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
     if (!user) return;
     
     try {
-      const response = await fetch("/api/post/comments", {
+      const response = await fetch("/api/v1/post/comments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +70,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
     
     try {
       setDeleteLoading(commentId);
-      const response = await fetch(`/api/post/comments/${commentId}`, {
+      const response = await fetch(`/api/v1/post/comments/${commentId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json"
@@ -113,7 +113,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
         })
       );
 
-      await fetch(`/api/post/comments/${commentId}/like`, {
+      await fetch(`/api/v1/post/comments/${commentId}/like`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -130,7 +130,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
     if (!user) return;
   
     try {
-      const response = await fetch(`/api/post/comments/report`, {
+      const response = await fetch(`/api/v1/post/comments/report`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ postId, commentId, replyId: replyId || null, reason }),
@@ -149,7 +149,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
     if (!user) return;
     
     try {
-      const response = await fetch(`/api/post/comments/${commentId}/reply`, {
+      const response = await fetch(`/api/v1/post/comments/${commentId}/reply`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -171,7 +171,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
     if (!user) return;
     
     try {
-      const response = await fetch(`/api/post/comments/${commentId}/replies/${replyId}`, {
+      const response = await fetch(`/api/v1/post/comments/${commentId}/replies/${replyId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json"
@@ -193,7 +193,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
     if (!user) return;
     
     try {
-      await fetch(`/api/post/comments/${commentId}/replies/${replyId}/like`, {
+      await fetch(`/api/v1/post/comments/${commentId}/replies/${replyId}/like`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

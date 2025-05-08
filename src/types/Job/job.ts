@@ -68,6 +68,11 @@ export interface JobApiResponse {
     companyLogoUrl?: string | null;
     isSavedByUser: boolean;
     isApplied:boolean;
+    creator:{
+      uid: string;
+      username?: string;
+    }
+  
     viewer: {
         uid: string | null; 
     }

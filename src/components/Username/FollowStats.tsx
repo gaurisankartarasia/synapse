@@ -1,6 +1,7 @@
 
 import { FollowStatus } from "@/types/profile";
-import { useAuth } from "@/hooks/useAuth"; // Import auth hook
+import { useAuth } from "@/hooks/useAuth";
+
 
 interface FollowStatsProps {
   followerCount: number;
@@ -8,7 +9,7 @@ interface FollowStatsProps {
   followStatus: FollowStatus;
   onFollowersClick: () => void;
   onFollowingClick: () => void;
-  profileUid: string; // Add this prop to identify profile owner
+  profileUid: string; 
 }
 
 export const FollowStats: React.FC<FollowStatsProps> = ({
@@ -47,7 +48,7 @@ export const FollowStats: React.FC<FollowStatsProps> = ({
         className="flex font-semibold items-center gap-2 cursor-pointer"
       >
         <span className="">{followingCount}</span>
-        <span className="text-sm text-muted-foreground">Following</span>
+        <span className="text-sm text-">Following</span>
       </div>
     </div>
   );

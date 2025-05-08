@@ -23,7 +23,7 @@ export default function ArchivedPostsGrid() {
 
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`/api/user/activity/archived`);
+        const res = await fetch(`/api/v1/user/activity/archived`);
         if (!res.ok) throw new Error('Failed to fetch posts');
 
         const data = await res.json();

@@ -149,7 +149,7 @@ export default function NotificationsPage() {
   const fetchNotifications = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/notifications', {
+      const response = await fetch('/api/v1/notifications', {
         credentials: 'include'
       });
       
@@ -170,7 +170,7 @@ export default function NotificationsPage() {
 
   const markAsRead = async (notificationId: string) => {
     try {
-      const response = await fetch('/api/notifications', {
+      const response = await fetch('/api/v1/notifications', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

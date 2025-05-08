@@ -30,7 +30,7 @@ export const FollowRequest = ({ user, onActionComplete }: FollowRequestProps) =>
     setIsLoading(true);
     try {
       
-      const response = await fetch('/api/handle-follow-request', {
+      const response = await fetch('/api/v1/handle-follow-request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

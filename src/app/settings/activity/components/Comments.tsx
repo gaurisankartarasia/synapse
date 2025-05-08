@@ -38,7 +38,7 @@ const UserComments = () => {
       }
 
       const response = await fetch(
-        `/api/user/activity/comments?${params.toString()}`
+        `/api/v1/user/activity/comments?${params.toString()}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch comments");

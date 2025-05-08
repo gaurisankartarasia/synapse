@@ -44,7 +44,7 @@
 //         setError(null);
 //         try {
 //             // Ensure this API endpoint is correct
-//             const response = await fetch('/api/user-profile/job');
+//             const response = await fetch('/api/v1/user-profile/job');
 //             if (!response.ok) {
 //                 const errorData = await response.json();
 //                 throw new Error(errorData.error || `Failed to fetch profile (${response.status})`);
@@ -71,7 +71,7 @@
 //         setError(null);
 //         try {
 //             // Ensure this API endpoint is correct
-//             const response = await fetch('/api/user-profile/job', {
+//             const response = await fetch('/api/v1/user-profile/job', {
 //                 method: 'POST',
 //                 headers: {
 //                     'Content-Type': 'application/json',
@@ -213,7 +213,7 @@ const ProfileView = () => {
         }
         setError(null);
         try {
-            const response = await fetch('/api/user-profile/job');
+            const response = await fetch('/api/v1/user-profile/job');
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || `Failed to fetch profile (${response.status})`);
@@ -263,7 +263,7 @@ const ProfileView = () => {
         setIsSubmitting(true);
         setError(null);
         try {
-            const response = await fetch('/api/user-profile/job', {
+            const response = await fetch('/api/v1/user-profile/job', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(apiPayload),

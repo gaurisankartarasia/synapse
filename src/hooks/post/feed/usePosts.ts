@@ -13,7 +13,7 @@ export const usePosts = () => {
 
   const fetchPosts = async (lastId: string | null = null) => {
     try {
-      const url = `/api/post/display/query${lastId ? `?lastPostId=${lastId}` : ""}`;
+      const url = `/api/v1/post/display/query${lastId ? `?lastPostId=${lastId}` : ""}`;
       const response = await fetch(url);
       if (!response.ok) throw new Error("Failed to fetch posts");
       const data = await response.json();

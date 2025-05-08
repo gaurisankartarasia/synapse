@@ -51,7 +51,7 @@ export const usePostActions = (setPosts: React.Dispatch<React.SetStateAction<Pos
     }));
 
     try {
-      const response = await fetch('/api/post/like', {
+      const response = await fetch('/api/v1/post/like', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ export const usePostActions = (setPosts: React.Dispatch<React.SetStateAction<Pos
     setSaveStates(prev => ({ ...prev, [postId]: { loading: true } }));
 
     try {
-      const response = await fetch('/api/post/save', {
+      const response = await fetch('/api/v1/post/save', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ export const usePostActions = (setPosts: React.Dispatch<React.SetStateAction<Pos
     setArchiveStates(prev => ({ ...prev, [postId]: { loading: true } }));
 
     try {
-      const response = await fetch('/api/post/archive', {
+      const response = await fetch('/api/v1/post/archive', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -160,7 +160,7 @@ export const usePostActions = (setPosts: React.Dispatch<React.SetStateAction<Pos
     if (!confirmation) return;
 
     try {
-      const response = await fetch(`/api/post/${postId}/delete`, {
+      const response = await fetch(`/api/v1/post/${postId}/delete`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         credentials: 'include',

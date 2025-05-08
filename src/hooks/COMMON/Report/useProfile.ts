@@ -13,7 +13,7 @@ export function useReportUser() {
       setIsReporting(true);
       setError(null);
       
-      const response = await fetch(`/api/report/user_profile`, {
+      const response = await fetch(`/api/v1/report/user_profile`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

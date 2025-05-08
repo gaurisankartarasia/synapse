@@ -34,7 +34,7 @@ const EditProfilePage = () => {
 
   const fetchProfileData = async () => {
     try {
-      const response = await fetch('/api/user-profile/edit/form_data');
+      const response = await fetch('/api/v1/user-profile/edit/form_data');
       if (!response.ok) throw new Error('Failed to fetch profile');
       const data = await response.json();
       setProfile(data);
@@ -114,7 +114,7 @@ const EditProfilePage = () => {
     setLoading(true);
     try {
       // Check edit cooldown
-      const response = await fetch('/api/user-profile/edit/verify');
+      const response = await fetch('/api/v1/user-profile/edit/verify');
       const { canEdit } = await response.json();
       if (!canEdit) {
         
@@ -126,7 +126,7 @@ const EditProfilePage = () => {
       if (imageFile) {
         const formData = new FormData();
         formData.append('image', imageFile);
-        const uploadRes = await fetch('/api/user-profile/edit/image_update', {
+        const uploadRes = await fetch('/api/v1/user-profile/edit/image_update', {
           method: 'POST',
           body: formData,
         });
@@ -136,7 +136,7 @@ const EditProfilePage = () => {
       }
 
       // Update profile
-      const updateRes = await fetch('/api/user-profile/edit/update', {
+      const updateRes = await fetch('/api/v1/user-profile/edit/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

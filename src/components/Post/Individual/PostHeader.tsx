@@ -90,7 +90,7 @@ export const PostHeader = ({
           )}
  <DialogSeparator /> 
           {isPostOwner && (
-            <DialogItem onClick={onDelete}>Delete Post</DialogItem>
+            <DialogItem onClick={onDelete} className="text-red-500" >Delete Post</DialogItem>
           )}
           <DialogSeparator />
           <DialogItem onClick={onReportClick}>Report Post</DialogItem>

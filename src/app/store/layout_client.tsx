@@ -15,7 +15,9 @@ import Box from '@mui/material/Box'; // Used for layout flexibility
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import HomeIcon from '@mui/icons-material/Home';
-import CheckroomIcon from '@mui/icons-material/Checkroom'; // Alternative for Shirt
+import CheckroomIcon from '@mui/icons-material/Checkroom'; 
+import SearchInput from "@/components/Store/SearchInput";
+import { Favorite } from "@mui/icons-material";
 
 export default function StoreLayoutClient({
   children,
@@ -32,7 +34,7 @@ export default function StoreLayoutClient({
   return (
     <Box sx={{ flexGrow: 1 }}> {/* Use Box as the main container */}
       {/* --- Navigation Bar using MUI AppBar --- */}
-      <AppBar position="sticky" sx={{bgcolor:"#fff", boxShadow:'none', color:"#000"}}  > 
+      <AppBar position="sticky" sx={(theme) => ({ bgcolor: theme.palette.background.default, boxShadow: 'none', color: theme.palette.text.primary })}> 
         <Toolbar>
           {/* Optional: Add a title or logo here */}
           {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -41,6 +43,7 @@ export default function StoreLayoutClient({
 
           {/* Spacer to push buttons to the right */}
           <Box sx={{ flexGrow: 1 }} />
+          <SearchInput />
 
           <Box sx={{ display: 'flex', gap: 2 }}> {/* Group buttons */}
             {/* Home Link */}
@@ -51,6 +54,14 @@ export default function StoreLayoutClient({
               startIcon={<HomeIcon />} // Use MUI icons
             >
               Home
+            </Button>
+            <Button
+              component={Link}
+              href="/store/wishlist"
+              color="inherit"
+              startIcon={<Favorite />} // Changed icon
+            >
+              Wishlist
             </Button>
 
             {/* Orders Link */}

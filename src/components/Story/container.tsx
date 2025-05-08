@@ -16,7 +16,7 @@ export default function StoriesContainer() {
   const fetchStories = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/stories');
+      const response = await fetch('/api/v1/stories');
       
       if (!response.ok) {
         throw new Error('Failed to fetch stories');

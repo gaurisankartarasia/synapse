@@ -24,7 +24,7 @@ const BlockedUsers = () => {
   const fetchBlockedUsers = async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/user/blocked");
+      const response = await fetch("/api/v1/user/blocked");
       if (!response.ok) {
         throw new Error("Failed to fetch blocked users");
       }
@@ -39,7 +39,7 @@ const BlockedUsers = () => {
 
   const handleUnblock = async (target_uid: string) => {
     try {
-      const response = await fetch(`/api/user/unblock/${target_uid}`, {
+      const response = await fetch(`/api/v1/user/unblock/${target_uid}`, {
         method: "POST",
       });
 

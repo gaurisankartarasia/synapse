@@ -2,7 +2,6 @@
 // components/profile/ProfileHeader.tsx
 import React, { useState } from "react";
 import { formatFullDate } from "@/utils/date";
-import { useAuth } from "@/hooks/useAuth";
 import { ReportModal } from "@/components/ReportModal";
 import Link from "next/link";
 
@@ -22,6 +21,7 @@ import { useBlockUser } from "@/hooks/COMMON/Block/useBlock";
 
 interface ProfileHeaderProps {
   uid: string;
+  viewerUid: string;
   profilePhotoURL: string;
   username: string;
   displayName: string;
@@ -43,8 +43,9 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   isVerified,
   bio,
   createdAt,
+  viewerUid
 }) => {
-  const { user } = useAuth();
+  // const { user } =useAuth();
   const theme = useTheme(); // Get theme for spacing if needed
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -75,7 +76,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
   const handleReport = async (reason: string) => {
     try {
-      const response = await fetch(`/api/report/user_profile`, {
+      const response = await fetch(`/api/v1/report/user_profile`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -100,7 +101,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   };
 
   const avatarSrc = profilePhotoURL
-    ? `/api/proxy?url=${encodeURIComponent(profilePhotoURL)}`
+    ? `/api/v1/proxy?url=${encodeURIComponent(profilePhotoURL)}`
     : undefined;
 
   return (
@@ -193,7 +194,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             transformOrigin={{ vertical: "top", horizontal: "right" }}
           >
-            {uid === user?.uid && (
+            {uid === viewerUid && (
               <MenuItem
                 component={Link}
                 href="/settings/profile/edit"
@@ -202,7 +203,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                 Settings & privacy
               </MenuItem>
             )}
-            {user?.uid !== uid && (
+            {viewerUid !== uid && (
               <div>
                 <MenuItem onClick={!loading ? handleBlock : undefined}>
                   {isBlocked ? "Blocked" : loading ? "Blocking..." : "Block"}
@@ -212,15 +213,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             )}
           </Menu>
         </Box>{" "}
-        {/* End of inner flex row */}
-        {/* Original: account_type paragraphs with opacity-70 */}
-        {account_type === "digital_creator" && (
-          <Typography variant="body2" sx={{ opacity: 0.7, mb: 1 }}>
-            {" "}
-            {/* Using opacity directly */}
-            Digital creator
-          </Typography>
-        )}
+      
         {account_type === "business" && (
           <Typography variant="body2" sx={{ opacity: 0.7, mb: 1 }}>
             Business account

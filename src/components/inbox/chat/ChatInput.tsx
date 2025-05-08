@@ -48,7 +48,7 @@ export default function ChatInput({
       if (editingMessage) {
         // Handle edit
         const timestamp = Date.now();
-        const response = await fetch('/api/chat/edit', {
+        const response = await fetch('/api/v1/chat/edit', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ export default function ChatInput({
         }
       } else {
         // Handle new message or reply
-        const response = await fetch('/api/chat/send', {
+        const response = await fetch('/api/v1/chat/send', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

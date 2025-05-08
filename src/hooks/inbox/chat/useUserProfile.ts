@@ -20,7 +20,7 @@ export function useUserProfile(userId: string) {
         setLoading(true);
         setError(null);
         
-        const response = await fetch(`/api/user/${userId}/mini`, {
+        const response = await fetch(`/api/v1/user/${userId}/mini`, {
           credentials: "include",
         });
 

@@ -26,7 +26,7 @@ export const toggleFollow = createAsyncThunk(
   async (targetUsername: string, { rejectWithValue }) => {
     try {
       const token = await auth.currentUser?.getIdToken();
-      const response = await fetch('/api/follow-user', {
+      const response = await fetch('/api/v1/follow-user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

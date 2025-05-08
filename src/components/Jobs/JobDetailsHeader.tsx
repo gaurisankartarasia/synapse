@@ -52,6 +52,9 @@ const JobDetailsHeader: React.FC<JobDetailsHeaderProps> = ({ job }) => {
           <Typography variant="body2" color="text.secondary">
             {job.location}
           </Typography>
+         <span className="text-xs"> Posted by </span>  <Typography sx={{fontWeight:'500', '&:hover':{textDecoration:'underline'}}} component={Link} href={`/${job.creator.username}`} color="text.secondary">
+          {job.creator.username}
+          </Typography>
         </Box>
       </Box>
       <Box sx={{ flexShrink: 0, mt: 1, display: "flex", alignItems: "center" }}>

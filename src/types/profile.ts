@@ -42,6 +42,11 @@ export interface ProfileData {
   isRequested: boolean;
   isFollowingWithoutFollowback:boolean;
   blocked?: boolean;
+
+  media_count: number;
+  viewer: {
+    uid: string;
+  }
 }
 
 

@@ -37,7 +37,7 @@ export const useUserPosts = ({
     const fetchPosts = async () => {
       try {
         const response = await fetch(
-          `/api/user/posts/query?uid=${encodeURIComponent(uid)}`
+          `/api/v1/user/posts/query?uid=${encodeURIComponent(uid)}`
         );
         const data = await response.json();
 
@@ -79,7 +79,7 @@ export const useUserPosts = ({
       try {
         setSavedLoading(true);
         const response = await fetch(
-          `/api/user-profile/post/saved?uid=${encodeURIComponent(uid)}`
+          `/api/v1/user-profile/post/saved?uid=${encodeURIComponent(uid)}`
         );
         const data = await response.json();
 

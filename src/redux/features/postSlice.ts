@@ -31,7 +31,7 @@
 //       const formData = new FormData();
 //       formData.append("image", image);
 
-//       const imageResponse = await fetch("/api/post/upload_post_img", {
+//       const imageResponse = await fetch("/api/v1/post/upload_post_img", {
 //         method: "POST",
 //         headers: {
 //           Authorization: `Bearer ${userToken}`,
@@ -48,7 +48,7 @@
 //     }
 
 //     // Submit the post with all image URLs
-//     const response = await fetch("/api/post/create", {
+//     const response = await fetch("/api/v1/post/create", {
 //       method: "POST",
 //       headers: {
 //         "Content-Type": "application/json",
@@ -138,7 +138,7 @@ export const createPost = createAsyncThunk(
   'post/createPost',
   async (payload: CreatePostPayload, { rejectWithValue }) => {
     try {
-      const response = await fetch("/api/post/create", {
+      const response = await fetch("/api/v1/post/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

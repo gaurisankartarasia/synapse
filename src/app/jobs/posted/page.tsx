@@ -35,7 +35,7 @@
 //             setError(null);
 //             try {
 //                 // Make sure this API endpoint '/api/v1/jobs/posted' is correct
-//                 // In the previous step we created '/api/user/my-jobs'
+//                 // In the previous step we created '/api/v1/user/my-jobs'
 //                 // Using the one provided in your code here:
 //                 const response = await fetch('/api/v1/jobs/posted');
 
@@ -195,7 +195,7 @@ export default function MyJobsPage() {
       setError(null);
       try {
         // Make sure this API endpoint '/api/v1/jobs/posted' is correct
-        // In the previous step we created '/api/user/my-jobs'
+        // In the previous step we created '/api/v1/user/my-jobs'
         // Using the one provided in your code here:
         const response = await fetch('/api/v1/jobs/posted');
 

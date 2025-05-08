@@ -17,7 +17,7 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
 
     try {
       setLoading(true);
-      const response = await fetch(`/api/post/like/likedby?postId=${postId}`, {
+      const response = await fetch(`/api/v1/post/like/likedby?postId=${postId}`, {
         credentials: "include",
       });
 
@@ -62,7 +62,7 @@ const LikesModal = ({ isOpen, onClose, postId }: LikesModalProps) => {
                   <div className="flex items-center gap-3">
                     <div className="relative h-10 w-10 flex-shrink-0">
                       <Image
-                        src={`/api/proxy?url=${encodeURIComponent(
+                        src={`/api/v1/proxy?url=${encodeURIComponent(
                           user.profilePhotoURL
                         )}`}
                         alt={user.username}

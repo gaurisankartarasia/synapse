@@ -10,7 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { signUpWithEmail } from '@/redux/features/authSlice';
 import GoogleSignInButton from '../signin/GoogleSignInButton';
-import { Button, Card, CardHeader, CardContent, TextField, Box, Divider, Alert, Typography, CardActions, CircularProgress, useMediaQuery, useTheme} from '@mui/material'
+import { Button, Card, CardHeader, CardContent, TextField, Box, Divider, Alert, Typography, CardActions, CircularProgress, useMediaQuery, useTheme, IconButton, InputAdornment } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+
 
 export default function SignUp() {
   const router = useRouter();
@@ -22,7 +24,12 @@ export default function SignUp() {
   const [username, setUsername] = useState('');
 
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [formError, setFormError] = useState('');
+
+  
 
    const theme = useTheme();
     const isDesktop = useMediaQuery(theme.breakpoints.up('md')); 
@@ -52,8 +59,10 @@ export default function SignUp() {
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" mt={6}   mr={isDesktop ? 40 : 0} >
-  <Card sx={{maxWidth: 520, width: '100%', p:3  }}>
+    <Box display="flex" justifyContent="center" alignItems="center" mt={6}  
+     mr={isDesktop ? 40 : 0}
+      >
+  <Box sx={{maxWidth: 520, width: '100%', p:3  }}>
     <CardHeader title="Sign Up" />
 
     <CardContent>
@@ -94,26 +103,54 @@ export default function SignUp() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <TextField
-          id="password"
-          label="Password"
-          type="password"
-          fullWidth
-          required
-          margin="normal"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <TextField
-          id="confirmPassword"
-          label="Confirm Password"
-          type="password"
-          fullWidth
-          required
-          margin="normal"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
+       <TextField
+  id="password"
+  label="Password"
+  type={showPassword ? 'text' : 'password'}
+  fullWidth
+  required
+  margin="normal"
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+  InputProps={{
+    endAdornment: (
+      <InputAdornment position="end">
+        <IconButton
+          onClick={() => setShowPassword((prev) => !prev)}
+          edge="end"
+          aria-label="toggle password visibility"
+        >
+          {showPassword ? <VisibilityOff /> : <Visibility />}
+        </IconButton>
+      </InputAdornment>
+    ),
+  }}
+/>
+
+<TextField
+  id="confirmPassword"
+  label="Confirm Password"
+  type={showConfirmPassword ? 'text' : 'password'}
+  fullWidth
+  required
+  margin="normal"
+  value={confirmPassword}
+  onChange={(e) => setConfirmPassword(e.target.value)}
+  InputProps={{
+    endAdornment: (
+      <InputAdornment position="end">
+        <IconButton
+          onClick={() => setShowConfirmPassword((prev) => !prev)}
+          edge="end"
+          aria-label="toggle confirm password visibility"
+        >
+          {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+        </IconButton>
+      </InputAdornment>
+    ),
+  }}
+/>
+
 
         <Button
           fullWidth
@@ -141,7 +178,7 @@ export default function SignUp() {
         </Link>
       </Typography>
     </CardActions>
-  </Card>
+  </Box>
 </Box>
 
   );
