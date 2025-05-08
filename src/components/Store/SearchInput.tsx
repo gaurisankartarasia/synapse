@@ -164,25 +164,7 @@ export default function SearchInput() {
                         <ul>
                             {suggestions.map((suggestion) => (
                                 <li key={suggestion.id} className="border-b border-gray-100 last:border-b-0">
-                                    {/* <Box
-                                        onClick={() => handleSuggestionClick(suggestion)}
-                                        className="flex items-center w-full px-4 py-2 text-left hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                                    >
-                                        {suggestion.imageUrl && (
-                                            <Image
-                                                src={suggestion.imageUrl}
-                                                alt="" // Decorative image
-                                                width={32}
-                                                height={32}
-                                                className="w-8 h-8 object-contain rounded-sm mr-3 flex-shrink-0"
-                                            />
-                                        )}
-                                         {!suggestion.imageUrl && ( // Placeholder if no image
-                                            <div className="w-8 h-8 bg-gray-200 rounded-sm mr-3 flex-shrink-0"></div>
-                                         )}
-                                        <span className="truncate text-sm">{suggestion.name}</span>
-                                    </Box> */}
-                                     {/* OR use Link if you prefer direct navigation without JS function */}
+                                    
                                      <Link href={`/store/search?q=${encodeURIComponent(suggestion.name)}`}
                                            className="flex items-center w-full px-4 py-2 text-left hover:bg-gray-100"
                                            onClick={() => setShowSuggestions(false)} // Hide on click
