@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Avoid leaking internal details in production
-        const errorMessage = process.env.NODE_ENV === 'development' ? error.message : "Failed to toggle save status.";
+        const errorMessage =  error.message || "Failed to toggle save status.";
 
         // Check if it was an auth error we didn't catch specifically
         if (error.message?.includes('Unauthorized') || error.message?.includes('Invalid token')) {

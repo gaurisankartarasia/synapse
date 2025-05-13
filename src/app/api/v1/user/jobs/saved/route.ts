@@ -103,7 +103,7 @@ export async function GET(request: NextRequest) {
 
     } catch (error: any) {
         console.error("Error fetching saved jobs:", error);
-        const errorMessage = process.env.NODE_ENV === 'development' ? error.message : "Failed to fetch saved jobs.";
+        const errorMessage =  error.message || "Failed to fetch saved jobs.";
         if (error.message?.includes('Unauthorized') || error.message?.includes('Invalid token')) {
              return NextResponse.json({ error: error.message }, { status: 401 });
         }

@@ -9,7 +9,7 @@ export const commonThemeOptions: ThemeOptions = {
       styleOverrides: {
         root: {
           "&& .MuiTouchRipple-rippleVisible": {
-            animationDuration: "150ms",
+            animationDuration: "-150ms",
           },
         },
       },

@@ -24,7 +24,7 @@ export const NavigationLink = ({ item, isActive, isMobile = false }: NavigationL
     // --- Mobile Version ---
     // Use modern Link - wraps Box directly, no legacyBehavior/passHref
     return (
-      <Link href={item.href}>
+      <Link href={item.href}  target={item.newTab ? '_blank' : '_self'} >
         <Box
           // No component="a" or href - Link renders the <a> tag
           sx={{
@@ -60,7 +60,7 @@ export const NavigationLink = ({ item, isActive, isMobile = false }: NavigationL
   // --- Desktop Version ---
   // Use modern Link - wraps Button directly, no legacyBehavior/passHref
   return (
-    <Link href={item.href}>
+    <Link href={item.href} target={item.newTab ? '_blank' : '_self'} >
       <Button
         // No component="a" or href - Link renders the <a> tag
         startIcon={<Icon style={{ width: 24, height: 24 }} />}
