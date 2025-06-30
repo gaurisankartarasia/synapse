@@ -28,7 +28,7 @@ export const navLinks: NavItem[] = [
   { name: 'Notifications', href: '/notifications', icon: NotificationsOutlinedIcon},
   { name: 'AI', href: '/ai/message', icon: AssistantOutlinedIcon},
   { name: 'Jobs', href: '/jobs', icon: WorkOutlineOutlinedIcon},
-  { name: 'Store', href: '/store', icon: StorefrontOutlinedIcon, newTab: true},
+  { name: 'Store', href: 'https://synapse-store-phi.vercel.app', icon: StorefrontOutlinedIcon, newTab: true},
 
 ];
 
